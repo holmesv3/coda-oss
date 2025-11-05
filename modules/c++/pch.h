@@ -13,7 +13,7 @@
 #define CODA_OSS_LIBRARY_SHARED 1
 #endif
 
-#include "coda_oss/CPlusPlus.h"
+#include "config/CPlusPlus.h"
 #include "config/disable_compiler_warnings.h"
 
 CODA_OSS_disable_warning_system_header_push

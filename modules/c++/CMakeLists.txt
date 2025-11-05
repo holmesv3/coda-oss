@@ -49,7 +49,6 @@ install(TARGETS TestCase EXPORT ${CODA_EXPORT_SET_NAME})
 test_big_endian(BIGENDIAN)
 
 add_subdirectory("config")
-add_subdirectory("coda_oss")
 add_subdirectory("avx")
 add_subdirectory("except")
 add_subdirectory("sys")

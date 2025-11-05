@@ -1,10 +1,10 @@
 /* =========================================================================
- * This file is part of coda_oss-c++
+ * This file is part of config-c++
  * =========================================================================
  *
  * (C) Copyright 2021, 2022, Maxar Technologies, Inc.
  *
- * coda_oss-c++ is free software; you can redistribute it and/or modify
+ * config-c++ is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
@@ -21,8 +21,8 @@
  */
 
 #pragma once
-#ifndef CODA_OSS_coda_oss_CPlusPlus_h_INCLUDED_
-#define CODA_OSS_coda_oss_CPlusPlus_h_INCLUDED_
+#ifndef CODA_OSS_config_CPlusPlus_h_INCLUDED_
+#define CODA_OSS_config_CPlusPlus_h_INCLUDED_
 
 #ifdef CODA_OSS_cplusplus 
     #error "CODA_OSS_cplusplus already #define'd."
@@ -43,4 +43,4 @@
     #error "Must compile with C++23 or greater."
 #endif
 
-#endif // CODA_OSS_coda_oss_CPlusPlus_h_INCLUDED_
+#endif // CODA_OSS_config_CPlusPlus_h_INCLUDED_

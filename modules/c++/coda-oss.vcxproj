@@ -16,10 +16,10 @@
     <ClInclude Include="cli\include\cli\ArgumentParser.h" />
     <ClInclude Include="cli\include\cli\Results.h" />
     <ClInclude Include="cli\include\cli\Value.h" />
-    <ClInclude Include="coda_oss\include\coda_oss\CPlusPlus.h" />
     <ClInclude Include="coda_oss\include\coda_oss\mdspan.h" />
     <ClInclude Include="coda_oss\include\coda_oss\mdspan_.h" />
     <ClInclude Include="config\include\config\compiler_extensions.h" />
+    <ClInclude Include="config\include\config\CPlusPlus.h" />
     <ClInclude Include="config\include\config\disable_compiler_warnings.h" />
     <ClInclude Include="config\include\config\Exports.h" />
     <ClInclude Include="config\include\config\Version.h" />

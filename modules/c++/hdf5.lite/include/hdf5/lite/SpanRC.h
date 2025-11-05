@@ -24,7 +24,7 @@
 #ifndef CODA_OSS_hdf5_lite_SpanRC_h_INCLUDED_
 #define CODA_OSS_hdf5_lite_SpanRC_h_INCLUDED_
 
-#include "coda_oss/mdspan.h"
+#include <std/mdspan>
 
 namespace hdf5
 {
