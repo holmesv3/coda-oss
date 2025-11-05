@@ -171,7 +171,6 @@ macro(coda_initialize_build)
         add_compile_options(/Zc:__cplusplus) # updated __cplusplus macro
 
         add_definitions(
-            -DWIN32_LEAN_AND_MEAN
             -DNOMINMAX
             -D_USE_MATH_DEFINES
         )
