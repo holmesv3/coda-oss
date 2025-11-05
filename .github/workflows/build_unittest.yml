@@ -114,6 +114,10 @@ jobs:
       uses: actions/setup-python@v5 # https://github.com/marketplace/actions/setup-python
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Setup Cpp
+      uses: aminya/setup-cpp@v1 # https://github.com/marketplace/actions/setup-cpp-c-c
+      with:
+          compiler: gcc-14
     - name: Install python dependencies
       run: |
         pip install numpy
@@ -150,6 +154,10 @@ jobs:
     - name: Skip Duplicate Actions
       uses: fkirc/skip-duplicate-actions@v5.3.1
     - uses: actions/checkout@v4 # https://github.com/marketplace/actions/checkout
+    - name: Setup Cpp
+      uses: aminya/setup-cpp@v1 # https://github.com/marketplace/actions/setup-cpp-c-c
+      with:
+          compiler: gcc-14
     - name: configure
       run: |
         mkdir out && cd out
