@@ -7,6 +7,7 @@ __pycache__/
 install/
 install-*/
 target/
+build/
 
 # Conan
 modules/drivers/**/build
@@ -23,14 +24,6 @@ out/
 CMakeSettings.json
 # Ref: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
 CMakeUserPresets.json
-
-# Waf
-.waf-*
-waf-*
-.waf3-*
-waf3-*
-.lock-waf*
-build/waf*/
 
 # Eclipse
 .project
