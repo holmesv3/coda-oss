@@ -573,24 +573,24 @@ inline Element& addNewElement(const xml::lite::QName& name, const T& value, Elem
 }
 
 template <typename T, typename ToString>
-inline Element& addNewElement(const xml::lite::QName& name, const coda_oss::optional<T>& v, Element& parent,
+inline Element& addNewElement(const xml::lite::QName& name, const std::optional<T>& v, Element& parent,
     ToString toString)
 {
     return addNewElement(name, v.value(), parent, toString);
 }
 template<typename T>
-inline Element& addNewElement(const xml::lite::QName& name, const coda_oss::optional<T>& v, Element& parent)
+inline Element& addNewElement(const xml::lite::QName& name, const std::optional<T>& v, Element& parent)
 {
     return addNewElement(name, v.value(), parent);
 }
 template <typename T, typename ToString>
-inline Element* addNewOptionalElement(const xml::lite::QName& name, const coda_oss::optional<T>& v, Element& parent,
+inline Element* addNewOptionalElement(const xml::lite::QName& name, const std::optional<T>& v, Element& parent,
         ToString toString)
 {
     return v.has_value() ? &addNewElement(name, v, parent, toString) : nullptr;
 }
 template<typename T>
-inline Element* addNewOptionalElement(const xml::lite::QName& name, const coda_oss::optional<T>& v, Element& parent)
+inline Element* addNewOptionalElement(const xml::lite::QName& name, const std::optional<T>& v, Element& parent)
 {
     return v.has_value() ? &addNewElement(name, v, parent) : nullptr;
 }
