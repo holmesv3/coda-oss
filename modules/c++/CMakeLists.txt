@@ -8,6 +8,7 @@ if (MSVC)
     # > *Note*: `/Wall` is not intended for regular production use, as it contains a large number of
     # > extremely noisy and low-value warnings. In general, the STL does not attempt to be `/Wall` clean.
     string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}") # add_compile_options(/W4)
+    add_compile_options(-Zc:__cplusplus)
 
 elseif (UNIX)
     # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
