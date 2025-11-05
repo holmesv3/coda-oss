@@ -34,7 +34,7 @@
 
 namespace logging
 {
-using path = coda_oss::filesystem::path; // still used in SWIG bindings
+using path = coda_oss::filesystem::path;
 
 /*!
  *  \fn setupLogger

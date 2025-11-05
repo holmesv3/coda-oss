@@ -59,7 +59,7 @@ protected:
 public:
     FileOutputStreamOS() = default;
 
-    using path = coda_oss::filesystem::path; // still used in SWIG bindings
+    using path = coda_oss::filesystem::path;
 
     /*!
      *  Alternate Constructor.  Takes an output file and a mode
