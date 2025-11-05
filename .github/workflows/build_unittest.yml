@@ -102,7 +102,7 @@ jobs:
   build-linux-cmake-default:
     strategy:
       matrix:
-        os: [ubuntu-25.04]
+        os: [ubuntu-24.04]
         python-version: ['3.7']
     name: ${{ matrix.os }}-${{ matrix.python-version }}-CMake
     runs-on: ${{ matrix.os }}
@@ -141,7 +141,7 @@ jobs:
   build-linux-cmake:
     strategy:
       matrix:
-        os: [ubuntu-25.04]
+        os: [ubuntu-24.04]
         configuration: [Debug, Release]
         avx: [AVX512F]
     name: ${{ matrix.os }}-${{ matrix.configuration }}-${{ matrix.avx }}-CMake
