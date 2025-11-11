@@ -2,7 +2,7 @@
 #
 # Author:  Scott A. Colcord
 
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.26)
 project(coda-oss VERSION 1.0.0)
 
 if (EXISTS "${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
