@@ -16,3 +16,6 @@ coda_add_tests(
     DIRECTORY "unittests"
     DEPS mt-c++ std-c++
     UNITTEST)
+
+# Aligned alloc test throws -Werror=use-after-free
+target_compile_options(sys_test_aligned_alloc PRIVATE "-Wno-use-after-free")
