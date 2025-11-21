@@ -1,20 +1,12 @@
-set(MODULE_NAME hdf5)
-set(TARGET_LANGUAGE c++)
-
-if(CODA_ENABLE_HDF5)
-    # set up warnings
-    if (MSVC)
-        # DO NOT use standard (not legacy) C pre-processor
-        add_compile_options(/Zc:preprocessor-)
-
-        add_compile_definitions (_BIND_TO_CURRENT_VCLIBS_VERSION=1 _CONSOLE)
-    endif()
-
-    if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-        add_compile_options(-Wno-implicit-function-declaration)
-    endif()
-
-    coda_add_module(${MODULE_NAME} VERSION 1.14.2)
+if(HDF5_HOME)
+    find_package(HDF5 REQUIRED COMPONENTS C CXX PATHS ${HDF5_HOME})
 else()
-    message("${MODULE_NAME} will not be built since HDF5 is not enabled")
+    include(FetchContent)
+    set(HDF5_ENABLE_ZLIB_SUPPORT ON)
+    set(HDF5_BUILD_EXAMPLES OFF)
+    set(BUILD_TESTING OFF)
+    FetchContent_Declare(HDF5
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/hdf5-2.0.0.tar.gz"
+    URL_HASH "SHA256=3e6ae0430995c8ae724688c866f4dbb6feba9c6220583d72049fbb9b006c1cd5")
+    FetchContent_MakeAvailable(HDF5)
 endif()

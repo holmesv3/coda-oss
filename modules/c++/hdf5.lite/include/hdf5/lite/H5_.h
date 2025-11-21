@@ -57,9 +57,6 @@ CODA_OSS_disable_warning(-Wsuggest-override)
 CODA_OSS_disable_warning(-Wzero-as-null-pointer-constant)
 #endif
 
-// see https://docs.hdfgroup.org/archive/support/HDF5/doc1.8/cpplus_RM/readdata_8cpp-example.html
-#include <H5Cpp.h>
-
 #include <highfive/H5Easy.hpp>
 #include <highfive/H5File.hpp>
 #include <highfive/H5Group.hpp>

@@ -1,19 +1,10 @@
-set(MODULE_NAME highfive)
-set(TARGET_LANGUAGE c++)
-
-if(CODA_ENABLE_HDF5)
-    set(MODULE_DEPS config-c++ sys-c++)
-    list(APPEND MODULE_DEPS hdf5-c++)
-
-    coda_add_module(
-        ${MODULE_NAME}
-        VERSION 2.7.1
-        DEPS ${MODULE_DEPS})
-
-    coda_add_tests(
-        MODULE_NAME ${MODULE_NAME}
-        DIRECTORY "unittests"
-        UNITTEST)
+if(HIGHFIVE_HOME)
+    find_package(HighFive REQUIRED PATHS ${HIGHFIVE_HOME})
 else()
-    message("${MODULE_NAME} will not be built since HDF5 is not enabled")
+    include(FetchContent)
+    set(HDF5_USE_STATIC_LIBRARIES ON)
+    FetchContent_Declare(highfive
+        URL "${CMAKE_CURRENT_SOURCE_DIR}/highfive-37419151.zip"
+    URL_HASH "SHA256=692290981abc564c540c4d325377766d1d1a0d2c2b1db8d0cb03766c64cf5c8d")
+    FetchContent_MakeAvailable(highfive)
 endif()

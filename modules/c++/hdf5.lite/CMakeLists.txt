@@ -1,8 +1,8 @@
 set(MODULE_NAME hdf5.lite)
 
-if(CODA_ENABLE_HDF5)
-    set(MODULE_DEPS highfive-c++ hdf5-c++)
-    list(APPEND MODULE_DEPS except-c++ types-c++ io-c++)
+if(ENABLE_HDF5)
+    # HighFive and z from drivers
+    set(MODULE_DEPS except-c++ types-c++ io-c++ HighFive z)
 
     coda_add_module(
         ${MODULE_NAME}
