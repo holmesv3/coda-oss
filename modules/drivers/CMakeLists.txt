@@ -8,7 +8,6 @@ option(ENABLE_UUID "enable UUID library" ON)
 option(ENABLE_ZIP "enable zlib" ON)
 option(ENABLE_NLOHMANN "enable nlohmann" ON)
 
-
 # Turn off all warnings; this is code we don't control.
 if (MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS)
