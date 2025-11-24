@@ -720,15 +720,6 @@
     <ClInclude Include="coda_oss\include\coda_oss\numbers.h">
       <Filter>coda_oss</Filter>
     </ClInclude>
-    <ClInclude Include="hdf5.lite\source\hdf5.lite.h">
-      <Filter>hdf5.lite</Filter>
-    </ClInclude>
-    <ClInclude Include="hdf5.lite\include\hdf5\lite\highfive.h">
-      <Filter>hdf5.lite</Filter>
-    </ClInclude>
-    <ClInclude Include="hdf5.lite\include\hdf5\lite\SpanRC.h">
-      <Filter>hdf5.lite</Filter>
-    </ClInclude>
     <ClInclude Include="zip\include\zip\GZipInputStream.h">
       <Filter>zip</Filter>
     </ClInclude>
@@ -915,9 +906,6 @@
     <ClInclude Include="unique\include\import\unique.h">
       <Filter>unique</Filter>
     </ClInclude>
-    <ClInclude Include="hdf5.lite\include\import\hdf5\lite.h">
-      <Filter>hdf5.lite</Filter>
-    </ClInclude>
     <ClInclude Include="xml.lite\include\xml\lite\xerces_.h">
       <Filter>xml.lite</Filter>
     </ClInclude>
@@ -926,9 +914,6 @@
     </ClInclude>
     <ClInclude Include="include\UnitTest.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="hdf5.lite\include\hdf5\lite\H5_.h">
-      <Filter>hdf5.lite</Filter>
     </ClInclude>
     <ClInclude Include="mem\include\mem\AutoPtr.h">
       <Filter>mem</Filter>
@@ -1278,9 +1263,6 @@
     <ClCompile Include="sys\source\File.cpp">
       <Filter>sys</Filter>
     </ClCompile>
-    <ClCompile Include="hdf5.lite\source\hdf5.lite.cpp">
-      <Filter>hdf5.lite</Filter>
-    </ClCompile>
     <ClCompile Include="zip\source\GZipInputStream.cpp">
       <Filter>zip</Filter>
     </ClCompile>
@@ -1456,9 +1438,6 @@
     </Filter>
     <Filter Include="plugin">
       <UniqueIdentifier>{387bc6cb-323a-42b3-8502-4fac72586d12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="hdf5.lite">
-      <UniqueIdentifier>{e4db8b19-0870-4cb2-af64-14b928c68725}</UniqueIdentifier>
     </Filter>
     <Filter Include="zip">
       <UniqueIdentifier>{a2682912-3963-489a-9cf0-c5224b27eb84}</UniqueIdentifier>

@@ -75,15 +75,12 @@ These options may be passed in the cmake configure step as `-DOPTION_NAME="optio
 |CODA_INSTALL_TESTS| ON      |install tests if on|
 |CODA_PARTIAL_INSTALL|OFF|make the install target not depend on all defined targets, only the targets which have already been built will be installed; cmake/CodaBuild.cmake for further information and caveats|
 |MT_DEFAULT_PINNING|OFF|use affinity-based CPU pinning by default in MT|
-|ENABLE_HDF5|ON|include HDF5 with the install|
 |ENABLE_JARS|ON|include jars with the install|
 |ENABLE_JPEG|ON|build libjpeg driver and modules depending on it|
 |ENABLE_J2K|ON|build openjpeg (jpeg2000) driver and modules depending on it|
 |ENABLE_PCRE|ON|build PCRE (PERL Compatible Regular Expressions) library and modules dependent on it|
 |ENABLE_UUID|ON|build uuid library and modules dependent on it|
 |ENABLE_ZIP|ON|build zlib and modules dependent on it|
-|HDF5_HOME||path to existing HDF5 installation; if not provided, it will be built from source (implies ENABLE_HDF5=ON)|
-|HIGHFIVE_HOME||path to existing HighFive installation; if not provided, it will be built from source (implies ENABLE_HDF5=ON)|
 |JPEG_HOME||path to existing libjpeg installation; if not provided, it will be built from source (implies ENABLE_JPEG=ON)|
 |J2K_HOME||path to existing openjpeg installation; if not provided, it will be built from source (implies ENABLE_J2K=ON)|
 |PCRE_HOME||path to existing pcre installation; if not provided, it will be built from source (implies ENABLE_PCRE=ON)|
