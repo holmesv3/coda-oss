@@ -18,4 +18,4 @@ coda_add_tests(
     UNITTEST)
 
 # Aligned alloc test throws -Werror=use-after-free
-target_compile_options(sys_test_aligned_alloc PRIVATE "-Wno-use-after-free")
+target_compile_options(sys_test_aligned_alloc PRIVATE $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wno-use-after-free>)
