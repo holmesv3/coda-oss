@@ -82,7 +82,7 @@ jobs:
         msbuild-architecture: x64
     - name: msbuild
       run: |
-        msbuild coda-oss.sln /p:configuration=${{ matrix.configuration }}
+        msbuild coda-oss.sln /p:configuration=${{ matrix.configuration }} /std:c++23preview
     # Can't figure out how to make this work :-(
     #- name: vstest 
     #  uses: microsoft/vstest-action@v1.0.0 # https://github.com/marketplace/actions/vstest-action
