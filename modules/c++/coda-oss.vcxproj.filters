@@ -714,9 +714,6 @@
     <ClInclude Include="types\include\types\Complex.h">
       <Filter>types</Filter>
     </ClInclude>
-    <ClInclude Include="coda_oss\include\coda_oss\numbers.h">
-      <Filter>coda_oss</Filter>
-    </ClInclude>
     <ClInclude Include="zip\include\zip\GZipInputStream.h">
       <Filter>zip</Filter>
     </ClInclude>
@@ -1489,17 +1486,8 @@
     <None Include="gsl\include\gsl\util">
       <Filter>gsl</Filter>
     </None>
-    <None Include="std\include\std\optional">
-      <Filter>std</Filter>
-    </None>
-    <None Include="std\include\std\string">
-      <Filter>std</Filter>
-    </None>
     <None Include="sys\include\sys\sys_config.h.cmake.in">
       <Filter>sys</Filter>
-    </None>
-    <None Include="std\include\std\numbers">
-      <Filter>std</Filter>
     </None>
     <None Include="coda-oss.ruleset" />
     <None Include="sys\source\CppUnitTestAssert_.cpp_">
