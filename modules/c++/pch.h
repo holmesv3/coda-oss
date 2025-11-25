@@ -116,6 +116,3 @@ CODA_OSS_disable_warning_pop
 #include "xml/lite/xerces_.h"
 #pragma comment(lib, "xerces-c")
 
-#include "hdf5/lite/H5_.h"
-#pragma comment(lib, "hdf5-c++.lib")
-
