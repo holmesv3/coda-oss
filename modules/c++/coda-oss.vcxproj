@@ -263,7 +263,6 @@
     <ClInclude Include="sys\include\sys\SysInt.h" />
     <ClInclude Include="sys\include\sys\StopWatch.h" />
     <ClInclude Include="sys\include\sys\SystemException.h" />
-    <ClInclude Include="sys\include\sys\sys_filesystem.h" />
     <ClInclude Include="sys\include\sys\Thread.h" />
     <ClInclude Include="sys\include\sys\ThreadInterface.h" />
     <ClInclude Include="sys\include\sys\ThreadPosix.h" />
@@ -444,7 +443,6 @@
     <ClCompile Include="sys\source\SemaphoreWin32.cpp" />
     <ClCompile Include="sys\source\StopWatch.cpp" />
     <ClCompile Include="sys\source\sys_Backtrace.cpp" />
-    <ClCompile Include="sys\source\sys_filesystem.cpp" />
     <ClCompile Include="sys\source\ThreadPosix.cpp" />
     <ClCompile Include="sys\source\ThreadWin32.cpp" />
     <ClCompile Include="sys\source\UTCDateTime.cpp" />
