@@ -16,14 +16,14 @@ endif()
 if (${CMAKE_PROJECT_NAME} STREQUAL coda-oss)
     # this is the top level project
 
-    # Only set std if not used as external library
+    # Only set std if not used as library
     set(CMAKE_CXX_STANDARD 23)
     set(CXX_STANDARD_REQUIRED true)
 
     # Always turn on "warnings as errors" to avoid lots of (meaningless?) build output;
     # we'll dial-back warnings as necessary.
     if (MSVC)
-        add_compile_options(/WX) # warnings as errors
+        # No warnings as errors for MSVC
         add_compile_options(/MP) # multi-processor compile
     elseif (UNIX)
         add_compile_options(-Werror) # warnings as errors
