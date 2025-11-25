@@ -449,9 +449,10 @@ static void test_Windows1252_(const std::string& testName, const char* pStr, std
     test_wide_(testName, pStr, pUtf16, wstring, s, w1252);
 }
 // https://en.wikipedia.org/wiki/Windows-1252
-#if _WIN32
 TEST_CASE(test_Windows1252_WIN32)
 {
+#if _WIN32
+
     // can convert with bit-twiddling
     constexpr auto w1252_a1_ff = u8"����"; // <INVERTED EXCLAMATION MARK><CENT SIGN><LATIN SMALL LETTER THORN><LATIN SMALL LETTER Y WITH DIAERESIS>
     //constexpr auto w1252_a1_ff = "\xa1\xa2\xfe\xff"; 
@@ -469,8 +470,10 @@ TEST_CASE(test_Windows1252_WIN32)
     constexpr auto w1252_unassigned = u8"\x81\x8d\x8f\x90\x9d";
     constexpr auto u16_w1252_unassigned = u"\x81\x8d\x8f\x90\x9d";
     test_Windows1252_(testName, w1252_unassigned, u16_w1252_unassigned);
-}
+#else
+    TEST_ASSERT(true)
 #endif
+}
 
 TEST_CASE(test_Windows1252)
 {
