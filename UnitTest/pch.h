@@ -27,11 +27,11 @@
 #include <bit>
 #include <cstddef>
 #include <filesystem>
-#include <std/numbers>
-#include <std/optional>
+#include <numbers>
+#include <optional>
 #include <span>
 #include <string>
-#include <std/type_traits>
+#include <type_traits>
 
 #include "CppUnitTest.h"
 
