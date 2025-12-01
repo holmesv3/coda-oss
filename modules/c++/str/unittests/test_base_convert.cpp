@@ -664,7 +664,7 @@ inline static auto toString(const std::wstring& s)
 }
 
 // https://en.wikipedia.org/wiki/Windows-1252
-TEST_CASE("test_Windows1252_WIN32_0")
+TEST_CASE("test_Windows1252_0")
 {
 #if _WIN32
     // can convert with bit-twiddling
@@ -672,7 +672,7 @@ TEST_CASE("test_Windows1252_WIN32_0")
     //constexpr auto w1252_a1_ff = "\xa1\xa2\xfe\xff"; 
     constexpr auto u16_w1252_a1_ff = u"\u00a1\u00a2\u00fe\u00ff";
     {
-        const char* Lpstr = w1252_a1_ff;
+        const char* LpStr = w1252_a1_ff;
         std::u16string::const_pointer LpUtf16 = u16_w1252_a1_ff;
         const auto u16 = str::to_u16string(str::to_u8string<str::W1252string>(LpStr));
         CHECK(u16 == LpUtf16);
@@ -738,7 +738,7 @@ TEST_CASE("test_Windows1252_WIN32_0")
     SKIP("Only runs on Windows");
 #endif
 }
-TEST_CASE("test_Windows1252_WIN32_1")
+TEST_CASE("test_Windows1252_1")
 {
 #if _WIN32
     constexpr auto w1252 = "���������������������������"; // these values must be mapped
@@ -747,7 +747,7 @@ TEST_CASE("test_Windows1252_WIN32_1")
     constexpr auto u16_utf8 = u"\u20ac\u201a\u0192\u201e\u2026\u2020\u2021\u02c6\u2030\u0160\u2039\u0152\u017d"
         "\u2018\u2019\u201c\u201d\u2022\u2013\u2014\u02dc\u2122\u0161\u203a\u0153\u017e\u0178";
     {
-        const char* Lpstr = w1252;
+        const char* LpStr = w1252;
         std::u16string::const_pointer LpUtf16 = u16_utf8;
         const auto u16 = str::to_u16string(str::to_u8string<str::W1252string>(LpStr));
         CHECK(u16 == LpUtf16);
@@ -813,14 +813,14 @@ TEST_CASE("test_Windows1252_WIN32_1")
     SKIP("Only runs on Windows");
 #endif
 }
-TEST_CASE("test_Windows1252_WIN32_2")
+TEST_CASE("test_Windows1252_2")
 {
 #if _WIN32
     // This only works with "relaxed" (i.e., not "strict") conversion; which is what _bstr_t does
     constexpr auto w1252_unassigned = "\x81\x8d\x8f\x90\x9d";
     constexpr auto u16_w1252_unassigned = u"\x81\x8d\x8f\x90\x9d";
     {
-        const char* Lpstr = w1252_unassigned;
+        const char* LpStr = w1252_unassigned;
         std::u16string::const_pointer LpUtf16 = u16_w1252_unassigned;
         const auto u16 = str::to_u16string(str::to_u8string<str::W1252string>(LpStr));
         CHECK(u16 == LpUtf16);
