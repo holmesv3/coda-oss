@@ -52,6 +52,6 @@
 
 #include <io/ReadUtils.h>
 
-#include "TestCase.h"
+#include <catch2/catch_test_macros.hpp>
 
 #endif //PCH_H

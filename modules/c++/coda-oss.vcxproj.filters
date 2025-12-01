@@ -354,9 +354,6 @@
     <ClInclude Include="config\include\config\Exports.h">
       <Filter>config</Filter>
     </ClInclude>
-    <ClInclude Include="include\TestCase.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="cli\include\cli\Argument.h">
       <Filter>cli</Filter>
     </ClInclude>

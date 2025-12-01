@@ -411,7 +411,7 @@ function(coda_add_tests)
             add_custom_target(${test_group_tgt})
         endif()
 
-        list(APPEND ARG_DEPS ${ARG_MODULE_NAME}-${TARGET_LANGUAGE} TestCase)
+        list(APPEND ARG_DEPS ${ARG_MODULE_NAME}-${TARGET_LANGUAGE} Catch2::Catch2WithMain)
 
         # get all interface libraries and include directories from the dependencies
         foreach(dep ${ARG_DEPS})
