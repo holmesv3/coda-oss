@@ -373,7 +373,7 @@ TEST_CASE("test_u8string_to_u16string")
     const std::wstring wide(classificationText_wide_());
     #if _WIN32
     const auto s = str::str<std::wstring>(actual); // Windows: std::wstring == std::u16string
-    TEST_ASSERT(wide == s);  // _EQ wants to do toString()
+    CHECK(wide == s);  // _EQ wants to do toString()
     #endif
 
     const auto u8 = classificationText_u8();
@@ -959,7 +959,7 @@ TEST_CASE("test_Windows1252")
                     // Since we're using U
                         std::u16string::const_pointer lpUtf16 = LpUtf16;
                     const std::wstring lwstring = wstring;
-                    const std::string lnative = s;TF-16, on Windows that can be cast to wchar_t
+                    const std::string lnative = s; //TF-16, on Windows that can be cast to wchar_t
                     const auto wide = str::make_string<std::wstring>(lpUtf16);
 
                     const _bstr_t str(lpStr);
