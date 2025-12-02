@@ -687,9 +687,6 @@
     <ClInclude Include="mem\include\mem\ComplexView.h">
       <Filter>mem</Filter>
     </ClInclude>
-    <ClInclude Include="std\include\import\std.h">
-      <Filter>std</Filter>
-    </ClInclude>
     <ClInclude Include="config\include\config\disable_compiler_warnings.h">
       <Filter>config</Filter>
     </ClInclude>

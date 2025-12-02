@@ -205,7 +205,6 @@
     <ClInclude Include="sio.lite\include\sio\lite\StreamReader.h" />
     <ClInclude Include="sio.lite\include\sio\lite\UnsupportedDataTypeException.h" />
     <ClInclude Include="sio.lite\include\sio\lite\UserDataDictionary.h" />
-    <ClInclude Include="std\include\import\std.h" />
     <ClInclude Include="str\include\str\Convert.h" />
     <ClInclude Include="str\include\str\Encoding.h" />
     <ClInclude Include="str\include\str\Format.h" />
