@@ -2,7 +2,7 @@
 
 ## Release 2.0.0 (WIP)
 - Require C++23
-- Remove internal 
+- Remove std module
 
 
 ## [Release 2024-03-18](https://github.com/mdaus/coda-oss/releases/tag/2024-03-18)
