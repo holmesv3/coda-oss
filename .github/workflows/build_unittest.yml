@@ -11,7 +11,8 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-    name: ${{ matrix.os }}-CMake
+        configuration: [Debug, Release]
+    name: ${{ matrix.os }}-${{ matrix.configuration }}-CMake
     runs-on: ${{ matrix.os }}
     steps:
     - name: Skip Duplicate Actions
@@ -20,35 +21,17 @@ jobs:
     - name: configure
       run: |
         ls env:
-        mkdir target-Release
-        cd target-Release
-        cmake .. -DCMAKE_INSTALL_PREFIX=install${{ matrix.os }}CMake-Github
-        cd ..
-        mkdir target-Debug
-        cd target-Debug
+        mkdir target && cd target
         cmake .. -DCMAKE_INSTALL_PREFIX=install${{ matrix.os }}CMake-Github
     - name: build
       run: |
-        cd target-Release
-        cmake --build . --config Release -j 
-        cd ..
-        cd target-Debug
-        cmake --build . --config Debug -j 
+        cmake --build target --config ${{ matrix.configuration }} -j 
     - name: test # should run w/o install
       run: |
-        cd target-Release
-        ctest -C Release --output-on-failure
-        cd ..
-        cd target-Debug
-        ctest -C Debug --output-on-failure
+        ctest --test-dir target -C ${{ matrix.configuration }} --output-on-failure
     - name: install
       run: |
-        cd target-Release
-        cmake --build . --config Release --target install
-        cd ..
-        cd target-Debug
-        cmake --build . --config Debug --target install
-        cd ..
+        cmake --install target --config ${{ matrix.configuration }}
 
   build-linux-cmake-default:
     strategy:
@@ -71,18 +54,14 @@ jobs:
         cmake .. -DCMAKE_INSTALL_PREFIX=install${{ matrix.os }}CMake-Github
     - name: build
       run: |
-        cd target
-        # "-j" spawns too many processes causing GCC to crash
-        cmake --build . -j 12
+        cmake --build target -j
     - name: test
     # should run w/o install
       run: |
-        cd target
-        ctest --output-on-failure
+        ctest --test-dir target --output-on-failure
     - name: install
       run: |
-        cd target
-        cmake --build . --target install
+        cmake --install target 
 
   build-linux-cmake:
     strategy:
@@ -102,14 +81,11 @@ jobs:
           compiler: gcc-14
     - name: configure
       run: |
-        mkdir out && cd out
-        cmake .. -DENABLE_${{ matrix.avx }}=ON -DCMAKE_INSTALL_PREFIX=${{ matrix.configuration }}
+        mkdir target && cd target
+        cmake .. -DENABLE_${{ matrix.avx }}=ON -DCMAKE_INSTALL_PREFIX=${{ matrix.configuration }} -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
     - name: build
       run: |
-        cd out
-        # "-j" spawns too many processes causing GCC to crash
-        cmake --build . -j 12
+        cmake --build target -j
     - name: test
       run: |
-        cd out
-        ctest --output-on-failure
+        ctest --test-dir target --output-on-failure
