@@ -573,8 +573,8 @@ function(coda_add_module MODULE_NAME)
 
     # Set up install destination for headers
     if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${CODA_STD_PROJECT_INCLUDE_DIR}")
-        install(DIRECTORY "${CODA_STD_PROJECT_INCLUDE_DIR}/"
-                DESTINATION "${CODA_STD_PROJECT_INCLUDE_DIR}/"
+        install(DIRECTORY "${CODA_STD_PROJECT_INCLUDE_DIR}"
+                DESTINATION "${CODA_STD_PROJECT_INCLUDE_DIR}"
                 ${CODA_INSTALL_OPTION}
                 FILES_MATCHING
                     PATTERN "*.in" EXCLUDE

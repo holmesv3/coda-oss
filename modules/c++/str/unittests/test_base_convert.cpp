@@ -668,8 +668,7 @@ TEST_CASE("test_Windows1252_0")
 {
 #if _WIN32
     // can convert with bit-twiddling
-    constexpr auto w1252_a1_ff = "����"; // <INVERTED EXCLAMATION MARK><CENT SIGN><LATIN SMALL LETTER THORN><LATIN SMALL LETTER Y WITH DIAERESIS>
-    //constexpr auto w1252_a1_ff = "\xa1\xa2\xfe\xff"; 
+    constexpr auto w1252_a1_ff = "\xa1\xa2\xfe\xff"; 
     constexpr auto u16_w1252_a1_ff = u"\u00a1\u00a2\u00fe\u00ff";
     {
         const char* LpStr = w1252_a1_ff;
@@ -741,9 +740,7 @@ TEST_CASE("test_Windows1252_0")
 TEST_CASE("test_Windows1252_1")
 {
 #if _WIN32
-    constexpr auto w1252 = "���������������������������"; // these values must be mapped
-    //constexpr auto w1252 = "\x80\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8e" // these values must be mapped
-    //    "\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9e\x9f";
+    constexpr auto w1252 = "\x80\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8e\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9e\x9f";
     constexpr auto u16_utf8 = u"\u20ac\u201a\u0192\u201e\u2026\u2020\u2021\u02c6\u2030\u0160\u2039\u0152\u017d"
         "\u2018\u2019\u201c\u201d\u2022\u2013\u2014\u02dc\u2122\u0161\u203a\u0153\u017e\u0178";
     {
