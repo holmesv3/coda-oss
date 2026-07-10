@@ -62,46 +62,6 @@ jobs:
         cmake --build . --config Debug --target install
         cd ..
 
-  build-msbuild-windows:
-    strategy:
-      matrix:
-        os: [windows-latest]
-        platform: [x64]
-        configuration: [Debug] # Debug turns on more compiler warnings
-        avx: [AVX512F]
-    name: ${{ matrix.os }}-${{ matrix.avx }}-msbuild
-    runs-on: ${{ matrix.os }}
-
-    steps:
-    - name: Skip Duplicate Actions
-      uses: fkirc/skip-duplicate-actions@v5.3.1
-    - uses: actions/checkout@v4 # https://github.com/marketplace/actions/checkout
-    - name: configure
-      run: |
-        ls env:
-        mkdir out
-        cd out
-        cmake .. -DCMAKE_INSTALL_PREFIX=install\${{ matrix.platform }}-${{ matrix.configuration }} -DENABLE_PYTHON=OFF -DENABLE_${{ matrix.avx }}=ON
-    - name: build
-      run: |
-        cd out
-        cmake --build . --config ${{ matrix.configuration }} -j
-        cmake --build . --config ${{ matrix.configuration }} --target install
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1 # https://github.com/marketplace/actions/setup-msbuild
-      with:
-        msbuild-architecture: x64
-    - name: msbuild
-      run: |
-        msbuild coda-oss.sln /p:configuration=${{ matrix.configuration }}
-    # Can't figure out how to make this work :-(
-    #- name: vstest 
-    #  uses: microsoft/vstest-action@v1.0.0 # https://github.com/marketplace/actions/vstest-action
-    #  with:
-    #      testAssembly: UnitTest.dll
-    #      searchFolder: D:\a\nitro\nitro\${{ matrix.platform }}\${{ matrix.configuration }}
-    #      runInParallel: true  
-
   build-linux-cmake-default:
     strategy:
       matrix:
@@ -129,8 +89,7 @@ jobs:
     - name: build
       run: |
         cd target
-        # "-j" spawns too many processes causing GCC to crash
-        cmake --build . -j 12
+        cmake --build .
     - name: test
     # should run w/o install
       run: |
