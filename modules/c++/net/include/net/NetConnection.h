@@ -30,7 +30,6 @@
 #include "io/BidirectionalStream.h"
 #include "sys/SystemException.h"
 #include "except/Exception.h"
-#include "mem/SharedPtr.h"
 
 /*!
  *  \file NetConnection.h

@@ -139,7 +139,6 @@
     <ClInclude Include="mem\include\mem\ScopedPtr.h" />
     <ClInclude Include="mem\include\mem\ScratchMemory.h" />
     <ClInclude Include="mem\include\mem\ScratchMemory.hpp" />
-    <ClInclude Include="mem\include\mem\SharedPtr.h" />
     <ClInclude Include="mem\include\mem\SharedPtrCpp11.h" />
     <ClInclude Include="mem\include\mem\Span.h" />
     <ClInclude Include="mem\include\mem\SwapBuffer.h" />

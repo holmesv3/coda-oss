@@ -32,7 +32,6 @@
 #include "mt/RequestQueue.h"
 #include "mt/GenericRequestHandler.h"
 #include "mt/ThreadPoolException.h"
-#include "mem/SharedPtr.h"
 
 namespace mt
 {

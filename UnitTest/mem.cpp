@@ -3,7 +3,6 @@
 
 #include <import/mem.h>
 #include <mem/ScratchMemory.h>
-#include <mem/SharedPtr.h>
 #include <mem/ComplexView.h>
 #include <mem/AutoPtr.h>
 
@@ -20,10 +19,6 @@ TEST_CLASS(test_scoped_copyable_ptr){ public:
 
 TEST_CLASS(test_scratch_memory){ public:
 #include "mem/unittests/test_scratch_memory.cpp"
-};
-
-TEST_CLASS(test_shared_ptr){ public:
-#include "mem/unittests/test_shared_ptr.cpp"
 };
 
 TEST_CLASS(test_Span){ public:

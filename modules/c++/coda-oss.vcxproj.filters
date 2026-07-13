@@ -279,9 +279,6 @@
     <ClInclude Include="mem\include\mem\ScratchMemory.hpp">
       <Filter>mem</Filter>
     </ClInclude>
-    <ClInclude Include="mem\include\mem\SharedPtr.h">
-      <Filter>mem</Filter>
-    </ClInclude>
     <ClInclude Include="mem\include\mem\SharedPtrCpp11.h">
       <Filter>mem</Filter>
     </ClInclude>
