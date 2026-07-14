@@ -1073,8 +1073,7 @@ public:
            C = A * B;
      *  \endcode
      */
-    Matrix2D
-    operator*(const Matrix2D& mx) const
+    Matrix2D operator*(const Matrix2D& mx) const
     {
         return multiply(mx);
     }
@@ -1128,8 +1127,8 @@ public:
  *  \param N the dimension in rows and in cols for the matrix to be produced
  *
  */
-template<typename _T> Matrix2D<_T>
-    identityMatrix(size_t N)
+template<typename _T> 
+Matrix2D<_T> identityMatrix(size_t N)
 {
     Matrix2D<_T> mx(N, N);
     for (size_t i = 0; i < N; i++)
@@ -1142,8 +1141,8 @@ template<typename _T> Matrix2D<_T>
     return mx;
 }
 
-template<typename _T, typename Vector_T > Matrix2D<_T>
-    diagonalMatrix(const Vector_T& diag)
+template<typename _T, typename Vector_T >
+Matrix2D<_T> diagonalMatrix(const Vector_T& diag)
 {
     size_t N = diag.size();
 
@@ -1161,7 +1160,7 @@ template<typename _T, typename Vector_T > Matrix2D<_T>
  *
  */
 template<typename _T>
-    math::linear::Matrix2D<_T> solveLU(const std::vector<size_t>& pivotsM,
+math::linear::Matrix2D<_T> solveLU(const std::vector<size_t>& pivotsM,
                                        const Matrix2D<_T> &lu,
                                        const Matrix2D<_T> &b)
 {
@@ -1235,8 +1234,7 @@ template<typename _T> inline Matrix2D<_T> inverse2x2(const Matrix2D<_T>& mx)
  *  this for 3x3s
  *
  */
-template<typename _T> inline Matrix2D<_T>
-    inverse3x3(const Matrix2D<_T>& mx)
+template<typename _T> inline Matrix2D<_T> inverse3x3(const Matrix2D<_T>& mx)
 {
     double a = mx(0,0);
     double b = mx(0,1);
@@ -1280,8 +1278,7 @@ template<typename _T> inline Matrix2D<_T>
  *  \endcode
  *
  */
-template<typename _T> inline
-    Matrix2D<_T> inverseLU(const Matrix2D<_T>& mx)
+template<typename _T> inline Matrix2D<_T> inverseLU(const Matrix2D<_T>& mx)
 {
     const auto M = mx.rows();
     const auto N = mx.cols();
@@ -1313,8 +1310,7 @@ template<typename _T> inline
          Matrix2D<> Ainv = inverse<double>(A);
  *  \endcode
  */
-template<typename _T> inline
-    Matrix2D<_T> inverse(const Matrix2D<_T>& mx)
+template<typename _T> inline Matrix2D<_T> inverse(const Matrix2D<_T>& mx)
 {
     // Try to speed this up
     if (mx.rows() != mx.cols())
@@ -1335,8 +1331,7 @@ template<typename _T> inline
  * \return Left inverse
  * \throws if matrix is not left-invertible
  */
-template<typename _T> inline
-    Matrix2D<_T> leftInverse(const Matrix2D<_T>& mx)
+template<typename _T> inline Matrix2D<_T> leftInverse(const Matrix2D<_T>& mx)
 {
     return inverse(mx.transpose() * mx) * mx.transpose();
 }
