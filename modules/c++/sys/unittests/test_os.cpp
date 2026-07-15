@@ -394,8 +394,8 @@ TEST_CASE(testFsFileSize)
         TEST_ASSERT_GREATER(size, 0);
     }
     {
-        // We always have  sys::filesystem, even if it's not used.
-        const sys::filesystem::path argv0(os.getSpecialEnv("ARGV0"));
+        // We always have filesystem, even if it's not used.
+        const std::filesystem::path argv0(os.getSpecialEnv("ARGV0"));
         const int64_t size = static_cast<int64_t>(file_size(argv0));
         TEST_ASSERT_GREATER(size, 0);
     }

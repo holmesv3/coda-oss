@@ -33,19 +33,19 @@ if __name__ == '__main__':
         inputPathname = sys.argv[1]
         outputPathname = sys.argv[2]
     else:
-        print "Usage: " + sys.argv[0] + " <Input SIO> <Output SIO>"
+        print("Usage: " + sys.argv[0] + " <Input SIO> <Output SIO>")
         sys.exit(0)
         
     buf = read(inputPathname)
     
-    print 'Input Dims: ' + str(buf.shape)
-    print 'Input Type: ' + str(buf.dtype)
+    print('Input Dims: ' + str(buf.shape))
+    print('Input Type: ' + str(buf.dtype))
 
     write(buf, outputPathname)
     
     # Read the new one
     buf = read(outputPathname)
     
-    print ''
-    print 'Output Dims: ' + str(buf.shape)
-    print 'Output Type: ' + str(buf.dtype)
+    print('')
+    print('Output Dims: ' + str(buf.shape))
+    print('Output Type: ' + str(buf.dtype))

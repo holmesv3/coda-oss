@@ -32,10 +32,13 @@ macro(coda_find_system_dependencies)
     #   Python_NumPy_INCLUDE_DIRS   - NumPy include directories
     #
     # see https://cmake.org/cmake/help/latest/module/FindPython.html
-    set(ENABLE_PYTHON ON CACHE BOOL "Enable building Python modules")
     set(PYTHON_VERSION "" CACHE STRING "Hint for which version of Python to find")
     set(PYTHON_HOME "" CACHE PATH "Path to existing Python installation")
-    set(ENABLE_SWIG OFF CACHE BOOL "Enable generation of SWIG bindings")
+    option(ENABLE_PYTHON "Enable building Python modules" ON)
+    option(ENABLE_SWIG "Enable generation of SWIG bindings" OFF)
+    option(USE_NANOBIND "Use nanobind instead of SWIG for Python bindings" OFF)
+    option(ENABLE_NUMPYUTILS "Build the numpyutils-c++ library" ON)
+
     if (PYTHON_HOME)
         # specifying PYTHON_HOME implies ENABLE_PYTHON
         set(ENABLE_PYTHON ON CACHE BOOL "Enable building Python modules" FORCE)
@@ -43,18 +46,25 @@ macro(coda_find_system_dependencies)
     if (ENABLE_PYTHON OR PYTHON_HOME)
         set(Python_FIND_STRATEGY LOCATION)
         if (PYTHON_HOME)
-            set(Python_ROOT_DIR ${PYTHON_HOME})
+            set(Python_DIR ${PYTHON_HOME})
             set(Python_FIND_VIRTUALENV STANDARD)
             set(Python_FIND_REGISTRY NEVER)
         else()
             set(Python_FIND_VIRTUALENV FIRST)
             set(Python_FIND_REGISTRY LAST)
         endif()
-        find_package(Python ${PYTHON_VERSION}
-                     COMPONENTS Interpreter Development NumPy)
+
+        set(PYTHON_COMPONENTS "Interpreter;Development")
+
+        if (ENABLE_NUMPYUTILS)
+            list(APPEND PYTHON_COMPONENTS "NumPy")
+        endif()
+
+        find_package(Python ${PYTHON_VERSION} COMPONENTS ${PYTHON_COMPONENTS})
         if (Python_Development_FOUND)
-            set(CODA_PYTHON_SITE_PACKAGES
-                "${CODA_STD_PROJECT_LIB_DIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages")
+            set(CODA_PYTHON_SITE_PACKAGES 
+                "${CODA_STD_PROJECT_LIB_DIR}/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/site-packages"
+                CACHE PATH "Path to python installation")
             if(NOT PYTHON_HOME)
                 message("Python installation found at ${Python_EXECUTABLE}.\n"
                         "Pass the configure options -DPYTHON_HOME=... or "

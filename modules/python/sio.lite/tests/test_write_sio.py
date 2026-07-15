@@ -35,7 +35,7 @@ if __name__ == '__main__':
         arrayOutputPathname = sys.argv[1]
         transposedOutputPathname = sys.argv[2]
     else:
-        print "Usage: " + sys.argv[0] + " <Output SIO for array> <Output SIO for transposed array>"
+        print("Usage: " + sys.argv[0] + " <Output SIO for array> <Output SIO for transposed array>")
         sys.exit(0)
 
     array = np.array([[0.1, 1.1, 2.1, 3.1],

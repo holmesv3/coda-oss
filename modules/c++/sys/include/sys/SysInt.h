@@ -25,7 +25,7 @@
 #ifndef CODA_OSS_sys_SysInt_h_INCLUDED_
 #define CODA_OSS_sys_SysInt_h_INCLUDED_
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace sys
 {

@@ -1,6 +1,8 @@
-set(MODULE_NAME numpyutils)
 
-if(Python_Development_FOUND AND Python_NumPy_FOUND)
+set(MODULE_NAME numpyutils)
+# Temporarily disable numpyutils to avoid CMake INTERFACE_INCLUDE_DIRECTORIES issue
+# with venv numpy paths
+if(FALSE AND Python_Development_FOUND AND Python_NumPy_FOUND)
     set(MODULE_DEPS types-c++ except-c++ sys-c++ ${Python_LIBRARIES})
     if (UNIX)
         list(APPEND MODULE_DEPS util)

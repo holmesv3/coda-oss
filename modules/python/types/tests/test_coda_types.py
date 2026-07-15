@@ -1,7 +1,7 @@
 import unittest
+import pickle
 
 from coda import coda_types
-from coda.coda_types import pickle
 
 class TestCodaTypes(unittest.TestCase):
 
