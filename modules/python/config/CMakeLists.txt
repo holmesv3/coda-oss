@@ -41,6 +41,11 @@ if(USE_NANOBIND)
     install(TARGETS coda_config
             LIBRARY DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
             ${CODA_INSTALL_OPTION})
+    
+    # Install stub file for type checking
+    install(FILES source/coda_config.pyi
+            DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
+            ${CODA_INSTALL_OPTION})
 
 else()
     # Original SWIG build

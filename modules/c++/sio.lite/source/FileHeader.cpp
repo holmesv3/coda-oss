@@ -21,9 +21,6 @@
  */
 #include "sio/lite/FileHeader.h"
 
-// magic + nl + ne + et + es
-const int SIO_HEADER_LENGTH = 20;
-
 std::string sio::lite::FileHeader::getElementTypeAsString() const
 {
     std::string type;
@@ -63,7 +60,7 @@ std::string sio::lite::FileHeader::getElementTypeAsString() const
 
 long sio::lite::FileHeader::getLength() const
 {
-    size_t length = SIO_HEADER_LENGTH;
+    size_t length = FileHeader::BASIC_HEADER_LENGTH;
 
     if (!userData.empty())
         length += 4; //num fields int

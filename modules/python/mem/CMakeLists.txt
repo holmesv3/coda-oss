@@ -42,6 +42,11 @@ if(USE_NANOBIND)
     install(TARGETS coda_mem
             LIBRARY DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
             ${CODA_INSTALL_OPTION})
+    
+    # Install stub file for type checking
+    install(FILES source/coda_mem.pyi
+            DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
+            ${CODA_INSTALL_OPTION})
 
 else()
     # ========================================================================

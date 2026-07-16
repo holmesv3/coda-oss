@@ -149,12 +149,16 @@ NB_MODULE(coda_types, m) {
         })
         .def("__setstate__", [](std::vector<types::RowCol<sys::SSize_T>>& self, nb::tuple t) {
             nb::list items = nb::cast<nb::list>(t[1]);
-            self.resize(nb::len(items));
+            std::vector<types::RowCol<sys::SSize_T>> temp;
+            temp.reserve(nb::len(items));
             for (size_t i = 0; i < nb::len(items); ++i) {
                 nb::tuple elem = nb::cast<nb::tuple>(items[i]);
-                self[i].row = nb::cast<sys::SSize_T>(elem[0]);
-                self[i].col = nb::cast<sys::SSize_T>(elem[1]);
+                temp.emplace_back(
+                    nb::cast<sys::SSize_T>(elem[0]),  // row
+                    nb::cast<sys::SSize_T>(elem[1])   // col
+                );
             }
+            new (&self) std::vector<types::RowCol<sys::SSize_T>>(std::move(temp));
         });
     
     nb::bind_vector<std::vector<types::RowCol<double>>>(m, "VectorRowColDouble")
@@ -167,12 +171,16 @@ NB_MODULE(coda_types, m) {
         })
         .def("__setstate__", [](std::vector<types::RowCol<double>>& self, nb::tuple t) {
             nb::list items = nb::cast<nb::list>(t[1]);
-            self.resize(nb::len(items));
+            std::vector<types::RowCol<double>> temp;
+            temp.reserve(nb::len(items));
             for (size_t i = 0; i < nb::len(items); ++i) {
                 nb::tuple elem = nb::cast<nb::tuple>(items[i]);
-                self[i].row = nb::cast<double>(elem[0]);
-                self[i].col = nb::cast<double>(elem[1]);
+                temp.emplace_back(
+                    nb::cast<double>(elem[0]),  // row
+                    nb::cast<double>(elem[1])   // col
+                );
             }
+            new (&self) std::vector<types::RowCol<double>>(std::move(temp));
         });
     
     // For basic types
@@ -186,10 +194,12 @@ NB_MODULE(coda_types, m) {
         })
         .def("__setstate__", [](std::vector<size_t>& self, nb::tuple t) {
             nb::list items = nb::cast<nb::list>(t[1]);
-            self.resize(nb::len(items));
+            std::vector<size_t> temp;
+            temp.reserve(nb::len(items));
             for (size_t i = 0; i < nb::len(items); ++i) {
-                self[i] = nb::cast<size_t>(items[i]);
+                temp.push_back(nb::cast<size_t>(items[i]));
             }
+            new (&self) std::vector<size_t>(std::move(temp));
         });
     
     nb::bind_vector<std::vector<std::string>>(m, "VectorString")
@@ -202,9 +212,11 @@ NB_MODULE(coda_types, m) {
         })
         .def("__setstate__", [](std::vector<std::string>& self, nb::tuple t) {
             nb::list items = nb::cast<nb::list>(t[1]);
-            self.resize(nb::len(items));
+            std::vector<std::string> temp;
+            temp.reserve(nb::len(items));
             for (size_t i = 0; i < nb::len(items); ++i) {
-                self[i] = nb::cast<std::string>(items[i]);
+                temp.push_back(nb::cast<std::string>(items[i]));
             }
+            new (&self) std::vector<std::string>(std::move(temp));
         });
 }

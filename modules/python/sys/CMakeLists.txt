@@ -36,6 +36,11 @@ if(USE_NANOBIND)
     
     # Install the module
     install(TARGETS coda_sys LIBRARY DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda" ${CODA_INSTALL_OPTION})
+    
+    # Install stub file for type checking
+    install(FILES source/coda_sys.pyi
+            DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
+            ${CODA_INSTALL_OPTION})
 
 else()
     coda_add_swig_python_module(

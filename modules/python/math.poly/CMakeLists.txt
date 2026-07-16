@@ -50,6 +50,11 @@ if(USE_NANOBIND)
     install(FILES source/__init__.py
             DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda/math_poly"
             ${CODA_INSTALL_OPTION})
+    
+    # Install stub files for type checking
+    install(FILES source/coda_math_poly.pyi source/__init__.pyi
+            DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda/math_poly"
+            ${CODA_INSTALL_OPTION})
 
 else()
     # ========================================================================

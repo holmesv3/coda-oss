@@ -17,8 +17,13 @@ if (${CMAKE_PROJECT_NAME} STREQUAL coda-oss)
     # this is the top level project
 
     # Allow other project to set different standard.
-    set(CMAKE_CXX_STANDARD 14)
+    set(CMAKE_CXX_STANDARD 17)
     set(CXX_STANDARD_REQUIRED true)
+
+    # GCC 8 and older require explicit linking of stdc++fs for std::filesystem
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+        link_libraries(stdc++fs)
+    endif()
 
     # Always turn on "warnings as errors" to avoid lots of (meaningless?) build output;
     # we'll dial-back warnings as necessary.
@@ -27,7 +32,7 @@ if (${CMAKE_PROJECT_NAME} STREQUAL coda-oss)
        add_compile_options(/MP) # multi-processor compile
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
        add_compile_options(-Werror) # warnings as errors
-       add_compile_options(-Wno-error=c++20-compat)
+    #    add_compile_options(-Wno-error=c++20-compat)
     endif()
 
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")

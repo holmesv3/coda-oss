@@ -43,27 +43,27 @@ class CODA_OSS_API FileHeader
 {
 public:
     /** Unsigned byte data */
-    static const int UNSIGNED = 1;
+    static constexpr int UNSIGNED = 1;
     /** Signed byte data */
-    static const int SIGNED = 2;
+    static constexpr int SIGNED = 2;
     /** Float data */
-    static const int FLOAT = 3;
+    static constexpr int FLOAT = 3;
     /** Complex unsigned data */
-    static const int COMPLEX_UNSIGNED = 11;
+    static constexpr int COMPLEX_UNSIGNED = 11;
     /** Complex signed data */
-    static const int COMPLEX_SIGNED = 12;
+    static constexpr int COMPLEX_SIGNED = 12;
     /** Complex float data */
-    static const int COMPLEX_FLOAT = 13;
+    static constexpr int COMPLEX_FLOAT = 13;
     /** N-Byte unsigned */
-    static const int N_BYTE_UNSIGNED = 21;
+    static constexpr int N_BYTE_UNSIGNED = 21;
     /** N-Byte signed */
-    static const int N_BYTE_SIGNED = 22;
+    static constexpr int N_BYTE_SIGNED = 22;
 
     /*!
      * SIOs can either have a basic header which is always of length 20 or a
      * more complex header which has extra freeform key/value pairs
      */
-    static const size_t BASIC_HEADER_LENGTH = 20;
+    static constexpr size_t BASIC_HEADER_LENGTH = 20;
 
     /**
      *  Constructor.

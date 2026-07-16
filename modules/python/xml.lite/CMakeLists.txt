@@ -42,6 +42,11 @@ if(USE_NANOBIND)
     install(TARGETS coda_xml_lite
             LIBRARY DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
             ${CODA_INSTALL_OPTION})
+    
+    # Install stub file for type checking
+    install(FILES source/coda_xml_lite.pyi
+            DESTINATION "${CODA_PYTHON_SITE_PACKAGES}/coda"
+            ${CODA_INSTALL_OPTION})
 
 else()
     # ========================================================================
