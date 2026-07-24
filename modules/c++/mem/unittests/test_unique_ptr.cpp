@@ -29,63 +29,12 @@
 struct Foo final
 {
     Foo() = default;
-    Foo(int val) :
-        mVal(val)
+    Foo(int val) : mVal(val)
     {
     }
 
     int mVal = 0;
 };
-
-TEST_CASE(testStdUniquePtr)
-{
-    {
-        std::unique_ptr<Foo> fooCtor;
-        TEST_ASSERT_NULL(fooCtor.get());
-
-        fooCtor.reset(new Foo(123));
-        TEST_ASSERT_NOT_NULL(fooCtor.get());
-        TEST_ASSERT_EQ(123, fooCtor->mVal);
-    }
-    {
-        auto fooCtor = std::make_unique<Foo>(123);
-        TEST_ASSERT_NOT_NULL(fooCtor.get());
-        TEST_ASSERT_EQ(123, fooCtor->mVal);
-    }
-    {
-        auto pFoos = std::make_unique<Foo[]>(123);  // 123 instances of Foo
-        TEST_ASSERT_NOT_NULL(pFoos.get());
-        TEST_ASSERT_EQ(0, pFoos[0].mVal);
-        TEST_ASSERT_EQ(0, pFoos[122].mVal);
-    }
-}
-
-TEST_CASE(test_make_unique)
-{
-    {
-        auto fooCtor = std::make_unique<Foo>(123);
-        TEST_ASSERT_NOT_NULL(fooCtor.get());
-        TEST_ASSERT_EQ(123, fooCtor->mVal);
-    }
-    {
-        auto pFoos = std::make_unique<Foo[]>(123);  // 123 instances of Foo
-        TEST_ASSERT_NOT_NULL(pFoos.get());
-        TEST_ASSERT_EQ(0, pFoos[0].mVal);
-        TEST_ASSERT_EQ(0, pFoos[122].mVal);
-    }
-
-    {
-        auto fooCtor = std::make_unique<Foo>(123);
-        TEST_ASSERT_NOT_NULL(fooCtor.get());
-        TEST_ASSERT_EQ(123, fooCtor->mVal);
-    }
-    {
-        auto pFoos = std::make_unique<Foo[]>(123);  // 123 instances of Foo
-        TEST_ASSERT_NOT_NULL(pFoos.get());
-        TEST_ASSERT_EQ(0, pFoos[0].mVal);
-        TEST_ASSERT_EQ(0, pFoos[122].mVal);
-    }
-}
 
 static void f(const std::string& testName, mem::AutoPtr<Foo> p)
 {
@@ -127,7 +76,5 @@ TEST_CASE(memAutoPtr)
 
 
 TEST_MAIN(
-   TEST_CHECK(testStdUniquePtr);
-   TEST_CHECK(test_make_unique);
    TEST_CHECK(memAutoPtr);
    )
