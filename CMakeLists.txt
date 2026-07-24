@@ -17,8 +17,15 @@ if (${CMAKE_PROJECT_NAME} STREQUAL coda-oss)
     # this is the top level project
 
     # Allow other project to set different standard.
-    set(CMAKE_CXX_STANDARD 14)
+    if (NOT DEFINED CMAKE_CXX_STANDARD)
+        set(CMAKE_CXX_STANDARD 14)
+    endif()
     set(CXX_STANDARD_REQUIRED true)
+
+    # Bug linking fs in GCC 8
+    if(CMAKE_CXX_STANDARD GREATER 14 AND CMAKE_CXX_COMPILER_ID STREQUAL GNU AND CMAKE_CXX_COMPILER_VERSION LESS 9.0)
+            link_libraries(-lstdc++fs)
+    endif()
 
     # Always turn on "warnings as errors" to avoid lots of (meaningless?) build output;
     # we'll dial-back warnings as necessary.
@@ -26,8 +33,14 @@ if (${CMAKE_PROJECT_NAME} STREQUAL coda-oss)
        add_compile_options(/WX) # warnings as errors
        add_compile_options(/MP) # multi-processor compile
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-       add_compile_options(-Werror) # warnings as errors
-       add_compile_options(-Wno-error=c++20-compat)
+        add_compile_options(-Werror) # warnings as errors
+        add_compile_options(-Wno-error=deprecated-declarations)
+        # GCC 9 added the "2a" flag. Was changed to "20" in GCC 12 (also in clang)
+        include(CheckCXXCompilerFlag)
+        check_cxx_compiler_flag("-Wc++2a-compat" CPP20_COMPAT_FLAG_EXISTS)
+        if (CPP20_COMPAT_FLAG_EXISTS)
+            add_compile_options(-Wno-error=c++2a-compat)
+       endif()
     endif()
 
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
