@@ -107,7 +107,7 @@ jobs:
         cppstd: [14, 17, 20]
         configuration: [Debug, Release]
         avx: [AVX512F]
-    name: ${{ matrix.os }}-${{ matrix.configuration }}-${{ matrix.avx }}-CMake
+    name: ${{ matrix.os }}-${{ matrix.configuration }}-CXX${{ matrix.cppstd }}-${{ matrix.avx }}-CMake
     runs-on: ${{ matrix.os }}
     steps:
     - name: Skip Duplicate Actions
