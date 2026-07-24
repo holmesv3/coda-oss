@@ -41,7 +41,6 @@ using namespace mem;
 
 %include "mem/ScopedCopyablePtr.h"
 %include "mem/ScopedCloneablePtr.h"
-%include "mem/SharedPtr.h"
 
 /*
  * When you have a mem::ScopedCopyablePtr of a particular type, use this
@@ -57,23 +56,6 @@ using namespace mem;
  * Use like this in your Swig interface file:
  * SCOPED_COPYABLE(myNamespace, MyType)
  */
-
-/*
- * Permits renaming the python type, shared pointer
- */
-%define SHARED_RENAME(namespace, CppType, PyType)
-%ignore mem::SharedPtr< namespace##::##CppType >::SharedPtr(std::auto_ptr< namespace##::##CppType >);
-%template(StdAuto##PyType) std::auto_ptr< namespace##::##CppType >;
-%template(Shared##PyType) mem::SharedPtr<namespace##::##CppType>;
-%{
-mem::SharedPtr< namespace##::##CppType > makeShared##PyType()
-{
-    return mem::SharedPtr< namespace##::##CppType >(new namespace##::##CppType ());
-}
-%}
-
-mem::SharedPtr< namespace##::##CppType > makeShared##PyType();
-%enddef
 
 /*
  * Permits renaming the python type, copyable
@@ -109,10 +91,6 @@ mem::ScopedCloneablePtr< namespace##::##CppType > makeScopedCloneable##PyType()
 %}
 
 mem::ScopedCloneablePtr< namespace##::##CppType > makeScopedCloneable##PyType();
-%enddef
-
-%define SHARED(namespace, type)
-SHARED_RENAME(namespace, type, type)
 %enddef
 
 %define SCOPED_COPYABLE(namespace, type)
