@@ -67,7 +67,9 @@ struct DirectoryEntry
         mFirst.reset(this);
         mLast.reset(nullptr);
     }
-    virtual ~DirectoryEntry() noexcept = default;
+    virtual ~DirectoryEntry() noexcept
+    {
+    }
     
     virtual void next()
     {

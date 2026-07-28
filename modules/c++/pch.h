@@ -106,7 +106,6 @@ CODA_OSS_disable_warning_pop
 
 // Yes, these are our files ... but they don't change very often, and if they do
 // change we want to rebuild everything anyway.
-#include "gsl/gsl.h"
 #include "config/Exports.h"
 #include "mem/SharedPtr.h"
 #include "sys/filesystem.h"

@@ -32,7 +32,7 @@
 #include <mt/ThreadPlanner.h>
 #include <mt/ThreadGroup.h>
 #include <types/Range.h>
-#include <gsl/gsl.h>
+#include <gsl/narrow>
 
 namespace mt
 {

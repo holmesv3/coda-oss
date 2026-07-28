@@ -41,7 +41,7 @@
 #include "coda_oss/cstddef.h"
 #include "types/Complex.h"
 #include "import/except.h"
-#include "gsl/gsl.h"
+#include <gsl/narrow>
 #include "str/Encoding.h"
 
 namespace str

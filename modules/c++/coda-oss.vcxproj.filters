@@ -9,18 +9,6 @@
     <ClInclude Include="config\include\config\Version.h">
       <Filter>config</Filter>
     </ClInclude>
-    <ClInclude Include="gsl\include\gsl\gsl.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\include\gsl\Gsl_.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\include\gsl\Gsl_narrow.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
-    <ClInclude Include="gsl\include\gsl\use_gsl.h">
-      <Filter>gsl</Filter>
-    </ClInclude>
     <ClInclude Include="coda_oss\include\coda_oss\bit.h">
       <Filter>coda_oss</Filter>
     </ClInclude>
@@ -1409,9 +1397,6 @@
     <Filter Include="config">
       <UniqueIdentifier>{89602880-5929-45e9-a603-d13f81972397}</UniqueIdentifier>
     </Filter>
-    <Filter Include="gsl">
-      <UniqueIdentifier>{619ad1da-f21c-4027-9b5d-23f08225b96f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="std">
       <UniqueIdentifier>{3051f4b6-dad4-47ea-b4bd-d25d9e09f782}</UniqueIdentifier>
     </Filter>
@@ -1501,36 +1486,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="gsl\include\gsl\algorithm">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\assert">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\byte">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\gsl">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\narrow">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\pointers">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\span">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\span_ext">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\string_span">
-      <Filter>gsl</Filter>
-    </None>
-    <None Include="gsl\include\gsl\util">
-      <Filter>gsl</Filter>
-    </None>
     <None Include="std\include\std\bit">
       <Filter>std</Filter>
     </None>

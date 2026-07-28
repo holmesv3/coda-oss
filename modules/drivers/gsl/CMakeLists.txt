@@ -1,0 +1,6 @@
+set(GSL_INSTALL ON)
+FetchContent_Declare(GSL
+    URL "${CMAKE_CURRENT_SOURCE_DIR}/GSL-4.2.0.tar.gz"
+    URL_HASH "SHA256=2c717545a073649126cb99ebd493fa2ae23120077968795d2c69cbab821e4ac6")
+
+FetchContent_MakeAvailable(GSL)

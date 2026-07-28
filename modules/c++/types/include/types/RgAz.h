@@ -27,7 +27,7 @@
 #include <cmath>
 #include <utility>
 
-#include "gsl/gsl.h"
+#include <gsl/narrow>
 
 namespace types
 {
