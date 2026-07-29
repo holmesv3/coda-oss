@@ -36,8 +36,7 @@ const char logging::XMLFormatter::DEFAULT_FORMAT[] =
 \t\t<Message>%m</Message>\n\
 \t</Record>";
 
-logging::XMLFormatter::XMLFormatter() :
-    logging::Formatter(DEFAULT_FORMAT, "<Log>", "</Log>")
+logging::XMLFormatter::XMLFormatter() : logging::Formatter(DEFAULT_FORMAT, "<Log>", "</Log>")
 {
     // TODO: Generate a better prologue that contains
     //       date, jobID, and other information that
@@ -50,12 +49,10 @@ logging::XMLFormatter::XMLFormatter(const std::string& fmt,
 {
 }
 
-void logging::XMLFormatter::format(const logging::LogRecord* record,
-                                   io::OutputStream& os) const
+void logging::XMLFormatter::format(const logging::LogRecord* record, io::OutputStream& os) const
 {
     // conver record
-    std::string name =
-            (record->getName().empty()) ? ("DEFAULT") : record->getName();
+    std::string name = (record->getName().empty()) ? ("DEFAULT") : record->getName();
     const auto line = std::to_string(record->getLineNum());
     const auto threadID = std::to_string(sys::getThreadID());
 

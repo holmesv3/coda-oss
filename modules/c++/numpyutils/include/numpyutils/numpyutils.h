@@ -32,36 +32,27 @@ CODA_OSS_disable_warning_system_header_push
 #pragma warning(disable : 26493)  // Don't use C-style casts (type.4).
 #pragma warning(disable : 26494)  // Variable '...' is uninitialized. Always
                                   // initialize an object (type.5).
-#pragma warning(disable \
-                : 26451)  // Arithmetic overflow: Using operator '...' on a 4
-                          // byte value and then casting the result to a 8 byte
-                          // value. Cast the value to the wider type before
-                          // calling operator '...' to avoid overflow (io.2).
-#pragma warning(disable \
-                : 26814)  // The const variable '...' can be computed at
-                          // compile-time. Consider using constexpr (con.5).
-#pragma warning(disable \
-                : 26447)  // The function is declared '...' but calls function
-                          // '...' which may throw exceptions (f.6).
+#pragma warning(disable : 26451)  // Arithmetic overflow: Using operator '...' on a 4
+                                  // byte value and then casting the result to a 8 byte
+                                  // value. Cast the value to the wider type before
+                                  // calling operator '...' to avoid overflow (io.2).
+#pragma warning(disable : 26814)  // The const variable '...' can be computed at
+                                  // compile-time. Consider using constexpr (con.5).
+#pragma warning(disable : 26447)  // The function is declared '...' but calls function
+                                  // '...' which may throw exceptions (f.6).
 #pragma warning(disable : 26455)  // Default constructor should not throw.
                                   // Declare it '...' (f.6).
 #pragma warning(disable : 26440)  // Function '...' can be declared '...' (f.6).
 #pragma warning(disable : 26496)  // The variable '...' does not change after
                                   // construction, mark it as const (con.4).
-#pragma warning(disable \
-                : 26462)  // The value pointed to by '...' is assigned only
-                          // once, mark it as a pointer to const (con.4).
+#pragma warning(disable : 26462)  // The value pointed to by '...' is assigned only
+                                  // once, mark it as a pointer to const (con.4).
 #pragma warning(disable : 26435)  // Function '...' should specify exactly one
                                   // of '...', '...', or '...' (c.128).
-#pragma warning( \
-        disable  \
-        : 26433)  // Function '...' should be marked with '...' (c.128).
-#pragma warning(disable \
-                : 26497)  // You can attempt to make '...' constexpr unless it
-                          // contains any undefined behavior (f.4).
-#pragma warning( \
-        disable  \
-        : 26433)  // Function '...' should be marked with '...' (c.128).
+#pragma warning(disable : 26433)  // Function '...' should be marked with '...' (c.128).
+#pragma warning(disable : 26497)  // You can attempt to make '...' constexpr unless it
+                                  // contains any undefined behavior (f.4).
+#pragma warning(disable : 26433)  // Function '...' should be marked with '...' (c.128).
 #pragma warning(disable : 26456)  // Operator '...' hides a non-virtual operator
                                   // '...' (c.128).
 #pragma warning(disable : 26446)  // Prefer to use gsl::at() instead of
@@ -71,10 +62,8 @@ CODA_OSS_disable_warning_system_header_push
                                   // values, use '...' instead (es.48).
 #pragma warning(disable : 26813)  // Use '...' to check if a flag is set.
 #else
-        CODA_OSS_disable_warning(-Wshadow)
-                CODA_OSS_disable_warning(-Wsuggest - override)
-                        CODA_OSS_disable_warning(-Wzero - as - null - pointer -
-                                                 constant)
+        CODA_OSS_disable_warning(-Wshadow) CODA_OSS_disable_warning(-Wsuggest - override)
+                CODA_OSS_disable_warning(-Wzero - as - null - pointer - constant)
 #endif
 
 #include <Python.h>
@@ -140,9 +129,7 @@ CODA_OSS_disable_warning_system_header_push
      * \throws except::Exception if pyObject is not None and doesn't match
      *              specified parameters
      */
-    void createOrVerify(PyObject * &pyObject,
-                        int typeNum,
-                        const types::RowCol<size_t>& dims);
+    void createOrVerify(PyObject * &pyObject, int typeNum, const types::RowCol<size_t>& dims);
 
     /*!
      * Verifies Array Type and TypeNum for input and output.  If output
@@ -187,10 +174,7 @@ CODA_OSS_disable_warning_system_header_push
      * \param data the data to be wrapped
      * \return a numpy array with specified dimension and type
      */
-    PyObject* toNumpyArray(size_t numRows,
-                           size_t numColumns,
-                           int typenum,
-                           const void* data);
+    PyObject* toNumpyArray(size_t numRows, size_t numColumns, int typenum, const void* data);
 
     /*
      * Get the number of elements in a numpy array.
@@ -208,9 +192,7 @@ CODA_OSS_disable_warning_system_header_push
      * \return a numpy array with specified dimension and type
      */
 
-    PyObject* toNumpyArray(size_t numColumns,
-                           int typenum,
-                           const std::vector<void*>& data);
+    PyObject* toNumpyArray(size_t numColumns, int typenum, const std::vector<void*>& data);
 
     /*!
      * Helper function to get data array.
@@ -228,8 +210,7 @@ CODA_OSS_disable_warning_system_header_push
     template <typename T>
     T* getBuffer(PyObject * pyObject)
     {
-        return reinterpret_cast<T*>(
-                getDataBuffer(reinterpret_cast<PyArrayObject*>(pyObject)));
+        return reinterpret_cast<T*>(getDataBuffer(reinterpret_cast<PyArrayObject*>(pyObject)));
     }
 
     /*!

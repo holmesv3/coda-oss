@@ -87,8 +87,7 @@ void net::ssl::SSLConnection::setupSocket(const std::string& hostName)
 #endif
 
         throw net::ssl::SSLException(
-                Ctxt(str::Format("SSL_connect failed: %d",
-                                 SSL_get_error(mSSL, val))));
+                Ctxt(str::Format("SSL_connect failed: %d", SSL_get_error(mSSL, val))));
     }
 
     if (mServerAuthentication)
@@ -112,15 +111,11 @@ void net::ssl::SSLConnection::verifyCertificate(const std::string& hostName)
 
     // Check the common name
     peer = SSL_get_peer_certificate(mSSL);
-    X509_NAME_get_text_by_NID(X509_get_subject_name(peer),
-                              NID_commonName,
-                              peer_CN,
-                              256);
+    X509_NAME_get_text_by_NID(X509_get_subject_name(peer), NID_commonName, peer_CN, 256);
 
     if (strcasecmp(peer_CN, hostName.c_str()))
     {
-        throw net::ssl::SSLException(
-                Ctxt("Common name doesn't match host name"));
+        throw net::ssl::SSLException(Ctxt("Common name doesn't match host name"));
     }
 }
 
@@ -138,37 +133,29 @@ sys::SSize_T net::ssl::SSLConnection::read(sys::byte* b, sys::Size_T len)
 #endif
 
     if (((val = SSL_get_error(mSSL, numBytes)) != SSL_ERROR_NONE) ||
-        (numBytes == -1 &&
-         (NATIVE_SOCKET_GETLASTERROR() != NATIVE_SOCKET_ERROR(WOULDBLOCK))))
+        (numBytes == -1 && (NATIVE_SOCKET_GETLASTERROR() != NATIVE_SOCKET_ERROR(WOULDBLOCK))))
     {
 #if defined(__DEBUG_SOCKET)
         std::cout << " Error on read!!!" << std::endl;
-        std::cout << "============================================="
-                  << std::endl
-                  << std::endl;
+        std::cout << "=============================================" << std::endl << std::endl;
 #endif
 
-        throw net::ssl::SSLException(
-                Ctxt(str::Format("When receiving %d bytes", len)));
+        throw net::ssl::SSLException(Ctxt(str::Format("When receiving %d bytes", len)));
     }
     else if (numBytes == 0)
     {
 #if defined(__DEBUG_SOCKET)
         std::cout << " Zero byte read (End of connection)" << std::endl;
-        std::cout << "============================================="
-                  << std::endl
-                  << std::endl;
+        std::cout << "=============================================" << std::endl << std::endl;
 #endif
         return -1;
     }
 #if defined(__DEBUG_SOCKET)
-    std::cout << str::Format("Read %d bytes from socket:", numBytes)
-              << std::endl;
+    std::cout << str::Format("Read %d bytes from socket:", numBytes) << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
     std::cout << std::string(b, numBytes) << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
-    std::cout << "=============================================" << std::endl
-              << std::endl;
+    std::cout << "=============================================" << std::endl << std::endl;
 #endif
 
     return numBytes;
@@ -182,18 +169,16 @@ void net::ssl::SSLConnection::write(const sys::byte* b, sys::Size_T len)
     const auto numBytes = SSL_write(mSSL, (const char*)b, len);
     if (static_cast<sys::Size_T>(numBytes) != len)
     {
-        throw net::ssl::SSLException(Ctxt(
-                str::Format("Tried sending %d bytes, %d sent", len, numBytes)));
+        throw net::ssl::SSLException(
+                Ctxt(str::Format("Tried sending %d bytes, %d sent", len, numBytes)));
     }
 
 #if defined(__DEBUG_SOCKET)
-    std::cout << "========== WROTE TO SECURE CONNECTION ============="
-              << std::endl;
+    std::cout << "========== WROTE TO SECURE CONNECTION =============" << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
     std::cout << std::string(b, len) << std::endl;
     std::cout << "---------------------------------------------" << std::endl;
-    std::cout << "=============================================" << std::endl
-              << std::endl;
+    std::cout << "=============================================" << std::endl << std::endl;
 #endif
 }
 

@@ -97,9 +97,7 @@ void from_json(const BasicJsonType& j, RowCol<T>& rc)
     rc.col = j["col"].template get<T>();
 }
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Range,
-                                                mStartElement,
-                                                mNumElements)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Range, mStartElement, mNumElements)
 }  // namespace types
 
 #endif

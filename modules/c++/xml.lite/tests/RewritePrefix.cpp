@@ -37,8 +37,8 @@ int main(int argc, char** argv)
         std::string uri = argv[3];
         std::string outfile = argv[4];
 
-        std::cout << "Replacing all prefixes for uri " << uri << " with prefix "
-                  << prefix << std::endl;
+        std::cout << "Replacing all prefixes for uri " << uri << " with prefix " << prefix
+                  << std::endl;
         io::FileInputStream fis(file);
 
         xml::lite::MinidomParser parser;
@@ -50,8 +50,8 @@ int main(int argc, char** argv)
     }
     catch (except::Throwable& anything)
     {
-        std::cout << "Caught throwable: " << anything.getType() << " "
-                  << anything.toString() << std::endl;
+        std::cout << "Caught throwable: " << anything.getType() << " " << anything.toString()
+                  << std::endl;
     }
 }
 #else

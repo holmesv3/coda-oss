@@ -34,8 +34,7 @@ using namespace sys;
 using namespace io;
 using namespace except;
 
-std::unique_ptr<Socket> createSenderSocket(SocketAddress& address,
-                                           int loopback = 1)
+std::unique_ptr<Socket> createSenderSocket(SocketAddress& address, int loopback = 1)
 {
     std::unique_ptr<Socket> s(new Socket(UDP_PROTO));
 

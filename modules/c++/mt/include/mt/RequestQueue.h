@@ -68,8 +68,7 @@ public:
         mQueueLock.lock();
         mRequestQueue.push_front(request);
 #ifdef THREAD_DEBUG
-        dbg_printf("Unlocking (enqueue), new size [%d]\n",
-                   mRequestQueue.size());
+        dbg_printf("Unlocking (enqueue), new size [%d]\n", mRequestQueue.size());
 #endif
         mQueueLock.unlock();
 
@@ -85,8 +84,7 @@ public:
         mQueueLock.lock();
         mRequestQueue.push_back(request);
 #ifdef THREAD_DEBUG
-        dbg_printf("Unlocking (enqueue), new size [%d]\n",
-                   mRequestQueue.size());
+        dbg_printf("Unlocking (enqueue), new size [%d]\n", mRequestQueue.size());
 #endif
         mQueueLock.unlock();
 
@@ -109,8 +107,7 @@ public:
         mRequestQueue.pop_front();
 
 #ifdef THREAD_DEBUG
-        dbg_printf("Unlocking (dequeue), new size [%d]\n",
-                   mRequestQueue.size());
+        dbg_printf("Unlocking (dequeue), new size [%d]\n", mRequestQueue.size());
 #endif
         mQueueLock.unlock();
         mAvailableSpace.signal();
@@ -132,8 +129,7 @@ public:
         else
         {
             mQueueLock.unlock();
-            throw except::Exception(
-                    Ctxt("Request queue cannot peek beyond end of queue"));
+            throw except::Exception(Ctxt("Request queue cannot peek beyond end of queue"));
         }
         mQueueLock.unlock();
 #ifdef THREAD_DEBUG
@@ -160,8 +156,7 @@ public:
         else
         {
             mQueueLock.unlock();
-            throw except::Exception(
-                    Ctxt("Request queue cannot access beyond end of queue"));
+            throw except::Exception(Ctxt("Request queue cannot access beyond end of queue"));
         }
         mQueueLock.unlock();
 #ifdef THREAD_DEBUG
@@ -193,8 +188,7 @@ public:
         }
 
 #ifdef THREAD_DEBUG
-        dbg_printf("Unlocking (dequeue), new size [%d]\n",
-                   mRequestQueue.size());
+        dbg_printf("Unlocking (dequeue), new size [%d]\n", mRequestQueue.size());
 #endif
         mQueueLock.unlock();
         mAvailableSpace.signal();
@@ -202,8 +196,7 @@ public:
 
     //! Aggregates ProcFunctor of all of the elements of the queue
     template <typename ProcFunctor, typename AggregateType>
-    AggregateType aggregate(const ProcFunctor& aggregate,
-                            const AggregateType& initial)
+    AggregateType aggregate(const ProcFunctor& aggregate, const AggregateType& initial)
     {
         mQueueLock.lock();
         AggregateType cumulative = initial;

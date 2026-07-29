@@ -112,21 +112,19 @@ int main(int argc, char** argv)
         swtime1 *= 1.e6;
 
         // Pretty-print our results
-        std::cout << std::setw(20) << std::left << "Benchmark" << " "
-                  << std::setw(20) << std::right << "Time/Iteration (ns)" << " "
-                  << std::setw(15) << std::right << "Iterations" << std::endl;
+        std::cout << std::setw(20) << std::left << "Benchmark" << " " << std::setw(20) << std::right
+                  << "Time/Iteration (ns)" << " " << std::setw(15) << std::right << "Iterations"
+                  << std::endl;
 
         std::cout << std::string(57, '-') << std::endl;
 
-        std::cout << std::setw(20) << std::left << "BM_RegexCreation" << " "
-                  << std::setw(20) << std::right << std::fixed
-                  << std::setprecision(0) << swtime0 << " " << std::setw(15)
-                  << std::right << numIterations << std::endl;
+        std::cout << std::setw(20) << std::left << "BM_RegexCreation" << " " << std::setw(20)
+                  << std::right << std::fixed << std::setprecision(0) << swtime0 << " "
+                  << std::setw(15) << std::right << numIterations << std::endl;
 
-        std::cout << std::setw(20) << std::left << "BM_RegexMatch" << " "
-                  << std::setw(20) << std::right << std::fixed
-                  << std::setprecision(0) << swtime1 << " " << std::setw(15)
-                  << std::right << numIterations << std::endl;
+        std::cout << std::setw(20) << std::left << "BM_RegexMatch" << " " << std::setw(20)
+                  << std::right << std::fixed << std::setprecision(0) << swtime1 << " "
+                  << std::setw(15) << std::right << numIterations << std::endl;
     }
     catch (const except::Exception& ex)
     {

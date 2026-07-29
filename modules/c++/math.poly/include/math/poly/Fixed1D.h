@@ -275,15 +275,15 @@ public:
     _T& operator[](size_t i)
     {
         if (i > _Order)
-            throw except::IndexOutOfRangeException(Ctxt(str::Format(
-                    "index [%d] is not in range [0..%d]", i, _Order)));
+            throw except::IndexOutOfRangeException(
+                    Ctxt(str::Format("index [%d] is not in range [0..%d]", i, _Order)));
         return mCoef[i];
     }
     _T operator[](size_t i) const
     {
         if (i > _Order)
-            throw except::IndexOutOfRangeException(Ctxt(str::Format(
-                    "index [%d] is not in range [0..%d]", i, _Order)));
+            throw except::IndexOutOfRangeException(
+                    Ctxt(str::Format("index [%d] is not in range [0..%d]", i, _Order)));
 
         return mCoef[i];
     }
@@ -339,8 +339,7 @@ public:
     }
 
     template <size_t _OtherOrder>
-    Fixed1D<_Order + _OtherOrder, _T> operator*(
-            const Fixed1D<_OtherOrder, _T>& p) const
+    Fixed1D<_Order + _OtherOrder, _T> operator*(const Fixed1D<_OtherOrder, _T>& p) const
     {
         // Multiply this one by another, and increase the order
         // Fixed1D<_Order+_OtherOrder, _T> copy(*this);
@@ -358,8 +357,7 @@ public:
 
     /* These are the trickiest, since we cant know anything at compile time */
     template <size_t _OtherOrder>
-    Fixed1D<_Order + _OtherOrder, _T> operator+(
-            const Fixed1D<_OtherOrder, _T>& p) const
+    Fixed1D<_Order + _OtherOrder, _T> operator+(const Fixed1D<_OtherOrder, _T>& p) const
     {
         Fixed1D<_Order + _OtherOrder, _T> newPoly;
         auto order = _Order;  // "conditional expression is constant"
@@ -382,8 +380,7 @@ public:
         return newPoly;
     }
     template <size_t _OtherOrder>
-    Fixed1D<_Order + _OtherOrder, _T> operator-(
-            const Fixed1D<_OtherOrder, _T>& p) const
+    Fixed1D<_Order + _OtherOrder, _T> operator-(const Fixed1D<_OtherOrder, _T>& p) const
     {
         return *this + (p * -1.0);
     }

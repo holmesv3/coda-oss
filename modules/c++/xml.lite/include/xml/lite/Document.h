@@ -60,13 +60,11 @@ namespace lite
 struct CODA_OSS_API Document  // SOAPDocument derives :-(
 {
     //! Constructor
-    Document(Element* rootNode = nullptr, bool own = true) :
-        mRootNode(rootNode), mOwnRoot(own)
+    Document(Element* rootNode = nullptr, bool own = true) : mRootNode(rootNode), mOwnRoot(own)
     {
     }
 #ifndef SWIG  // SWIG doesn't like std::unique_ptr
-    explicit Document(
-            std::unique_ptr<Element>&& rootNode) :  // implicitly own=true
+    explicit Document(std::unique_ptr<Element>&& rootNode) :  // implicitly own=true
         Document(rootNode.release(), true /*own*/)
     {
     }
@@ -109,11 +107,10 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
                                    const std::string& uri,
                                    std::string characterData = "");
 #ifndef SWIG  // SWIG doesn't like std::unique_ptr
-    std::unique_ptr<Element> createElement(
-            const xml::lite::QName&, const std::string& characterData) const;
-    std::unique_ptr<Element> createElement(
-            const xml::lite::QName&,
-            const coda_oss::u8string& characterData) const;
+    std::unique_ptr<Element> createElement(const xml::lite::QName&,
+                                           const std::string& characterData) const;
+    std::unique_ptr<Element> createElement(const xml::lite::QName&,
+                                           const coda_oss::u8string& characterData) const;
 #endif  // SWIG
 
     /*!
@@ -152,8 +149,7 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
      */
     void setRootElement(Element* element, bool own = true);
 #ifndef SWIG  // SWIG doesn't like std::unique_ptr
-    void setRootElement(
-            std::unique_ptr<Element>&& element)  // implicitly own=true
+    void setRootElement(std::unique_ptr<Element>&& element)  // implicitly own=true
     {
         setRootElement(element.release(), true /*own*/);
     }

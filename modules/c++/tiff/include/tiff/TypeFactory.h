@@ -65,8 +65,7 @@ public:
      * @return
      *   a pointer to a TypeInterface
      *****************************************************************/
-    static tiff::TypeInterface* create(const unsigned char* data,
-                                       const unsigned short type);
+    static tiff::TypeInterface* create(const unsigned char* data, const unsigned short type);
 };
 
 }  // End namespace.

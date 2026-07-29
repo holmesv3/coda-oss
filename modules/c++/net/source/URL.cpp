@@ -121,12 +121,7 @@ std::string net::URL::getServer() const
 
 std::string net::URL::toString() const
 {
-    return net::urlJoin(getProtocol(),
-                        getHost(),
-                        getPort(),
-                        getPath(),
-                        getQuery(),
-                        getFragment());
+    return net::urlJoin(getProtocol(), getHost(), getPort(), getPath(), getQuery(), getFragment());
 }
 
 bool net::URL::operator==(const net::URL& url) const
@@ -200,14 +195,11 @@ std::string net::URLParams::toString() const
 {
     std::ostringstream s;
     bool firstParam = true;
-    for (net::URLParams::Params::const_iterator it = mParams.begin();
-         it != mParams.end();
-         ++it)
+    for (net::URLParams::Params::const_iterator it = mParams.begin(); it != mParams.end(); ++it)
     {
         std::string key = it->first;
         const net::URLParams::ParamValues& vals = it->second;
-        for (net::URLParams::ParamValues::const_iterator it2 = vals.begin();
-             it2 != vals.end();
+        for (net::URLParams::ParamValues::const_iterator it2 = vals.begin(); it2 != vals.end();
              ++it2)
         {
             if (!firstParam)

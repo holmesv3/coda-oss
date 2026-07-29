@@ -203,9 +203,7 @@ public:
         if (includeBacktrace)
         {
             backtrace = "***** getBacktrace() *****\n";
-            backtrace += std::accumulate(mBacktrace.begin(),
-                                         mBacktrace.end(),
-                                         std::string());
+            backtrace += std::accumulate(mBacktrace.begin(), mBacktrace.end(), std::string());
         }
         return toString() + backtrace;
     }
@@ -218,8 +216,7 @@ public:
     {
         // adding this to toString() output could (significantly) alter existing
         // display
-        mWhat = toString(
-                true /*includeBacktrace*/);  // call any derived toString()
+        mWhat = toString(true /*includeBacktrace*/);  // call any derived toString()
         return mWhat.c_str();
     }
 
@@ -295,8 +292,7 @@ public:
     }
 
 #if !CODA_OSS_except_Throwable_ISA_std_exception
-    const char* what() const noexcept override
-            final  // derived classes override toString()
+    const char* what() const noexcept override final  // derived classes override toString()
     {
         const Throwable* pThrowable = this;
         return pThrowable->what();

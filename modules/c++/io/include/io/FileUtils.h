@@ -44,9 +44,7 @@ namespace io
  *                     NOTE: This is a placeholder and is unused currently
  *  \return True upon success, false if failure
  */
-void copy(const std::string& path,
-          const std::string& newPath,
-          size_t blockSize = 1048576);
+void copy(const std::string& path, const std::string& newPath, size_t blockSize = 1048576);
 
 /*!
  *  Move file with this path name to the newPath
@@ -58,8 +56,8 @@ inline void move(const std::string& path, const std::string& newPath)
     if (os.move(path, newPath) == false)
     {
         std::ostringstream oss;
-        oss << "Move Failed: Could not move source [" << path
-            << "] to destination [" << newPath << "]";
+        oss << "Move Failed: Could not move source [" << path << "] to destination [" << newPath
+            << "]";
         throw except::Exception(Ctxt(oss));
     }
 }

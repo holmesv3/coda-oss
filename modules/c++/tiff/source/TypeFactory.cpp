@@ -27,8 +27,7 @@
 #include "tiff/Common.h"
 #include "tiff/GenericType.h"
 
-tiff::TypeInterface* tiff::TypeFactory::create(const unsigned char* data,
-                                               const unsigned short type)
+tiff::TypeInterface* tiff::TypeFactory::create(const unsigned char* data, const unsigned short type)
 {
     tiff::TypeInterface* tiffType = nullptr;
     switch (type)
@@ -46,8 +45,7 @@ tiff::TypeInterface* tiff::TypeFactory::create(const unsigned char* data,
         tiffType = new tiff::GenericType<sys::Uint32_T>(data);
         break;
     case tiff::Const::Type::RATIONAL:
-        tiffType = new tiff::GenericType<sys::Uint64_T,
-                                         tiff::RationalPrintStrategy>(data);
+        tiffType = new tiff::GenericType<sys::Uint64_T, tiff::RationalPrintStrategy>(data);
         break;
     case tiff::Const::Type::SBYTE:
         tiffType = new tiff::GenericType<char>(data);
@@ -62,8 +60,7 @@ tiff::TypeInterface* tiff::TypeFactory::create(const unsigned char* data,
         tiffType = new tiff::GenericType<sys::Uint32_T>(data);
         break;
     case tiff::Const::Type::SRATIONAL:
-        tiffType = new tiff::GenericType<sys::Uint64_T,
-                                         tiff::RationalPrintStrategy>(data);
+        tiffType = new tiff::GenericType<sys::Uint64_T, tiff::RationalPrintStrategy>(data);
         break;
     case tiff::Const::Type::FLOAT:
         tiffType = new tiff::GenericType<float>(data);

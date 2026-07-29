@@ -45,8 +45,7 @@ enum
 class CODA_OSS_API ArgumentParser
 {
 public:
-    explicit ArgumentParser(bool ignoreUnknown = false,
-                            std::ostream* iuOStream = &std::cerr);
+    explicit ArgumentParser(bool ignoreUnknown = false, std::ostream* iuOStream = &std::cerr);
     ~ArgumentParser();
 
     /**
@@ -101,8 +100,7 @@ public:
      * cerr).  Note:  This will only be used if the flag for ignoring
      * unknown arguments is true.
      */
-    ArgumentParser& setIgnoreUnknownArgumentsOutputStream(
-            std::ostream* iuaOutstream);
+    ArgumentParser& setIgnoreUnknownArgumentsOutputStream(std::ostream* iuaOutstream);
 
     /**
      * Prints the help and optionally exits.
@@ -134,9 +132,7 @@ public:
      * to parse().  setProgram(argv[0]) is called if setProgram() hasn't already
      * been called.
      */
-    static std::vector<std::string> make_args(int argc,
-                                              const char** argv,
-                                              std::string& program);
+    static std::vector<std::string> make_args(int argc, const char** argv, std::string& program);
     std::vector<std::string> make_args(int argc, const char** argv);
 
     /**

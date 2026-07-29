@@ -91,9 +91,7 @@ public:
      * @param count
      *   the number of values for this entry
      *****************************************************************/
-    IFDEntry(const unsigned short tag,
-             const unsigned short type,
-             const sys::Uint32_T count = 0) :
+    IFDEntry(const unsigned short tag, const unsigned short type, const sys::Uint32_T count = 0) :
         mTag(tag), mType(type), mCount(count), mOffset(0)
     {
     }

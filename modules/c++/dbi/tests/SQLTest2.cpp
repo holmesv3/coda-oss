@@ -30,9 +30,8 @@ int main(int argc, char* argv[])
     try
     {
         if (argc != 6)
-            throw except::Exception(Ctxt(str::Format(
-                    "Usage %s <database> <user> <password> <host> <port>",
-                    argv[0])));
+            throw except::Exception(Ctxt(
+                    str::Format("Usage %s <database> <user> <password> <host> <port>", argv[0])));
 
         std::string database(argv[1]);
         std::string host(argv[4]);
@@ -46,17 +45,14 @@ int main(int argc, char* argv[])
         dbi::Row myRow;
 
         dbi::DatabaseClientFactory f;
-        dbi::DatabaseConnection* myConn =
-                f.create(database, user, password, host, port);
+        dbi::DatabaseConnection* myConn = f.create(database, user, password, host, port);
 
         myConn->query("DROP TABLE MyTable");
 
-        resultSet = myConn->query(
-                "CREATE TABLE MyTable (id INT NOT NULL PRIMARY KEY, name "
-                "VARCHAR(25) NOT NULL, description TEXT NOT NULL)");
+        resultSet = myConn->query("CREATE TABLE MyTable (id INT NOT NULL PRIMARY KEY, name "
+                                  "VARCHAR(25) NOT NULL, description TEXT NOT NULL)");
 
-        resultSet = myConn->query(
-                "SELECT TMODEL_KEY, NAME, OVERVIEW_URL FROM TMODEL");
+        resultSet = myConn->query("SELECT TMODEL_KEY, NAME, OVERVIEW_URL FROM TMODEL");
 
         myRow = resultSet->fetchRow();
         const char* x = myRow["overview_url"].getData<std::string>().c_str();

@@ -175,6 +175,5 @@ TEST_CASE(testCeilingDivide)
     TEST_THROWS(math::ceilingDivide(n3, d3));
 }
 
-TEST_MAIN(TEST_CHECK(testFix); TEST_CHECK(testRound);
-          TEST_CHECK(testRoundDigits);
+TEST_MAIN(TEST_CHECK(testFix); TEST_CHECK(testRound); TEST_CHECK(testRoundDigits);
           TEST_CHECK(testCeilingDivide);)

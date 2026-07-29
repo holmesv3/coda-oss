@@ -39,8 +39,7 @@ struct AtomicCounterImplCpp11 final
 {
     using ValueType = size_t;
 
-    explicit AtomicCounterImplCpp11(ValueType initialValue) noexcept :
-        mValue(initialValue)
+    explicit AtomicCounterImplCpp11(ValueType initialValue) noexcept : mValue(initialValue)
     {
     }
 

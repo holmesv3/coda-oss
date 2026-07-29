@@ -82,16 +82,15 @@ public:
      */
     static std::string expandEnvironmentVariables(const std::string& path,
                                                   bool checkIfExists = true);
-    static std::string expandEnvironmentVariables(
-            const std::string& path, coda_oss::filesystem::file_type);
+    static std::string expandEnvironmentVariables(const std::string& path,
+                                                  coda_oss::filesystem::file_type);
     static std::vector<std::string> expandedEnvironmentVariables(
             const std::string& path);  // mostly for unit-testing
 
     /*!
      * Joins two paths together, using the OS-specific delimiter.
      */
-    static std::string joinPaths(const std::string& path1,
-                                 const std::string& path2);
+    static std::string joinPaths(const std::string& path1, const std::string& path2);
 
     inline Path join(const std::string& path) const
     {
@@ -129,8 +128,7 @@ public:
      *  them. This splits on both '/' and '\\'.
      */
     static std::vector<std::string> separate(const std::string& path);
-    static std::vector<std::string> separate(const std::string& path,
-                                             bool& isAbsolute);
+    static std::vector<std::string> separate(const std::string& path, bool& isAbsolute);
 
     inline std::vector<std::string> separate() const
     {

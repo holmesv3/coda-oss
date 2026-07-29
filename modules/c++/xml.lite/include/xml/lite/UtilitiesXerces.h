@@ -202,8 +202,8 @@ public:
             }
             catch (...)
             {
-                throw except::Exception(Ctxt(
-                        "XercesLocalString unsuccessful in destroying memory"));
+                throw except::Exception(
+                        Ctxt("XercesLocalString unsuccessful in destroying memory"));
             }
         }
     }
@@ -219,8 +219,8 @@ public:
             }
             catch (...)
             {
-                throw except::Exception(Ctxt(
-                        "XercesLocalString unsuccessful in destroying memory"));
+                throw except::Exception(
+                        Ctxt("XercesLocalString unsuccessful in destroying memory"));
             }
         }
     }
@@ -290,8 +290,7 @@ struct XercesContentHandler : public XercesContentHandlerInterface_T
      *  \param chars The character data
      *  \param length   The length
      */
-    virtual void characters(const XMLCh* const chars,
-                            const XercesSize_T length) override;
+    virtual void characters(const XMLCh* const chars, const XercesSize_T length) override;
 
     /*!
      *  Fire off the end document notification
@@ -325,11 +324,10 @@ struct XercesContentHandler : public XercesContentHandlerInterface_T
      *  \param qname The fully qualified name
      *  \param attrs The attributes in Xerces form
      */
-    virtual void startElement(
-            const XMLCh* const uri,
-            const XMLCh* const localName,
-            const XMLCh* const qname,
-            const XercesAttributesInterface_T& attrs) override;
+    virtual void startElement(const XMLCh* const uri,
+                              const XMLCh* const localName,
+                              const XMLCh* const qname,
+                              const XercesAttributesInterface_T& attrs) override;
 
     /*!
      *  Begin prefix mapping.  Transfer string types

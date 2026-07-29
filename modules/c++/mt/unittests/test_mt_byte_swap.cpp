@@ -41,8 +41,8 @@ static std::vector<uint64_t> make_origValues_(size_t count)
     std::vector<uint64_t> retval(count);
     for (size_t ii = 0; ii < count; ++ii)
     {
-        const auto value = static_cast<float>(::rand()) / RAND_MAX *
-                std::numeric_limits<uint64_t>::max();
+        const auto value =
+                static_cast<float>(::rand()) / RAND_MAX * std::numeric_limits<uint64_t>::max();
         retval[ii] = static_cast<uint64_t>(value);
     }
     return retval;
@@ -63,10 +63,7 @@ TEST_CASE(testThreadedByteSwap)
 
     // Byte swap the old-fashioned way
     auto values1(origValues);
-    mt::threadedByteSwap(values1.data(),
-                         sizeof(values1[0]),
-                         NUM_PIXELS,
-                         numThreads);
+    mt::threadedByteSwap(values1.data(), sizeof(values1[0]), NUM_PIXELS, numThreads);
 
     // Byte swap into output buffer
     std::vector<uint64_t> swappedValues2(origValues.size());
@@ -102,10 +99,7 @@ TEST_CASE(test_transform_ByteSwap)
     };
 
     std::vector<uint64_t> actual(origValues.size());
-    std::transform(origValues.begin(),
-                   origValues.end(),
-                   actual.begin(),
-                   byteSwap);
+    std::transform(origValues.begin(), origValues.end(), actual.begin(), byteSwap);
     for (size_t ii = 0; ii < NUM_PIXELS; ++ii)  // Everything should match
     {
         TEST_ASSERT_EQ(expected[ii], actual[ii]);
@@ -135,11 +129,7 @@ TEST_CASE(test_Transform_par_ByteSwap)
     const mt::Transform_par_settings settings{NUM_PIXELS / 4 /*cutoff*/};
 
     std::vector<uint64_t> actual(origValues.size());
-    mt::Transform_par(origValues.begin(),
-                      origValues.end(),
-                      actual.begin(),
-                      byteSwap,
-                      settings);
+    mt::Transform_par(origValues.begin(), origValues.end(), actual.begin(), byteSwap, settings);
     for (size_t ii = 0; ii < NUM_PIXELS; ++ii)  // Everything should match
     {
         TEST_ASSERT_EQ(expected[ii], actual[ii]);

@@ -94,8 +94,7 @@ class CODA_OSS_API StreamReader : public io::InputStream
 {
 public:
     /** Constructor */
-    StreamReader() :
-        inputStream(nullptr), header(nullptr), headerLength(0), own(false)
+    StreamReader() : inputStream(nullptr), header(nullptr), headerLength(0), own(false)
     {
     }
 

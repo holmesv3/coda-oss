@@ -41,8 +41,7 @@ void xml::lite::MinidomHandler::setDocument(Document* newDocument, bool own)
     mDocument = newDocument;
     mOwnDocument = own;
 }
-void xml::lite::MinidomHandler::setDocument(
-        std::unique_ptr<Document>&& newDocument)
+void xml::lite::MinidomHandler::setDocument(std::unique_ptr<Document>&& newDocument)
 {
     setDocument(newDocument.release(), true /*own*/);
 }
@@ -78,8 +77,7 @@ void xml::lite::MinidomHandler::characters(const char* value, int length)
     characters(str::u8FromNative(std::string(value, length)));
 }
 
-bool xml::lite::MinidomHandler::vcharacters(const void /*XMLCh*/* chars_,
-                                            size_t length)
+bool xml::lite::MinidomHandler::vcharacters(const void /*XMLCh*/* chars_, size_t length)
 {
     if (chars_ == nullptr)
     {
@@ -90,8 +88,7 @@ bool xml::lite::MinidomHandler::vcharacters(const void /*XMLCh*/* chars_,
         throw std::invalid_argument("length is 0.");
     }
 
-    static_assert(sizeof(XMLCh) == sizeof(char16_t),
-                  "XMLCh should be 16-bits.");
+    static_assert(sizeof(XMLCh) == sizeof(char16_t), "XMLCh should be 16-bits.");
     auto pChars16 = static_cast<const char16_t*>(chars_);
 
     characters(str::to_u8string(pChars16, length));
@@ -121,8 +118,7 @@ std::u8string xml::lite::MinidomHandler::adjustCharacterData()
 
     int diff = (int)(currentCharacterData.length()) - bytesForElement.top();
 
-    auto newCharacterData(
-            currentCharacterData.substr(diff, currentCharacterData.length()));
+    auto newCharacterData(currentCharacterData.substr(diff, currentCharacterData.length()));
     assert(diff >= 0);
     currentCharacterData.erase(diff, currentCharacterData.length());
     if (!mPreserveCharData && !newCharacterData.empty())

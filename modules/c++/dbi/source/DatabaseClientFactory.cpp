@@ -78,8 +78,7 @@ CODA_OSS_disable_warning_pop
     }
     else if (connection)
     {
-        message = "Could not connect to database: " +
-                connection->getLastErrorMessage();
+        message = "Could not connect to database: " + connection->getLastErrorMessage();
         destroy(connection);
     }
     else

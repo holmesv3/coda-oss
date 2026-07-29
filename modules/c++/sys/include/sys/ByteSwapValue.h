@@ -53,9 +53,8 @@ namespace sys
  *  \param buffer to transform
  *  \param[out] outputBuffer buffer to write swapped elements to
  */
-coda_oss::span<const coda_oss::byte> CODA_OSS_API
-byteSwap(coda_oss::span<const coda_oss::byte> pIn,
-         coda_oss::span<coda_oss::byte> outPtr);
+coda_oss::span<const coda_oss::byte> CODA_OSS_API byteSwap(coda_oss::span<const coda_oss::byte> pIn,
+                                                           coda_oss::span<coda_oss::byte> outPtr);
 
 namespace details
 {
@@ -120,31 +119,29 @@ inline auto swapBytes(coda_oss::span<const coda_oss::byte> inBytes,
 }
 
 // avoid copy-paste errors
-#define CODA_OSS_define_swapBytes_specialization_(T)      \
-    template <>                                           \
-    inline auto swapBytes<sizeof(T)>(                     \
-            coda_oss::span<const coda_oss::byte> inBytes, \
-            coda_oss::span<coda_oss::byte> outBytes)      \
-    {                                                     \
-        return swapUIntBytes<T>(inBytes, outBytes);       \
+#define CODA_OSS_define_swapBytes_specialization_(T)                               \
+    template <>                                                                    \
+    inline auto swapBytes<sizeof(T)>(coda_oss::span<const coda_oss::byte> inBytes, \
+                                     coda_oss::span<coda_oss::byte> outBytes)      \
+    {                                                                              \
+        return swapUIntBytes<T>(inBytes, outBytes);                                \
     }
 CODA_OSS_define_swapBytes_specialization_(
         uint8_t)  // no `;`, it's not needed and generates a -Wpedantic warning
-        CODA_OSS_define_swapBytes_specialization_(
-                uint16_t) CODA_OSS_define_swapBytes_specialization_(uint32_t)
-                CODA_OSS_define_swapBytes_specialization_(uint64_t)
+        CODA_OSS_define_swapBytes_specialization_(uint16_t)
+                CODA_OSS_define_swapBytes_specialization_(uint32_t)
+                        CODA_OSS_define_swapBytes_specialization_(uint64_t)
 #undef CODA_OSS_define_swapBytes_specialization_
 
-                        template <typename T>
-                        inline constexpr bool is_byte_swappable() noexcept
+                                template <typename T>
+                                inline constexpr bool is_byte_swappable() noexcept
 {
     // Trying to byte-swap anything other than integers is likely to cause
     // problems (or at least confusion):
     // * `struct`s have padding that should be ignored.
     // * each individual member of a `struct` should be byte-swaped
     // * byte-swaped `float` or `double` bits are nonsense
-    return (std::is_integral<T>::value || std::is_enum<T>::value) ||
-            !std::is_compound<T>::value;
+    return (std::is_integral<T>::value || std::is_enum<T>::value) || !std::is_compound<T>::value;
 }
 }
 
@@ -156,8 +153,7 @@ template <typename T>
 inline auto byteSwapValue(coda_oss::span<const coda_oss::byte> inBytes,
                           coda_oss::span<coda_oss::byte> outBytes)
 {
-    static_assert(details::is_byte_swappable<T>(),
-                  "T should not be a 'struct'");
+    static_assert(details::is_byte_swappable<T>(), "T should not be a 'struct'");
     return details::swapBytes<sizeof(T)>(inBytes, outBytes);
 }
 template <typename T>

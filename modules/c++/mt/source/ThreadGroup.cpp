@@ -32,8 +32,7 @@ bool ThreadGroup::DEFAULT_PIN_TO_CPU = false;
 #endif
 
 ThreadGroup::ThreadGroup(bool pinToCPU) :
-    mAffinityInit(pinToCPU ? new CPUAffinityInitializer() : nullptr),
-    mLastJoined(0)
+    mAffinityInit(pinToCPU ? new CPUAffinityInitializer() : nullptr), mLastJoined(0)
 {
 }
 
@@ -58,8 +57,8 @@ void ThreadGroup::createThread(std::unique_ptr<sys::Runnable>&& runnable)
 {
     // Note: If getNextInitializer throws, any previously created
     //       threads may never finish if cross-thread communication is used.
-    std::unique_ptr<sys::Runnable> internalRunnable(new ThreadGroupRunnable(
-            std::move(runnable), *this, getNextInitializer()));
+    std::unique_ptr<sys::Runnable> internalRunnable(
+            new ThreadGroupRunnable(std::move(runnable), *this, getNextInitializer()));
 
     auto thread(std::make_shared<sys::Thread>(internalRunnable.get()));
     internalRunnable.release();
@@ -85,8 +84,7 @@ void ThreadGroup::joinAll()
 
     if (!mExceptions.empty())
     {
-        std::string messageString(
-                "Exceptions thrown from ThreadGroup in the following order:\n");
+        std::string messageString("Exceptions thrown from ThreadGroup in the following order:\n");
         for (size_t ii = 0; ii < mExceptions.size(); ++ii)
         {
             messageString += mExceptions.at(ii).toString();
@@ -107,8 +105,7 @@ void ThreadGroup::addException(const except::Exception& ex)
     }
     catch (...)
     {
-        fprintf(stderr,
-                "Error adding exception from a thread to mExceptions.\n");
+        fprintf(stderr, "Error adding exception from a thread to mExceptions.\n");
     }
 }
 
@@ -153,8 +150,7 @@ void ThreadGroup::ThreadGroupRunnable::run()
     }
     catch (...)
     {
-        mParentThreadGroup.addException(
-                except::Exception(Ctxt("Unknown ThreadGroup exception.")));
+        mParentThreadGroup.addException(except::Exception(Ctxt("Unknown ThreadGroup exception.")));
     }
 }
 

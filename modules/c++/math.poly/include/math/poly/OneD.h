@@ -108,8 +108,7 @@ public:
     size_t order() const
     {
         if (empty())
-            throw except::IndexOutOfRangeException(
-                    Ctxt("Can't have an order less than zero"));
+            throw except::IndexOutOfRangeException(Ctxt("Can't have an order less than zero"));
 
         return mCoef.size() - 1;
     }

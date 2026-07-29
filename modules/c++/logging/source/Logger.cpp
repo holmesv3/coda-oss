@@ -195,9 +195,7 @@ void logging::Logger::addHandler(logging::Handler* handler, bool own)
 {
     // only add the handler if it isn't added already
     bool found = false;
-    for (Handlers_T::iterator p = mHandlers.begin();
-         p != mHandlers.end() && !found;
-         ++p)
+    for (Handlers_T::iterator p = mHandlers.begin(); p != mHandlers.end() && !found; ++p)
     {
         if (p->first == handler)
         {

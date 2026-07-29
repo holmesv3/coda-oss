@@ -198,7 +198,6 @@ TEST_CASE(testGetTimeInMillis)
     TEST_ASSERT_LESSER_EQ(result, far_into_the_future);
 }
 
-TEST_MAIN(TEST_CHECK(testDefaultConstructor);
-          TEST_CHECK(testParameterizedConstructor);
+TEST_MAIN(TEST_CHECK(testDefaultConstructor); TEST_CHECK(testParameterizedConstructor);
           TEST_CHECK(testDateTimeDetails);
           TEST_CHECK(testGetTimeInMillis);)

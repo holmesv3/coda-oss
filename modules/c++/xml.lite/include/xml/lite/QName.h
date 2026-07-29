@@ -117,12 +117,10 @@ public:
         setQName(qname);
         setAssociatedUri(uri);
     }
-    QName(const std::string& qname, const xml::lite::Uri& uri) :
-        QName(uri, qname)
+    QName(const std::string& qname, const xml::lite::Uri& uri) : QName(uri, qname)
     {
     }
-    QName(const std::string& uri, const std::string& qname) :
-        QName(Uri(uri), qname)
+    QName(const std::string& uri, const std::string& qname) : QName(Uri(uri), qname)
     {
     }
 
@@ -205,8 +203,7 @@ public:
 };
 inline bool operator==(const QName& lhs, const QName& rhs)
 {
-    return (lhs.getName() == rhs.getName()) &&
-            (lhs.getAssociatedUri() == rhs.getAssociatedUri()) &&
+    return (lhs.getName() == rhs.getName()) && (lhs.getAssociatedUri() == rhs.getAssociatedUri()) &&
             (lhs.getPrefix() == rhs.getPrefix());
 }
 inline bool operator!=(const QName& lhs, const QName& rhs)

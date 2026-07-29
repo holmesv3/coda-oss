@@ -37,14 +37,12 @@ int main(int, char**)
     std::cout << "lOneDTst(" << (.5) << ") = " << lOneDTst(.5) << std::endl;
     std::cout << "lOneDTst(" << (1) << ") = " << lOneDTst(1) << std::endl;
     std::cout << std::endl;
-    std::cout << "Test 1-D Polynomial Derivative implementation..."
-              << std::endl;
+    std::cout << "Test 1-D Polynomial Derivative implementation..." << std::endl;
     std::cout << "lOneDTstPoly: " << lOneDTst.derivative() << std::endl;
     std::cout << std::endl;
     std::cout << "Test 1-D Polynomial Integral implementation..." << std::endl;
     math::poly::OneD<double> lDeriv(lOneDTst.derivative());
-    std::cout << "Integrate: " << lDeriv << " over the interval from -1 to 1"
-              << std::endl;
+    std::cout << "Integrate: " << lDeriv << " over the interval from -1 to 1" << std::endl;
     std::cout << "Integral(-1,1) = " << lDeriv.integrate(-1, 1) << std::endl;
     std::cout << "Expected Res   = " << lOneDTst(1) - lOneDTst(-1) << std::endl;
 
@@ -59,15 +57,13 @@ int main(int, char**)
     std::cout << "Test 1-D Polynomial + implementation..." << std::endl;
     std::cout << "lOneDTstPoly1: " << lOneDTst << std::endl;
     std::cout << "lOneDTstPoly2: " << lOneDTst2 << std::endl;
-    std::cout << "lOneDTstPoly2 + lOneDTstPoly1: " << lOneDTst2 + lOneDTst
-              << std::endl;
+    std::cout << "lOneDTstPoly2 + lOneDTstPoly1: " << lOneDTst2 + lOneDTst << std::endl;
     std::cout << std::endl;
 
     std::cout << "Test 1-D Polynomial - implementation..." << std::endl;
     std::cout << "lOneDTstPoly1: " << lOneDTst << std::endl;
     std::cout << "lOneDTstPoly2: " << lOneDTst2 << std::endl;
-    std::cout << "lOneDTstPoly2 - lOneDTstPoly1: " << lOneDTst2 - lOneDTst
-              << std::endl;
+    std::cout << "lOneDTstPoly2 - lOneDTstPoly1: " << lOneDTst2 - lOneDTst << std::endl;
     std::cout << std::endl;
 
     math::poly::OneD<double> lOneDTst3(5);
@@ -81,20 +77,13 @@ int main(int, char**)
     std::cout << "lOneDTstPoly1: " << lOneDTst << std::endl;
     std::cout << "lOneDTstPoly2: " << lOneDTst2 << std::endl;
     std::cout << "lOneDTstPoly3: " << lOneDTst3 << std::endl;
-    std::cout << "lOneDTstPoly1 == lOneDTstPoly1: "
-              << (int)(lOneDTst == lOneDTst) << std::endl;
-    std::cout << "lOneDTstPoly1 == lOneDTstPoly2: "
-              << (int)(lOneDTst == lOneDTst2) << std::endl;
-    std::cout << "lOneDTstPoly1 == lOneDTstPoly3: "
-              << (int)(lOneDTst == lOneDTst3) << std::endl;
-    std::cout << "lOneDTstPoly2 == lOneDTstPoly1: "
-              << (int)(lOneDTst2 == lOneDTst) << std::endl;
-    std::cout << "lOneDTstPoly2 == lOneDTstPoly3: "
-              << (int)(lOneDTst2 == lOneDTst3) << std::endl;
-    std::cout << "lOneDTstPoly3 == lOneDTstPoly: "
-              << (int)(lOneDTst3 == lOneDTst) << std::endl;
-    std::cout << "lOneDTstPoly3 == lOneDTstPoly2: "
-              << (int)(lOneDTst3 == lOneDTst2) << std::endl;
+    std::cout << "lOneDTstPoly1 == lOneDTstPoly1: " << (int)(lOneDTst == lOneDTst) << std::endl;
+    std::cout << "lOneDTstPoly1 == lOneDTstPoly2: " << (int)(lOneDTst == lOneDTst2) << std::endl;
+    std::cout << "lOneDTstPoly1 == lOneDTstPoly3: " << (int)(lOneDTst == lOneDTst3) << std::endl;
+    std::cout << "lOneDTstPoly2 == lOneDTstPoly1: " << (int)(lOneDTst2 == lOneDTst) << std::endl;
+    std::cout << "lOneDTstPoly2 == lOneDTstPoly3: " << (int)(lOneDTst2 == lOneDTst3) << std::endl;
+    std::cout << "lOneDTstPoly3 == lOneDTstPoly: " << (int)(lOneDTst3 == lOneDTst) << std::endl;
+    std::cout << "lOneDTstPoly3 == lOneDTstPoly2: " << (int)(lOneDTst3 == lOneDTst2) << std::endl;
 
     // now, lets do a two-d polynomial test...
     math::poly::TwoD<double> lTwoDTst(3, 1);
@@ -106,14 +95,10 @@ int main(int, char**)
     lTwoDTst[2][1] = -1;
     std::cout << "Test 2-D Polynomial implementation..." << std::endl;
     std::cout << "lTwoDTstPoly: " << std::endl << lTwoDTst << std::endl;
-    std::cout << "lTwoDTst(" << 0 << "," << 0 << ") = " << lTwoDTst(0, 0)
-              << std::endl;
-    std::cout << "lTwoDTst(" << 0 << "," << 2 << ") = " << lTwoDTst(0, 2)
-              << std::endl;
-    std::cout << "lTwoDTst(" << 2 << "," << 0 << ") = " << lTwoDTst(2, 0)
-              << std::endl;
-    std::cout << "lTwoDTst(" << 2 << "," << -2 << ") = " << lTwoDTst(2, -2)
-              << std::endl;
+    std::cout << "lTwoDTst(" << 0 << "," << 0 << ") = " << lTwoDTst(0, 0) << std::endl;
+    std::cout << "lTwoDTst(" << 0 << "," << 2 << ") = " << lTwoDTst(0, 2) << std::endl;
+    std::cout << "lTwoDTst(" << 2 << "," << 0 << ") = " << lTwoDTst(2, 0) << std::endl;
+    std::cout << "lTwoDTst(" << 2 << "," << -2 << ") = " << lTwoDTst(2, -2) << std::endl;
     std::cout << std::endl;
 
     std::cout << "Test 2-D Polynomial atX implementation..." << std::endl;
@@ -124,44 +109,31 @@ int main(int, char**)
     std::cout << "lAt(" << 2 << ") = " << lAt << std::endl;
     std::cout << std::endl;
 
-    std::cout << "Test 2-D Polynomial DerivativeY implementation..."
-              << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeY implementation..." << std::endl;
     std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeY() << std::endl;
     std::cout << std::endl;
-    std::cout << "Test 2-D Polynomial DerivativeY.DerivativeY implementation..."
-              << std::endl;
-    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeY().derivativeY()
-              << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeY.DerivativeY implementation..." << std::endl;
+    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeY().derivativeY() << std::endl;
     std::cout << std::endl;
-    std::cout << "Test 2-D Polynomial DerivativeX implementation..."
-              << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeX implementation..." << std::endl;
     std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeX() << std::endl;
     std::cout << std::endl;
-    std::cout << "Test 2-D Polynomial DerivativeX.DerivativeX implementation..."
-              << std::endl;
-    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeX().derivativeX()
-              << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeX.DerivativeX implementation..." << std::endl;
+    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeX().derivativeX() << std::endl;
     std::cout << std::endl;
-    std::cout << "Test 2-D Polynomial DerivativeXY implementation..."
-              << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeXY implementation..." << std::endl;
     std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeXY() << std::endl;
     std::cout << std::endl;
-    std::cout
-            << "Test 2-D Polynomial DerivativeXY.DerivativeXY implementation..."
-            << std::endl;
-    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeXY().derivativeXY()
-              << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeXY.DerivativeXY implementation..." << std::endl;
+    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeXY().derivativeXY() << std::endl;
     std::cout << std::endl;
 
     std::cout << "Test 2-D Polynomial Integral implementation..." << std::endl;
     math::poly::TwoD<double> lDeriv2(lTwoDTst.derivativeXY());
-    std::cout << "Integrate: " << lDeriv2 << " over the interval... "
-              << std::endl;
-    std::cout << "Integral(-2,3,-1,2) = " << lDeriv2.integrate(-2, 3, -1, 2)
-              << std::endl;
+    std::cout << "Integrate: " << lDeriv2 << " over the interval... " << std::endl;
+    std::cout << "Integral(-2,3,-1,2) = " << lDeriv2.integrate(-2, 3, -1, 2) << std::endl;
     std::cout << "Expected Res   = "
-              << (lTwoDTst(3, 2) - lTwoDTst(3, -1)) -
-                    (lTwoDTst(-2, 2) - lTwoDTst(-2, -1))
+              << (lTwoDTst(3, 2) - lTwoDTst(3, -1)) - (lTwoDTst(-2, 2) - lTwoDTst(-2, -1))
               << std::endl;
 
     std::cout << "Test 2-D Polynomial * implementation..." << std::endl;
@@ -172,22 +144,19 @@ int main(int, char**)
     lTwoDTst2[1][1] = 2;
     std::cout << "lTwoDTstPoly: " << lTwoDTst << std::endl;
     std::cout << "lTwoDTstPoly2: " << lTwoDTst2 << std::endl;
-    std::cout << "lTwoDTstPoly*lTwoDTstPoly2: " << lTwoDTst * lTwoDTst2
-              << std::endl;
+    std::cout << "lTwoDTstPoly*lTwoDTstPoly2: " << lTwoDTst * lTwoDTst2 << std::endl;
     std::cout << std::endl;
 
     std::cout << "Test 2-D Polynomial + implementation..." << std::endl;
     std::cout << "lTwoDTstPoly1: " << lTwoDTst << std::endl;
     std::cout << "lTwoDTstPoly2: " << lTwoDTst2 << std::endl;
-    std::cout << "lTwoDTstPoly2 + lTwoDTstPoly1: " << lTwoDTst2 + lTwoDTst
-              << std::endl;
+    std::cout << "lTwoDTstPoly2 + lTwoDTstPoly1: " << lTwoDTst2 + lTwoDTst << std::endl;
     std::cout << std::endl;
 
     std::cout << "Test 2-D Polynomial - implementation..." << std::endl;
     std::cout << "lTwoDTstPoly1: " << lTwoDTst << std::endl;
     std::cout << "lTwoDTstPoly2: " << lTwoDTst2 << std::endl;
-    std::cout << "lOneDTstPoly2 - lOneDTstPoly1: " << lTwoDTst2 - lTwoDTst
-              << std::endl;
+    std::cout << "lOneDTstPoly2 - lOneDTstPoly1: " << lTwoDTst2 - lTwoDTst << std::endl;
     std::cout << std::endl;
 
     math::poly::TwoD<double> lTwoDTst3(4, 1);
@@ -200,25 +169,16 @@ int main(int, char**)
     std::cout << "lTwoDTstPoly1: " << lTwoDTst << std::endl;
     std::cout << "lTwoDTstPoly2: " << lTwoDTst2 << std::endl;
     std::cout << "lTwoDTstPoly3: " << lTwoDTst3 << std::endl;
-    std::cout << "lTwoDTstPoly1 == lTwoDTstPoly1: "
-              << (int)(lTwoDTst == lTwoDTst) << std::endl;
-    std::cout << "lTwoDTstPoly1 == lTwoDTstPoly2: "
-              << (int)(lTwoDTst == lTwoDTst2) << std::endl;
-    std::cout << "lTwoDTstPoly1 == lTwoDTstPoly3: "
-              << (int)(lTwoDTst == lTwoDTst3) << std::endl;
-    std::cout << "lTwoDTstPoly2 == lTwoDTstPoly1: "
-              << (int)(lTwoDTst2 == lTwoDTst) << std::endl;
-    std::cout << "lTwoDTstPoly2 == lTwoDTstPoly3: "
-              << (int)(lTwoDTst2 == lTwoDTst3) << std::endl;
-    std::cout << "lTwoDTstPoly3 == lTwoDTstPoly1: "
-              << (int)(lTwoDTst3 == lTwoDTst) << std::endl;
-    std::cout << "lTwoDTstPoly3 == lTwoDTstPoly2: "
-              << (int)(lTwoDTst3 == lTwoDTst2) << std::endl;
+    std::cout << "lTwoDTstPoly1 == lTwoDTstPoly1: " << (int)(lTwoDTst == lTwoDTst) << std::endl;
+    std::cout << "lTwoDTstPoly1 == lTwoDTstPoly2: " << (int)(lTwoDTst == lTwoDTst2) << std::endl;
+    std::cout << "lTwoDTstPoly1 == lTwoDTstPoly3: " << (int)(lTwoDTst == lTwoDTst3) << std::endl;
+    std::cout << "lTwoDTstPoly2 == lTwoDTstPoly1: " << (int)(lTwoDTst2 == lTwoDTst) << std::endl;
+    std::cout << "lTwoDTstPoly2 == lTwoDTstPoly3: " << (int)(lTwoDTst2 == lTwoDTst3) << std::endl;
+    std::cout << "lTwoDTstPoly3 == lTwoDTstPoly1: " << (int)(lTwoDTst3 == lTwoDTst) << std::endl;
+    std::cout << "lTwoDTstPoly3 == lTwoDTstPoly2: " << (int)(lTwoDTst3 == lTwoDTst2) << std::endl;
 
     math::poly::TwoD<double> lundefTwoD1(0, 0);
     math::poly::TwoD<double> lundefTwoD2(0, 0);
-    std::cout << "lundefTwoD1 == lundefTwoD1: "
-              << (int)(lundefTwoD1 == lundefTwoD1) << std::endl;
-    std::cout << "lundefTwoD1 == lundefTwoD2: "
-              << (int)(lundefTwoD1 == lundefTwoD2) << std::endl;
+    std::cout << "lundefTwoD1 == lundefTwoD1: " << (int)(lundefTwoD1 == lundefTwoD1) << std::endl;
+    std::cout << "lundefTwoD1 == lundefTwoD2: " << (int)(lundefTwoD1 == lundefTwoD2) << std::endl;
 }

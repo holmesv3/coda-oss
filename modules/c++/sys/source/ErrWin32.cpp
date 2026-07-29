@@ -34,8 +34,7 @@ int sys::Err::getLast() const
 std::string sys::Err::toString() const
 {
     LPTSTR buffer;
-    if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                              FORMAT_MESSAGE_FROM_SYSTEM,
+    if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
                       nullptr,
                       static_cast<DWORD>(mErrId),
                       0,

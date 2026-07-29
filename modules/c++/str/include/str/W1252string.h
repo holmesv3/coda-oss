@@ -39,8 +39,7 @@ namespace str
 enum class Windows1252_T : unsigned char
 {
 };  // https://en.cppreference.com/w/cpp/language/types
-using W1252string = std::basic_string<
-        Windows1252_T>;  // https://en.cppreference.com/w/cpp/string
+using W1252string = std::basic_string<Windows1252_T>;  // https://en.cppreference.com/w/cpp/string
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,12 +51,10 @@ using W1252string = std::basic_string<
 // but is a distinct type."
 static_assert(!std::is_same<wchar_t, uint16_t>::value,
               "wchar_t should not be the same as uint16_t");
-static_assert(!std::is_same<wchar_t, int16_t>::value,
-              "wchar_t should not be the same as int16_t");
+static_assert(!std::is_same<wchar_t, int16_t>::value, "wchar_t should not be the same as int16_t");
 static_assert(!std::is_same<wchar_t, uint32_t>::value,
               "wchar_t should not be the same as uint32_t");
-static_assert(!std::is_same<wchar_t, int32_t>::value,
-              "wchar_t should not be the same as int32_t");
+static_assert(!std::is_same<wchar_t, int32_t>::value, "wchar_t should not be the same as int32_t");
 
 }
 

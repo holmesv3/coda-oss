@@ -55,8 +55,7 @@ int main(int argc, char** argv)
 
         if (ps.close() != 0)
         {
-            std::cout << "Child Process Successful but Internally Failed!"
-                      << std::endl;
+            std::cout << "Child Process Successful but Internally Failed!" << std::endl;
         }
         else
         {
@@ -69,8 +68,7 @@ int main(int argc, char** argv)
     }
     catch (const std::exception& ex)
     {
-        std::cerr << "Caught standard exception from " << ex.what()
-                  << std::endl;
+        std::cerr << "Caught standard exception from " << ex.what() << std::endl;
     }
     catch (...)
     {

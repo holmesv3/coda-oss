@@ -49,8 +49,7 @@ struct MemoryHandler : public Handler
     MemoryHandler(MemoryHandler&&) = delete;
     MemoryHandler& operator=(MemoryHandler&&) = delete;
 
-    const std::vector<std::string>& getLogs(
-            LogLevel level = LogLevel::LOG_NOTSET) const;
+    const std::vector<std::string>& getLogs(LogLevel level = LogLevel::LOG_NOTSET) const;
 
 protected:
     virtual void write(const std::string& str) override;

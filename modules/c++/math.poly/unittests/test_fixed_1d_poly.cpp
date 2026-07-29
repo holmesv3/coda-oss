@@ -109,8 +109,7 @@ TEST_CASE(testVelocity)
     auto quadraticPoly(getRandPoly<2>());
     for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(quadraticPoly.velocity(val),
-                       quadraticPoly.derivative()(val));
+        TEST_ASSERT_EQ(quadraticPoly.velocity(val), quadraticPoly.derivative()(val));
     }
 
     auto cubicPoly(getRandPoly<3>());
@@ -149,17 +148,14 @@ TEST_CASE(testAcceleration)
     auto cubicPoly(getRandPoly<3>());
     for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(cubicPoly.acceleration(val),
-                       cubicPoly.derivative().derivative()(val));
+        TEST_ASSERT_EQ(cubicPoly.acceleration(val), cubicPoly.derivative().derivative()(val));
     }
 
     auto quarticPoly(getRandPoly<4>());
     for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(quarticPoly.acceleration(val),
-                       quarticPoly.derivative().derivative()(val));
+        TEST_ASSERT_EQ(quarticPoly.acceleration(val), quarticPoly.derivative().derivative()(val));
     }
 }
 
-TEST_MAIN(TEST_CHECK(testScaleVariable); TEST_CHECK(testVelocity);
-          TEST_CHECK(testAcceleration);)
+TEST_MAIN(TEST_CHECK(testScaleVariable); TEST_CHECK(testVelocity); TEST_CHECK(testAcceleration);)

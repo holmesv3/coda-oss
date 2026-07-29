@@ -97,8 +97,7 @@ struct CODA_OSS_API MinidomParser  // SOAPParser inherits :-(
      */
     Document* getDocument() const;
     Document* getDocument(bool steal = false);
-    std::unique_ptr<Document>& getDocument(
-            std::unique_ptr<Document>&);  // steal = true
+    std::unique_ptr<Document>& getDocument(std::unique_ptr<Document>&);  // steal = true
 
     /*!
      *  Reader accessor

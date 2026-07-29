@@ -227,8 +227,7 @@ public:
      *                      go outside of a row or column dimension.
      *                      Default std::numeric_limits<size_t>::max().
      */
-    void expand(size_t expansion,
-                size_t maxEndElement = std::numeric_limits<size_t>::max());
+    void expand(size_t expansion, size_t maxEndElement = std::numeric_limits<size_t>::max());
 
     /*!
      * Determine a new range list that is the intersection of the current

@@ -49,8 +49,7 @@ namespace lite
  */
 struct FileWriter
 {
-    FileWriter(const std::string& outputFile) :
-        mFileName(outputFile), mAdopt(true)
+    FileWriter(const std::string& outputFile) : mFileName(outputFile), mAdopt(true)
     {
         mStream.reset(new io::FileOutputStream(mFileName));
     }
@@ -198,8 +197,7 @@ void writeSIO(const T* image,
     FileHeader fhdr(static_cast<int>(rows), static_cast<int>(cols), es, et);
     fhdr.to(1, imageStream);
 
-    imageStream.write(reinterpret_cast<const sys::byte*>(image),
-                      rows * cols * es);
+    imageStream.write(reinterpret_cast<const sys::byte*>(image), rows * cols * es);
 
     imageStream.close();
 }

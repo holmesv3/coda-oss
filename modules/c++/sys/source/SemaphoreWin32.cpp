@@ -31,13 +31,9 @@ sys::SemaphoreWin32::SemaphoreWin32(unsigned int count, size_t _maxCount)
     // Ensure maxCount never becomes negative due to casting between
     // signed/unsigned types
     constexpr auto maxLong = std::numeric_limits<LONG>::max();
-    const auto maxCount =
-            (_maxCount > maxLong) ? maxLong : static_cast<LONG>(_maxCount);
+    const auto maxCount = (_maxCount > maxLong) ? maxLong : static_cast<LONG>(_maxCount);
 
-    mNative = CreateSemaphore(nullptr,
-                              static_cast<LONG>(count),
-                              maxCount,
-                              nullptr);
+    mNative = CreateSemaphore(nullptr, static_cast<LONG>(count), maxCount, nullptr);
     if (mNative == nullptr)
         throw sys::SystemException("CreateSemaphore Failed");
 }

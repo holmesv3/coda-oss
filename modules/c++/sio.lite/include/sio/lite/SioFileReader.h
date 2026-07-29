@@ -95,14 +95,12 @@ public:
     {
     }
 
-    FileReader(const std::string& file) :
-        StreamReader(new io::FileInputStream(file), true)
+    FileReader(const std::string& file) : StreamReader(new io::FileInputStream(file), true)
     {
     }
 
     /**  Construct from stream  */
-    FileReader(io::FileInputStream* is, bool adopt = false) :
-        StreamReader(is, adopt)
+    FileReader(io::FileInputStream* is, bool adopt = false) : StreamReader(is, adopt)
     {
     }
 

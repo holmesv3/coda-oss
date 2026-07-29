@@ -194,8 +194,7 @@ private:
      * @param numElementsToWrite
      *   the number of elements (not bytes) to write to the file
      *****************************************************************/
-    void putStripData(const unsigned char* buffer,
-                      sys::Uint32_T numElementsToWrite);
+    void putStripData(const unsigned char* buffer, sys::Uint32_T numElementsToWrite);
 
     /**
      *****************************************************************
@@ -206,8 +205,7 @@ private:
      * @param numElementsToWrite
      *   the number of elements (not bytes) to write to the file
      *****************************************************************/
-    void putTileData(const unsigned char* buffer,
-                     sys::Uint32_T numElementsToWrite);
+    void putTileData(const unsigned char* buffer, sys::Uint32_T numElementsToWrite);
 
     //! The TIFF IFD for this image
     tiff::IFD mIFD;

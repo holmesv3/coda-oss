@@ -29,8 +29,7 @@ namespace
 class ScopedCriticalSection
 {
 public:
-    ScopedCriticalSection(CRITICAL_SECTION& criticalSection) :
-        mCriticalSection(criticalSection)
+    ScopedCriticalSection(CRITICAL_SECTION& criticalSection) : mCriticalSection(criticalSection)
     {
         EnterCriticalSection(&mCriticalSection);
     }
@@ -80,8 +79,7 @@ void sys::ConditionVarDataWin32::wait(HANDLE externalMutex)
 
     // Atomically release the mutex and wait on the semaphore until signal()
     // or broadcast() are called by another thread
-    if (SignalObjectAndWait(externalMutex, mSemaphore, INFINITE, FALSE) !=
-        WAIT_OBJECT_0)
+    if (SignalObjectAndWait(externalMutex, mSemaphore, INFINITE, FALSE) != WAIT_OBJECT_0)
     {
         throw sys::SystemException("SignalObjectAndWait() failed");
     }
@@ -105,10 +103,8 @@ bool sys::ConditionVarDataWin32::wait(HANDLE externalMutex, double timeout)
 
     // Atomically release the mutex and wait on the semaphore until signal()
     // or broadcast() are called by another thread or we time out
-    switch (SignalObjectAndWait(externalMutex,
-                                mSemaphore,
-                                static_cast<DWORD>(timeout * 1000),
-                                FALSE))
+    switch (SignalObjectAndWait(
+            externalMutex, mSemaphore, static_cast<DWORD>(timeout * 1000), FALSE))
     {
     case WAIT_OBJECT_0:
         waitImpl(externalMutex);
@@ -182,9 +178,7 @@ void sys::ConditionVarDataWin32::broadcast()
         {
             mWasBroadcast = true;
             haveWaiters = true;
-            ReleaseSemaphore(mSemaphore,
-                             static_cast<LONG>(mNumWaiters),
-                             nullptr);
+            ReleaseSemaphore(mSemaphore, static_cast<LONG>(mNumWaiters), nullptr);
         }
         else
         {
@@ -208,9 +202,7 @@ sys::ConditionVarWin32::ConditionVarWin32() :
 {
 }
 
-sys::ConditionVarWin32::ConditionVarWin32(MutexWin32* theLock,
-                                          bool isOwner,
-                                          std::nullptr_t) :
+sys::ConditionVarWin32::ConditionVarWin32(MutexWin32* theLock, bool isOwner, std::nullptr_t) :
     mMutex(theLock)
 {
     if (isOwner)

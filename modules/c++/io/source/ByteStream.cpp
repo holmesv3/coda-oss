@@ -80,9 +80,7 @@ void io::ByteStream::write(const void* buffer, sys::Size_T size)
             mData.resize(newPos);
 
         const auto bufferPtr = static_cast<const sys::ubyte*>(buffer);
-        std::copy(bufferPtr,
-                  bufferPtr + size,
-                  &mData[gsl::narrow<size_t>(mPosition)]);
+        std::copy(bufferPtr, bufferPtr + size, &mData[gsl::narrow<size_t>(mPosition)]);
         mPosition = static_cast<sys::Off_T>(newPos);
     }
 }

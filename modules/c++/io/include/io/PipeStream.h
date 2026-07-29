@@ -50,8 +50,7 @@ struct PipeStream : InputStream
      *  \param pipe             - pipe for reading
      *  \param streamBufferSize - size of internal buffer for streaming
      */
-    PipeStream(const std::string& cmd,
-               size_t streamBufferSize = DEFAULT_CHUNK_SIZE) :
+    PipeStream(const std::string& cmd, size_t streamBufferSize = DEFAULT_CHUNK_SIZE) :
         InputStream(),
         mExecPipe(cmd),
         mCharString(std::make_unique<char[]>(streamBufferSize)),
@@ -75,8 +74,7 @@ struct PipeStream : InputStream
      *         requested size cannot be greater than the maxLength
      *         (default 0 means read until max or newline)
      */
-    virtual sys::SSize_T readln(
-            sys::byte* cStr, const sys::Size_T strLenPlusNullByte = 0) override;
+    virtual sys::SSize_T readln(sys::byte* cStr, const sys::Size_T strLenPlusNullByte = 0) override;
 
     /*!
      * The streaming occurs as follows: If the numBytes is IS_END,
@@ -89,8 +87,7 @@ struct PipeStream : InputStream
      * \return         The number of bytes transferred from the
      * input stream to the output stream
      */
-    virtual sys::SSize_T streamTo(OutputStream& soi,
-                                  sys::SSize_T numBytes = IS_END) override;
+    virtual sys::SSize_T streamTo(OutputStream& soi, sys::SSize_T numBytes = IS_END) override;
 
     PipeStream(const PipeStream&) = delete;
     PipeStream& operator=(const PipeStream&) = delete;

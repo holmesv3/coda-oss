@@ -48,8 +48,7 @@ public:
         mAffinityInit = affinityInit;
     }
 
-    virtual std::unique_ptr<CPUAffinityThreadInitializer>
-    getCPUAffinityThreadInitializer()
+    virtual std::unique_ptr<CPUAffinityThreadInitializer> getCPUAffinityThreadInitializer()
     {
         std::unique_ptr<CPUAffinityThreadInitializer> threadInit(nullptr);
 
@@ -64,8 +63,7 @@ public:
 
     virtual mt::WorkerThread<Request_T>* newWorker()
     {
-        return newTiedWorker(&this->mRequestQueue,
-                             getCPUAffinityThreadInitializer());
+        return newTiedWorker(&this->mRequestQueue, getCPUAffinityThreadInitializer());
     }
 
 protected:

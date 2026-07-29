@@ -46,8 +46,7 @@ namespace mem
 template <typename T>
 struct BufferView
 {
-    explicit BufferView(T* buffer = nullptr, size_t bufferSize = 0) :
-        data(buffer), size(bufferSize)
+    explicit BufferView(T* buffer = nullptr, size_t bufferSize = 0) : data(buffer), size(bufferSize)
     {
     }  // yes, this is a bit goofy; but legacy code does it
 
@@ -71,8 +70,7 @@ struct BufferView
         {
             std::ostringstream oss;
 
-            oss << "BufferView::section() called with sectionSize: "
-                << sectionSize << " when";
+            oss << "BufferView::section() called with sectionSize: " << sectionSize << " when";
             oss << " there were only " << size << " elements in the BufferView";
 
             throw except::Exception(Ctxt(oss));
@@ -103,8 +101,7 @@ struct BufferView
         std::vector<BufferView> buffers(n);
         for (size_t ii = 0, last_ii = n - 1; ii < n; ++ii, head += newSize)
         {
-            buffers[ii] =
-                    BufferView(head, (ii == last_ii) ? lastSize : newSize);
+            buffers[ii] = BufferView(head, (ii == last_ii) ? lastSize : newSize);
         }
         return buffers;
     }

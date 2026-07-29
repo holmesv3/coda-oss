@@ -41,8 +41,7 @@ public:
      *  \param message A message to take
      *  \param errorId  The error id
      */
-    RegexException(const char* message, int /*errorId*/ = 0) :
-        except::Exception(message)
+    RegexException(const char* message, int /*errorId*/ = 0) : except::Exception(message)
     {
     }
 
@@ -51,8 +50,7 @@ public:
      *  \param message A message to take
      *  \param errorId  The error id
      */
-    RegexException(const std::string& message, int /*errorId*/ = 0) :
-        except::Exception(message)
+    RegexException(const std::string& message, int /*errorId*/ = 0) : except::Exception(message)
     {
     }
 
@@ -61,8 +59,7 @@ public:
      *  \param c A Context to take
      *  \param errorId  The error id
      */
-    RegexException(const except::Context& c, int /*errorId*/ = 0) :
-        except::Exception(c)
+    RegexException(const except::Context& c, int /*errorId*/ = 0) : except::Exception(c)
     {
     }
 };

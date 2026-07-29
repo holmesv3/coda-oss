@@ -30,9 +30,7 @@ static inline std::string strerror_(int errnum)
 #endif
 }
 
-static inline std::string make_what(const char* curfile,
-                                    const int lineNum,
-                                    const std::string& msg)
+static inline std::string make_what(const char* curfile, const int lineNum, const std::string& msg)
 {
     std::ostringstream what;
     what << "ERROR: " << curfile << ", Line " << lineNum << ": " << msg;
@@ -47,10 +45,8 @@ static inline std::string make_what(const char* curfile,
 // A macro for conveniently throwing errors.
 // Need "throw" to be visible, not hidden inside of a function, so that
 // code-analysis tools can see it.
-#define CODA_OSS_sys_filesystem_THROW_ERR(MSG)   \
-    throw std::runtime_error(make_what(__FILE__, \
-                                       __LINE__, \
-                                       MSG))  // TODO: std::filesystem_error
+#define CODA_OSS_sys_filesystem_THROW_ERR(MSG) \
+    throw std::runtime_error(make_what(__FILE__, __LINE__, MSG))  // TODO: std::filesystem_error
 
 fs::path::string_type fs::path::to_native(const std::string& s_)
 {
@@ -184,9 +180,8 @@ bool fs::path::is_relative() const
 
 fs::path fs::operator/(const fs::path& lhs, const fs::path& rhs)
 {
-    return fs::path(lhs) /=
-            rhs;  // "... returns path(lhs) /= rhs."
-                  // http://en.cppreference.com/w/cpp/filesystem/path/operator_slash
+    return fs::path(lhs) /= rhs;  // "... returns path(lhs) /= rhs."
+                                  // http://en.cppreference.com/w/cpp/filesystem/path/operator_slash
 }
 
 fs::path fs::absolute(const path& p)
@@ -210,10 +205,8 @@ fs::path fs::temp_directory_path()
     // bit ARM, x86, or x64.Otherwise, undefined."
 
     // https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettemppatha
-    std::array<CHAR, MAX_PATH + 2>
-            buf;  // "The maximum possible return value is MAX_PATH+1 (261)."
-    const auto result =
-            GetTempPathA(static_cast<DWORD>(buf.size()), buf.data());
+    std::array<CHAR, MAX_PATH + 2> buf;  // "The maximum possible return value is MAX_PATH+1 (261)."
+    const auto result = GetTempPathA(static_cast<DWORD>(buf.size()), buf.data());
     if (result == 0)  // "If the function fails, the return value is zero"
     {
         CODA_OSS_sys_filesystem_THROW_ERR("GetTempPathA() failed.");
@@ -286,8 +279,7 @@ bool fs::remove(const path& p_)
 {
     // https://en.cppreference.com/w/cpp/io/c/remove
     const auto p = p_.string();
-    return ::remove(p.c_str()) ==
-            0;  // "0 upon success or non-zero value on error."
+    return ::remove(p.c_str()) == 0;  // "0 upon success or non-zero value on error."
 }
 
 fs::path fs::current_path()
@@ -315,8 +307,7 @@ std::uintmax_t fs::file_size(const fs::path& p)
 
 bool fs::details::Equals(const path& lhs, const path& rhs) noexcept
 {
-    return sys::Path::normalizePath(lhs.string()) ==
-            sys::Path::normalizePath(rhs.string());
+    return sys::Path::normalizePath(lhs.string()) == sys::Path::normalizePath(rhs.string());
 }
 
 std::ostream& fs::details::Ostream(std::ostream& os, const path& p)

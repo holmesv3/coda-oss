@@ -71,8 +71,7 @@ inline HighFive::DataSet writeDataSet(const H5Easy::File& file,
                                       const std::string& dataset_name,
                                       const T& values /*, TODO ...*/)
 {
-    auto dataset = file.createDataSet<T>(dataset_name,
-                                         HighFive::DataSpace::From(values));
+    auto dataset = file.createDataSet<T>(dataset_name, HighFive::DataSpace::From(values));
     dataset.write(values);
     return dataset;
 }

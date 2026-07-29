@@ -104,9 +104,7 @@ public:
      *  Define  end element method.  Fired when a begin tag is found.
      *  \param  name   The name of the element tag
      */
-    void endElement(const std::string& uri,
-                    const std::string& localName,
-                    const std::string& qname)
+    void endElement(const std::string& uri, const std::string& localName, const std::string& qname)
     {
         printDepth();
         cout << "END ELEMENT "
@@ -135,8 +133,7 @@ int main(int argc, char** argv)
     {
         // Check to make sure we have right length
         if (argc != 2)
-            throw Exception(
-                    Ctxt(str::Format("Usage: %s <xml file>\n", argv[0])));
+            throw Exception(Ctxt(str::Format("Usage: %s <xml file>\n", argv[0])));
 
         // Create an input stream
         FileInputStream xmlFile(argv[1]);

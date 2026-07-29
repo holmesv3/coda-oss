@@ -43,18 +43,15 @@ struct NullInputStream : public InputStream
         return mAvailable;
     }
 
-    virtual sys::SSize_T readln(sys::byte* cStr,
-                                const sys::Size_T strLenPlusNullByte) override
+    virtual sys::SSize_T readln(sys::byte* cStr, const sys::Size_T strLenPlusNullByte) override
     {
         return read(cStr, strLenPlusNullByte);
     }
 
-    virtual sys::SSize_T streamTo(OutputStream& soi,
-                                  sys::SSize_T numBytes = IS_END) override
+    virtual sys::SSize_T streamTo(OutputStream& soi, sys::SSize_T numBytes = IS_END) override
     {
-        const sys::SSize_T toProcess = (numBytes == IS_END)
-                ? numBytes
-                : (mAvailable >= numBytes ? numBytes : mAvailable);
+        const sys::SSize_T toProcess =
+                (numBytes == IS_END) ? numBytes : (mAvailable >= numBytes ? numBytes : mAvailable);
         mAvailable -= toProcess;
         for (sys::SSize_T i = 0; i < toProcess; ++i)
             soi.write(processByte());

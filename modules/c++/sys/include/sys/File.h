@@ -104,9 +104,7 @@ struct CODA_OSS_API File
      *  \param accessFlags File access flags
      *  \param creationFlags File creation flags
      */
-    File(const Path& path,
-         int accessFlags = READ_ONLY,
-         int creationFlags = EXISTING)
+    File(const Path& path, int accessFlags = READ_ONLY, int creationFlags = EXISTING)
     {
         create(path.getPath(), accessFlags, creationFlags);
     }
@@ -140,9 +138,7 @@ struct CODA_OSS_API File
      *  \param accessFlags File access flags
      *  \param creationFlags File creation flags
      */
-    explicit File(const std::string& str,
-                  int accessFlags = READ_ONLY,
-                  int creationFlags = EXISTING)
+    explicit File(const std::string& str, int accessFlags = READ_ONLY, int creationFlags = EXISTING)
     {
         create(str, accessFlags, creationFlags);
     }
@@ -303,8 +299,7 @@ CODA_OSS_API File make_File(const coda_oss::filesystem::path& parent,
                             int creationFlags = File::EXISTING);
 
 // Call  sys::expandEnvironmentVariables() if the initial fopen() fails.
-CODA_OSS_API FILE* fopen(const coda_oss::filesystem::path&,
-                         const std::string& mode);
+CODA_OSS_API FILE* fopen(const coda_oss::filesystem::path&, const std::string& mode);
 CODA_OSS_API int open(const coda_oss::filesystem::path&, int flags);
 CODA_OSS_API int open(const coda_oss::filesystem::path&, int flags, int mode);
 CODA_OSS_API int close(int fd);  // needed to close a FD from open()
@@ -315,19 +310,18 @@ CODA_OSS_API int close(int fd);  // needed to close a FD from open()
 #define CODA_OSS_stat stat
 #endif
 // Call  sys::expandEnvironmentVariables() if the initial stat() attempt fails.
-CODA_OSS_API int stat(const coda_oss::filesystem::path&,
-                      struct CODA_OSS_stat& buffer);
+CODA_OSS_API int stat(const coda_oss::filesystem::path&, struct CODA_OSS_stat& buffer);
 
 // Call  sys::expandEnvironmentVariables() if the initial open attempt fails.
 CODA_OSS_API std::ifstream make_ifstream(
         const coda_oss::filesystem::path&,
         std::ios_base::openmode mode = std::ios_base::
                 in);  // https://en.cppreference.com/w/cpp/io/basic_ifstream/basic_ifstream
-CODA_OSS_API void
-open(std::ifstream&,
-     const coda_oss::filesystem::path&,
-     std::ios_base::openmode mode = std::ios_base::
-             in);  // https://en.cppreference.com/w/cpp/io/basic_ifstream/open
+CODA_OSS_API void open(
+        std::ifstream&,
+        const coda_oss::filesystem::path&,
+        std::ios_base::openmode mode =
+                std::ios_base::in);  // https://en.cppreference.com/w/cpp/io/basic_ifstream/open
 
 }
 

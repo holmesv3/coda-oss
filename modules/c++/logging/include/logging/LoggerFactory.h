@@ -50,8 +50,7 @@ namespace logging
 class LoggerManager
 {
 private:
-    std::map<std::string, std::shared_ptr<Logger>>
-            mLoggerMap;  //! map for storing Loggers
+    std::map<std::string, std::shared_ptr<Logger>> mLoggerMap;  //! map for storing Loggers
     std::mutex mMutex;  //! mutex used for locking the map
 
 public:
@@ -67,8 +66,7 @@ public:
      * default values in the sytem. If the name is not supplied, the root logger
      * is used by default.
      */
-    std::shared_ptr<Logger> getLoggerSharedPtr(
-            const std::string& name = "root");
+    std::shared_ptr<Logger> getLoggerSharedPtr(const std::string& name = "root");
 
     /*!
      * Returns the Logger with the specified name. If a logger with the
@@ -132,8 +130,7 @@ void setLogLevel(LogLevel level);
 
 //! get a Logger of the given name
 Logger* getLogger(const std::string& name = "root");
-std::shared_ptr<logging::Logger> getLoggerSharedPtr(
-        const std::string& name = "root");
+std::shared_ptr<logging::Logger> getLoggerSharedPtr(const std::string& name = "root");
 
 }
 #endif  // CODA_OSS_logging_LoggerFactory_h_INCLUDED_

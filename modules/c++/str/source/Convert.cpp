@@ -63,8 +63,8 @@ bool str::toType<bool>(const std::string& s)
         return (value != 0);
     }
 
-    throw except::BadCastException(except::Context(
-            __FILE__, __LINE__, "", "", "Invalid bool: '" + s + "'"));
+    throw except::BadCastException(
+            except::Context(__FILE__, __LINE__, "", "", "Invalid bool: '" + s + "'"));
 }
 
 long long str::strtoll(const char* str, char** endptr, int base)

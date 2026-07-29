@@ -214,32 +214,28 @@ void diePrintf(const char* format, ...) noexcept;
 #if CODA_OSS_debugging
 
 #ifndef __DEBUG_SHORTEN_EVAL
-#define EVAL(X)                                                                \
-    std::cout << '(' << __FILE__ << ',' << __LINE__ << ") <EVAL> " #X "=" << X \
-              << std::endl
+#define EVAL(X) \
+    std::cout << '(' << __FILE__ << ',' << __LINE__ << ") <EVAL> " #X "=" << X << std::endl
 #else
 #define EVAL(X) std::cout << "<EVAL> " #X "=" << X << std::endl
 #endif
-#define DUMP(T, X) \
-    printf("<DUMP> (%s:%d): " #X "=" #T "\n", __FILE__, __LINE__, X)
+#define DUMP(T, X) printf("<DUMP> (%s:%d): " #X "=" #T "\n", __FILE__, __LINE__, X)
 #define HERE() printf("<HERE> (%s:%d)\n", __FILE__, __LINE__)
 #define TRACE(X)                                             \
     printf("<TRACE> (%s:%d): " #X "\n", __FILE__, __LINE__); \
     X
-#define ASSERT_OR(ASSERTION, ELSE)                                     \
-    {                                                                  \
-        if (ASSERTION)                                                 \
-        {                                                              \
-            1;                                                         \
-        }                                                              \
-        else                                                           \
-        {                                                              \
-            dbg_printf("(%s, %d): Assertion failed: " #ASSERTION "\n", \
-                       __FILE__,                                       \
-                       __LINE__);                                      \
-            ELSE;                                                      \
-            exit(EXIT_FAILURE);                                        \
-        }                                                              \
+#define ASSERT_OR(ASSERTION, ELSE)                                                          \
+    {                                                                                       \
+        if (ASSERTION)                                                                      \
+        {                                                                                   \
+            1;                                                                              \
+        }                                                                                   \
+        else                                                                                \
+        {                                                                                   \
+            dbg_printf("(%s, %d): Assertion failed: " #ASSERTION "\n", __FILE__, __LINE__); \
+            ELSE;                                                                           \
+            exit(EXIT_FAILURE);                                                             \
+        }                                                                                   \
     }
 
 #else

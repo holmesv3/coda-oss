@@ -78,15 +78,11 @@ inline constexpr Unit<T, Tag> make_Unit(T v) noexcept
 
 // Allow Unit::to() (below) to compile; the routine below normally won't be
 // used.
-template <typename T,
-          typename Tag,
-          typename ResultTag = Tag,
-          typename TResult = T>
-inline /*constexpr*/ Unit<TResult, ResultTag>& convert(
-        Unit<T, Tag> v, Unit<TResult, ResultTag>& result) noexcept
+template <typename T, typename Tag, typename ResultTag = Tag, typename TResult = T>
+inline /*constexpr*/ Unit<TResult, ResultTag>& convert(Unit<T, Tag> v,
+                                                       Unit<TResult, ResultTag>& result) noexcept
 {
-    result = make_Unit<Tag, TResult>(
-            v.value());  // or Unit<...>, this ensures make_Unit() works
+    result = make_Unit<Tag, TResult>(v.value());  // or Unit<...>, this ensures make_Unit() works
     return result;  // ICC doesn't like "constexpr void"; want to use parameters
                     // for type deduction
 }

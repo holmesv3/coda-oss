@@ -225,8 +225,8 @@ double Line2D::distanceToPoint(const Point& P) const
     {
         return std::abs(P.row - mXIntercept);
     }
-    const double dist = std::abs(mSlope * P.row - P.col + mYIntercept) /
-            std::sqrt(mSlope * mSlope + 1);
+    const double dist =
+            std::abs(mSlope * P.row - P.col + mYIntercept) / std::sqrt(mSlope * mSlope + 1);
     return dist;
 }
 
@@ -259,8 +259,7 @@ bool Line2D::equals(const Line2D& other) const
         }
         else
         {
-            if ((getSlope() == other.getSlope()) &&
-                (getYIntercept() == other.getYIntercept()))
+            if ((getSlope() == other.getSlope()) && (getYIntercept() == other.getYIntercept()))
             {
                 return true;
             }

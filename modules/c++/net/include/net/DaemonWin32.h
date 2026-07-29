@@ -23,20 +23,17 @@ public:
 
     void start()
     {
-        throw except::NotImplementedException(
-                Ctxt("Windows service not yet implemented."));
+        throw except::NotImplementedException(Ctxt("Windows service not yet implemented."));
     }
 
     void stop()
     {
-        throw except::NotImplementedException(
-                Ctxt("Windows service not yet implemented."));
+        throw except::NotImplementedException(Ctxt("Windows service not yet implemented."));
     }
 
     void restart()
     {
-        throw except::NotImplementedException(
-                Ctxt("Windows service not yet implemented."));
+        throw except::NotImplementedException(Ctxt("Windows service not yet implemented."));
     }
 
     //! Parse and execute command line option (start/stop/restart)
@@ -63,8 +60,7 @@ public:
         }
         if (!foreground)
         {
-            throw except::NotImplementedException(
-                    Ctxt("Windows service not yet implemented."));
+            throw except::NotImplementedException(Ctxt("Windows service not yet implemented."));
         }
     }
 

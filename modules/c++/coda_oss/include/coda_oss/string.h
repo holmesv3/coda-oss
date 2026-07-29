@@ -34,8 +34,7 @@
 #define CODA_OSS_HAVE_std_u8string_ 0  // assume no std::u8string
 #endif
 #if CODA_OSS_cpp20
-#if defined( \
-        __cpp_lib_char8_t)  // https://en.cppreference.com/w/cpp/feature_test
+#if defined(__cpp_lib_char8_t)  // https://en.cppreference.com/w/cpp/feature_test
 #undef CODA_OSS_HAVE_std_u8string_
 #define CODA_OSS_HAVE_std_u8string_ 1
 #endif
@@ -48,22 +47,19 @@ namespace coda_oss
 // char8_t for UTF-8 characters
 CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable \
-                : 5052)  // Keyword '...' was introduced in C++20 and requires
-                         // use of the '...' command-line option
+#pragma warning(disable : 5052)  // Keyword '...' was introduced in C++20 and requires
+                                 // use of the '...' command-line option
 #endif
 
 #if !defined(__cpp_char8_t)  // https://en.cppreference.com/w/cpp/feature_test
-        enum class char8_t
-    : unsigned char {};  // https://en.cppreference.com/w/cpp/language/types
+        enum class char8_t : unsigned char {};  // https://en.cppreference.com/w/cpp/language/types
 #elif CODA_OSS_HAVE_std_u8string_
 // `char8_t` is a keyword in C++20
 #endif
 #if CODA_OSS_HAVE_std_u8string_
 using u8string = std::u8string;
 #else
-        using u8string = std::basic_string<
-                char8_t>;  // https://en.cppreference.com/w/cpp/string
+        using u8string = std::basic_string<char8_t>;  // https://en.cppreference.com/w/cpp/string
 #endif
 
 CODA_OSS_disable_warning_pop

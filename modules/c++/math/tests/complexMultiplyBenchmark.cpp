@@ -169,8 +169,8 @@ void getMultWDouble(sys::RealTimeStopWatch& wtch,
 // Prints out the results in a table format
 void print(std::ostream& out, size_t sze, double durOne, double durTwo)
 {
-    out << std::setw(15) << sze << std::setw(15) << durOne / 1000
-        << std::setw(25) << durTwo / 1000 << std::endl;
+    out << std::setw(15) << sze << std::setw(15) << durOne / 1000 << std::setw(25) << durTwo / 1000
+        << std::endl;
 }
 
 /*
@@ -186,10 +186,7 @@ void print(std::ostream& out, size_t sze, double durOne, double durTwo)
  *  \output
  *      out: an ostringstream that stores the output from the simulations
  */
-void loopingBenchmark(size_t size,
-                      size_t growthFactor,
-                      size_t numGrowths,
-                      std::ostringstream& out)
+void loopingBenchmark(size_t size, size_t growthFactor, size_t numGrowths, std::ostringstream& out)
 {
     // declare the vector
     std::vector<std::complex<float>> arr(size);
@@ -239,8 +236,7 @@ void loopingBenchmark(size_t size,
         // return if growth simulated would be too large to handle
         if (sizeof(std::complex<float>) * size * numLoops > MAX_SIZE)
         {
-            std::cout << "ending early to prevent growth spiraling"
-                      << std::endl;
+            std::cout << "ending early to prevent growth spiraling" << std::endl;
             return;
         }
     }
@@ -251,10 +247,9 @@ size_t decideSize(size_t initSize, size_t growthFactor, size_t numGrowths)
 {
     // setup size calculation variables
     const size_t MAX_SZE = MAX_SIZE / (sizeof(std::complex<float>));
-    auto largestPosGrowth =
-            static_cast<size_t>(initSize *
-                                std::pow(static_cast<double>(growthFactor),
-                                         static_cast<double>(numGrowths)));
+    auto largestPosGrowth = static_cast<size_t>(
+            initSize *
+            std::pow(static_cast<double>(growthFactor), static_cast<double>(numGrowths)));
     size_t largestPosSize = std::min(largestPosGrowth, MAX_SZE);
 
     // if growth is too high, find last growth less than MaxSize
@@ -339,8 +334,7 @@ void singlePassBenchmark(size_t size,
         // return if growth gets too large
         if (sizeof(std::complex<float>) * size > 10E10)
         {
-            std::cout << "ending early to prevent growth spiraling"
-                      << std::endl;
+            std::cout << "ending early to prevent growth spiraling" << std::endl;
             return;
         }
     }
@@ -355,8 +349,7 @@ int main(int argc, char** argv)
                   << " <numberOfIterations> [Loop?]" << std::endl
                   << "a 1 in the Loop? spot means use looping benchmark"
                   << ".  The looping benchmark changes the behavior and"
-                  << " can change the results, but allows for less memory usage"
-                  << std::endl;
+                  << " can change the results, but allows for less memory usage" << std::endl;
         return 1;
     }
 

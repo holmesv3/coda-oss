@@ -40,13 +40,11 @@ struct CODA_OSS_API RotatingFileOutputStream : public CountingOutputStream
     RotatingFileOutputStream(const std::string& filename,
                              unsigned long maxBytes = 0,
                              size_t backupCount = 0,
-                             int creationFlags = sys::File::CREATE |
-                                     sys::File::TRUNCATE);
+                             int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
 
     virtual ~RotatingFileOutputStream() = default;
     RotatingFileOutputStream(const RotatingFileOutputStream&) = delete;
-    RotatingFileOutputStream& operator=(const RotatingFileOutputStream&) =
-            delete;
+    RotatingFileOutputStream& operator=(const RotatingFileOutputStream&) = delete;
 
     using CountingOutputStream::write;
 

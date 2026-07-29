@@ -130,8 +130,7 @@ double sys::CPUStopWatch::stop()
     // If start time was never set (or reset) then don't bother calculating
     // elapsed time
     if (mStartTime != -1)
-        return static_cast<double>(end - mStartTime - mTimePaused) /
-                mClocksPerMillis;
+        return static_cast<double>(end - mStartTime - mTimePaused) / mClocksPerMillis;
     else
         return 0;
 }

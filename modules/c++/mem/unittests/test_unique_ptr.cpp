@@ -125,5 +125,4 @@ TEST_CASE(memAutoPtr)
     }
 }
 
-TEST_MAIN(TEST_CHECK(testStdUniquePtr); TEST_CHECK(test_make_unique);
-          TEST_CHECK(memAutoPtr);)
+TEST_MAIN(TEST_CHECK(testStdUniquePtr); TEST_CHECK(test_make_unique); TEST_CHECK(memAutoPtr);)

@@ -25,8 +25,7 @@
 
 namespace
 {
-std::vector<types::Range> difference(const types::Range& orig,
-                                     const types::Range& overlap)
+std::vector<types::Range> difference(const types::Range& orig, const types::Range& overlap)
 {
     // If the original range is fully contained by the overlap,
     // the difference is the empty set
@@ -40,15 +39,13 @@ std::vector<types::Range> difference(const types::Range& orig,
     // Create left range
     if (orig.mStartElement < overlap.mStartElement)
     {
-        result.emplace_back(orig.mStartElement,
-                            overlap.mStartElement - orig.mStartElement);
+        result.emplace_back(orig.mStartElement, overlap.mStartElement - orig.mStartElement);
     }
 
     // Create right range
     if (orig.endElement() > overlap.endElement())
     {
-        result.emplace_back(overlap.endElement(),
-                            orig.endElement() - overlap.endElement());
+        result.emplace_back(overlap.endElement(), orig.endElement() - overlap.endElement());
     }
     return result;
 }
@@ -127,11 +124,9 @@ void RangeList::insert(const types::Range& range)
 
         if (backRange.overlaps(oldRange) || backRange.touches(oldRange))
         {
-            const size_t start = std::min<size_t>(backRange.mStartElement,
-                                                  oldRange.mStartElement);
+            const size_t start = std::min<size_t>(backRange.mStartElement, oldRange.mStartElement);
 
-            const size_t end = std::max<size_t>(backRange.endElement(),
-                                                oldRange.endElement());
+            const size_t end = std::max<size_t>(backRange.endElement(), oldRange.endElement());
 
             backRange.mStartElement = start;
             backRange.mNumElements = end - start;
@@ -196,12 +191,10 @@ void RangeList::expand(size_t expansion, size_t maxEndElement)
 
     for (const auto& range : oldRanges)
     {
-        const size_t start = (range.mStartElement >= expansion)
-                ? range.mStartElement - expansion
-                : 0;
+        const size_t start =
+                (range.mStartElement >= expansion) ? range.mStartElement - expansion : 0;
 
-        const size_t end =
-                std::min(range.endElement() + expansion, maxEndElement);
+        const size_t end = std::min(range.endElement() + expansion, maxEndElement);
 
         insert(types::Range(start, end - start));
     }
@@ -217,10 +210,8 @@ RangeList RangeList::intersect(const RangeList& other) const
 
     while ((iterA != endIterA) && (iterB != endIterB))
     {
-        const size_t start =
-                std::max<size_t>(iterA->mStartElement, iterB->mStartElement);
-        const size_t end =
-                std::min<size_t>(iterA->endElement(), iterB->endElement());
+        const size_t start = std::max<size_t>(iterA->mStartElement, iterB->mStartElement);
+        const size_t end = std::min<size_t>(iterA->endElement(), iterB->endElement());
 
         if (start < end)
         {

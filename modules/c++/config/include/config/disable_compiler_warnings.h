@@ -28,14 +28,10 @@
 #if defined(_MSC_VER)
 
 // We don't care about any padding added to structs
-#pragma warning( \
-        disable  \
-        : 4820)  //  '...': '...' bytes padding added after data member '...'
+#pragma warning(disable : 4820)  //  '...': '...' bytes padding added after data member '...'
 
 // Assume any unreferenced functions will be used in other code
-#pragma warning( \
-        disable  \
-        : 4514)  // '...': unreferenced inline function has been removed
+#pragma warning(disable : 4514)  // '...': unreferenced inline function has been removed
 
 // ???
 #pragma warning(disable : 4668)  // '...' is not defined as a preprocessor
@@ -48,8 +44,7 @@
 // Different versions of Visual Studio have different warnings; and almost all
 // of our use of them is `disable`.  It not very useful to know we're
 // (attempting) to disable a warning that doesn't exist.
-#pragma warning(disable \
-                : 4619)  // #pragma warning: there is no warning number '...'
+#pragma warning(disable : 4619)  // #pragma warning: there is no warning number '...'
 
 #elif defined(__GNUC__) || defined(__clang__)
 

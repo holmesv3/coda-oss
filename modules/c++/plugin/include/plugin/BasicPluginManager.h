@@ -85,8 +85,7 @@ class BasicPluginManager
 {
 public:
     typedef std::shared_ptr<PluginIdentity<T>> SharedPluginIdentity;
-    typedef std::map<std::string, std::pair<T*, SharedPluginIdentity>>
-            HandlerRegistry;
+    typedef std::map<std::string, std::pair<T*, SharedPluginIdentity>> HandlerRegistry;
 
     /*!
      *  This is a default constructor, but its use is discouraged, since
@@ -95,8 +94,7 @@ public:
      *  constructor.
      */
     BasicPluginManager() :
-        mMajorVersion(PLUGIN_API_MAJOR_VERSION),
-        mMinorVersion(PLUGIN_API_MINOR_VERSION)
+        mMajorVersion(PLUGIN_API_MAJOR_VERSION), mMinorVersion(PLUGIN_API_MINOR_VERSION)
     {
     }
 
@@ -152,8 +150,7 @@ public:
         }
 
         //! load all the shared libraries found
-        std::vector<std::string> sharedLibs =
-                os.search(path, "", PLUGIN_DSO_EXTENSION, false);
+        std::vector<std::string> sharedLibs = os.search(path, "", PLUGIN_DSO_EXTENSION, false);
         for (size_t i = 0; i < sharedLibs.size(); ++i)
         {
             loadPlugin(sharedLibs[i], eh);
@@ -251,8 +248,7 @@ public:
      *  \param identity The plugin identifier
      *  \param eh The error handler to be used if something bad happens
      */
-    virtual void addHandler(std::shared_ptr<PluginIdentity<T>> identity,
-                            ErrorHandler* eh)
+    virtual void addHandler(std::shared_ptr<PluginIdentity<T>> identity, ErrorHandler* eh)
     {
         try
         {
@@ -275,9 +271,7 @@ public:
 
                 for (unsigned int i = 0; ops[i] != nullptr; i++)
                     oss << ops[i] << ":";
-                auto unsupported =
-                        str::Format("For plugin supporting ops %s version ",
-                                    oss.str());
+                auto unsupported = str::Format("For plugin supporting ops %s version ", oss.str());
                 unsupported += str::Format("[%d.%d] not supported (%d.%d)",
                                            majorVersion,
                                            minorVersion,
@@ -293,8 +287,7 @@ public:
                 if (!pluginHandler)
                 {
                     eh->onPluginLoadFailed(
-                            str::Format("Failed to spawn handler for op %s",
-                                        ops[i]));
+                            str::Format("Failed to spawn handler for op %s", ops[i]));
                     // Keep going
                 }
                 mHandlers[ops[i]].first = pluginHandler;
@@ -327,8 +320,7 @@ public:
             // First check if the DSO is already loaded
             for (unsigned int i = 0; i < mDSOs.size(); ++i)
             {
-                std::string baseLib =
-                        sys::Path(mDSOs[i]->getLibName()).getBasePath();
+                std::string baseLib = sys::Path(mDSOs[i]->getLibName()).getBasePath();
 
                 if (baseLib == baseFile)
                 {
@@ -354,9 +346,8 @@ public:
 
 // Retrieve the plugin identity and add a handler to the registry.
 #if _MSC_VER
-            __pragma(warning(push)) __pragma(warning(
-                    disable
-                    : 4191))  // '...': unsafe conversion from '...' to '...'
+            __pragma(warning(push)) __pragma(
+                    warning(disable : 4191))  // '...': unsafe conversion from '...' to '...'
 #endif
                     auto ident = reinterpret_cast<const void* (*)(void)>(
                             dso->retrieve(getPluginIdentName()));
@@ -365,8 +356,7 @@ public:
 #endif
 
                     const SharedPluginIdentity* const plugin =
-                            static_cast<const SharedPluginIdentity*>(
-                                    (*ident)());
+                            static_cast<const SharedPluginIdentity*>((*ident)());
 
             addHandler(*plugin, eh);
         }
@@ -425,8 +415,7 @@ protected:
      */
     virtual bool pluginVersionSupported(int majorVersion, int minorVersion)
     {
-        return ((majorVersion == mMajorVersion) &&
-                (minorVersion == mMinorVersion));
+        return ((majorVersion == mMajorVersion) && (minorVersion == mMinorVersion));
     }
     int mMajorVersion;
     int mMinorVersion;

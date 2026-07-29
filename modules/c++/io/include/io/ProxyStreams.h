@@ -75,8 +75,7 @@ protected:
 struct CODA_OSS_API ProxyOutputStream : public OutputStream
 {
     ProxyOutputStream() = default;
-    ProxyOutputStream(OutputStream* proxy, bool ownPtr = false) :
-        mOwnPtr(ownPtr)
+    ProxyOutputStream(OutputStream* proxy, bool ownPtr = false) : mOwnPtr(ownPtr)
     {
         mProxy.reset(proxy);
     }

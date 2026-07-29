@@ -95,9 +95,8 @@ public:
      *  \param length The length of the new data
      */
     virtual void characters(const char* data, int length) = 0;
-    virtual bool vcharacters(
-            const void /*XMLCh*/*,
-            size_t /*length*/) = 0;  // avoid XMLCh, it's specific to Xerces
+    virtual bool vcharacters(const void /*XMLCh*/*,
+                             size_t /*length*/) = 0;  // avoid XMLCh, it's specific to Xerces
 
     /*!
      *  Receive notification of the beginning of an element.

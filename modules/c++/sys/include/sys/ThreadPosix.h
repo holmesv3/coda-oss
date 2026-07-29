@@ -72,15 +72,11 @@ struct ThreadPosix : public ThreadInterface
      *  \param target  What to run
      *  \param name  The name
      */
-    ThreadPosix(Runnable* target, const std::string& name = "") :
-        ThreadInterface(target, name)
+    ThreadPosix(Runnable* target, const std::string& name = "") : ThreadInterface(target, name)
     {
     }
 
-    ThreadPosix(Runnable* target,
-                const std::string& name,
-                int level,
-                int priority) :
+    ThreadPosix(Runnable* target, const std::string& name, int level, int priority) :
         ThreadInterface(target, name, level, priority)
     {
     }

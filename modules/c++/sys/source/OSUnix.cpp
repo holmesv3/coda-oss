@@ -97,20 +97,15 @@ std::set<std::string> get_unique_thread_siblings()
     const sys::Path sysCPUPath("/sys/devices/system/cpu");
     if (!sysCPUPath.isDirectory())
     {
-        throw except::Exception(
-                Ctxt("Expected dir /sys/devices/system/cpu does not exist"));
+        throw except::Exception(Ctxt("Expected dir /sys/devices/system/cpu does not exist"));
     }
 
     const std::vector<std::string> searchPaths(1, sysCPUPath.getPath());
     const std::vector<std::string> subDirs =
-            sys::FileFinder::search(sys::DirectoryOnlyPredicate(),
-                                    searchPaths,
-                                    false);
+            sys::FileFinder::search(sys::DirectoryOnlyPredicate(), searchPaths, false);
 
     std::set<std::string> unique_ts;
-    for (std::vector<std::string>::const_iterator ii = subDirs.begin();
-         ii != subDirs.end();
-         ++ii)
+    for (std::vector<std::string>::const_iterator ii = subDirs.begin(); ii != subDirs.end(); ++ii)
     {
         const sys::Path tsPath(*ii, "topology/thread_siblings_list");
         if (tsPath.exists())
@@ -119,8 +114,7 @@ std::set<std::string> get_unique_thread_siblings()
             if (!tsIFS.is_open())
             {
                 std::ostringstream msg;
-                msg << "Unable to open thread siblings file "
-                    << tsPath.getPath();
+                msg << "Unable to open thread siblings file " << tsPath.getPath();
                 throw except::Exception(Ctxt(msg));
             }
 
@@ -171,8 +165,7 @@ void sys::OSUnix::removeFile(const std::string& pathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing file [" << pathname << "] with error ["
-            << err.toString() << "]";
+        oss << "Failure removing file [" << pathname << "] with error [" << err.toString() << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -184,15 +177,14 @@ void sys::OSUnix::removeDirectory(const std::string& pathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing directory [" << pathname << "] with error ["
-            << err.toString() << "]";
+        oss << "Failure removing directory [" << pathname << "] with error [" << err.toString()
+            << "]";
 
         throw except::Exception(Ctxt(oss));
     }
 }
 
-bool sys::OSUnix::move(const std::string& path,
-                       const std::string& newPath) const
+bool sys::OSUnix::move(const std::string& path, const std::string& newPath) const
 {
     return (::rename(path.c_str(), newPath.c_str()) == 0);
 }
@@ -240,12 +232,10 @@ bool sys::OSUnix::changeDirectory(const std::string& path) const
     return chdir(path.c_str()) == 0 ? true : false;
 }
 
-std::string sys::OSUnix::getTempName(const std::string& path,
-                                     const std::string& prefix) const
+std::string sys::OSUnix::getTempName(const std::string& path, const std::string& prefix) const
 {
     std::string name;
-#if defined(_USE_MKSTEMP) || defined(__linux__) || defined(__linux) || \
-        defined(linux__)
+#if defined(_USE_MKSTEMP) || defined(__linux__) || defined(__linux) || defined(linux__)
     std::string pathname(path);
     pathname += "/" + prefix + "XXXXXX";
     std::vector<char> fullPath(pathname.size() + 1);
@@ -302,8 +292,7 @@ std::string sys::OSUnix::getEnv(const std::string& s) const
 {
     const char* envVal = getenv(s.c_str());
     if (envVal == nullptr)
-        throw sys::SystemException(
-                Ctxt("Unable to get unix environment variable " + s));
+        throw sys::SystemException(Ctxt("Unable to get unix environment variable " + s));
     return std::string(envVal);
 }
 
@@ -313,9 +302,7 @@ bool sys::OSUnix::isEnvSet(const std::string& s) const
     return envVal != nullptr;
 }
 
-void sys::OSUnix::setEnv(const std::string& var,
-                         const std::string& val,
-                         bool overwrite)
+void sys::OSUnix::setEnv(const std::string& var, const std::string& val, bool overwrite)
 {
     int ret;
 
@@ -341,8 +328,7 @@ void sys::OSUnix::setEnv(const std::string& var,
 #endif
     if (ret != 0)
     {
-        throw sys::SystemException(
-                Ctxt("Unable to set unix environment variable " + var));
+        throw sys::SystemException(Ctxt("Unable to set unix environment variable " + var));
     }
 }
 
@@ -354,8 +340,7 @@ void sys::OSUnix::unsetEnv(const std::string& var)
     // variable could not be changed
     if (ret == -1)
     {
-        throw sys::SystemException(
-                Ctxt("Unable to unset unix environment variable " + var));
+        throw sys::SystemException(Ctxt("Unable to unset unix environment variable " + var));
     }
 }
 
@@ -383,8 +368,7 @@ size_t sys::OSUnix::getNumPhysicalCPUsAvailable() const
     return physicalCPUs.size();
 }
 
-void sys::OSUnix::getAvailableCPUs(std::vector<int>& physicalCPUs,
-                                   std::vector<int>& htCPUs) const
+void sys::OSUnix::getAvailableCPUs(std::vector<int>& physicalCPUs, std::vector<int>& htCPUs) const
 {
     physicalCPUs.clear();
     htCPUs.clear();
@@ -403,8 +387,7 @@ void sys::OSUnix::getAvailableCPUs(std::vector<int>& physicalCPUs,
     {
         bool foundPhysical = false;
         const str::Tokenizer::Tokens cpuIDs = str::Tokenizer(*tsStr, ",");
-        for (str::Tokenizer::Tokens::const_iterator cpu = cpuIDs.begin();
-             cpu != cpuIDs.end();
+        for (str::Tokenizer::Tokens::const_iterator cpu = cpuIDs.begin(); cpu != cpuIDs.end();
              ++cpu)
         {
             const int cpuInt = str::toType<int>(*cpu);
@@ -463,8 +446,8 @@ void sys::OSUnix::removeSymlink(const std::string& symlinkPathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing symlink [" << symlinkPathname
-            << "] with error [" << err.toString() << "]";
+        oss << "Failure removing symlink [" << symlinkPathname << "] with error [" << err.toString()
+            << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -498,11 +481,9 @@ void sys::OSUnix::getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const
     vm_size_t pageSize = 0;
     vm_statistics_data_t vmstat;
 
-    if (KERN_SUCCESS !=
-        host_statistics(machPort, HOST_VM_INFO, (host_info_t)&vmstat, &count))
+    if (KERN_SUCCESS != host_statistics(machPort, HOST_VM_INFO, (host_info_t)&vmstat, &count))
     {
-        throw sys::SystemException(
-                Ctxt("Call to host_statistics() has failed"));
+        throw sys::SystemException(Ctxt("Call to host_statistics() has failed"));
     }
 
     if (KERN_SUCCESS != host_page_size(machPort, &pageSize))
@@ -526,22 +507,19 @@ void sys::OSUnix::getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const
 #endif
 }
 
-std::string sys::OSUnix::getCurrentExecutable(
-        const std::string& argvPathname_) const
+std::string sys::OSUnix::getCurrentExecutable(const std::string& argvPathname_) const
 {
     std::vector<std::string> possibleSymlinks;
 
     // Linux
-    possibleSymlinks.push_back(
-            sys::Path::joinPaths(sys::Path::delimiter()[0] +
-                                         std::string("proc"),
-                                 sys::Path::joinPaths("self", "exe")));
+    possibleSymlinks.push_back(sys::Path::joinPaths(sys::Path::delimiter()[0] + std::string("proc"),
+                                                    sys::Path::joinPaths("self", "exe")));
 
     // Solaris
-    possibleSymlinks.push_back(sys::Path::joinPaths(
-            sys::Path::delimiter()[0] + std::string("proc"),
-            sys::Path::joinPaths("self",
-                                 sys::Path::joinPaths("path", "a.out"))));
+    possibleSymlinks.push_back(
+            sys::Path::joinPaths(sys::Path::delimiter()[0] + std::string("proc"),
+                                 sys::Path::joinPaths("self",
+                                                      sys::Path::joinPaths("path", "a.out"))));
 
     for (size_t ii = 0; ii < possibleSymlinks.size(); ++ii)
     {

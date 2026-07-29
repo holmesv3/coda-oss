@@ -361,23 +361,20 @@ VectorN<_ND, _T> constantVector(_T cv = 0)
 }
 
 template <size_t _MD, size_t _ND, typename _T>
-math::linear::VectorN<_MD, _T> operator*(
-        const math::linear::MatrixMxN<_MD, _ND, _T>& m,
-        const math::linear::VectorN<_ND, _T>& v)
+math::linear::VectorN<_MD, _T> operator*(const math::linear::MatrixMxN<_MD, _ND, _T>& m,
+                                         const math::linear::VectorN<_ND, _T>& v)
 {
     return math::linear::VectorN<_MD, _T>(m * v.matrix());
 }
 
 template <size_t _ND, typename _T>
-math::linear::VectorN<_ND, _T> operator*(
-        _T scalar, const math::linear::VectorN<_ND, _T>& v)
+math::linear::VectorN<_ND, _T> operator*(_T scalar, const math::linear::VectorN<_ND, _T>& v)
 {
     return v * scalar;
 }
 
 template <size_t _ND, typename _T>
-std::ostream& operator<<(std::ostream& os,
-                         const math::linear::VectorN<_ND, _T>& v)
+std::ostream& operator<<(std::ostream& os, const math::linear::VectorN<_ND, _T>& v)
 {
     for (size_t i = 0; i < _ND; ++i)
     {

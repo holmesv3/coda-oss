@@ -32,8 +32,7 @@ int main(int argc, char** argv)
     try
     {
         if (argc < 2)
-            throw except::Exception(
-                    str::Format("usage: %s <tiff file>", argv[0]));
+            throw except::Exception(str::Format("usage: %s <tiff file>", argv[0]));
 
         sys::OS os;
         std::string path = sys::Path::absolutePath(argv[1]);
@@ -49,10 +48,8 @@ int main(int argc, char** argv)
             if (tiff::Utils::hasGeoTiffIFD(reader[i]->getIFD()))
             {
                 outStream.writeln("===========================");
-                outStream.writeln(
-                        str::Format("GeoTIFF detected: Image %d\n", (i + 1)));
-                tiff::IFD* geoIFD =
-                        tiff::Utils::createGeoTiffIFD(reader[i]->getIFD());
+                outStream.writeln(str::Format("GeoTIFF detected: Image %d\n", (i + 1)));
+                tiff::IFD* geoIFD = tiff::Utils::createGeoTiffIFD(reader[i]->getIFD());
                 geoIFD->print(outStream);
                 outStream.writeln("===========================");
                 delete geoIFD;

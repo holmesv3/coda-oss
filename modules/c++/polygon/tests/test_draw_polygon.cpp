@@ -44,11 +44,8 @@ int main(int, char**)
 
         std::fill_n(out.get(), dims.area(), 0);
         polygon::drawPolygon(points, dims.row, dims.col, 1, out.get());
-        sio::lite::writeSIO(out.get(),
-                            dims.row,
-                            dims.col,
-                            "polygon.sio",
-                            sio::lite::FileHeader::SIGNED);
+        sio::lite::writeSIO(
+                out.get(), dims.row, dims.col, "polygon.sio", sio::lite::FileHeader::SIGNED);
 
         std::fill_n(out.get(), dims.area(), 0);
         polygon::drawPolygon(points, dims.row, dims.col, 1, out.get(), true);
@@ -60,13 +57,9 @@ int main(int, char**)
 
         const types::RowCol<sys::SSize_T> offset(50, 75);
         std::fill_n(out.get(), dims.area(), 0);
-        polygon::drawPolygon(
-                points, dims.row, dims.col, 1, out.get(), false, offset);
-        sio::lite::writeSIO(out.get(),
-                            dims.row,
-                            dims.col,
-                            "polygon_offset.sio",
-                            sio::lite::FileHeader::SIGNED);
+        polygon::drawPolygon(points, dims.row, dims.col, 1, out.get(), false, offset);
+        sio::lite::writeSIO(
+                out.get(), dims.row, dims.col, "polygon_offset.sio", sio::lite::FileHeader::SIGNED);
 
         return 0;
     }

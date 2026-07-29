@@ -37,24 +37,20 @@ int main(int, char**)
     try
     {
         sys::LocalDateTime now;
-        std::cout << "Epoch seconds: " << sys::DateTime::getEpochSeconds()
-                  << std::endl;
-        std::cout << "Today is: " << now.getMonth() << "/"
-                  << now.getDayOfMonth() << "/" << now.getYear() << std::endl;
-        std::cout << "Time is: " << now.getHour() << ":" << now.getMinute()
-                  << ":" << std::setprecision(50) << now.getSecond()
-                  << std::endl;
+        std::cout << "Epoch seconds: " << sys::DateTime::getEpochSeconds() << std::endl;
+        std::cout << "Today is: " << now.getMonth() << "/" << now.getDayOfMonth() << "/"
+                  << now.getYear() << std::endl;
+        std::cout << "Time is: " << now.getHour() << ":" << now.getMinute() << ":"
+                  << std::setprecision(50) << now.getSecond() << std::endl;
         if (now.getDST())
             std::cout << "Daylight Savings Time is in effect" << std::endl;
         std::cout << "formatted: " << now.format() << std::endl;
 
         sys::UTCDateTime gmnow;
-        std::cout << "Today (UTC) is: " << gmnow.getMonth() << "/"
-                  << gmnow.getDayOfMonth() << "/" << gmnow.getYear()
-                  << std::endl;
-        std::cout << "Time (UTC) is: " << gmnow.getHour() << ":"
-                  << gmnow.getMinute() << ":" << std::setprecision(50)
-                  << gmnow.getSecond() << std::endl;
+        std::cout << "Today (UTC) is: " << gmnow.getMonth() << "/" << gmnow.getDayOfMonth() << "/"
+                  << gmnow.getYear() << std::endl;
+        std::cout << "Time (UTC) is: " << gmnow.getHour() << ":" << gmnow.getMinute() << ":"
+                  << std::setprecision(50) << gmnow.getSecond() << std::endl;
         std::cout << "formatted: " << gmnow.format() << std::endl;
 
         sys::RealTimeStopWatch sw;
@@ -92,10 +88,8 @@ int main(int, char**)
         std::cout << "Finish Loop 3" << std::endl;
         std::cout << "clock(): " << clock() / CLOCKS_PER_SEC << std::endl;
         std::cout << "time(): " << time(nullptr) << std::endl;
-        std::cout << "RTStop: " << std::setprecision(50) << sw.stop()
-                  << std::endl;
-        std::cout << "CStop: " << std::setprecision(50) << csw.stop()
-                  << std::endl;
+        std::cout << "RTStop: " << std::setprecision(50) << sw.stop() << std::endl;
+        std::cout << "CStop: " << std::setprecision(50) << csw.stop() << std::endl;
     }
     catch (except::Throwable& t)
     {

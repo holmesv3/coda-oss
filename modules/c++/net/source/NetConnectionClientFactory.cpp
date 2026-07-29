@@ -47,16 +47,13 @@ net::NetConnection* net::NetConnectionClientFactory::create(const net::URL& url)
     if (!hostEnt)
     {
         throw sys::SocketException(
-                Ctxt("net::getHostByName() failed for creation \"" +
-                     url.toString() + "\""));
+                Ctxt("net::getHostByName() failed for creation \"" + url.toString() + "\""));
     }
 
     net::SocketAddress sa;
     sa.setPort(url.getPort());
     // Add this to class???
-    ::memcpy(&(sa.getAddress().sin_addr.s_addr),
-             hostEnt->h_addr,
-             hostEnt->h_length);
+    ::memcpy(&(sa.getAddress().sin_addr.s_addr), hostEnt->h_addr, hostEnt->h_length);
 
     return newConnection(factory.create(sa));
 }
@@ -67,8 +64,7 @@ net::NetConnection* net::NetConnectionClientFactory::newConnection(
     return new net::NetConnection(std::move(toServer));
 }
 
-net::NetConnection* net::NetConnectionClientFactory::create(
-        const net::SocketAddress& address)
+net::NetConnection* net::NetConnectionClientFactory::create(const net::SocketAddress& address)
 {
     return newConnection(net::TCPClientSocketFactory().create(address));
 }

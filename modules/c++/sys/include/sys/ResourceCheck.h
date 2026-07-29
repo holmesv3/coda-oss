@@ -47,8 +47,7 @@ namespace sys
  */
 bool canProcessFit(size_t jobMemBytes,
                    size_t systemMemBytes,
-                   size_t reservedBytes = static_cast<size_t>(1024) * 1024 *
-                           1024 * 4,
+                   size_t reservedBytes = static_cast<size_t>(1024) * 1024 * 1024 * 4,
                    double margin = 0.95);
 
 /*!
@@ -63,8 +62,7 @@ bool canProcessFit(size_t jobMemBytes,
  * \return the number of bytes available
  */
 size_t getAvailableMem(size_t systemMemBytes,
-                       size_t reservedBytes = static_cast<size_t>(1024) * 1024 *
-                               1024 * 4,
+                       size_t reservedBytes = static_cast<size_t>(1024) * 1024 * 1024 * 4,
                        double margin = 0.95);
 
 }

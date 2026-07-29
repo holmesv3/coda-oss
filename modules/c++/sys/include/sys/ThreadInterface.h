@@ -122,10 +122,7 @@ struct CODA_OSS_API ThreadInterface : public Runnable
         initialize(target, NORMAL_PRIORITY, DEFAULT_LEVEL, name);
     }
 
-    ThreadInterface(Runnable* target,
-                    const std::string& name,
-                    int level,
-                    int priority) :
+    ThreadInterface(Runnable* target, const std::string& name, int level, int priority) :
         mIsSelf(false)
     {
         initialize(target, priority, level, name);
@@ -139,11 +136,10 @@ struct CODA_OSS_API ThreadInterface : public Runnable
         // etc).
         if (isRunning())
         {
-            std::cerr
-                    << Ctxt(str::Format("Thread object [%s] destructed before "
-                                        "thread terminated, aborting program.",
-                                        getName().c_str()))
-                    << std::endl;
+            std::cerr << Ctxt(str::Format("Thread object [%s] destructed before "
+                                          "thread terminated, aborting program.",
+                                          getName().c_str()))
+                      << std::endl;
             abort();
         }
 
@@ -266,10 +262,7 @@ private:
      *  initialized
      *
      */
-    void initialize(Runnable* target,
-                    int priority,
-                    int level,
-                    const std::string& name)
+    void initialize(Runnable* target, int priority, int level, const std::string& name)
     {
         mTarget = target;
         mName = name;

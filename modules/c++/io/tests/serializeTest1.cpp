@@ -132,8 +132,7 @@ int main(int, char**)
 
     if (a == a2)
     {
-        cout << "Successfully copied object a2 through object a via \"A.save\""
-             << endl;
+        cout << "Successfully copied object a2 through object a via \"A.save\"" << endl;
         a2.serialize(out);
     }
     else

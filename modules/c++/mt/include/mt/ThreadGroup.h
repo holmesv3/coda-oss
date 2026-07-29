@@ -156,11 +156,10 @@ private:
          *                   to execute on. If NULL, no affinity preferences
          *                   will be enforced.
          */
-        ThreadGroupRunnable(
-                std::unique_ptr<sys::Runnable>&& runnable,
-                mt::ThreadGroup& parentThreadGroup,
-                std::unique_ptr<CPUAffinityThreadInitializer>&& threadInit =
-                        std::unique_ptr<CPUAffinityThreadInitializer>(nullptr));
+        ThreadGroupRunnable(std::unique_ptr<sys::Runnable>&& runnable,
+                            mt::ThreadGroup& parentThreadGroup,
+                            std::unique_ptr<CPUAffinityThreadInitializer>&& threadInit =
+                                    std::unique_ptr<CPUAffinityThreadInitializer>(nullptr));
 
         ThreadGroupRunnable(const ThreadGroupRunnable&) = delete;
         ThreadGroupRunnable& operator=(const ThreadGroupRunnable&) = delete;

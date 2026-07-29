@@ -89,17 +89,14 @@ TEST_CASE(test1DPolyfitLarge)
         xObsShifted[ii] = xObs[ii] + OFFSET;
     }
 
-    const OneD<double> polyShifted =
-            fit(NUM_OBS, xObsShifted, yObs, POLY_ORDER);
+    const OneD<double> polyShifted = fit(NUM_OBS, xObsShifted, yObs, POLY_ORDER);
 
     // If we evaluate the polynomials at equivalent x positions, we better
     // have almost the same values
     // TODO: Seems like I need a bigger epsilon here than I'd expect
     for (size_t ii = 0; ii < NUM_OBS; ++ii)
     {
-        TEST_ASSERT_ALMOST_EQ_EPS(polyUnshifted(xObs[ii]),
-                                  polyShifted(xObsShifted[ii]),
-                                  0.0005);
+        TEST_ASSERT_ALMOST_EQ_EPS(polyUnshifted(xObs[ii]), polyShifted(xObsShifted[ii]), 0.0005);
     }
 
     // Calculate the mean residual error to determine goodness of fit.
@@ -314,8 +311,7 @@ TEST_CASE(testVectorValuedOrderChange)
 
     // Zeroed values in the X component
     {
-        const OneD<VectorN<3, double>> poly =
-                fit(indep, compZeroed, comp1, comp2, 2);
+        const OneD<VectorN<3, double>> poly = fit(indep, compZeroed, comp1, comp2, 2);
 
         TEST_ASSERT_EQ(poly.order(), static_cast<size_t>(2));
 
@@ -337,8 +333,7 @@ TEST_CASE(testVectorValuedOrderChange)
 
     // Zeroed values in the Y component
     {
-        const OneD<VectorN<3, double>> poly =
-                fit(indep, comp1, compZeroed, comp2, 2);
+        const OneD<VectorN<3, double>> poly = fit(indep, comp1, compZeroed, comp2, 2);
 
         TEST_ASSERT_EQ(poly.order(), static_cast<size_t>(2));
 
@@ -360,8 +355,7 @@ TEST_CASE(testVectorValuedOrderChange)
 
     // Zeroed values in the Z component
     {
-        const OneD<VectorN<3, double>> poly =
-                fit(indep, comp1, comp2, compZeroed, 2);
+        const OneD<VectorN<3, double>> poly = fit(indep, comp1, comp2, compZeroed, 2);
 
         TEST_ASSERT_EQ(poly.order(), static_cast<size_t>(2));
 
@@ -382,7 +376,6 @@ TEST_CASE(testVectorValuedOrderChange)
     }
 }
 
-TEST_MAIN(TEST_CHECK(test1DPolyfit); TEST_CHECK(test1DPolyfitLarge);
-          TEST_CHECK(test2DPolyfit);
+TEST_MAIN(TEST_CHECK(test1DPolyfit); TEST_CHECK(test1DPolyfitLarge); TEST_CHECK(test2DPolyfit);
           TEST_CHECK(test2DPolyfitLarge);
           TEST_CHECK(testVectorValuedOrderChange);)

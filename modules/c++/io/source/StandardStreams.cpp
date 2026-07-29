@@ -31,8 +31,8 @@ void io::StandardOutStream::write(const void* buffer, sys::Size_T len)
     _STDSTREAM_END_CS_SEMICOLON_
     // int returnVal = fwrite(b, len, len, stdout);
     if (!std::cout.good())
-        throw except::IOException(Ctxt(str::Format(
-                "std::cout stream is bad after requested write: (%d)", len)));
+        throw except::IOException(
+                Ctxt(str::Format("std::cout stream is bad after requested write: (%d)", len)));
 }
 
 void io::StandardOutStream::flush()
@@ -49,8 +49,8 @@ void io::StandardErrStream::write(const void* buffer, sys::Size_T len)
     // int returnVal = fwrite(b, len, len, stderr);
     _STDSTREAM_END_CS_SEMICOLON_
     if (!std::cerr.good())
-        throw except::IOException(Ctxt(str::Format(
-                "std::cerr stream is bad after requested write: (%d)", len)));
+        throw except::IOException(
+                Ctxt(str::Format("std::cerr stream is bad after requested write: (%d)", len)));
 }
 
 void io::StandardErrStream::flush()

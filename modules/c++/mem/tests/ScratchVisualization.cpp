@@ -33,9 +33,7 @@ namespace
 {
 struct Operation
 {
-    Operation(const std::string& op_,
-              const std::string& name_,
-              const size_t bytes_) :
+    Operation(const std::string& op_, const std::string& name_, const size_t bytes_) :
         op(op_), name(name_), bytes(bytes_)
     {
     }
@@ -125,8 +123,7 @@ public:
         mCSSFile << "border-width: 1px;\n";
         mCSSFile << "}\n";
 
-        mHTMLFile << "<div id=\"" << op.name << "\">&nbsp;" << op.name[0]
-                  << "</div>\n";
+        mHTMLFile << "<div id=\"" << op.name << "\">&nbsp;" << op.name[0] << "</div>\n";
     }
 
     /*!
@@ -136,29 +133,24 @@ public:
      * \param[out] currentOperations Operations for this iteration
      * \param[out] scratch Scratch memory object
      */
-    void handlePrevOps(std::vector<Operation>& currentOperations,
-                       mem::ScratchMemory& scratch)
+    void handlePrevOps(std::vector<Operation>& currentOperations, mem::ScratchMemory& scratch)
     {
         for (size_t ii = 0; ii < mPrevOperations.size(); ++ii)
         {
             const std::string segmentName =
-                    std::string(1, mPrevOperations.at(ii).name[0]) +
-                    str::toString(mIteration);
+                    std::string(1, mPrevOperations.at(ii).name[0]) + str::toString(mIteration);
 
             if (mPrevOperations.at(ii).op == "put")
             {
-                scratch.put<sys::ubyte>(segmentName,
-                                        mPrevOperations.at(ii).bytes,
-                                        1,
-                                        1);
-                currentOperations.push_back(Operation(
-                        "put", segmentName, mPrevOperations.at(ii).bytes));
+                scratch.put<sys::ubyte>(segmentName, mPrevOperations.at(ii).bytes, 1, 1);
+                currentOperations.push_back(
+                        Operation("put", segmentName, mPrevOperations.at(ii).bytes));
             }
             else if (mPrevOperations.at(ii).op == "release")
             {
                 scratch.release(segmentName);
-                currentOperations.push_back(Operation(
-                        "release", segmentName, mPrevOperations.at(ii).bytes));
+                currentOperations.push_back(
+                        Operation("release", segmentName, mPrevOperations.at(ii).bytes));
             }
         }
     }
@@ -182,27 +174,22 @@ public:
         const size_t numElements = (rand() % 150) + 20;
         unsigned int releaseIfThree = (rand() % 3) + 1;
 
-        if ((releaseIfThree == 3) && (currentOperations.size() > 1) &&
-            !notReleasedKeys.empty())
+        if ((releaseIfThree == 3) && (currentOperations.size() > 1) && !notReleasedKeys.empty())
         {
             unsigned int keyToReleaseIndex = (rand() % notReleasedKeys.size());
-            const std::string segmentName =
-                    std::string(1, notReleasedKeys.at(keyToReleaseIndex)) +
+            const std::string segmentName = std::string(1, notReleasedKeys.at(keyToReleaseIndex)) +
                     str::toString(mIteration);
 
             scratch.release(segmentName);
             notReleasedKeys.erase(notReleasedKeys.begin() + keyToReleaseIndex);
 
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
         }
         else
         {
-            const std::string segmentName =
-                    std::string(1, bufferName) + str::toString(mIteration);
+            const std::string segmentName = std::string(1, bufferName) + str::toString(mIteration);
             scratch.put<sys::ubyte>(segmentName, numElements, 1, 1);
-            currentOperations.push_back(
-                    Operation("put", segmentName, numElements));
+            currentOperations.push_back(Operation("put", segmentName, numElements));
             notReleasedKeys.push_back(bufferName);
 
             ++bufferName;
@@ -232,11 +219,9 @@ public:
         // Put operations
         if (testIter == 0 || testIter == 1 || testIter == 2 || testIter == 5)
         {
-            const std::string segmentName =
-                    std::string(1, bufferName) + str::toString(mIteration);
+            const std::string segmentName = std::string(1, bufferName) + str::toString(mIteration);
             scratch.put<sys::ubyte>(segmentName, numElements, 1, 1);
-            currentOperations.push_back(
-                    Operation("put", segmentName, numElements));
+            currentOperations.push_back(Operation("put", segmentName, numElements));
             ++testIter;
             ++bufferName;
         }
@@ -245,8 +230,7 @@ public:
             const std::string segmentName =
                     std::string(1, bufferName - 2) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 4)
@@ -254,8 +238,7 @@ public:
             const std::string segmentName =
                     std::string(1, bufferName - 1) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 6)
@@ -263,8 +246,7 @@ public:
             const std::string segmentName =
                     std::string(1, bufferName - 4) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
             testIter = 0;
         }
     }
@@ -291,11 +273,9 @@ public:
 
         if (testIter == 0 || testIter == 1 || testIter == 3 || testIter == 5)
         {
-            const std::string segmentName =
-                    std::string(1, bufferName) + str::toString(mIteration);
+            const std::string segmentName = std::string(1, bufferName) + str::toString(mIteration);
             scratch.put<sys::ubyte>(segmentName, numElements, 1, 1);
-            currentOperations.push_back(
-                    Operation("put", segmentName, numElements));
+            currentOperations.push_back(Operation("put", segmentName, numElements));
             ++testIter;
             ++bufferName;
         }
@@ -304,8 +284,7 @@ public:
             const std::string segmentName =
                     std::string(1, bufferName - 1) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 4)
@@ -313,8 +292,7 @@ public:
             const std::string segmentName =
                     std::string(1, bufferName - 3) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 6)
@@ -322,8 +300,7 @@ public:
             const std::string segmentName =
                     std::string(1, bufferName - 2) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(
-                    Operation("release", segmentName, numElements));
+            currentOperations.push_back(Operation("release", segmentName, numElements));
             testIter = 0;
         }
     }
@@ -344,12 +321,8 @@ int main(int argc, char** argv)
 {
     cli::ArgumentParser parser;
 
-    parser.setDescription(
-            "Software to visualize scratch memory test cases in HTML/CSS");
-    parser.addArgument("--test",
-                       "Select which test case to run",
-                       cli::STORE,
-                       "test")
+    parser.setDescription("Software to visualize scratch memory test cases in HTML/CSS");
+    parser.addArgument("--test", "Select which test case to run", cli::STORE, "test")
             ->setDefault("random");
 
     const cli::Results* options(parser.parse(argc, argv));
@@ -386,24 +359,15 @@ int main(int argc, char** argv)
 
         if (testType == "random")
         {
-            visualize.randomTest(currentOperations,
-                                 bufferName,
-                                 notReleasedKeys,
-                                 scratch);
+            visualize.randomTest(currentOperations, bufferName, notReleasedKeys, scratch);
         }
         else if (testType == "concurrent")
         {
-            visualize.concurrentBlockTest(currentOperations,
-                                          bufferName,
-                                          testIter,
-                                          scratch);
+            visualize.concurrentBlockTest(currentOperations, bufferName, testIter, scratch);
         }
         else if (testType == "connected")
         {
-            visualize.connectedBlockTest(currentOperations,
-                                         bufferName,
-                                         testIter,
-                                         scratch);
+            visualize.connectedBlockTest(currentOperations, bufferName, testIter, scratch);
         }
         else
         {
@@ -426,8 +390,8 @@ int main(int argc, char** argv)
         // Goes through each buffer in order
         for (size_t ii = 0; ii < currentOperations.size(); ++ii)
         {
-            currentOperations.at(ii).buffer = scratch.getBufferView<sys::ubyte>(
-                    currentOperations.at(ii).name);
+            currentOperations.at(ii).buffer =
+                    scratch.getBufferView<sys::ubyte>(currentOperations.at(ii).name);
         }
 
         visualize.setStartPtr(currentOperations);

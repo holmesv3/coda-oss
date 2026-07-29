@@ -213,15 +213,13 @@ TEST_CASE(testAcceleration)
     poly = getRandPoly(3);
     for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(poly.acceleration(val),
-                       poly.derivative().derivative()(val));
+        TEST_ASSERT_EQ(poly.acceleration(val), poly.derivative().derivative()(val));
     }
 
     poly = getRandPoly(4);
     for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(poly.acceleration(val),
-                       poly.derivative().derivative()(val));
+        TEST_ASSERT_EQ(poly.acceleration(val), poly.derivative().derivative()(val));
     }
 }
 

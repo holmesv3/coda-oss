@@ -247,8 +247,7 @@ public:
         //  (like size_t)
         //  So, cast to double and at that point we might as well just call
         //  std::sqrt()
-        return static_cast<T>(
-                std::sqrt(static_cast<double>(row * row + col * col)));
+        return static_cast<T>(std::sqrt(static_cast<double>(row * row + col * col)));
     }
 };
 

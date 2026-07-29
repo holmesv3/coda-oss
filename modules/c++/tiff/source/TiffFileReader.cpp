@@ -34,8 +34,7 @@
 void tiff::FileReader::openFile(const std::string& fileName)
 {
     if (mInput.isOpen())
-        throw except::Exception(
-                Ctxt("Last file not closed; call close() first."));
+        throw except::Exception(Ctxt("Last file not closed; call close() first."));
 
     if (fileName == "-")
         throw except::Exception(Ctxt("Cannot read TIFF from std::cin"));
@@ -80,8 +79,7 @@ void tiff::FileReader::close()
 tiff::ImageReader* tiff::FileReader::operator[](const sys::Uint32_T index) const
 {
     if (index >= mImages.size())
-        throw except::Exception(
-                Ctxt(str::Format("Index out of range: %d", index)));
+        throw except::Exception(Ctxt(str::Format("Index out of range: %d", index)));
 
     return mImages[index];
 }
@@ -109,8 +107,7 @@ void tiff::FileReader::getData(unsigned char* buffer,
                                const sys::Uint32_T imageIndex)
 {
     if (imageIndex >= mImages.size())
-        throw except::Exception(
-                Ctxt(str::Format("Index out of range", imageIndex)));
+        throw except::Exception(Ctxt(str::Format("Index out of range", imageIndex)));
 
     mImages[imageIndex]->getData(buffer, numElementsToRead);
 }

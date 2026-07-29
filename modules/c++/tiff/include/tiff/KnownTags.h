@@ -76,8 +76,7 @@ struct CODA_OSS_API KnownTags final
     static constexpr auto BITS_PER_SAMPLE = "BitsPerSample";
     static constexpr auto COMPRESSION = "Compression";
     static constexpr auto SAMPLES_PER_PIXEL = "SamplesPerPixel";
-    static constexpr auto PHOTOMETRIC_INTERPRETATION =
-            "PhotometricInterpretation";
+    static constexpr auto PHOTOMETRIC_INTERPRETATION = "PhotometricInterpretation";
     static constexpr auto SAMPLE_FORMAT = "SampleFormat";
 
     /**
@@ -92,9 +91,7 @@ struct CODA_OSS_API KnownTags final
      * @param name
      *   the name identifier to add as (i.e. "ImageWidth")
      *****************************************************************/
-    void addEntry(const unsigned short tag,
-                  const unsigned short type,
-                  const std::string& name);
+    void addEntry(const unsigned short tag, const unsigned short type, const std::string& name);
 
 private:
     //! The name to tag identifier map

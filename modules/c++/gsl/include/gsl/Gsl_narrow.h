@@ -62,9 +62,7 @@ template <typename Exception>
 
 template <class T, class U>
 struct is_same_signedness final
-    : public std::integral_constant<bool,
-                                    std::is_signed<T>::value ==
-                                            std::is_signed<U>::value>
+    : public std::integral_constant<bool, std::is_signed<T>::value == std::is_signed<U>::value>
 {
 };
 
@@ -81,9 +79,7 @@ CODA_OSS_disable_warning_push
 CODA_OSS_disable_warning_pop
 
         CODA_OSS_disable_warning_push
-#if defined(_MSC_VER) && \
-        (_MSC_VER >=     \
-         1928)  // don't want to trigger "unknown warning" warning :-)
+#if defined(_MSC_VER) && (_MSC_VER >= 1928)  // don't want to trigger "unknown warning" warning :-)
 #pragma warning(disable : 26472)  // Don't use a static_cast for arithmetic
                                   // conversions. Use brace initialization,
                                   // gsl::narrow_cast or gsl::narrow (type.1).
@@ -96,8 +92,7 @@ CODA_OSS_disable_warning_pop
 CODA_OSS_disable_warning_pop
 
         CODA_OSS_disable_warning_push
-                CODA_OSS_UNREFERENCED_FORMAL_PARAMETER template <class T,
-                                                                 class U>
+                CODA_OSS_UNREFERENCED_FORMAL_PARAMETER template <class T, class U>
                 constexpr T narrow2_(T t, U u) noexcept(false)
 {
     return (!is_same_signedness<T, U>::value && ((t < T{}) != (u < U{})))

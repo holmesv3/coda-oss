@@ -46,8 +46,7 @@ public:
      */
     std::unique_ptr<CPUAffinityThreadInitializerWin32> newThreadInitializer()
     {
-        return std::unique_ptr<CPUAffinityThreadInitializerWin32>(
-                newThreadInitializerImpl());
+        return std::unique_ptr<CPUAffinityThreadInitializerWin32>(newThreadInitializerImpl());
     }
 
 private:

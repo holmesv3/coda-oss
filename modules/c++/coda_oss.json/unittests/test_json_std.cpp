@@ -93,8 +93,7 @@ TEST_CASE(TestStdOptionEmpty)
     TEST_ASSERT(startVal == deserialized);
 }
 
-TEST_MAIN(TEST_CHECK(TestStdComplex); TEST_CHECK(TestStdSharedVal);
-          TEST_CHECK(TestStdSharedNull);
+TEST_MAIN(TEST_CHECK(TestStdComplex); TEST_CHECK(TestStdSharedVal); TEST_CHECK(TestStdSharedNull);
           TEST_CHECK(TestStdUniqueVal);
           TEST_CHECK(TestStdUniqueNull);
           TEST_CHECK(TestStdOptionVal);

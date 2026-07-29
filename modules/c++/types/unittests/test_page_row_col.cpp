@@ -99,25 +99,20 @@ TEST_CASE(TestPageRowColDouble)
     TEST_ASSERT(pageRowColAssign != pageRowColA);
 
     TEST_ASSERT_ALMOST_EQ(pageRowColA.volume(), 3.1 * 5.2 * 11.3);
-    TEST_ASSERT_ALMOST_EQ(pageRowColA.normL2(),
-                          std::sqrt(3.1 * 3.1 + 5.2 * 5.2 + 11.3 * 11.3));
+    TEST_ASSERT_ALMOST_EQ(pageRowColA.normL2(), std::sqrt(3.1 * 3.1 + 5.2 * 5.2 + 11.3 * 11.3));
 
     // test arithmetic operators
     const types::PageRowCol<double> sum = pageRowColA + pageRowColB;
-    TEST_ASSERT(sum ==
-                types::PageRowCol<double>(3.1 + 1.1, 5.2 + 2.2, 11.3 + 3.3));
+    TEST_ASSERT(sum == types::PageRowCol<double>(3.1 + 1.1, 5.2 + 2.2, 11.3 + 3.3));
 
     const types::PageRowCol<double> diff = pageRowColA - pageRowColB;
-    TEST_ASSERT(diff ==
-                types::PageRowCol<double>(3.1 - 1.1, 5.2 - 2.2, 11.3 - 3.3));
+    TEST_ASSERT(diff == types::PageRowCol<double>(3.1 - 1.1, 5.2 - 2.2, 11.3 - 3.3));
 
     const types::PageRowCol<double> prod = pageRowColA * pageRowColB;
-    TEST_ASSERT(prod ==
-                types::PageRowCol<double>(3.1 * 1.1, 5.2 * 2.2, 11.3 * 3.3));
+    TEST_ASSERT(prod == types::PageRowCol<double>(3.1 * 1.1, 5.2 * 2.2, 11.3 * 3.3));
 
     const types::PageRowCol<double> div = pageRowColA / pageRowColB;
-    TEST_ASSERT(div ==
-                types::PageRowCol<double>(3.1 / 1.1, 5.2 / 2.2, 11.3 / 3.3));
+    TEST_ASSERT(div == types::PageRowCol<double>(3.1 / 1.1, 5.2 / 2.2, 11.3 / 3.3));
 }
 
 TEST_MAIN(TEST_CHECK(TestPageRowColSizeT); TEST_CHECK(TestPageRowColDouble);)

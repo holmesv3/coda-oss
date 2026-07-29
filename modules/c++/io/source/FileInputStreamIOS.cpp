@@ -24,14 +24,12 @@
 
 #if defined(USE_IO_STREAMS)
 
-io::FileInputStreamIOS::FileInputStreamIOS(const char* inputFile,
-                                           std::ios::openmode mode)
+io::FileInputStreamIOS::FileInputStreamIOS(const char* inputFile, std::ios::openmode mode)
 {
     open(inputFile, mode);
 }
 
-io::FileInputStreamIOS::FileInputStreamIOS(const std::string& inputFile,
-                                           std::ios::openmode mode)
+io::FileInputStreamIOS::FileInputStreamIOS(const std::string& inputFile, std::ios::openmode mode)
 {
     open(inputFile.c_str(), mode);
 }
@@ -87,8 +85,8 @@ void io::FileInputStreamIOS::open(const char* file, std::ios::openmode mode)
 {
     mFStream.open(file, mode);
     if (!isOpen())
-        throw except::IOException(Ctxt(
-                str::Format("File %s could not be opened for reading", file)));
+        throw except::IOException(
+                Ctxt(str::Format("File %s could not be opened for reading", file)));
 }
 void io::FileInputStreamIOS::close()
 {

@@ -28,26 +28,22 @@
 
 #include <std/filesystem>
 
-static std::filesystem::path find_unittest_file(
-        const std::filesystem::path& name)
+static std::filesystem::path find_unittest_file(const std::filesystem::path& name)
 {
-    static const auto unittests =
-            std::filesystem::path("modules") / "c++" / "zip" / "unittests";
+    static const auto unittests = std::filesystem::path("modules") / "c++" / "zip" / "unittests";
     return sys::test::findGITModuleFile("coda-oss", unittests, name);
 }
 
 static std::string txt_to_gz(const std::filesystem::path& txt_path)
 {
     const auto pid = sys::OS().getSpecialEnv("PID");
-    return txt_path.stem().string() + pid + txt_path.extension().string() +
-            ".gz";
+    return txt_path.stem().string() + pid + txt_path.extension().string() + ".gz";
 }
 
 static std::string gz_to_txt(const std::filesystem::path& gz_path)
 {
     const auto pid = sys::OS().getSpecialEnv("PID");
-    return gz_path.stem().string() + pid + gz_path.extension().string() +
-            ".txt";
+    return gz_path.stem().string() + pid + gz_path.extension().string() + ".txt";
 }
 
 TEST_CASE(gzip)

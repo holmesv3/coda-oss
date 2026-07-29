@@ -63,8 +63,7 @@ public:
     /*!
      *  Construct with date and time values.
      */
-    UTCDateTime(
-            int year, int month, int day, int hour, int minute, double second);
+    UTCDateTime(int year, int month, int day, int hour, int minute, double second);
     /*!
      *  Construct with time in milliseconds.
      */

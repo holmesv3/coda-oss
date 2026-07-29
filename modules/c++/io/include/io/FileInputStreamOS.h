@@ -83,9 +83,8 @@ public:
         FileInputStreamOS(inputFile.string())
     {
     }
-    FileInputStreamOS(
-            const char* inputFile) :  // "file.txt" could be either std::string
-                                      // or std::filesystem::path
+    FileInputStreamOS(const char* inputFile) :  // "file.txt" could be either std::string
+                                                // or std::filesystem::path
         FileInputStreamOS(std::string(inputFile))
     {
     }

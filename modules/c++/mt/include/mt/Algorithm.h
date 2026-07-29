@@ -53,8 +53,7 @@ struct Transform_par_settings final
     Transform_par_settings(std::launch policy) : policy_(policy)
     {
     }
-    Transform_par_settings(ptrdiff_t cutoff, std::launch policy) :
-        cutoff_(cutoff), policy_(policy)
+    Transform_par_settings(ptrdiff_t cutoff, std::launch policy) : cutoff_(cutoff), policy_(policy)
     {
     }
     Transform_par_settings(std::launch policy, ptrdiff_t cutoff) :
@@ -69,10 +68,9 @@ struct Transform_par_settings final
     ptrdiff_t cutoff_ = default_cutoff;
 
     // https://en.cppreference.com/w/cpp/thread/launch
-    std::launch policy_ =
-            std::launch::async;  // "the task is executed on a different thread,
-                                 // potentially by creating and launching it
-                                 // first"
+    std::launch policy_ = std::launch::async;  // "the task is executed on a different thread,
+                                               // potentially by creating and launching it
+                                               // first"
 };
 
 template <typename InputIt, typename OutputIt, typename UnaryOperation>
@@ -102,26 +100,21 @@ inline OutputIt Transform_par_(InputIt first1,
     return handle.get();
 }
 template <typename InputIt, typename OutputIt, typename UnaryOperation>
-inline OutputIt Transform_par(
-        InputIt first1,
-        InputIt last1,
-        OutputIt d_first,
-        UnaryOperation unary_op,
-        Transform_par_settings settings = Transform_par_settings{})
+inline OutputIt Transform_par(InputIt first1,
+                              InputIt last1,
+                              OutputIt d_first,
+                              UnaryOperation unary_op,
+                              Transform_par_settings settings = Transform_par_settings{})
 {
 #if CODA_OSS_mt_Algorithm_has_execution
 #if __GNUC__
     // std::execution::par is dramatically slower w/GCC than using our own ...
     // ???
-    return Transform_par_(first1,
-                          last1,
-                          d_first,
-                          unary_op,
+    return Transform_par_(first1, last1, d_first, unary_op,
                           settings);  // TODO: std::execution::par
 #else
     CODA_OSS_mark_symbol_unused(settings);
-    return std::transform(
-            std::execution::par, first1, last1, d_first, unary_op);
+    return std::transform(std::execution::par, first1, last1, d_first, unary_op);
 #endif  // __GNUC__
 #else
     return Transform_par_(first1, last1, d_first, unary_op, settings);

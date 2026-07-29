@@ -76,15 +76,13 @@ private:
 };
 }
 
-static std::string getBacktrace_(bool& supported,
-                                 std::vector<std::string>& symbolNames)
+static std::string getBacktrace_(bool& supported, std::vector<std::string>& symbolNames)
 {
     supported = true;
 
     void* stackBuffer[MAX_STACK_ENTRIES];
     int currentStackSize = backtrace(stackBuffer, MAX_STACK_ENTRIES);
-    BacktraceHelper stackSymbols(
-            backtrace_symbols(stackBuffer, currentStackSize));
+    BacktraceHelper stackSymbols(backtrace_symbols(stackBuffer, currentStackSize));
 
     std::stringstream ss;
     for (int ii = 0; ii < currentStackSize; ++ii)
@@ -127,8 +125,7 @@ public:
     }
 };
 
-static std::string getBacktrace_(bool& supported,
-                                 std::vector<std::string>& symbolNames)
+static std::string getBacktrace_(bool& supported, std::vector<std::string>& symbolNames)
 {
     supported = true;
 
@@ -142,8 +139,8 @@ static std::string getBacktrace_(bool& supported,
 
     PVOID stack[100];
     const auto frames = CaptureStackBackTrace(0, 100, stack, nullptr);
-    auto symbol = reinterpret_cast<PSYMBOL_INFO>(
-            calloc(sizeof(SYMBOL_INFO) + 256 * sizeof(char), 1));
+    auto symbol =
+            reinterpret_cast<PSYMBOL_INFO>(calloc(sizeof(SYMBOL_INFO) + 256 * sizeof(char), 1));
     if (symbol == nullptr)
     {
         return "getBacktrace_(): calloc() failed.";
@@ -155,15 +152,12 @@ static std::string getBacktrace_(bool& supported,
     for (unsigned int i = 0; i < frames; i++)
     {
         const auto address = reinterpret_cast<DWORD64>(stack[i]);
-        const auto result =
-                SymFromAddr(process, address, nullptr, symbol) == TRUE ? true
-                                                                       : false;
+        const auto result = SymFromAddr(process, address, nullptr, symbol) == TRUE ? true : false;
         if (!result)
         {
             continue;
         }
-        std::string symbolName =
-                symbol->Name == nullptr ? "<no symbol->Name>" : symbol->Name;
+        std::string symbolName = symbol->Name == nullptr ? "<no symbol->Name>" : symbol->Name;
         symbolName += "\n";
         retval += symbolName;
         symbolNames.push_back(std::move(symbolName));
@@ -180,8 +174,7 @@ static std::string getBacktrace_(bool& supported,
 #endif
 #endif  // CODA_OSS_except_Backtrace
 
-std::string except::getBacktrace(bool& supported,
-                                 std::vector<std::string>& frames)
+std::string except::getBacktrace(bool& supported, std::vector<std::string>& frames)
 {
     return getBacktrace_(supported, frames);
 }

@@ -81,8 +81,7 @@ struct Intersections final
      */
     Intersections(const std::vector<types::RowCol<PointT>>& points,
                   const types::RowCol<size_t>& dims,
-                  types::RowCol<sys::SSize_T> offset =
-                          types::RowCol<sys::SSize_T>(0, 0)) :
+                  types::RowCol<sys::SSize_T> offset = types::RowCol<sys::SSize_T>(0, 0)) :
         mDims(dims)
     {
         if (!points.empty())
@@ -124,8 +123,7 @@ struct Intersections final
             // If the pair of intersections lies outside of the image,
             // there is no intersection for this pair.
             const auto lastCol = static_cast<double>(mDims.col - 1);
-            if ((first < 0.0 && last < 0.0) ||
-                (first > lastCol && last > lastCol))
+            if ((first < 0.0 && last < 0.0) || (first > lastCol && last > lastCol))
             {
                 continue;
             }
@@ -214,11 +212,9 @@ private:
             orderPoints(r0, c0, r1, c1);
 
             // Find first and last scan line that we cross
-            sys::SSize_T sl0 = static_cast<sys::SSize_T>(
-                    std::ceil(static_cast<double>(r0)));
+            sys::SSize_T sl0 = static_cast<sys::SSize_T>(std::ceil(static_cast<double>(r0)));
 
-            sys::SSize_T sl1 = static_cast<sys::SSize_T>(
-                    std::floor(static_cast<double>(r1)));
+            sys::SSize_T sl1 = static_cast<sys::SSize_T>(std::floor(static_cast<double>(r1)));
 
             // Skip rows where the edge intersects scan line outside of image
             // Have to do this carefully though... we can't just restrict both

@@ -56,9 +56,7 @@ struct dextents final  // this is actually supposed to be an alias template with
     constexpr dextents(index_type i0, index_type i1) noexcept : exts_{i0, i1}
     {
     }
-    constexpr explicit dextents(
-            const std::array<index_type, Rank>& exts) noexcept :
-        exts_(exts)
+    constexpr explicit dextents(const std::array<index_type, Rank>& exts) noexcept : exts_(exts)
     {
     }
 
@@ -84,8 +82,7 @@ private:
 template <typename T, typename TExtents>
 class mdspan final
 {
-    coda_oss::span<T>
-            s_;  // `span` instead of a raw pointer to get more range checking.
+    coda_oss::span<T> s_;  // `span` instead of a raw pointer to get more range checking.
     TExtents ext_;
 
     // c.f., `types::RowCol`
@@ -104,8 +101,7 @@ public:
     constexpr mdspan() = default;
 
     // Again, these are supposed to be templates ...
-    mdspan(data_handle_type p, const extents_type& ext) noexcept :
-        s_(p, area(ext)), ext_(ext)
+    mdspan(data_handle_type p, const extents_type& ext) noexcept : s_(p, area(ext)), ext_(ext)
     {
     }
     mdspan(data_handle_type p, const std::array<size_type, 2>& dims) noexcept :

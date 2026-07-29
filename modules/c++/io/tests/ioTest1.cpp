@@ -33,9 +33,7 @@ int main(int argc, char** argv)
     {
         if (argc != 3)
         {
-            throw Exception(
-                    Ctxt(str::Format("Usage: %s <input file> <output file>",
-                                     argv[0])));
+            throw Exception(Ctxt(str::Format("Usage: %s <input file> <output file>", argv[0])));
         }
 
         FileInputStream fis(argv[1]);

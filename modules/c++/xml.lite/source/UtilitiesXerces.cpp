@@ -32,13 +32,11 @@ XercesLocalString::XercesLocalString(XMLCh* xmlStr) : mLocal(xmlStr)
 {
 }
 
-XercesLocalString::XercesLocalString(const XMLCh* xmlStr) :
-    mLocal(XMLString::replicate(xmlStr))
+XercesLocalString::XercesLocalString(const XMLCh* xmlStr) : mLocal(XMLString::replicate(xmlStr))
 {
 }
 
-XercesLocalString::XercesLocalString(const char* str) :
-    mLocal(XMLString::transcode(str))
+XercesLocalString::XercesLocalString(const char* str) : mLocal(XMLString::transcode(str))
 {
 }
 
@@ -84,8 +82,7 @@ XercesLocalString& XercesLocalString::operator=(const XercesLocalString& rhs)
     return *this;
 }
 
-void XercesContentHandler::characters(const XMLCh* const chars,
-                                      const XercesSize_T length)
+void XercesContentHandler::characters(const XMLCh* const chars, const XercesSize_T length)
 {
     if (mLiteHandler->vcharacters(chars, length))
     {
@@ -119,11 +116,10 @@ void XercesContentHandler::endElement(const XMLCh* const uri,
     mLiteHandler->endElement(xuri.str(), xlocalName.str(), xqname.str());
 }
 
-void XercesContentHandler::startElement(
-        const XMLCh* const uri,
-        const XMLCh* const localName,
-        const XMLCh* const qname,
-        const XercesAttributesInterface_T& attrs)
+void XercesContentHandler::startElement(const XMLCh* const uri,
+                                        const XMLCh* const localName,
+                                        const XMLCh* const qname,
+                                        const XercesAttributesInterface_T& attrs)
 {
     // We have to copy the whole array
     LiteAttributes_T attributes;
@@ -132,26 +128,21 @@ void XercesContentHandler::startElement(
         LiteAttributesNode_T attributeNode;
         attributeNode.setQName(XercesLocalString(attrs.getQName(i)).str());
 
-        assert(attributeNode.getLocalName() ==
-               XercesLocalString(attrs.getLocalName(i)).str());
+        assert(attributeNode.getLocalName() == XercesLocalString(attrs.getLocalName(i)).str());
 
         attributeNode.setUri(XercesLocalString(attrs.getURI(i)).str());
 
         attributeNode.setValue(XercesLocalString(attrs.getValue(i)).str());
 
         // don't add duplicate attributes
-        if (attributes.getIndex(attributeNode.getUri(),
-                                attributeNode.getLocalName()) == -1)
+        if (attributes.getIndex(attributeNode.getUri(), attributeNode.getLocalName()) == -1)
             attributes.add(attributeNode);
     }
 
     XercesLocalString xuri(uri);
     XercesLocalString xlocalName(localName);
     XercesLocalString xqname(qname);
-    mLiteHandler->startElement(xuri.str(),
-                               xlocalName.str(),
-                               xqname.str(),
-                               attributes);
+    mLiteHandler->startElement(xuri.str(), xlocalName.str(), xqname.str(), attributes);
 }
 
 void XercesErrorHandler::warning(const SAXParseException& /*exception*/)
@@ -243,8 +234,7 @@ std::shared_ptr<XercesContext::Impl> XercesContext::getInstance()
     static auto impl = std::make_shared<XercesContext::Impl>();
     return impl;  // increment reference count
 }
-XercesContext::XercesContext() :
-    mpImpl(getInstance())  // increment reference count
+XercesContext::XercesContext() : mpImpl(getInstance())  // increment reference count
 {
 }
 XercesContext::~XercesContext()

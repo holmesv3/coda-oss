@@ -63,8 +63,7 @@ public:
     }
 
     //! we own the ptr after this transaction
-    NetConnection(std::unique_ptr<net::Socket>&& socket) :
-        mSocket(socket.release())
+    NetConnection(std::unique_ptr<net::Socket>&& socket) : mSocket(socket.release())
     {
     }
 

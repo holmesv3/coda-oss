@@ -49,8 +49,7 @@ struct CODA_OSS_API StreamHandler : public Handler
     StreamHandler(LogLevel level = LogLevel::LOG_NOTSET);
 
     //! Constructs a StreamHandler using the specified OutputStream
-    StreamHandler(io::OutputStream* stream,
-                  LogLevel level = LogLevel::LOG_NOTSET);
+    StreamHandler(io::OutputStream* stream, LogLevel level = LogLevel::LOG_NOTSET);
     StreamHandler(std::unique_ptr<io::OutputStream>&& stream,
                   LogLevel level = LogLevel::LOG_NOTSET) :
         StreamHandler(stream.release(), level)

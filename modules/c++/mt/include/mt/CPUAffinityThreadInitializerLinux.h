@@ -37,8 +37,7 @@ namespace mt
  * \class CPUAffinityThreadInitializerLinux
  * \brief Linux-specific setting of the CPU affinity of a thread
  */
-class CPUAffinityThreadInitializerLinux
-    : public AbstractCPUAffinityThreadInitializer
+class CPUAffinityThreadInitializerLinux : public AbstractCPUAffinityThreadInitializer
 {
 public:
     /*!
@@ -48,8 +47,7 @@ public:
      *            affinity mask for the CPUs that this thread
      *            is allowed to bind to
      */
-    CPUAffinityThreadInitializerLinux(
-            std::unique_ptr<const sys::ScopedCPUMaskUnix>&& cpu);
+    CPUAffinityThreadInitializerLinux(std::unique_ptr<const sys::ScopedCPUMaskUnix>&& cpu);
 
     /*!
      * Attempt to bind to the affinity mask given during construction

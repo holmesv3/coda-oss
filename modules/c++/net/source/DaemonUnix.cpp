@@ -175,8 +175,7 @@ bool DaemonUnix::signal(sys::Pid_T pid, int sig)
     }
     else if (errno == EPERM)
     {
-        throw except::Exception(
-                Ctxt("Invalid permissions to signal existing daemon."));
+        throw except::Exception(Ctxt("Invalid permissions to signal existing daemon."));
     }
     else if (errno == EINVAL)
     {
@@ -214,8 +213,7 @@ void DaemonUnix::writePidfile()
 {
     if (!mPidfile.empty())
     {
-        std::ofstream outfile(mPidfile.c_str(),
-                              std::ios::out | std::ios::trunc);
+        std::ofstream outfile(mPidfile.c_str(), std::ios::out | std::ios::trunc);
         outfile << ::getpid() << std::endl;
         outfile.close();
     }
@@ -259,13 +257,11 @@ void DaemonUnix::redirectStreamsTo(const std::string& filename)
     }
     if (openFileFor(STDOUT_FILENO, filename, O_WRONLY | O_CREAT | O_TRUNC) < 0)
     {
-        throw except::Exception(Ctxt(
-                str::Format("Failed to open file %s for STDOUT.", filename)));
+        throw except::Exception(Ctxt(str::Format("Failed to open file %s for STDOUT.", filename)));
     }
     if (openFileFor(STDERR_FILENO, filename, O_WRONLY | O_CREAT | O_TRUNC) < 0)
     {
-        throw except::Exception(Ctxt(
-                str::Format("Failed to open file %s for STDERR.", filename)));
+        throw except::Exception(Ctxt(str::Format("Failed to open file %s for STDERR.", filename)));
     }
 }
 

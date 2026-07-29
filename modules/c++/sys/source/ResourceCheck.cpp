@@ -28,20 +28,15 @@
 namespace sys
 {
 
-bool canProcessFit(size_t jobMemBytes,
-                   size_t systemMemBytes,
-                   size_t reservedBytes,
-                   double margin)
+bool canProcessFit(size_t jobMemBytes, size_t systemMemBytes, size_t reservedBytes, double margin)
 {
     return jobMemBytes < getAvailableMem(systemMemBytes, reservedBytes, margin);
 }
 
-size_t getAvailableMem(size_t systemMemBytes,
-                       size_t reservedBytes,
-                       double margin)
+size_t getAvailableMem(size_t systemMemBytes, size_t reservedBytes, double margin)
 {
-    const auto relativeAvailable = gsl::narrow_cast<size_t>(
-            gsl::narrow_cast<double>(systemMemBytes) * margin);
+    const auto relativeAvailable =
+            gsl::narrow_cast<size_t>(gsl::narrow_cast<double>(systemMemBytes) * margin);
     if (reservedBytes > systemMemBytes)
     {
         return 0;

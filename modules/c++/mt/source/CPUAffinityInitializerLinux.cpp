@@ -42,9 +42,7 @@ std::vector<int> mergeAvailableCPUs()
     // traversal visits them before hyperthreaded CPUs
     std::vector<int> mergedCPUs;
     mergedCPUs.reserve(physicalCPUs.size() + htCPUs.size());
-    mergedCPUs.insert(mergedCPUs.end(),
-                      physicalCPUs.begin(),
-                      physicalCPUs.end());
+    mergedCPUs.insert(mergedCPUs.end(), physicalCPUs.begin(), physicalCPUs.end());
     mergedCPUs.insert(mergedCPUs.end(), htCPUs.begin(), htCPUs.end());
     return mergedCPUs;
 }
@@ -68,8 +66,7 @@ struct AvailableCPUProvider final : public AbstractNextCPUProviderLinux
             throw except::Exception(Ctxt(msg));
         }
 
-        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(
-                new sys::ScopedCPUMaskUnix());
+        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(new sys::ScopedCPUMaskUnix());
         CPU_SET_S(mCPUs.at(mNextCPUIndex++), mask->getSize(), mask->getMask());
         return std::unique_ptr<const sys::ScopedCPUMaskUnix>(mask.release());
     }
@@ -88,8 +85,7 @@ struct OffsetCPUProvider final : public AbstractNextCPUProviderLinux
 
     virtual std::unique_ptr<const sys::ScopedCPUMaskUnix> nextCPU() override
     {
-        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(
-                new sys::ScopedCPUMaskUnix());
+        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(new sys::ScopedCPUMaskUnix());
         CPU_SET_S(mNextCPU++, mask->getSize(), mask->getMask());
         return std::unique_ptr<const sys::ScopedCPUMaskUnix>(mask.release());
     }

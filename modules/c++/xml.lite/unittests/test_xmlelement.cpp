@@ -130,8 +130,7 @@ TEST_CASE(test_getElementsByTagName_duplicate)
     const auto& root = xmlParser.getRootElement();
 
     {
-        const auto duplicateElements =
-                root.getElementsByTagName("duplicate", true /*recurse*/);
+        const auto duplicateElements = root.getElementsByTagName("duplicate", true /*recurse*/);
         TEST_ASSERT_EQ(duplicateElements.size(), static_cast<size_t>(2));
         const auto& duplicate = *(duplicateElements[0]);
 
@@ -143,8 +142,7 @@ TEST_CASE(test_getElementsByTagName_duplicate)
     TEST_ASSERT_FALSE(docElements.empty());
     TEST_ASSERT_EQ(std::ssize(docElements), 1);
     {
-        const auto duplicateElements =
-                docElements[0]->getElementsByTagName("duplicate");
+        const auto duplicateElements = docElements[0]->getElementsByTagName("duplicate");
         TEST_ASSERT_EQ(std::ssize(duplicateElements), 2);
         const auto& duplicate = *(duplicateElements[0]);
 
@@ -178,23 +176,19 @@ TEST_CASE(test_getElementByTagName_nothrow)
     const auto& root = xmlParser.getRootElement();
 
     {
-        const auto pNotFound = root.getElementByTagName(std::nothrow,
-                                                        "not_found",
-                                                        true /*recurse*/);
+        const auto pNotFound =
+                root.getElementByTagName(std::nothrow, "not_found", true /*recurse*/);
         TEST_ASSERT_NULL(pNotFound);
-        const auto pDuplicate = root.getElementByTagName(std::nothrow,
-                                                         "duplicate",
-                                                         true /*recurse*/);
+        const auto pDuplicate =
+                root.getElementByTagName(std::nothrow, "duplicate", true /*recurse*/);
         TEST_ASSERT_NULL(pDuplicate);
     }
 
     const auto& doc = root.getElementByTagName("doc");
     {
-        const auto pNotFound =
-                doc.getElementByTagName(std::nothrow, "not_found");
+        const auto pNotFound = doc.getElementByTagName(std::nothrow, "not_found");
         TEST_ASSERT_NULL(pNotFound);
-        const auto pDuplicate =
-                doc.getElementByTagName(std::nothrow, "duplicate");
+        const auto pDuplicate = doc.getElementByTagName(std::nothrow, "duplicate");
         TEST_ASSERT_NULL(pDuplicate);
     }
 }
@@ -204,18 +198,14 @@ TEST_CASE(test_getElementByTagName_throw)
     test_MinidomParser xmlParser;
     const auto& root = xmlParser.getRootElement();
 
-    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("not_found",
-                                                     true /*recurse*/),
+    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("not_found", true /*recurse*/),
                             xml::lite::XMLException);
-    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("duplicate",
-                                                     true /*recurse*/),
+    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("duplicate", true /*recurse*/),
                             xml::lite::XMLException);
 
     const auto& doc = root.getElementByTagName("doc");
-    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("not_found"),
-                            xml::lite::XMLException);
-    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("duplicate"),
-                            xml::lite::XMLException);
+    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("not_found"), xml::lite::XMLException);
+    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("duplicate"), xml::lite::XMLException);
 }
 
 TEST_CASE(test_getValue)
@@ -319,8 +309,7 @@ TEST_CASE(test_getValueThrows)
     }
     {
         const auto& e = root.getElementByTagName("empty", true /*recurse*/);
-        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(e),
-                                except::BadCastException);
+        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(e), except::BadCastException);
     }
 }
 

@@ -40,9 +40,8 @@ void tiff::Header::deserialize(io::InputStream& input)
     input.read((sys::byte*)&mId, sizeof(mId));
     input.read((sys::byte*)&mIFDOffset, sizeof(mIFDOffset));
 
-    mDifferentByteOrdering = sys::isBigEndianSystem()
-            ? getByteOrder() != tiff::Header::MM
-            : getByteOrder() != tiff::Header::II;
+    mDifferentByteOrdering = sys::isBigEndianSystem() ? getByteOrder() != tiff::Header::MM
+                                                      : getByteOrder() != tiff::Header::II;
 
     if (mDifferentByteOrdering)
     {

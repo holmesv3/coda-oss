@@ -59,16 +59,14 @@ static std::unique_ptr<xml::lite::Element> newElement(const std::string& qname,
     elem->setUri(uri);
     return elem;
 }
-static std::unique_ptr<xml::lite::Element> newElement(
-        const xml::lite::QName& qname)
+static std::unique_ptr<xml::lite::Element> newElement(const xml::lite::QName& qname)
 {
     return newElement(qname.getName(), qname.getAssociatedUri());
 }
 
-xml::lite::Element* xml::lite::Document::createElement(
-        const std::string& qname,
-        const std::string& uri,
-        std::string characterData)
+xml::lite::Element* xml::lite::Document::createElement(const std::string& qname,
+                                                       const std::string& uri,
+                                                       std::string characterData)
 {
     auto elem = newElement(qname, uri);
     elem->setCharacterData(characterData);
@@ -89,20 +87,17 @@ std::unique_ptr<xml::lite::Element> xml::lite::Document::createElement(
     return elem;
 }
 
-void xml::lite::Document::insert(xml::lite::Element* element,
-                                 xml::lite::Element* underThis)
+void xml::lite::Document::insert(xml::lite::Element* element, xml::lite::Element* underThis)
 {
     if (element != nullptr && underThis != nullptr)
         underThis->addChild(element);
 }
 
-void xml::lite::Document::remove(xml::lite::Element* toDelete,
-                                 xml::lite::Element* fromHere)
+void xml::lite::Document::remove(xml::lite::Element* toDelete, xml::lite::Element* fromHere)
 {
     if (fromHere != nullptr && toDelete != nullptr)
     {
-        for (std::vector<xml::lite::Element*>::iterator i =
-                     fromHere->getChildren().begin();
+        for (std::vector<xml::lite::Element*>::iterator i = fromHere->getChildren().begin();
              i != fromHere->getChildren().end();
              ++i)
         {

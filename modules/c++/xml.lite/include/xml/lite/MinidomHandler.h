@@ -99,8 +99,7 @@ struct CODA_OSS_API MinidomHandler final : public ContentHandler
             mOwnDocument = false;
         return mDocument;
     }
-    std::unique_ptr<Document>& getDocument(
-            std::unique_ptr<Document>&);  // steal = true
+    std::unique_ptr<Document>& getDocument(std::unique_ptr<Document>&);  // steal = true
 
     Document* getDocument() const
     {

@@ -28,8 +28,7 @@
 
 #include <import/sys.h>
 
-std::shared_ptr<logging::Logger> logging::LoggerManager::getLoggerSharedPtr(
-        const std::string& name)
+std::shared_ptr<logging::Logger> logging::LoggerManager::getLoggerSharedPtr(const std::string& name)
 {
     std::lock_guard<std::mutex> guard(mMutex);
 
@@ -113,8 +112,7 @@ logging::Logger* logging::getLogger(const std::string& name)
     return logging::LoggerFactory::getInstance().getLogger(name);
 }
 
-std::shared_ptr<logging::Logger> logging::getLoggerSharedPtr(
-        const std::string& name)
+std::shared_ptr<logging::Logger> logging::getLoggerSharedPtr(const std::string& name)
 {
     return logging::LoggerFactory::getInstance().getLoggerSharedPtr(name);
 }

@@ -39,9 +39,8 @@ using SharedPtr = std::shared_ptr<T>;
 
 // try to make code changes a tiny bit easier?
 template <typename T>
-inline long getCount(
-        const std::shared_ptr<T>& p) noexcept  // be sure const& so that calling
-                                               // doesn't increment!
+inline long getCount(const std::shared_ptr<T>& p) noexcept  // be sure const& so that calling
+                                                            // doesn't increment!
 {
     return p.use_count();
 }

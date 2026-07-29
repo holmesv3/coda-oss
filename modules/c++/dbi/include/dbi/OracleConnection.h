@@ -46,10 +46,7 @@ public:
     /*!
      *  Default Constructor
      */
-    OracleResultSet(OCIStmt* sqlHandle,
-                    OCIError* errorHandle,
-                    unsigned int rowCount) :
-        ResultSet()
+    OracleResultSet(OCIStmt* sqlHandle, OCIError* errorHandle, unsigned int rowCount) : ResultSet()
     {
         mSQLHandle = sqlHandle;
         mErrorHandle = errorHandle;

@@ -43,23 +43,21 @@
 typedef unsigned(__stdcall* THREAD_START_FN)(void*);
 
 #if defined(USE_CREATETHREAD)
-#define __CREATETHREAD(                                              \
-        psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID) \
-    CreateThread(psa,                                                \
-                 cbStack,                                            \
-                 (LPTHREAD_START_ROUTINE)(pfnStartAddr),             \
-                 (void*)pvParam,                                     \
-                 fdwCreate,                                          \
+#define __CREATETHREAD(psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID) \
+    CreateThread(psa,                                                               \
+                 cbStack,                                                           \
+                 (LPTHREAD_START_ROUTINE)(pfnStartAddr),                            \
+                 (void*)pvParam,                                                    \
+                 fdwCreate,                                                         \
                  pdwThreadID)
 
 #else
-#define __CREATETHREAD(                                              \
-        psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID) \
-    ((HANDLE)_beginthreadex((void*)(psa),                            \
-                            (unsigned)(cbStack),                     \
-                            (THREAD_START_FN)(pfnStartAddr),         \
-                            (void*)(pvParam),                        \
-                            (unsigned)(fdwCreate),                   \
+#define __CREATETHREAD(psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID) \
+    ((HANDLE)_beginthreadex((void*)(psa),                                           \
+                            (unsigned)(cbStack),                                    \
+                            (THREAD_START_FN)(pfnStartAddr),                        \
+                            (void*)(pvParam),                                       \
+                            (unsigned)(fdwCreate),                                  \
                             (unsigned*)(pdwThreadID)))
 #endif
 namespace sys
@@ -76,15 +74,11 @@ struct CODA_OSS_API ThreadWin32 : public ThreadInterface
     {
     }
 
-    ThreadWin32(sys::Runnable* target, const std::string& name = "") :
-        ThreadInterface(target, name)
+    ThreadWin32(sys::Runnable* target, const std::string& name = "") : ThreadInterface(target, name)
     {
     }
 
-    ThreadWin32(sys::Runnable* target,
-                const std::string& name,
-                int level,
-                int priority) :
+    ThreadWin32(sys::Runnable* target, const std::string& name, int level, int priority) :
         ThreadInterface(target, name, level, priority)
     {
     }
@@ -113,8 +107,7 @@ struct CODA_OSS_API ThreadWin32 : public ThreadInterface
 #ifdef USING_WINNT
         SwitchToThread();
 #else
-        throw sys::SystemException(
-                "Thread::yield() only supported in windows NT 4.0 or greater!");
+        throw sys::SystemException("Thread::yield() only supported in windows NT 4.0 or greater!");
 #endif
     }
 

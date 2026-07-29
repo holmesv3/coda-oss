@@ -34,8 +34,7 @@ std::string unique::generateUUID()
     GUID uuid;
     unsigned char* cResult = nullptr;
 
-    if ((UuidCreateSequential(&uuid) != RPC_S_OK) ||
-        (UuidToString(&uuid, &cResult) != RPC_S_OK))
+    if ((UuidCreateSequential(&uuid) != RPC_S_OK) || (UuidToString(&uuid, &cResult) != RPC_S_OK))
         throw unique::UUIDException("Unable to create UUID");
     std::string sResult((char*)cResult);
     RpcStringFree(&cResult);

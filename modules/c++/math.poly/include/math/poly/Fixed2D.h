@@ -85,8 +85,7 @@ public:
     }
 
     template <size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX, _OrderY, _T>& operator=(
-            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& coeff)
+    Fixed2D<_OrderX, _OrderY, _T>& operator=(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& coeff)
     {
         size_t sizeC = std::min<size_t>(_OtherOrderX, _OrderX);
         for (size_t i = 0; i <= sizeC; i++)
@@ -238,11 +237,9 @@ public:
      *  whatever order we already have
      */
     template <size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX, _OrderY, _T>& operator*=(
-            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+    Fixed2D<_OrderX, _OrderY, _T>& operator*=(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
     {
-        Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY> newPoly =
-                *this * p;
+        Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY> newPoly = *this * p;
         *this = newPoly;
     }
 
@@ -271,8 +268,7 @@ public:
         return newPoly;
     }
     template <size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX, _OrderY, _T>& operator+=(
-            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+    Fixed2D<_OrderX, _OrderY, _T>& operator+=(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
     {
         *this = *this + p;
     }
@@ -292,8 +288,7 @@ public:
     }
 
     template <size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX, _OrderY, _T>& operator-=(
-            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+    Fixed2D<_OrderX, _OrderY, _T>& operator-=(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
     {
         *this = *this + (p * -1);
         return *this;
@@ -361,11 +356,9 @@ public:
      *
      * \return Scaled polynomial of the same order as the original polynomial
      */
-    Fixed2D<_OrderX, _OrderY, _T> scaleVariable(double scaleX,
-                                                double scaleY) const
+    Fixed2D<_OrderX, _OrderY, _T> scaleVariable(double scaleX, double scaleY) const
     {
-        return ::math::poly::scaleVariable<Fixed2D<_OrderX, _OrderY, _T>>(
-                *this, scaleX, scaleY);
+        return ::math::poly::scaleVariable<Fixed2D<_OrderX, _OrderY, _T>>(*this, scaleX, scaleY);
     }
 
     /*
@@ -401,8 +394,7 @@ public:
 };
 
 template <size_t _OrderX, size_t _OrderY, typename _T>
-Fixed2D<_OrderX, _OrderY, _T> operator*(double cv,
-                                        const Fixed2D<_OrderX, _OrderY, _T>& p)
+Fixed2D<_OrderX, _OrderY, _T> operator*(double cv, const Fixed2D<_OrderX, _OrderY, _T>& p)
 {
     Fixed2D<_OrderX, _OrderY> copy(p);
 
@@ -414,8 +406,7 @@ Fixed2D<_OrderX, _OrderY, _T> operator*(double cv,
 }
 
 template <size_t _OtherOrderX, size_t _OtherOrderY, typename _T>
-std::ostream& operator<<(std::ostream& out,
-                         const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+std::ostream& operator<<(std::ostream& out, const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
 {
     for (size_t i = 0; i <= _OtherOrderX; i++)
     {

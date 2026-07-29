@@ -28,9 +28,8 @@
 
 TEST_CASE(testEndianness)
 {
-    /*const*/ auto native =
-            coda_oss::endian::native;  // "const" causes "conditional expression
-                                       // is constant."
+    /*const*/ auto native = coda_oss::endian::native;  // "const" causes "conditional expression
+                                                       // is constant."
 
     if (native == coda_oss::endian::big)
     {
@@ -49,8 +48,7 @@ static void testEndianness_std_(const std::string& testName)
 {
     /*const*/ auto native = TEndian::native;  // "const" causes "conditional
                                               // expression is constant."
-    auto endianness =
-            coda_oss::endian::native;  // "conditional expression is constant"
+    auto endianness = coda_oss::endian::native;  // "conditional expression is constant"
     if (native == TEndian::big)
     {
         TEST_ASSERT(endianness == coda_oss::endian::big);
@@ -92,8 +90,7 @@ TEST_CASE(testByte)
 {
     test_byte_<coda_oss::byte>(testName);
 #if defined(__cpp_lib_byte) && \
-        (__cpp_lib_byte >=     \
-         201603L)  // https://en.cppreference.com/w/cpp/utility/feature_test
+        (__cpp_lib_byte >= 201603L)  // https://en.cppreference.com/w/cpp/utility/feature_test
     test_byte_<std::byte>(testName);
 #endif
 }

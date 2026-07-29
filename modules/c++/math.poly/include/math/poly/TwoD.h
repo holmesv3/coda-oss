@@ -99,16 +99,14 @@ public:
     size_t orderX() const
     {
         if (empty())
-            throw except::IndexOutOfRangeException(
-                    Ctxt("Can't have an order less than zero"));
+            throw except::IndexOutOfRangeException(Ctxt("Can't have an order less than zero"));
 
         return mCoef.size() - 1;
     }
     size_t orderY() const
     {
         if (empty())
-            throw except::IndexOutOfRangeException(
-                    Ctxt("Can't have an order less than zero"));
+            throw except::IndexOutOfRangeException(Ctxt("Can't have an order less than zero"));
         return mCoef[0].order();
     }
     _T operator()(double atX, double atY) const;
@@ -124,10 +122,9 @@ public:
                                          "] is out of bounds for orderX [" +
                                          std::to_string(orderX()) + "]"));
         else if (p.order() != orderY())
-            throw except::Exception(
-                    Ctxt("OneD poly [" + std::to_string(p.order()) +
-                         "] is of the incorrect size for orderY [" +
-                         std::to_string(orderY()) + "]"));
+            throw except::Exception(Ctxt("OneD poly [" + std::to_string(p.order()) +
+                                         "] is of the incorrect size for orderY [" +
+                                         std::to_string(orderY()) + "]"));
         else
             mCoef[i] = p;
     }
@@ -217,8 +214,7 @@ public:
      *
      * \return Fx(Gx(x, y), y)
      */
-    TwoD<_T> transformInput(const math::poly::TwoD<_T>& gx,
-                            double zeroEpsilon = 0.0) const;
+    TwoD<_T> transformInput(const math::poly::TwoD<_T>& gx, double zeroEpsilon = 0.0) const;
 
     /*!
      * This evaluates y in the 2D polynomial, leaving a 1D polynomial in x

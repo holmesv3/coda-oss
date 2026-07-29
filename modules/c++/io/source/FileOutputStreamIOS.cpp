@@ -24,8 +24,7 @@
 
 #if defined(USE_IO_STREAMS)
 
-io::FileOutputStreamIOS::FileOutputStreamIOS(const char* outputFile,
-                                             int creationFlags)
+io::FileOutputStreamIOS::FileOutputStreamIOS(const char* outputFile, int creationFlags)
 {
     std::ios::openmode mode = std::ios::out;
 
@@ -36,8 +35,7 @@ io::FileOutputStreamIOS::FileOutputStreamIOS(const char* outputFile,
     open(outputFile, mode);
 }
 
-io::FileOutputStreamIOS::FileOutputStreamIOS(const std::string& outputFile,
-                                             int creationFlags)
+io::FileOutputStreamIOS::FileOutputStreamIOS(const std::string& outputFile, int creationFlags)
 {
     std::ios::openmode mode = std::ios::out;
 
@@ -58,8 +56,7 @@ void io::FileOutputStreamIOS::open(const char* file, std::ios::openmode mode)
     mFStream.open(file, mode);
     if (!isOpen())
     {
-        throw except::Error(
-                Ctxt("File could not be opened: " + std::string(file)));
+        throw except::Error(Ctxt("File could not be opened: " + std::string(file)));
     }
 }
 
@@ -80,8 +77,7 @@ void io::FileOutputStreamIOS::write(const void* buffer, size_t len)
     mFStream.write((const char*)buffer, len);
 }
 
-sys::Off_T io::FileOutputStreamIOS::seek(sys::Off_T offset,
-                                         io::Seekable::Whence whence)
+sys::Off_T io::FileOutputStreamIOS::seek(sys::Off_T offset, io::Seekable::Whence whence)
 {
     std::ios::seekdir dir;
     switch (whence)

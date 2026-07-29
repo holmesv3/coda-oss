@@ -99,8 +99,7 @@ struct CODA_OSS_API InputStream
      * \param cStr String to read data into
      * \param strLenPlusNullByte The max length we will read
      */
-    virtual sys::SSize_T readln(sys::byte* cStr,
-                                const sys::Size_T strLenPlusNullByte);
+    virtual sys::SSize_T readln(sys::byte* cStr, const sys::Size_T strLenPlusNullByte);
 
     /*!
      * The streaming occurs as follows: If the numBytes is IS_END,
@@ -113,8 +112,7 @@ struct CODA_OSS_API InputStream
      * \return         The number of bytes transferred from the
      * input stream to the output stream
      */
-    virtual sys::SSize_T streamTo(OutputStream& soi,
-                                  sys::SSize_T numBytes = IS_END);
+    virtual sys::SSize_T streamTo(OutputStream& soi, sys::SSize_T numBytes = IS_END);
 
 protected:
     /*!

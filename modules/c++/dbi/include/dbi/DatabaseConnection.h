@@ -401,8 +401,7 @@ public:
      * \param t The Throwable
      * \param c The Context
      */
-    SQLException(const except::Throwable& t, const except::Context& c) :
-        except::Exception(t, c)
+    SQLException(const except::Throwable& t, const except::Context& c) : except::Exception(t, c)
     {
     }
 

@@ -34,8 +34,7 @@ public:
     }
     virtual ~Getter() = default;
 
-    CODA_OSS_disable_warning_push CODA_OSS_DISABLE_UNREACHABLE_CODE virtual void
-    run() override
+    CODA_OSS_disable_warning_push CODA_OSS_DISABLE_UNREACHABLE_CODE virtual void run() override
     {
         for (int i = 0; i < 250; i++)
         {
@@ -69,8 +68,7 @@ public:
     }
     virtual ~Putter() = default;
 
-    CODA_OSS_disable_warning_push CODA_OSS_DISABLE_UNREACHABLE_CODE virtual void
-    run() override
+    CODA_OSS_disable_warning_push CODA_OSS_DISABLE_UNREACHABLE_CODE virtual void run() override
     {
         std::cout << "Putter::run: " << std::endl;
         std::cout << typeid(this).name() << std::endl;

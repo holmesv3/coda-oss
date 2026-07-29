@@ -58,18 +58,15 @@ void tiff::ImageReader::print(io::OutputStream& output) const
     output.write(message.str());
 }
 
-void tiff::ImageReader::getData(unsigned char* buffer,
-                                const sys::Uint32_T numElementsToRead)
+void tiff::ImageReader::getData(unsigned char* buffer, const sys::Uint32_T numElementsToRead)
 {
     // see if it is uncompressed
     tiff::IFDEntry* compression = mIFD["Compression"];
     if (compression)
     {
-        unsigned short c =
-                *(tiff::GenericType<unsigned short>*)(*compression)[0];
+        unsigned short c = *(tiff::GenericType<unsigned short>*)(*compression)[0];
         if (c != tiff::Const::CompressionType::NO_COMPRESSION)
-            throw except::Exception(
-                    Ctxt(str::Format("Unsupported compression type: %d", c)));
+            throw except::Exception(Ctxt(str::Format("Unsupported compression type: %d", c)));
     }
 
     if (mIFD["StripOffsets"])
@@ -83,16 +80,14 @@ void tiff::ImageReader::getData(unsigned char* buffer,
         sys::byteSwap(buffer, mElementSize, numElementsToRead);
 }
 
-void tiff::ImageReader::getStripData(unsigned char* buffer,
-                                     sys::Uint32_T numElementsToRead)
+void tiff::ImageReader::getStripData(unsigned char* buffer, sys::Uint32_T numElementsToRead)
 {
     sys::Uint32_T bufferOffset = 0;
 
     // figure out how far we are in the current strip
     sys::Uint32_T stripOffset = 0;
     for (sys::Uint32_T i = 0; i < mStripIndex; ++i)
-        stripOffset +=
-                *(tiff::GenericType<sys::Uint32_T>*)(*mStripByteCounts)[i];
+        stripOffset += *(tiff::GenericType<sys::Uint32_T>*)(*mStripByteCounts)[i];
     sys::Uint32_T stripPosition = mBytePosition - stripOffset;
 
     // how many bytes do we need to read?
@@ -104,17 +99,14 @@ void tiff::ImageReader::getStripData(unsigned char* buffer,
             throw except::Exception(Ctxt("Invalid strip offset index"));
 
         sys::Uint32_T stripSize =
-                *(tiff::GenericType<
-                        sys::Uint32_T>*)(*mStripByteCounts)[mStripIndex];
+                *(tiff::GenericType<sys::Uint32_T>*)(*mStripByteCounts)[mStripIndex];
 
         // Calculate what remains to be read in the current strip.
         sys::Uint32_T remainingBytesInStrip = stripSize - stripPosition;
 
         // Seek to the strip offset plus the last read position.
         sys::Uint32_T seekPos =
-                (*(tiff::GenericType<
-                        sys::Uint32_T>*)(*mStripOffsets)[mStripIndex]) +
-                stripPosition;
+                (*(tiff::GenericType<sys::Uint32_T>*)(*mStripOffsets)[mStripIndex]) + stripPosition;
 
         sys::Uint32_T thisRead = numBytesToRead;
 
@@ -143,8 +135,7 @@ void tiff::ImageReader::getStripData(unsigned char* buffer,
     }
 }
 
-void tiff::ImageReader::getTileData(unsigned char* buffer,
-                                    sys::Uint32_T numElementsToRead)
+void tiff::ImageReader::getTileData(unsigned char* buffer, sys::Uint32_T numElementsToRead)
 {
     // Get the image width and length.
     sys::Uint32_T imageElemWidth = mIFD.getImageWidth();
@@ -168,8 +159,7 @@ void tiff::ImageReader::getTileData(unsigned char* buffer,
         tileElemLength = *(tiff::GenericType<unsigned short>*)(*tileLength)[0];
 
     // Compute the number of tiles wide the image is.
-    sys::Uint32_T tilesAcross =
-            (imageElemWidth + tileElemWidth - 1) / tileElemWidth;
+    sys::Uint32_T tilesAcross = (imageElemWidth + tileElemWidth - 1) / tileElemWidth;
 
     // Determine how many bytes were used to pad the right edge.
     sys::Uint32_T widthPadding = (tileByteWidth * tilesAcross) - imageByteWidth;
@@ -192,8 +182,7 @@ void tiff::ImageReader::getTileData(unsigned char* buffer,
         // Compute the 1D tile index from the tile row and tile column.
         sys::Uint32_T tileIndex = (tileRow * tilesAcross) + tileColumn;
 
-        sys::Uint32_T paddedBytes =
-                ((tileColumn + 1) / tilesAcross) * widthPadding;
+        sys::Uint32_T paddedBytes = ((tileColumn + 1) / tilesAcross) * widthPadding;
 
         sys::Uint32_T remainingBytesThisLine =
                 tileByteWidth - (paddedBytes + (column % tileByteWidth));
@@ -206,9 +195,7 @@ void tiff::ImageReader::getTileData(unsigned char* buffer,
 
         // Seek to the tile offset plus the last read position.
         tiff::IFDEntry* tileOffsets = mIFD["TileOffsets"];
-        sys::Uint32_T seekPos =
-                (*(tiff::GenericType<
-                        sys::Uint32_T>*)(*tileOffsets)[tileIndex]) +
+        sys::Uint32_T seekPos = (*(tiff::GenericType<sys::Uint32_T>*)(*tileOffsets)[tileIndex]) +
                 (rowInTile * tileByteWidth) + colInTile;
 
         // Go to the offset.

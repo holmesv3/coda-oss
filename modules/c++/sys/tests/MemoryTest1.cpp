@@ -33,15 +33,12 @@ int main(int, char**)
         sys::OS os;
         size_t freePhysMem = 0, totalPhysMem = 0;
         os.getMemInfo(totalPhysMem, freePhysMem);
-        std::cout << "Total system memory: " << totalPhysMem << " MB"
-                  << std::endl;
-        std::cout << "Free system memory: " << freePhysMem << " MB"
-                  << std::endl;
+        std::cout << "Total system memory: " << totalPhysMem << " MB" << std::endl;
+        std::cout << "Free system memory: " << freePhysMem << " MB" << std::endl;
     }
     catch (const except::Exception& ex)
     {
-        std::cerr << "Caught except::exception: " << ex.getMessage()
-                  << std::endl;
+        std::cerr << "Caught except::exception: " << ex.getMessage() << std::endl;
         return 1;
     }
     catch (const std::exception& ex)

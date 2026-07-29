@@ -72,8 +72,7 @@ public:
      */
     std::unique_ptr<CPUAffinityThreadInitializerLinux> newThreadInitializer()
     {
-        return std::unique_ptr<CPUAffinityThreadInitializerLinux>(
-                newThreadInitializerImpl());
+        return std::unique_ptr<CPUAffinityThreadInitializerLinux>(newThreadInitializerImpl());
     }
 
 private:

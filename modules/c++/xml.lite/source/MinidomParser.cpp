@@ -28,8 +28,7 @@ xml::lite::MinidomParser::MinidomParser(bool storeEncoding)
 {
     if (!storeEncoding)
     {
-        throw std::invalid_argument(
-                "'storeEncoding' is no longer used and must always be 'true'");
+        throw std::invalid_argument("'storeEncoding' is no longer used and must always be 'true'");
     }
     mReader.setContentHandler(&mHandler);
 }
@@ -66,13 +65,11 @@ std::unique_ptr<xml::lite::Document>& xml::lite::MinidomParser::getDocument(
     return mHandler.getDocument(pDocument);
 }
 
-void xml::lite::MinidomParser::setDocument(xml::lite::Document* newDocument,
-                                           bool own)
+void xml::lite::MinidomParser::setDocument(xml::lite::Document* newDocument, bool own)
 {
     mHandler.setDocument(newDocument, own);
 }
-void xml::lite::MinidomParser::setDocument(
-        std::unique_ptr<Document>&& newDocument)
+void xml::lite::MinidomParser::setDocument(std::unique_ptr<Document>&& newDocument)
 {
     mHandler.setDocument(std::move(newDocument));
 }

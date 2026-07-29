@@ -97,14 +97,12 @@ public:
         retransmit(needRetransmit, t);
     }
 
-    void retransmit(const std::vector<std::string>& needRetransmit,
-                    const T& packet)
+    void retransmit(const std::vector<std::string>& needRetransmit, const T& packet)
     {
         for (int i = 0; i < needRetransmit.size(); i++)
         {
             SocketAddress sa(needRetransmit[i], mRetransmitPort);
-            std::unique_ptr<Socket> toRetransmit =
-                    net::TCPClientSocketFactory().create(sa);
+            std::unique_ptr<Socket> toRetransmit = net::TCPClientSocketFactory().create(sa);
             toRetransmit.send((const char*)&packet, sizeof(packet));
             toRetransmit.close();
         }
@@ -120,8 +118,7 @@ public:
             if (it == rsvped.end())
             {
                 retransmitList.push_back(mSubscribers[i]);
-                std::cout << mSubscribers[i]
-                          << " identified as needing retransmit" << std::endl;
+                std::cout << mSubscribers[i] << " identified as needing retransmit" << std::endl;
             }
         }
     }
@@ -144,11 +141,7 @@ public:
             // FD_SET(mAckChannel->getHandle(), &writers);
             assert(FD_ISSET(mAckChannel->getHandle(), &readers));
             // int rv = 1;
-            int rv = ::select(mAckChannel->getHandle() + 1,
-                              &readers,
-                              nullptr,
-                              nullptr,
-                              &tv);
+            int rv = ::select(mAckChannel->getHandle() + 1, &readers, nullptr, nullptr, &tv);
             if (rv < 0)
             {
                 throw sys::SocketException(Ctxt("Select failed"));
@@ -160,10 +153,9 @@ public:
                 mAckChannel->recvFrom(whereFrom, (char*)&myNumber, sizeof(int));
                 if (myNumber == number)
                 {
-                    std::string host =
-                            inet_ntoa(whereFrom.getAddress().sin_addr);
-                    std::cout << "Recv'd ack from: " << host
-                              << " for packet #: " << number << std::endl;
+                    std::string host = inet_ntoa(whereFrom.getAddress().sin_addr);
+                    std::cout << "Recv'd ack from: " << host << " for packet #: " << number
+                              << std::endl;
                     rsvps.push_back(host);
                 }
             }
@@ -202,12 +194,11 @@ int main(int argc, char** argv)
         for (int i = 0; i < subs.size(); i++)
             std::cout << subs[i] << std::endl;
 
-        AckMulticastSender<MyPacket> multicastSender(
-                mcastGroup,
-                mcastPort,
-                ourAckPort,
-                subs,
-                retransmitPort);  // one listener for now
+        AckMulticastSender<MyPacket> multicastSender(mcastGroup,
+                                                     mcastPort,
+                                                     ourAckPort,
+                                                     subs,
+                                                     retransmitPort);  // one listener for now
 
         MyPacket packet;
         std::string myMessage = "Hello group!";

@@ -99,8 +99,8 @@ struct DirectoryEntry
         std::string operator*() const
         {
             if (mEntry->mCurrent.empty())
-                throw except::NullPointerReference(Ctxt(
-                        "DirectoryEntry::Iterator NULL entry not allowed"));
+                throw except::NullPointerReference(
+                        Ctxt("DirectoryEntry::Iterator NULL entry not allowed"));
             return std::string(mEntry->mCurrent);
         }
         DirectoryEntry* get() const
@@ -137,10 +137,8 @@ private:
 
 }
 
-bool operator==(const sys::DirectoryEntry::Iterator& lhs,
-                const sys::DirectoryEntry::Iterator& rhs);
+bool operator==(const sys::DirectoryEntry::Iterator& lhs, const sys::DirectoryEntry::Iterator& rhs);
 
-bool operator!=(const sys::DirectoryEntry::Iterator& lhs,
-                const sys::DirectoryEntry::Iterator& rhs);
+bool operator!=(const sys::DirectoryEntry::Iterator& lhs, const sys::DirectoryEntry::Iterator& rhs);
 
 #endif  // CODA_OSS_sys_DirectoryEntry_h_INCLUDED_

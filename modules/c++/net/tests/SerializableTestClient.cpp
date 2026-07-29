@@ -64,8 +64,7 @@ int main(int argc, char** argv)
         myConn.write(outData);
         myConn.read(inData);
         inData.read((sys::byte*)buffer, sizeof(buffer));
-        cout << "Received response: \"" << buffer << "\" Back from server"
-             << endl;
+        cout << "Received response: \"" << buffer << "\" Back from server" << endl;
 
         clientBuilder.destroy(toUrl);
     }

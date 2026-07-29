@@ -48,8 +48,7 @@ int main(int argc, char** argv)
     try
     {
         if (argc != 3)
-            throw Exception(
-                    Ctxt(str::Format("Usage: %s <input> <output>", argv[0])));
+            throw Exception(Ctxt(str::Format("Usage: %s <input> <output>", argv[0])));
 
         Copy::run(argv[1], argv[2]);
     }

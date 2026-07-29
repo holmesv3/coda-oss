@@ -83,6 +83,5 @@ TEST_CASE(testMultipleTimeouts)
     }
 }
 
-TEST_MAIN(TEST_CHECK(testDefaultConstructor);
-          TEST_CHECK(testParameterizedConstructor);
+TEST_MAIN(TEST_CHECK(testDefaultConstructor); TEST_CHECK(testParameterizedConstructor);
           TEST_CHECK(testMultipleTimeouts);)

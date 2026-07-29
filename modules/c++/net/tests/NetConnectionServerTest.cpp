@@ -74,8 +74,7 @@ int main(int argc, char** argv)
     try
     {
         if (argc < 2)
-            throw Exception(
-                    str::Format("Usage: %s <port> (-mt|-st|-tp)", argv[0]));
+            throw Exception(str::Format("Usage: %s <port> (-mt|-st|-tp)", argv[0]));
 
         net::AllocStrategy* strategy = nullptr;
 
@@ -90,8 +89,7 @@ int main(int argc, char** argv)
                 strategy = new net::SingleThreadedAllocStrategy();
         }
         net::NetConnectionServer server;
-        server.initialize(new DefaultRequestHandlerFactory<EchoHandler>(),
-                          strategy);
+        server.initialize(new DefaultRequestHandlerFactory<EchoHandler>(), strategy);
         server.create(atoi(argv[1]));
     }
     catch (except::Throwable& t)

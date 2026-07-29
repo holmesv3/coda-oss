@@ -57,11 +57,9 @@ TEST_CASE(TestNullPtr)
     mem::ScopedCopyablePtr<size_t> startVal;
     json expected = nullptr;
     json serialized = startVal;
-    auto deserialized =
-            serialized.template get<mem::ScopedCopyablePtr<size_t>>();
+    auto deserialized = serialized.template get<mem::ScopedCopyablePtr<size_t>>();
     TEST_ASSERT(serialized == expected);
     TEST_ASSERT(startVal == deserialized);
 }
 
-TEST_MAIN(TEST_CHECK(TestCloneablePtr); TEST_CHECK(TestCopyablePtr);
-          TEST_CHECK(TestNullPtr);)
+TEST_MAIN(TEST_CHECK(TestCloneablePtr); TEST_CHECK(TestCopyablePtr); TEST_CHECK(TestNullPtr);)

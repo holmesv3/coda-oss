@@ -32,13 +32,12 @@
 #include "logging/StreamHandler.h"
 #include "logging/XMLFormatter.h"
 
-std::unique_ptr<logging::Logger> logging::setupLogger(
-        const path& program_,
-        const std::string& logLevel,
-        const path& logFile,
-        const std::string& logFormat,
-        size_t logCount,
-        size_t logBytes)
+std::unique_ptr<logging::Logger> logging::setupLogger(const path& program_,
+                                                      const std::string& logLevel,
+                                                      const path& logFile,
+                                                      const std::string& logFormat,
+                                                      size_t logCount,
+                                                      size_t logBytes)
 {
     const auto program = program_.string();
     std::unique_ptr<logging::Logger> log(new logging::Logger(program));
@@ -46,16 +45,14 @@ std::unique_ptr<logging::Logger> logging::setupLogger(
     // setup logging level
     auto lev = str::upper(logLevel);
     str::trim(lev);
-    const auto level = lev.empty() ? logging::LogLevel::LOG_WARNING
-                                   : logging::LogLevel(lev);
+    const auto level = lev.empty() ? logging::LogLevel::LOG_WARNING : logging::LogLevel(lev);
 
     // setup logging formatter
     std::unique_ptr<logging::Formatter> formatter;
     const auto file = str::lower(logFile.string());
     if (str::endsWith(file, ".xml"))
     {
-        formatter = std::make_unique<logging::XMLFormatter>(
-                "", "<Log image=\"" + program + "\">");
+        formatter = std::make_unique<logging::XMLFormatter>("", "<Log image=\"" + program + "\">");
     }
     else
     {
@@ -84,10 +81,9 @@ std::unique_ptr<logging::Logger> logging::setupLogger(
                 : logBytes;  // logBytes = (logBytes < 0) ? 0 : logBytes;
         if (logBytes > 0)
         {
-            logHandler.reset(new logging::RotatingFileHandler(
-                    logFile,
-                    static_cast<long>(logBytes),
-                    static_cast<int>(logCount)));
+            logHandler.reset(new logging::RotatingFileHandler(logFile,
+                                                              static_cast<long>(logBytes),
+                                                              static_cast<int>(logCount)));
         }
         // create regular logging to one file
         else

@@ -52,8 +52,7 @@ int main(int argc, char** argv)
         const size_t bufferSize = str::toType<size_t>(argv[2]) * 1024 * 1024;
 
         net::SocketAddress address(port);
-        std::unique_ptr<net::Socket> listener =
-                net::TCPServerSocketFactory().create(address);
+        std::unique_ptr<net::Socket> listener = net::TCPServerSocketFactory().create(address);
         net::SocketAddress clientAddress;
         std::unique_ptr<net::Socket> client = listener->accept(clientAddress);
 
@@ -61,8 +60,7 @@ int main(int argc, char** argv)
         sys::Uint64_T numBytes;
         client->recv(&numBytes, sizeof(sys::Uint64_T));
 
-        std::vector<sys::ubyte> bufferVec(
-                std::min<sys::Uint64_T>(numBytes, bufferSize));
+        std::vector<sys::ubyte> bufferVec(std::min<sys::Uint64_T>(numBytes, bufferSize));
         sys::ubyte* const buffer = &bufferVec[0];
 
         // Then receive all the bytes
@@ -71,8 +69,7 @@ int main(int argc, char** argv)
         while (numBytesReceived < numBytes)
         {
             const size_t numBytesToReceive =
-                    std::min<sys::Uint64_T>(bufferSize,
-                                            numBytesReceived - numBytes);
+                    std::min<sys::Uint64_T>(bufferSize, numBytesReceived - numBytes);
 
             numBytesReceived += client->recv(buffer, numBytesToReceive);
         }
@@ -85,12 +82,11 @@ int main(int argc, char** argv)
         client->close();
         listener->close();
 
-        const double numSec =
-                (stop.getTimeInMillis() - start.getTimeInMillis()) / 1000;
+        const double numSec = (stop.getTimeInMillis() - start.getTimeInMillis()) / 1000;
         const double numMB = numBytes / (1024.0 * 1024);
         const double mbPerSec = numMB / numSec;
-        std::cout << "Received " << numMB << " MB in " << numSec << " sec ("
-                  << mbPerSec << " MB / s)\n";
+        std::cout << "Received " << numMB << " MB in " << numSec << " sec (" << mbPerSec
+                  << " MB / s)\n";
 
         return 0;
     }

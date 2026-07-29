@@ -86,8 +86,7 @@ LocalDateTime::LocalDateTime(int year, int month, int day) :
     DateTime::fromMillis();
 }
 
-LocalDateTime::LocalDateTime(
-        int year, int month, int day, int hour, int minute, double second) :
+LocalDateTime::LocalDateTime(int year, int month, int day, int hour, int minute, double second) :
     mDST(-1)  // Tell mktime() we're not sure
 {
     mYear = year;
@@ -101,8 +100,7 @@ LocalDateTime::LocalDateTime(
     DateTime::fromMillis();
 }
 
-LocalDateTime::LocalDateTime(double timeInMillis) :
-    mDST(-1)  // Tell mktime() we're not sure
+LocalDateTime::LocalDateTime(double timeInMillis) : mDST(-1)  // Tell mktime() we're not sure
 {
     mTimeInMillis = timeInMillis;
     DateTime::fromMillis();
@@ -115,8 +113,7 @@ LocalDateTime::LocalDateTime(const std::string& time,
     setTime(time, format);
     DateTime::fromMillis();
 }
-LocalDateTime::LocalDateTime(const std::string& time) :
-    LocalDateTime(time, DEFAULT_DATETIME_FORMAT)
+LocalDateTime::LocalDateTime(const std::string& time) : LocalDateTime(time, DEFAULT_DATETIME_FORMAT)
 {
 }
 

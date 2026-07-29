@@ -44,16 +44,14 @@ TEST_CASE(testData)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': This function or variable may be unsafe. ...
+#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. ...
 #endif
 
             // https://en.cppreference.com/w/cpp/string/basic_string/data
             // "Modifying the past-the-end null terminator stored at
             // data()+size() to any value other than CharT() has undefined
             // behavior."
-                    std::ignore = strcpy(str::data(s), "abc");
+            std::ignore = strcpy(str::data(s), "abc");
 
     CODA_OSS_disable_warning_pop TEST_ASSERT_EQ(s, "abc");
 }
@@ -80,23 +78,19 @@ TEST_CASE(test_toupper)
         const auto w1252 = static_cast<str::Windows1252_T>(i);
         const auto w1252_upper = str::to_w1252_upper(w1252);
 
-        const auto w1252_lower = w1252 == w1252_upper
-                ? w1252
-                : str::to_w1252_lower(w1252_upper);  // round-trip
-        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252),
-                       static_cast<uint8_t>(w1252_lower));
+        const auto w1252_lower =
+                w1252 == w1252_upper ? w1252 : str::to_w1252_lower(w1252_upper);  // round-trip
+        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252), static_cast<uint8_t>(w1252_lower));
 
         if (i <= 0x7f)  // ASCII
         {
             const auto ch = static_cast<char>(i);
             const auto upper = toupper(ch);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(upper),
-                           static_cast<uint8_t>(w1252_upper));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(upper), static_cast<uint8_t>(w1252_upper));
 
             const auto lower = ch == upper ? ch : tolower(upper);  // round-trip
             TEST_ASSERT_EQ(ch, lower);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(lower),
-                           static_cast<uint8_t>(w1252_lower));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(lower), static_cast<uint8_t>(w1252_lower));
         }
     }
 }
@@ -123,23 +117,19 @@ TEST_CASE(test_tolower)
         const auto w1252 = static_cast<str::Windows1252_T>(i);
         const auto w1252_lower = str::to_w1252_lower(w1252);
 
-        const auto w1252_upper = w1252 == w1252_lower
-                ? w1252
-                : str::to_w1252_upper(w1252_lower);  // round-trip
-        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252),
-                       static_cast<uint8_t>(w1252_upper));
+        const auto w1252_upper =
+                w1252 == w1252_lower ? w1252 : str::to_w1252_upper(w1252_lower);  // round-trip
+        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252), static_cast<uint8_t>(w1252_upper));
 
         if (i <= 0x7f)  // ASCII
         {
             const auto ch = static_cast<char>(i);
             const auto lower = tolower(ch);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(lower),
-                           static_cast<uint8_t>(w1252_lower));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(lower), static_cast<uint8_t>(w1252_lower));
 
             const auto upper = ch == lower ? ch : toupper(lower);  // round-trip
             TEST_ASSERT_EQ(ch, upper);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(upper),
-                           static_cast<uint8_t>(w1252_upper));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(upper), static_cast<uint8_t>(w1252_upper));
         }
     }
 }
@@ -252,8 +242,7 @@ TEST_CASE(testContainsOnly)
 {
     TEST_ASSERT(str::containsOnly("abc", "abcdefghijklmnopqrstuvwxyz"));
     TEST_ASSERT_FALSE(str::containsOnly("abc!", "abcdefghijklmnopqrstuvwxyz"));
-    TEST_ASSERT(
-            str::containsOnly("some-cool-id", "-abcdefghijklmnopqrstuvwxyz"));
+    TEST_ASSERT(str::containsOnly("some-cool-id", "-abcdefghijklmnopqrstuvwxyz"));
     TEST_ASSERT(str::containsOnly("\n\r\t ", " \t\n\r0123456789"));
     TEST_ASSERT(str::containsOnly("1-2-3", " \t\n\r0123456789-"));
 }
@@ -273,8 +262,7 @@ TEST_CASE(testRoundDouble)
     std::cout << nv << std::endl;
     std::cout << (nv - static_cast<int>(nv)) << std::endl;
     std::cout << std::numeric_limits<double>::epsilon() << std::endl;
-    TEST_ASSERT_EQ(static_cast<int>(std::ceil(nv)),
-                   static_cast<int>(numerator));
+    TEST_ASSERT_EQ(static_cast<int>(std::ceil(nv)), static_cast<int>(numerator));
 }
 
 TEST_CASE(testEscapeForXMLNoReplace)
@@ -287,9 +275,8 @@ TEST_CASE(testEscapeForXMLNoReplace)
 
 TEST_CASE(testEscapeForXMLKitchenSink)
 {
-    std::string message(
-            "This & that with <angles> and \"quotes\" & single 'quotes' & "
-            "why not a\nnewline & \rcarriage return at the end?");
+    std::string message("This & that with <angles> and \"quotes\" & single 'quotes' & "
+                        "why not a\nnewline & \rcarriage return at the end?");
 
     const std::string expectedMessage(
             "This &amp; that with &lt;angles&gt; and &quot;quotes&quot; &amp; "
@@ -339,13 +326,11 @@ TEST_CASE(test_toStringComplexShort)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': warning STL4037: The effect of instantiating the
-                 // template std::complex for any type other than float, double,
-                 // or long double is unspecified. You can define
-                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                 // this warning
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
+                                 // template std::complex for any type other than float, double,
+                                 // or long double is unspecified. You can define
+                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                                 // this warning
 #endif
             const std::complex<short>
                     std_cx_short(1, -2);
@@ -367,13 +352,11 @@ TEST_CASE(test_toTypeComplexShort)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': warning STL4037: The effect of instantiating the
-                 // template std::complex for any type other than float, double,
-                 // or long double is unspecified. You can define
-                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                 // this warning
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
+                                 // template std::complex for any type other than float, double,
+                                 // or long double is unspecified. You can define
+                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                                 // this warning
 #endif
             const auto cx_actual = str::toType<std::complex<short>>(strValue);
     CODA_OSS_disable_warning_pop auto strActual = str::toString(cx_actual);
@@ -381,13 +364,11 @@ TEST_CASE(test_toTypeComplexShort)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': warning STL4037: The effect of instantiating the
-                 // template std::complex for any type other than float, double,
-                 // or long double is unspecified. You can define
-                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                 // this warning
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
+                                 // template std::complex for any type other than float, double,
+                                 // or long double is unspecified. You can define
+                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                                 // this warning
 #endif
             auto zactual = str::toType<types::ComplexInteger<short>>(strValue);
     CODA_OSS_disable_warning_pop strActual = str::toString(zactual);

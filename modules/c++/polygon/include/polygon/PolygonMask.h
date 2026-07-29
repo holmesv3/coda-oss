@@ -83,8 +83,7 @@ struct CODA_OSS_API PolygonMask final
      */
     PolygonMask(const std::vector<types::RowCol<double>>& points,
                 const types::RowCol<size_t>& dims,
-                types::RowCol<sys::SSize_T> offset =
-                        types::RowCol<sys::SSize_T>(0, 0));
+                types::RowCol<sys::SSize_T> offset = types::RowCol<sys::SSize_T>(0, 0));
 
     PolygonMask(const PolygonMask&) = delete;
     PolygonMask& operator=(const PolygonMask&) = delete;

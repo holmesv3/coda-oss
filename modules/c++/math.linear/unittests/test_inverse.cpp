@@ -81,5 +81,4 @@ TEST_CASE(testRightRealProperties)
     TEST_ASSERT_EQ(yy * inverse, xx);
 }
 
-TEST_MAIN(TEST_CHECK(testLeftRealProperties);
-          TEST_CHECK(testRightRealProperties);)
+TEST_MAIN(TEST_CHECK(testLeftRealProperties); TEST_CHECK(testRightRealProperties);)

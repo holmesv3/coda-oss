@@ -44,11 +44,10 @@ AbstractOS::AbstractOS() = default;
 
 AbstractOS::~AbstractOS() = default;
 
-std::vector<std::string> AbstractOS::search(
-        const std::vector<std::string>& searchPaths,
-        const std::string& fragment,
-        const std::string& extension,
-        bool recursive) const
+std::vector<std::string> AbstractOS::search(const std::vector<std::string>& searchPaths,
+                                            const std::string& fragment,
+                                            const std::string& extension,
+                                            bool recursive) const
 {
     std::vector<std::string> elementsFound;
 
@@ -62,20 +61,17 @@ std::vector<std::string> AbstractOS::search(
         logicPred.addPredicate(&extPred);
         logicPred.addPredicate(&fragPred);
 
-        elementsFound =
-                sys::FileFinder::search(logicPred, searchPaths, recursive);
+        elementsFound = sys::FileFinder::search(logicPred, searchPaths, recursive);
     }
     else if (!extension.empty())
     {
         sys::ExtensionPredicate extPred(extension);
-        elementsFound =
-                sys::FileFinder::search(extPred, searchPaths, recursive);
+        elementsFound = sys::FileFinder::search(extPred, searchPaths, recursive);
     }
     else if (!fragment.empty())
     {
         sys::FragmentPredicate fragPred(fragment);
-        elementsFound =
-                sys::FileFinder::search(fragPred, searchPaths, recursive);
+        elementsFound = sys::FileFinder::search(fragPred, searchPaths, recursive);
     }
     return elementsFound;
 }
@@ -86,8 +82,7 @@ std::vector<coda_oss::filesystem::path> AbstractOS::search(
         const std::string& extension,
         bool recursive) const
 {
-    const auto results =
-            search(convertPaths(searchPaths), fragment, extension, recursive);
+    const auto results = search(convertPaths(searchPaths), fragment, extension, recursive);
     return convertPaths(results);
 }
 
@@ -97,9 +92,7 @@ void AbstractOS::remove(const std::string& path) const
     {
         // Iterate through each entry in the directory and remove it too
         DirectoryEntry dirEntry(path);
-        for (DirectoryEntry::Iterator iter = dirEntry.begin();
-             iter != dirEntry.end();
-             ++iter)
+        for (DirectoryEntry::Iterator iter = dirEntry.begin(); iter != dirEntry.end(); ++iter)
         {
             const std::string filename(*iter);
             if (filename != "." && filename != "..")
@@ -150,8 +143,7 @@ std::string AbstractOS::getArgvPathname(const std::string& argvPathname) const
     return argvPathname.empty() ? s_argvPathname : argvPathname;
 }
 
-std::string AbstractOS::getCurrentExecutable(
-        const std::string& argvPathname) const
+std::string AbstractOS::getCurrentExecutable(const std::string& argvPathname) const
 {
     if (argvPathname.empty())
     {
@@ -180,8 +172,7 @@ std::string AbstractOS::getCurrentExecutable(
         for (const auto& pathDir : pathDirs)
         {
             candidatePathname =
-                    sys::Path::joinPaths(sys::Path::absolutePath(pathDir),
-                                         argvPathname);
+                    sys::Path::joinPaths(sys::Path::absolutePath(pathDir), argvPathname);
             if (exists(candidatePathname))
             {
                 return candidatePathname;
@@ -211,10 +202,8 @@ static bool splitEnv_(const AbstractOS& os,
         bool matches = true;
         if (pType != nullptr)
         {
-            const auto isFile =
-                    (*pType == fs::file_type::regular) && is_regular_file(val_);
-            const auto isDirectory =
-                    (*pType == fs::file_type::directory) && is_directory(val_);
+            const auto isFile = (*pType == fs::file_type::regular) && is_regular_file(val_);
+            const auto isDirectory = (*pType == fs::file_type::directory) && is_directory(val_);
             matches = isFile || isDirectory;
         }
         if (exists(val_) && matches)
@@ -230,8 +219,7 @@ bool AbstractOS::splitEnv(const std::string& envVar,
 {
     return splitEnv_(*this, envVar, result, &type);
 }
-bool AbstractOS::splitEnv(const std::string& envVar,
-                          std::vector<std::string>& result) const
+bool AbstractOS::splitEnv(const std::string& envVar, std::vector<std::string>& result) const
 {
     return splitEnv_(*this, envVar, result);
 }
@@ -283,8 +271,7 @@ void AbstractOS::appendEnv(const std::string& envVar,
     modifyEnv(*this, envVar, overwrite, empty, values);
 }
 
-static std::string getSpecialEnv_PID(const AbstractOS& os,
-                                     const std::string& envVar)
+static std::string getSpecialEnv_PID(const AbstractOS& os, const std::string& envVar)
 {
     assert((envVar == "$") || (envVar == "PID"));
     CODA_OSS_mark_symbol_unused(envVar);
@@ -292,8 +279,7 @@ static std::string getSpecialEnv_PID(const AbstractOS& os,
     return std::to_string(pid);
 }
 
-static std::string getSpecialEnv_USER(const AbstractOS& os,
-                                      const std::string& envVar)
+static std::string getSpecialEnv_USER(const AbstractOS& os, const std::string& envVar)
 {
     // $USER on *nix, %USERNAME% on Windows; make it so either one always works
     assert((envVar == "USER") || (envVar == "USERNAME"));
@@ -305,8 +291,7 @@ static std::string getSpecialEnv_USER(const AbstractOS& os,
 #endif
 }
 
-static std::string getSpecialEnv_HOME(const AbstractOS& os,
-                                      const std::string& envVar)
+static std::string getSpecialEnv_HOME(const AbstractOS& os, const std::string& envVar)
 {
     // $HOME on *nix, %USERPROFILE% on Windows; make it so either one always
     // works
@@ -335,16 +320,14 @@ static std::string getSpecialEnv_HOME(const AbstractOS& os,
     return paths[0];
 }
 
-static std::string getSpecialEnv_Configuration(const AbstractOS&,
-                                               const std::string& envVar)
+static std::string getSpecialEnv_Configuration(const AbstractOS&, const std::string& envVar)
 {
     assert(envVar == "Configuration");
     CODA_OSS_mark_symbol_unused(envVar);
     // in Visual Studio, by default this is usually "Debug" and "Release"
     return sys::debug_build() ? "Debug" : "Release";
 }
-static std::string getSpecialEnv_Platform(const AbstractOS&,
-                                          const std::string& envVar)
+static std::string getSpecialEnv_Platform(const AbstractOS&, const std::string& envVar)
 {
     assert((envVar == "Platform") || (envVar == "HOSTTYPE"));
 
@@ -362,8 +345,7 @@ static std::string getSpecialEnv_Platform(const AbstractOS&,
 }
 
 // https://stackoverflow.com/questions/13794130/visual-studio-how-to-check-used-c-platform-toolset-programmatically
-static std::string getSpecialEnv_PlatformToolset(const AbstractOS&,
-                                                 const std::string& envVar)
+static std::string getSpecialEnv_PlatformToolset(const AbstractOS&, const std::string& envVar)
 {
     assert(envVar == "PlatformToolset");
     CODA_OSS_mark_symbol_unused(envVar);
@@ -392,12 +374,10 @@ static std::string getSpecialEnv_SECONDS_()
 {
     // https://en.cppreference.com/w/cpp/chrono/c/difftime
     static const auto start = std::time(nullptr);
-    const auto diff =
-            static_cast<int64_t>(std::difftime(std::time(nullptr), start));
+    const auto diff = static_cast<int64_t>(std::difftime(std::time(nullptr), start));
     return std::to_string(diff);
 }
-static std::string getSpecialEnv_SECONDS(const AbstractOS&,
-                                         const std::string& envVar)
+static std::string getSpecialEnv_SECONDS(const AbstractOS&, const std::string& envVar)
 {
     // https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
     // "This variable expands to the number of seconds since the shell was
@@ -412,15 +392,13 @@ CODA_OSS_disable_warning_push
 #pragma warning(disable : 26426)  // Global initializer calls a non-constexpr
                                   // function '...' (i.22).
 #endif
-        static std::string strUnusedSeconds =
-                getSpecialEnv_SECONDS_();  // "start" the "shell"
+        static std::string strUnusedSeconds = getSpecialEnv_SECONDS_();  // "start" the "shell"
 CODA_OSS_disable_warning_pop
 
         // See
         // https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
         // and https://wiki.bash-hackers.org/syntax/shellvars
-        typedef std::string (*get_env_fp)(const AbstractOS&,
-                                          const std::string&);
+        typedef std::string (*get_env_fp)(const AbstractOS&, const std::string&);
 // For some special variables, a separate function may be needed;
 // others can be done in-line.
 static const std::map<std::string, get_env_fp> s_get_env{
@@ -456,8 +434,7 @@ std::string AbstractOS::getSpecialEnv(const std::string& envVar) const
     if (it == s_get_env.end())
     {
         // see sys::OSUnix::getEnv()
-        throw sys::SystemException(
-                Ctxt("Unable to get special environment variable: " + envVar));
+        throw sys::SystemException(Ctxt("Unable to get special environment variable: " + envVar));
     }
 
     // call the function if there is one
@@ -493,9 +470,8 @@ std::string AbstractOS::getSpecialEnv(const std::string& envVar) const
     }
 
     // should explicitly handle all env. vars in some way
-    throw sys::SystemException(Ctxt(
-            "Unable to determine value for special environment variable: " +
-            envVar));
+    throw sys::SystemException(
+            Ctxt("Unable to determine value for special environment variable: " + envVar));
 }
 
 }

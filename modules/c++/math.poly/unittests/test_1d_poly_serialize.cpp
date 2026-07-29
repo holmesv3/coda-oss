@@ -51,9 +51,7 @@ TEST_CASE(testOneDDoubleSerialize)
     //! verify the result matches
     for (size_t ii = 0; ii < in.order() + 1; ++ii)
     {
-        TEST_ASSERT_ALMOST_EQ_EPS(in[ii],
-                                  out[ii],
-                                  std::numeric_limits<double>::epsilon());
+        TEST_ASSERT_ALMOST_EQ_EPS(in[ii], out[ii], std::numeric_limits<double>::epsilon());
     }
 }
 
@@ -79,9 +77,7 @@ TEST_CASE(testOneDFloatSerialize)
     //! verify the result matches
     for (size_t ii = 0; ii < in.order() + 1; ++ii)
     {
-        TEST_ASSERT_ALMOST_EQ_EPS(in[ii],
-                                  out[ii],
-                                  std::numeric_limits<float>::epsilon());
+        TEST_ASSERT_ALMOST_EQ_EPS(in[ii], out[ii], std::numeric_limits<float>::epsilon());
     }
 }
 

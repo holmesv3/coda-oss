@@ -60,8 +60,7 @@ int main(int argc, char** argv)
         toServer->read((char*)&length, 4);
         toServer->read(recvThis, length);
 
-        cout << "Received response: \"" << recvThis << "\" Back from server"
-             << endl;
+        cout << "Received response: \"" << recvThis << "\" Back from server" << endl;
         clientBuilder.destroy(toServer);
     }
     catch (except::Throwable& t)

@@ -96,9 +96,9 @@ inline T byteswap(T n) noexcept
     // padding bits."
     static_assert(std::is_integral<T>::value, "T must be integral");
 
-    using unsigned_t = std::make_unsigned_t<
-            T>;  // "Since C++14"
-                 // https://en.cppreference.com/w/cpp/types/make_unsigned
+    using unsigned_t =
+            std::make_unsigned_t<T>;  // "Since C++14"
+                                      // https://en.cppreference.com/w/cpp/types/make_unsigned
     return details::byteswap(static_cast<unsigned_t>(n));
 }
 }

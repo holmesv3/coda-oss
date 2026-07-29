@@ -35,8 +35,7 @@
 #if CODA_OSS_use_real_gsl_
 CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable \
-                : 4619)  // #pragma warning : there is no warning number '..'
+#pragma warning(disable : 4619)  // #pragma warning : there is no warning number '..'
 #pragma warning(disable : 4626)  // '...' : assignment operator was implicitly
                                  // defined as deleted
 #pragma warning(disable : 5027)  // '...' : move assignment operator was
@@ -45,9 +44,7 @@ CODA_OSS_disable_warning_push
                                   // invalid (lifetime.4).
 #pragma warning(disable : 4814)  // '...': in C++14 '...' will not imply '...';
                                  // consider explicitly specifying '...'
-#pragma warning( \
-        disable  \
-        : 26823)  // Dereferencing a possibly null pointer '...' (lifetime.1).
+#pragma warning(disable : 26823)  // Dereferencing a possibly null pointer '...' (lifetime.1).
 #endif
 
 #include "gsl/byte"

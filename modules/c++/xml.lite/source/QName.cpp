@@ -88,8 +88,7 @@ const xml::lite::Uri& xml::lite::QName::getUri() const
     return mAssocUri;
 }
 
-static std::string flatten(const std::vector<std::string>& strs,
-                           size_t start = 0)
+static std::string flatten(const std::vector<std::string>& strs, size_t start = 0)
 {
     std::string retval;
     for (size_t i = start; i < strs.size(); i++)
@@ -112,8 +111,7 @@ static const std::string& validate_uri(const std::string& uri, bool validate)
     {
         // There's nothing that says we can't have short URIs, but does it
         // make sense in actual use cases?
-        throw std::invalid_argument("string value '" + uri +
-                                    "' is (too?) short.");
+        throw std::invalid_argument("string value '" + uri + "' is (too?) short.");
     }
 
     const auto r = str::split(uri, ":");
@@ -125,8 +123,7 @@ static const std::string& validate_uri(const std::string& uri, bool validate)
     if (r[0].length() <= 1)
     {
         // Is "a:" a real-world scheme?
-        throw std::invalid_argument("string value '" + r[0] +
-                                    "' is not a URI scheme.");
+        throw std::invalid_argument("string value '" + r[0] + "' is not a URI scheme.");
     }
 
     const auto path = flatten(r, 1);  // don't care about other ':'s
@@ -134,8 +131,7 @@ static const std::string& validate_uri(const std::string& uri, bool validate)
     {
         // does it make sense to have a really short path?
         // in SIX we have "urn:us:gov"
-        throw std::invalid_argument("string value '" + path +
-                                    "' is (too?) short for a URI path.");
+        throw std::invalid_argument("string value '" + path + "' is (too?) short for a URI path.");
     }
 
     return uri;

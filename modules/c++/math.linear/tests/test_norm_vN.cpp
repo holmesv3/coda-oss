@@ -32,12 +32,9 @@ TEST_CASE(VaryingDimension)
 {
     // Test case1: Control variable--components values
     //               Varying the dimensions
-    math::linear::VectorN<1> v1(
-            2.2);  // normSq should be (2.2)^2. norm should be 2.2
-    math::linear::VectorN<2> v2(
-            2.2);  // normSq should be 2 * (2.2)^2, norm should be sqrt of that
-    math::linear::VectorN<3> v3(
-            2.2);  // normSq should be 3 * (2.2)^2, norm should be sqrt of that
+    math::linear::VectorN<1> v1(2.2);  // normSq should be (2.2)^2. norm should be 2.2
+    math::linear::VectorN<2> v2(2.2);  // normSq should be 2 * (2.2)^2, norm should be sqrt of that
+    math::linear::VectorN<3> v3(2.2);  // normSq should be 3 * (2.2)^2, norm should be sqrt of that
     math::linear::VectorN<50> v4(
             2.2);  // normSq should be 50 * (2.2)^2, norm should be sqrt of that
 

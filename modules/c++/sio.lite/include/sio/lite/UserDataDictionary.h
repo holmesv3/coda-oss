@@ -53,8 +53,7 @@ protected:
 
 public:
     typedef typename std::list<std::pair<Key_T, Value_T>>::iterator Iterator;
-    typedef typename std::list<std::pair<Key_T, Value_T>>::const_iterator
-            ConstIterator;
+    typedef typename std::list<std::pair<Key_T, Value_T>>::const_iterator ConstIterator;
 
     OrderedDictionary()
     {
@@ -129,8 +128,7 @@ public:
 
 //! UserDataDictionary is an OrderedDictionary mapping string keys to string
 //! values
-typedef OrderedDictionary<std::string, std::vector<sys::byte>>
-        UserDataDictionary;
+typedef OrderedDictionary<std::string, std::vector<sys::byte>> UserDataDictionary;
 
 }
 }

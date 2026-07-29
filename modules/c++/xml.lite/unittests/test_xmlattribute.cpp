@@ -154,8 +154,7 @@ TEST_CASE(test_getAttributeNotFound)
     result = attributes.getValue(999, value);
     TEST_ASSERT_FALSE(result);
 
-    TEST_SPECIFIC_EXCEPTION(attributes.getValue("not_found"),
-                            except::NoSuchKeyException);
+    TEST_SPECIFIC_EXCEPTION(attributes.getValue("not_found"), except::NoSuchKeyException);
     TEST_THROWS(attributes.getValue(999));
 }
 
@@ -261,12 +260,9 @@ TEST_CASE(test_getAttributeValueThrows)
     const auto& attributes = values.getAttributes();
 
     using namespace xml::lite;
-    TEST_SPECIFIC_EXCEPTION(getValue<int>(attributes, "string"),
-                            except::BadCastException);
-    TEST_SPECIFIC_EXCEPTION(getValue<double>(attributes, "string"),
-                            except::BadCastException);
-    TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "empty"),
-                            except::BadCastException);
+    TEST_SPECIFIC_EXCEPTION(getValue<int>(attributes, "string"), except::BadCastException);
+    TEST_SPECIFIC_EXCEPTION(getValue<double>(attributes, "string"), except::BadCastException);
+    TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "empty"), except::BadCastException);
 
     TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "not_found"),
                             except::NoSuchKeyException);
@@ -312,13 +308,11 @@ TEST_CASE(test_getAttributeValueByIndex)
         std::string value;
         auto result = getValue(attributes, -1, value);
         TEST_ASSERT_FALSE(result);
-        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, -1),
-                                except::NoSuchKeyException);
+        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, -1), except::NoSuchKeyException);
 
         result = getValue(attributes, 999, value);
         TEST_ASSERT_FALSE(result);
-        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, 999),
-                                except::NoSuchKeyException);
+        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, 999), except::NoSuchKeyException);
     }
 }
 

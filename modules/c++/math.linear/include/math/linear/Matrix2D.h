@@ -136,8 +136,7 @@ public:
      *
      *
      */
-    Matrix2D(size_t M, size_t N, const std::vector<_T>& raw) :
-        Matrix2D(M, N, nullptr)
+    Matrix2D(size_t M, size_t N, const std::vector<_T>& raw) : Matrix2D(M, N, nullptr)
     {
         // use mMN endpoint, since mMN can be less than raw.size()
         const auto begin = raw.begin();
@@ -170,8 +169,7 @@ public:
           Matrix2D<> At(3, 3, &vec9[0], false);
      *  \endcode
      */
-    Matrix2D(size_t M, size_t N, _T* raw, bool adopt) :
-        mM(M), mN(N), mMN(M * N), mRaw(raw)
+    Matrix2D(size_t M, size_t N, _T* raw, bool adopt) : mM(M), mN(N), mMN(M * N), mRaw(raw)
     {
         if (adopt)
         {
@@ -591,8 +589,7 @@ public:
     Matrix2D multiply(const Matrix2D& mx) const
     {
         if (mN != mx.mM)
-            throw except::Exception(
-                    Ctxt("Invalid inner dimension sizes for multiply"));
+            throw except::Exception(Ctxt("Invalid inner dimension sizes for multiply"));
 
         const auto M = mM;
         const auto P = mx.mN;
@@ -627,14 +624,11 @@ public:
         const auto P(mx.mN);
 
         if (mN != mx.mM)
-            throw except::Exception(
-                    Ctxt("Invalid inner dimension sizes for multiply"));
+            throw except::Exception(Ctxt("Invalid inner dimension sizes for multiply"));
         if (out.mM != M)
-            throw except::Exception(
-                    Ctxt("Invalid output row size for multiply"));
+            throw except::Exception(Ctxt("Invalid output row size for multiply"));
         if (out.mN != P)
-            throw except::Exception(
-                    Ctxt("Invalid output column size for multiply"));
+            throw except::Exception(Ctxt("Invalid output column size for multiply"));
 
         for (size_t i = 0; i < M; i++)
         {
@@ -752,8 +746,7 @@ public:
     Matrix2D& operator+=(const Matrix2D& mx)
     {
         if (mM != mx.mM || mN != mx.mN)
-            throw except::Exception(Ctxt(
-                    "Required to equally size matrices for element-wise add"));
+            throw except::Exception(Ctxt("Required to equally size matrices for element-wise add"));
 
         for (size_t i = 0; i < mMN; ++i)
         {
@@ -777,8 +770,7 @@ public:
     Matrix2D& operator-=(const Matrix2D& mx)
     {
         if (mx.mM != mM || mx.mN != mN)
-            throw except::Exception(Ctxt(
-                    "Matrices must be same size for element-wise subtract"));
+            throw except::Exception(Ctxt("Matrices must be same size for element-wise subtract"));
 
         for (size_t i = 0; i < mM; i++)
         {
@@ -1082,10 +1074,7 @@ public:
     Matrix2D operator-() const
     {
         Matrix2D neg(*this);
-        std::transform(neg.mRaw,
-                       neg.mRaw + neg.mMN,
-                       neg.mRaw,
-                       std::negate<_T>());
+        std::transform(neg.mRaw, neg.mRaw + neg.mMN, neg.mRaw, std::negate<_T>());
         return neg;
     }
 

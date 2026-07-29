@@ -60,9 +60,7 @@ constexpr int yearIndex(int year)
 int getNumFullDaysInYearSoFar(int year, int month, int dayOfMonth)
 {
     /* The number of days for all the full months so far */
-    int numFullDays = (month > 1)
-            ? CUMULATIVE_DAYS_PER_MONTH[yearIndex(year)][month - 2]
-            : 0;
+    int numFullDays = (month > 1) ? CUMULATIVE_DAYS_PER_MONTH[yearIndex(year)][month - 2] : 0;
 
     /* The number of full days in this month so far */
     numFullDays += dayOfMonth - 1;
@@ -76,9 +74,9 @@ namespace sys
 {
 void UTCDateTime::toMillis()
 {
-    if (mSecond < 0.0 || mSecond >= 60.0 || mMinute < 0 || mMinute > 59 ||
-        mHour < 0 || mHour > 23 || mDayOfMonth < 1 || mDayOfMonth > 31 ||
-        mMonth < 1 || mMonth > 12 || mYear < 1970 || mYear > 2037)
+    if (mSecond < 0.0 || mSecond >= 60.0 || mMinute < 0 || mMinute > 59 || mHour < 0 ||
+        mHour > 23 || mDayOfMonth < 1 || mDayOfMonth > 31 || mMonth < 1 || mMonth > 12 ||
+        mYear < 1970 || mYear > 2037)
     {
         mTimeInMillis = 0.0;
         mDayOfYear = mDayOfWeek = 0;
@@ -98,8 +96,7 @@ void UTCDateTime::toMillis()
      * It is very unfortunate that there's no POSIX standard function similar
      * to mktime() that allows you to pass in the timezone you want.
      */
-    long numDaysThisYear =
-            getNumFullDaysInYearSoFar(mYear, mMonth, mDayOfMonth);
+    long numDaysThisYear = getNumFullDaysInYearSoFar(mYear, mMonth, mDayOfMonth);
     long numDaysSinceEpoch = 0;
 
     /* Count up the # of days for all the years prior to this one
@@ -159,8 +156,7 @@ UTCDateTime::UTCDateTime(int year, int month, int day)
     fromMillis();
 }
 
-UTCDateTime::UTCDateTime(
-        int year, int month, int day, int hour, int minute, double second)
+UTCDateTime::UTCDateTime(int year, int month, int day, int hour, int minute, double second)
 {
     setNow();
 
@@ -187,8 +183,7 @@ UTCDateTime::UTCDateTime(const std::string& time, const std::string& format)
     setTime(time, format);
     fromMillis();
 }
-UTCDateTime::UTCDateTime(const std::string& time) :
-    UTCDateTime(time, DEFAULT_DATETIME_FORMAT)
+UTCDateTime::UTCDateTime(const std::string& time) : UTCDateTime(time, DEFAULT_DATETIME_FORMAT)
 {
 }
 

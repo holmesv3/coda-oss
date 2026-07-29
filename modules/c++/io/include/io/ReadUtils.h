@@ -42,8 +42,7 @@ namespace io
  * \param pathname Pathname of the file to read in
  * \param buffer Raw bytes of the file
  */
-CODA_OSS_API void readFileContents(const std::string& pathname,
-                                   std::vector<sys::byte>& buffer);
+CODA_OSS_API void readFileContents(const std::string& pathname, std::vector<sys::byte>& buffer);
 CODA_OSS_API void readFileContents(const coda_oss::filesystem::path& pathname,
                                    std::vector<coda_oss::byte>& buffer);
 
@@ -54,8 +53,7 @@ CODA_OSS_API void readFileContents(const coda_oss::filesystem::path& pathname,
  * \param pathname Pathname of the file to read in
  * \param[out] str Contents of the file
  */
-CODA_OSS_API void readFileContents(const std::string& pathname,
-                                   std::string& str);
+CODA_OSS_API void readFileContents(const std::string& pathname, std::string& str);
 
 /*!
  * Reads the contents of a file into a string.  The file is assumed to be a

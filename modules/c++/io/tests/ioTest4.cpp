@@ -49,9 +49,7 @@ int main(int argc, char** argv)
     try
     {
         if (argc != 3)
-            throw except::Error(
-                    Ctxt(str::Format("Usage: %s <input file> <output file>",
-                                     argv[0])));
+            throw except::Error(Ctxt(str::Format("Usage: %s <input file> <output file>", argv[0])));
 
         Copy::run(argv[1], argv[2]);
     }

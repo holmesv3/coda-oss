@@ -52,8 +52,7 @@ namespace sys
  * configuration is unsupported.
  */
 CODA_OSS_API std::string getBacktrace(bool* pSupported = nullptr);
-CODA_OSS_API std::string getBacktrace(bool& supported,
-                                      std::vector<std::string>& frames);
+CODA_OSS_API std::string getBacktrace(bool& supported, std::vector<std::string>& frames);
 }
 
 #endif  // CODA_OSS_sys_Backtrace_h_INCLUDED_

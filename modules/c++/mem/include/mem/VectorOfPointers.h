@@ -146,12 +146,10 @@ struct VectorOfSharedPointers
     VectorOfSharedPointers& operator=(const VectorOfSharedPointers&) = default;
     VectorOfSharedPointers& operator=(VectorOfSharedPointers&&) = default;
 
-    VectorOfSharedPointers(const std::vector<std::shared_ptr<T>>& values) :
-        mValues(values)
+    VectorOfSharedPointers(const std::vector<std::shared_ptr<T>>& values) : mValues(values)
     {
     }
-    VectorOfSharedPointers& operator=(
-            const std::vector<std::shared_ptr<T>>& values)
+    VectorOfSharedPointers& operator=(const std::vector<std::shared_ptr<T>>& values)
     {
         mValues = values;
         return *this;
@@ -221,8 +219,7 @@ struct VectorOfSharedPointers
     }
 
     typedef typename std::vector<std::shared_ptr<T>>::iterator iterator;
-    typedef typename std::vector<std::shared_ptr<T>>::const_iterator
-            const_iterator;
+    typedef typename std::vector<std::shared_ptr<T>>::const_iterator const_iterator;
 
     iterator begin()
     {

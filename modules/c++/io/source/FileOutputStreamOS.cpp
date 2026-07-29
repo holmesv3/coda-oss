@@ -49,8 +49,7 @@ void io::FileOutputStreamOS::flush()
     mFile.flush();
 }
 
-sys::Off_T io::FileOutputStreamOS::seek(sys::Off_T offset,
-                                        io::Seekable::Whence whence)
+sys::Off_T io::FileOutputStreamOS::seek(sys::Off_T offset, io::Seekable::Whence whence)
 {
     int fileWhence;
     switch (whence)

@@ -45,8 +45,7 @@ int main(int argc, char** argv)
 
         std::cout << zipFile << std::endl;
 
-        for (zip::ZipFile::Iterator p = zipFile.begin(); p != zipFile.end();
-             ++p)
+        for (zip::ZipFile::Iterator p = zipFile.begin(); p != zipFile.end(); ++p)
         {
             zip::ZipEntry* entry = *p;
             std::cout << "Entry: " << *entry << std::endl;
@@ -64,8 +63,7 @@ int main(int argc, char** argv)
         sys::ubyte* uncompressed = (*p)->decompress();
 
         io::FileOutputStream output(outputName);
-        output.write((const sys::byte*)uncompressed,
-                     (*p)->getUncompressedSize());
+        output.write((const sys::byte*)uncompressed, (*p)->getUncompressedSize());
         input.close();
         output.close();
         delete[] uncompressed;

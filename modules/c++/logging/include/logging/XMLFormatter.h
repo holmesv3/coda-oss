@@ -65,8 +65,7 @@ struct XMLFormatter : public logging::Formatter
 
     XMLFormatter& operator=(const XMLFormatter&) = delete;
 
-    virtual void format(const logging::LogRecord* record,
-                        io::OutputStream& os) const override;
+    virtual void format(const logging::LogRecord* record, io::OutputStream& os) const override;
 };
 
 }

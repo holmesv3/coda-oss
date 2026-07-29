@@ -115,8 +115,7 @@ TEST_CASE(test_std_filesystem_is_absolute)
 
     std::filesystem::path url("x://example.com");  // 1 letter
 #ifdef _WIN32
-    TEST_ASSERT_TRUE(
-            url.is_absolute());  // looks like a drive letter on Windows
+    TEST_ASSERT_TRUE(url.is_absolute());  // looks like a drive letter on Windows
     TEST_ASSERT_FALSE(url.is_relative());
 #else
     TEST_ASSERT_FALSE(url.is_absolute());
@@ -146,26 +145,22 @@ TEST_CASE(testExpandEnvTilde)
     auto path = sys::Path::expandEnvironmentVariables("~");
     TEST_ASSERT_TRUE(coda_oss::filesystem::is_directory(path));
 
-    path = sys::Path::expandEnvironmentVariables(
-            "~", coda_oss::filesystem::file_type::directory);
+    path = sys::Path::expandEnvironmentVariables("~", coda_oss::filesystem::file_type::directory);
     TEST_ASSERT_TRUE(coda_oss::filesystem::is_directory(path));
 
-    path = sys::Path::expandEnvironmentVariables(
-            "~", coda_oss::filesystem::file_type::regular);
+    path = sys::Path::expandEnvironmentVariables("~", coda_oss::filesystem::file_type::regular);
     TEST_ASSERT_TRUE(path.empty());
 }
 
 TEST_CASE(testExpandEnvTildePath)
 {
     sys::OS os;
-    const std::vector<std::string> exts{"NTUSER.DAT",
-                                        ".login",
-                                        ".cshrc",
-                                        ".bashrc"};
+    const std::vector<std::string> exts{"NTUSER.DAT", ".login", ".cshrc", ".bashrc"};
     os.prependEnv("exts", exts, true /*overwrite*/);
 
-    const auto path = sys::Path::expandEnvironmentVariables(
-            "~/$(exts)", coda_oss::filesystem::file_type::regular);
+    const auto path =
+            sys::Path::expandEnvironmentVariables("~/$(exts)",
+                                                  coda_oss::filesystem::file_type::regular);
     TEST_ASSERT_TRUE(coda_oss::filesystem::is_regular_file(path));
 }
 
@@ -174,62 +169,50 @@ TEST_CASE(testExpandEnv)
     sys::OS os;
     os.setEnv("CODA_OSS_test", "CODA_OSS_test", true /*overwrite*/);
 
-    const auto test =
-            sys::Path::expandEnvironmentVariables("$CODA_OSS_test", false);
+    const auto test = sys::Path::expandEnvironmentVariables("$CODA_OSS_test", false);
     TEST_ASSERT_FALSE(test.empty());
 
 #if _WIN32  // %FOO% only on Windows
-    const auto win32_test =
-            sys::Path::expandEnvironmentVariables("%CODA_OSS_test%", false);
+    const auto win32_test = sys::Path::expandEnvironmentVariables("%CODA_OSS_test%", false);
     TEST_ASSERT_EQ(win32_test, test);
 #endif
 
-    auto result =
-            sys::Path::expandEnvironmentVariables("$(CODA_OSS_test)", false);
+    auto result = sys::Path::expandEnvironmentVariables("$(CODA_OSS_test)", false);
     TEST_ASSERT_EQ(result, test);
 
     result = sys::Path::expandEnvironmentVariables("${CODA_OSS_test}", false);
     TEST_ASSERT_EQ(result, test);
 
-    result =
-            sys::Path::expandEnvironmentVariables("foo${CODA_OSS_test}", false);
+    result = sys::Path::expandEnvironmentVariables("foo${CODA_OSS_test}", false);
     TEST_ASSERT_EQ(result, "foo" + test);
 
-    result =
-            sys::Path::expandEnvironmentVariables("${CODA_OSS_test}foo", false);
+    result = sys::Path::expandEnvironmentVariables("${CODA_OSS_test}foo", false);
     TEST_ASSERT_EQ(result, test + "foo");
 
-    result = sys::Path::expandEnvironmentVariables("foo${CODA_OSS_test}bar",
-                                                   false);
+    result = sys::Path::expandEnvironmentVariables("foo${CODA_OSS_test}bar", false);
     TEST_ASSERT_EQ(result, "foo" + test + "bar");
 
-    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test-bar",
-                                                   false);
+    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test-bar", false);
     TEST_ASSERT_EQ(result, "foo" + test + "-bar");
 
-    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test(bar)",
-                                                   false);
+    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test(bar)", false);
     TEST_ASSERT_EQ(result, "foo" + test + "(bar)");
 
-    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test)bar(",
-                                                   false);
+    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test)bar(", false);
     TEST_ASSERT_EQ(result, "foo" + test + ")bar(");
 
-    result = sys::Path::expandEnvironmentVariables("foo$(CODA_OSS_test)BAR)",
-                                                   false);
+    result = sys::Path::expandEnvironmentVariables("foo$(CODA_OSS_test)BAR)", false);
     TEST_ASSERT_EQ(result, "foo" + test + "BAR)");
 
-    result = sys::Path::expandEnvironmentVariables(
-            "$CODA_OSS_test$CODA_OSS_test", false);
+    result = sys::Path::expandEnvironmentVariables("$CODA_OSS_test$CODA_OSS_test", false);
     TEST_ASSERT_EQ(result, test + test);
 #if _WIN32  // %FOO% only on Windows
-    result = sys::Path::expandEnvironmentVariables(
-            "%CODA_OSS_test%%CODA_OSS_test%", false);
+    result = sys::Path::expandEnvironmentVariables("%CODA_OSS_test%%CODA_OSS_test%", false);
     TEST_ASSERT_EQ(result, test + test);
 #endif
 
-    result = sys::Path::expandEnvironmentVariables(
-            "foo$CODA_OSS_test-bar$(CODA_OSS_test)BAR)", false);
+    result = sys::Path::expandEnvironmentVariables("foo$CODA_OSS_test-bar$(CODA_OSS_test)BAR)",
+                                                   false);
     TEST_ASSERT_EQ(result, "foo" + test + "-bar" + test + "BAR)");
 }
 
@@ -265,12 +248,9 @@ TEST_CASE(testExpandEnvPathMultiple)
 
     const std::vector<std::string> paths{"home", "opt", "var"};
     os.prependEnv("paths", paths, true /*overwrite*/);
-    auto expanded_path =
-            sys::Path::expandEnvironmentVariables("$(paths)",
-                                                  false /*checkIfExists*/);
+    auto expanded_path = sys::Path::expandEnvironmentVariables("$(paths)", false /*checkIfExists*/);
     std::string home = "home";
-    if (coda_oss::filesystem::is_directory(home) &&
-        !str::endsWith(home, sys::Path::delimiter()))
+    if (coda_oss::filesystem::is_directory(home) && !str::endsWith(home, sys::Path::delimiter()))
     {
         home += sys::Path::delimiter();
     }
@@ -298,21 +278,14 @@ TEST_CASE(testExpandEnvPathMultiple)
     const std::vector<std::string> expected{
             path_to_expand_root, paths[0], apps[0], app[0], libs[0], exts[0]};
     auto expected_path = sys::Path::merge(expected, true /*isAbsolute*/);
-    expanded_path =
-            sys::Path::expandEnvironmentVariables(path_to_expand,
-                                                  false /*checkIfExists*/);
+    expanded_path = sys::Path::expandEnvironmentVariables(path_to_expand, false /*checkIfExists*/);
     TEST_ASSERT_EQ(expanded_path, expected_path);
 
     expanded_paths = sys::Path::expandedEnvironmentVariables(path_to_expand);
     TEST_ASSERT_EQ(expanded_paths.size(),
-                   paths.size() * apps.size() * app.size() * libs.size() *
-                           exts.size());
-    const std::vector<std::string> expected_back{path_to_expand_root,
-                                                 paths.back(),
-                                                 apps.back(),
-                                                 app.back(),
-                                                 libs.back(),
-                                                 exts.back()};
+                   paths.size() * apps.size() * app.size() * libs.size() * exts.size());
+    const std::vector<std::string> expected_back{
+            path_to_expand_root, paths.back(), apps.back(), app.back(), libs.back(), exts.back()};
     expected_path = sys::Path::merge(expected_back, true /*isAbsolute*/);
     TEST_ASSERT_EQ(expanded_paths.back(), expected_path);
 }
@@ -322,8 +295,7 @@ TEST_CASE(testModifyVar)
     const sys::OS os;
 
     const auto argv0_t =
-            sys::Path::expandEnvironmentVariables("${ARGV0@t}",
-                                                  false /*checkIfExists*/);
+            sys::Path::expandEnvironmentVariables("${ARGV0@t}", false /*checkIfExists*/);
     TEST_ASSERT_FALSE(argv0_t.empty());
 
     const auto result = os.getSpecialEnv("0");  // i.e., ${0}
@@ -337,8 +309,7 @@ TEST_CASE(testModifyVar)
 static std::string modifyEnv(const std::string& envVar, char op)
 {
     const auto strExpand = "${" + envVar + "@" + op + "}";
-    return sys::Path::expandEnvironmentVariables(strExpand,
-                                                 false /*checkIfExists*/);
+    return sys::Path::expandEnvironmentVariables(strExpand, false /*checkIfExists*/);
 }
 TEST_CASE(testModifyVar2)
 {
@@ -415,8 +386,7 @@ TEST_CASE(testModifyVar2)
     TEST_ASSERT_EQ(s, "file");
 }
 
-TEST_MAIN(TEST_CHECK(testPathMerge);
-          TEST_CHECK(test_std_filesystem_is_absolute);
+TEST_MAIN(TEST_CHECK(testPathMerge); TEST_CHECK(test_std_filesystem_is_absolute);
           TEST_CHECK(testExpandEnvTilde);
           TEST_CHECK(testExpandEnv);
           TEST_CHECK(testExpandEnvTildePath);

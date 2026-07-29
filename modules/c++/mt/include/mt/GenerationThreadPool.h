@@ -67,8 +67,7 @@ public:
     virtual void run() override;
 };
 
-class CODA_OSS_API GenerationThreadPool
-    : public BasicThreadPool<TiedRequestHandler>
+class CODA_OSS_API GenerationThreadPool : public BasicThreadPool<TiedRequestHandler>
 {
     sys::Semaphore mGenerationSync;
     CPUAffinityInitializer* mAffinityInit = nullptr;
@@ -78,8 +77,7 @@ public:
     GenerationThreadPool() = default;
     GenerationThreadPool(unsigned short numThreads,
                          CPUAffinityInitializer* affinityInit = nullptr) :
-        BasicThreadPool<TiedRequestHandler>(numThreads),
-        mAffinityInit(affinityInit)
+        BasicThreadPool<TiedRequestHandler>(numThreads), mAffinityInit(affinityInit)
     {
     }
     virtual ~GenerationThreadPool() = default;
@@ -88,15 +86,13 @@ public:
 
     virtual TiedRequestHandler* newRequestHandler() override
     {
-        TiedRequestHandler* handler =
-                BasicThreadPool<TiedRequestHandler>::newRequestHandler();
+        TiedRequestHandler* handler = BasicThreadPool<TiedRequestHandler>::newRequestHandler();
         assert(handler != nullptr);
         handler->setSemaphore(&mGenerationSync);
 
         if (mAffinityInit)
         {
-            handler->setAffinityInit(
-                    mAffinityInit->newThreadInitializer().release());
+            handler->setAffinityInit(mAffinityInit->newThreadInitializer().release());
         }
 
         return handler;
@@ -132,13 +128,9 @@ public:
         size_t threadNum(0);
         size_t startElement(0);
         size_t numElementsThisThread(0);
-        while (planner.getThreadInfo(threadNum++,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum++, startElement, numElementsThisThread))
         {
-            runnables.push_back(new Runnable1D<OpT>(startElement,
-                                                    numElementsThisThread,
-                                                    op));
+            runnables.push_back(new Runnable1D<OpT>(startElement, numElementsThisThread, op));
         }
         addAndWaitGroup(runnables);
     }

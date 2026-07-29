@@ -50,8 +50,7 @@
         <span>) && __cpp_lib_span  // Some versions of G++ say they're C++20 but don't have <span>
 #include <span>
 #undef CODA_OSS_HAVE_std_span_
-#define CODA_OSS_HAVE_std_span_ \
-    1  // provided by the implementation, probably C++20
+#define CODA_OSS_HAVE_std_span_ 1  // provided by the implementation, probably C++20
 #endif
 #endif  // CODA_OSS_cpp17
 
@@ -73,8 +72,7 @@ inline auto as_bytes(span<const T> s) noexcept
 {
     // https://en.cppreference.com/w/cpp/types/is_trivially_copyable "...
     // serialized to/from binary files ..."
-    static_assert(std::is_trivially_copyable<T>::value,
-                  "must be 'trivially' copyable.");
+    static_assert(std::is_trivially_copyable<T>::value, "must be 'trivially' copyable.");
 
     const void* const p_ = s.data();
     auto const p = static_cast<const byte*>(p_);
@@ -91,8 +89,7 @@ inline span<byte> as_writable_bytes(span<T> s) noexcept
 {
     // https://en.cppreference.com/w/cpp/types/is_trivially_copyable "...
     // serialized to/from binary files ..."
-    static_assert(std::is_trivially_copyable<T>::value,
-                  "must be 'trivially' copyable.");
+    static_assert(std::is_trivially_copyable<T>::value, "must be 'trivially' copyable.");
 
     static_assert(!std::is_const<T>::value, "T cannot be 'const'");
 

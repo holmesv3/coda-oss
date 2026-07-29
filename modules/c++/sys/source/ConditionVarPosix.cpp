@@ -35,9 +35,7 @@ sys::ConditionVarPosix::ConditionVarPosix() :
         throw SystemException("ConditionVar initialization failed");
 }
 
-sys::ConditionVarPosix::ConditionVarPosix(MutexPosix* theLock,
-                                          bool isOwner,
-                                          std::nullptr_t) :
+sys::ConditionVarPosix::ConditionVarPosix(MutexPosix* theLock, bool isOwner, std::nullptr_t) :
     mMutex(theLock)
 {
     if (isOwner)
@@ -46,8 +44,7 @@ sys::ConditionVarPosix::ConditionVarPosix(MutexPosix* theLock,
     if (::pthread_cond_init(&mNative, nullptr) != 0)
         throw SystemException("ConditionVar initialization failed");
 }
-sys::ConditionVarPosix::ConditionVarPosix(sys::MutexPosix* theLock,
-                                          bool isOwner) :
+sys::ConditionVarPosix::ConditionVarPosix(sys::MutexPosix* theLock, bool isOwner) :
     ConditionVarPosix(theLock, isOwner, nullptr)
 {
     if (!theLock)
@@ -95,10 +92,8 @@ void sys::ConditionVarPosix::wait(double seconds)
     {
         timespec tout;
         tout.tv_sec = time(nullptr) + gsl::narrow_cast<int>(seconds);
-        tout.tv_nsec = gsl::narrow_cast<int>(
-                (seconds - gsl::narrow_cast<int>(seconds)) * 1e9);
-        if (::pthread_cond_timedwait(&mNative, &(mMutex->getNative()), &tout) !=
-            0)
+        tout.tv_nsec = gsl::narrow_cast<int>((seconds - gsl::narrow_cast<int>(seconds)) * 1e9);
+        if (::pthread_cond_timedwait(&mNative, &(mMutex->getNative()), &tout) != 0)
             throw sys::SystemException("ConditionVar wait failed");
     }
     else

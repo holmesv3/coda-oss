@@ -45,9 +45,7 @@ namespace logging
 class LogRecord
 {
 public:
-    LogRecord(std::string name,
-              std::string msg,
-              LogLevel level = LogLevel::LOG_NOTSET);
+    LogRecord(std::string name, std::string msg, LogLevel level = LogLevel::LOG_NOTSET);
     LogRecord(std::string name,
               std::string msg,
               LogLevel level,

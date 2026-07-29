@@ -47,8 +47,7 @@ inline bool equals(const _T& e1, const _T& e2, _T eps)
 {
     if (std::numeric_limits<_T>::has_infinity)
     {
-        if (e1 == std::numeric_limits<_T>::infinity() ||
-            e1 == -std::numeric_limits<_T>::infinity())
+        if (e1 == std::numeric_limits<_T>::infinity() || e1 == -std::numeric_limits<_T>::infinity())
         {
             return e1 == e2;
         }
@@ -777,8 +776,7 @@ public:
      *
      *
      */
-    MatrixMxN<_MD, _ND, _T> multiplyDiagonal(
-            const MatrixMxN<_ND, _ND, _T>& mx) const
+    MatrixMxN<_MD, _ND, _T> multiplyDiagonal(const MatrixMxN<_ND, _ND, _T>& mx) const
     {
         MatrixMxN<_MD, _ND, _T> newM = *this;
         newM.scaleDiagonal(mx);
@@ -1240,10 +1238,9 @@ MatrixMxN<_ND, _ND, _T> identityMatrix()
  *
  */
 template <size_t _MD, size_t _ND, size_t _PD, typename _T>
-math::linear::MatrixMxN<_ND, _PD, _T> solveLU(
-        const std::vector<size_t>& pivotsM,
-        const MatrixMxN<_MD, _ND, _T>& lu,
-        const MatrixMxN<_ND, _PD, _T>& b)
+math::linear::MatrixMxN<_ND, _PD, _T> solveLU(const std::vector<size_t>& pivotsM,
+                                              const MatrixMxN<_MD, _ND, _T>& lu,
+                                              const MatrixMxN<_ND, _PD, _T>& b)
 {
     // If we dont have something in the diagonal, we can't solve this
     math::linear::MatrixMxN<_ND, _PD, _T> x = b.permute(pivotsM, _PD);
@@ -1336,20 +1333,16 @@ inline MatrixMxN<_ND, _ND, _T> inverse(const MatrixMxN<_ND, _ND, _T>& mx)
  *
  */
 template <>
-inline MatrixMxN<2, 2, double> inverse<2, double>(
-        const MatrixMxN<2, 2, double>& mx);
+inline MatrixMxN<2, 2, double> inverse<2, double>(const MatrixMxN<2, 2, double>& mx);
 
 template <>
-inline MatrixMxN<3, 3, double> inverse<3, double>(
-        const MatrixMxN<3, 3, double>& mx);
+inline MatrixMxN<3, 3, double> inverse<3, double>(const MatrixMxN<3, 3, double>& mx);
 
 template <>
-inline MatrixMxN<2, 2, float> inverse<2, float>(
-        const MatrixMxN<2, 2, float>& mx);
+inline MatrixMxN<2, 2, float> inverse<2, float>(const MatrixMxN<2, 2, float>& mx);
 
 template <>
-inline MatrixMxN<3, 3, float> inverse<3, float>(
-        const MatrixMxN<3, 3, float>& mx);
+inline MatrixMxN<3, 3, float> inverse<3, float>(const MatrixMxN<3, 3, float>& mx);
 
 /*!
  *  Could possibly be more clever here, and template the actual matrix
@@ -1525,8 +1518,7 @@ inline math::linear::MatrixMxN<3, 3, float> math::linear::inverse<3, float>(
  *  \return
  */
 template <typename Matrix_T>
-Matrix_T tidy(const Matrix_T& constMatrix,
-              double eps = std::numeric_limits<float>::epsilon())
+Matrix_T tidy(const Matrix_T& constMatrix, double eps = std::numeric_limits<float>::epsilon())
 {
     Matrix_T mx = constMatrix;
     for (size_t i = 0; i < mx.rows(); i++)
@@ -1540,9 +1532,7 @@ Matrix_T tidy(const Matrix_T& constMatrix,
             if (math::linear::equals(std::abs(mx(i, j) - lower), 0.0, eps))
                 mx(i, j) = lower;
 
-            else if (math::linear::equals(std::abs(higher - mx(i, j)),
-                                          0.0,
-                                          eps))
+            else if (math::linear::equals(std::abs(higher - mx(i, j)), 0.0, eps))
                 mx(i, j) = higher;
 
             if (mx(i, j) == -0)

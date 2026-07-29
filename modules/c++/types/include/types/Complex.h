@@ -51,8 +51,7 @@ template <typename T>
 struct Complex final
 {
     using value_type = T;
-    static_assert(!std::is_floating_point<T>::value,
-                  "Use std::complex<T> for floating-point.");
+    static_assert(!std::is_floating_point<T>::value, "Use std::complex<T> for floating-point.");
     static_assert(std::is_signed<T>::value, "T should be a signed integer.");
 
     Complex(value_type re = 0, value_type im = 0) : z{re, im}
@@ -66,8 +65,7 @@ struct Complex final
 
     // If someone already has a std::complex<value_type>, is there any harm in
     // creating ours?
-    Complex(const std::complex<value_type>& other) :
-        Complex(other.real(), other.imag())
+    Complex(const std::complex<value_type>& other) : Complex(other.real(), other.imag())
     {
     }
     Complex& operator=(const std::complex<value_type>& other)
@@ -81,13 +79,11 @@ struct Complex final
         defined(_SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING)
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': warning STL4037: The effect of instantiating the
-                 // template std::complex for any type other than float, double,
-                 // or long double is unspecified. You can define
-                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                 // this warning.
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
+                                 // template std::complex for any type other than float, double,
+                                 // or long double is unspecified. You can define
+                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                                 // this warning.
 #endif
     // Better interop with existing code? Creates ambiguities?
     operator const std::complex<T>&() const
@@ -130,13 +126,11 @@ namespace details
 {
 CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': warning STL4037: The effect of instantiating the
-                 // template std::complex for any type other than float, double,
-                 // or long double is unspecified. You can define
-                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                 // this warning.
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
+                                 // template std::complex for any type other than float, double,
+                                 // or long double is unspecified. You can define
+                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                                 // this warning.
 #endif
         // Getting different results with GCC vs MSVC :-(  So just use
         // std::complex<short> Assume by the time we're actually using C++23
@@ -159,8 +153,7 @@ CODA_OSS_disable_warning_pop
 
 // https://en.cppreference.com/w/cpp/numeric/complex/operator_ltltgtgt
 template <typename T, typename CharT, typename Traits>
-inline auto& operator<<(std::basic_ostream<CharT, Traits>& o,
-                        const Complex<T>& z)
+inline auto& operator<<(std::basic_ostream<CharT, Traits>& o, const Complex<T>& z)
 {
     return o << details::cast(z);
 }
@@ -185,9 +178,7 @@ inline bool operator!=(const Complex<T>& lhs, const Complex<T>& rhs)
 // Keep functions like abs() to a minimum; complex math probably shouldn't be
 // done with integers.
 template <typename T>
-inline auto abs(
-        const Complex<T>&
-                z)  // https://en.cppreference.com/w/cpp/numeric/complex/abs
+inline auto abs(const Complex<T>& z)  // https://en.cppreference.com/w/cpp/numeric/complex/abs
 {
     return abs(details::cast(z));
 }
@@ -202,8 +193,7 @@ namespace details
 template <typename T>
 struct ComplexReal
 {
-    static_assert(std::is_floating_point<T>::value,
-                  "T must be floating-point.");
+    static_assert(std::is_floating_point<T>::value, "T must be floating-point.");
     using type = std::complex<T>;
 };
 }  // namespace details

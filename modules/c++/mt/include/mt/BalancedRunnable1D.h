@@ -64,9 +64,7 @@ public:
      *  \param op Functor to use
      *
      */
-    BalancedRunnable1D(size_t numElements,
-                       sys::AtomicCounter& atomicCounter,
-                       const OpT& op) :
+    BalancedRunnable1D(size_t numElements, sys::AtomicCounter& atomicCounter, const OpT& op) :
         mNumElements(numElements), mCounter(atomicCounter), mOp(op)
     {
     }
@@ -126,8 +124,7 @@ void runBalanced1D(size_t numElements, size_t numThreads, const OpT& op)
         ThreadGroup threads;
         for (size_t ii = 0; ii < numThreads; ++ii)
         {
-            threads.createThread(
-                    new BalancedRunnable1D<OpT>(numElements, counter, op));
+            threads.createThread(new BalancedRunnable1D<OpT>(numElements, counter, op));
         }
         threads.joinAll();
     }
@@ -144,16 +141,13 @@ void runBalanced1D(size_t numElements, size_t numThreads, const OpT& op)
  *  \param ops Vector of functors to use
  */
 template <typename OpT>
-void runBalanced1D(size_t numElements,
-                   size_t numThreads,
-                   const std::vector<OpT>& ops)
+void runBalanced1D(size_t numElements, size_t numThreads, const std::vector<OpT>& ops)
 {
     sys::AtomicCounter counter(0);
     if (ops.size() != numThreads)
     {
         std::ostringstream ostr;
-        ostr << "Got " << numThreads << " threads but " << ops.size()
-             << " functors";
+        ostr << "Got " << numThreads << " threads but " << ops.size() << " functors";
         throw except::Exception(Ctxt(ostr));
     }
 
@@ -166,8 +160,7 @@ void runBalanced1D(size_t numElements,
         ThreadGroup threads;
         for (size_t ii = 0; ii < numThreads; ++ii)
         {
-            threads.createThread(
-                    new BalancedRunnable1D<OpT>(numElements, counter, ops[ii]));
+            threads.createThread(new BalancedRunnable1D<OpT>(numElements, counter, ops[ii]));
         }
 
         threads.joinAll();
@@ -186,9 +179,7 @@ void runBalanced1D(size_t numElements,
  *  \param op Functor to use
  */
 template <typename OpT>
-void runBalanced1DWithCopies(size_t numElements,
-                             size_t numThreads,
-                             const OpT& op)
+void runBalanced1DWithCopies(size_t numElements, size_t numThreads, const OpT& op)
 {
     const std::vector<OpT> ops(numThreads, op);
     runBalanced1D(numElements, numThreads, ops);

@@ -70,9 +70,7 @@ double besselIOrderZero(double x)
                                           (1.2067492 +
                                            y *
                                                    (0.2659732 +
-                                                    y *
-                                                            (0.360768e-1 +
-                                                             y * (0.45813e-2))))));
+                                                    y * (0.360768e-1 + y * (0.45813e-2))))));
     }
     else
     {
@@ -122,25 +120,18 @@ double besselIOrderOne(double x)
                                            (0.15084934 +
                                             y *
                                                     (0.2658733e-1 +
-                                                     y *
-                                                             (0.301532e-2 +
-                                                              y * (0.32411e-3)))))));
+                                                     y * (0.301532e-2 + y * (0.32411e-3)))))));
     }
     else
     {
         y = 3.75 / ax;
-        ans = 0.2282967e-1 +
-                y * (-0.2895312e-1 + y * (0.1787654e-1 - y * 0.420059e-2));
+        ans = 0.2282967e-1 + y * (-0.2895312e-1 + y * (0.1787654e-1 - y * 0.420059e-2));
 
         // Note that ans is a term at the very end of this expression
         ans = 0.39894228 +
                 y *
                         (-0.3988024e-1 +
-                         y *
-                                 (-0.362018e-2 +
-                                  y *
-                                          (0.163801e-2 +
-                                           y * (-0.1031555e-1 + y * ans))));
+                         y * (-0.362018e-2 + y * (0.163801e-2 + y * (-0.1031555e-1 + y * ans))));
 
         ans *= (std::exp(ax) / std::sqrt(ax));
     }
@@ -167,10 +158,7 @@ double besselIOrderN(size_t order, double x)
     double bi = 1.0;
 
     // Downward recurrence from even n
-    for (size_t jj =
-                 2 * (order + int(std::sqrt(ACC * static_cast<double>(order))));
-         jj > 0;
-         jj--)
+    for (size_t jj = 2 * (order + int(std::sqrt(ACC * static_cast<double>(order)))); jj > 0; jj--)
     {
         double bim = bip + (static_cast<double>(jj) * tox * bi);
         bip = bi;

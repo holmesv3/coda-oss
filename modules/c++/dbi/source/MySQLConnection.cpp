@@ -116,10 +116,7 @@ dbi::Row dbi::MySQLResultSet::fetchRow()
         // Unable to get field definition, something went very wrong
         if (mysqlField)
         {
-            row.addField(mysqlField->name,
-                         mysqlField->type,
-                         fieldLengths[i],
-                         mysqlRow[i]);
+            row.addField(mysqlField->name, mysqlField->type, fieldLengths[i], mysqlRow[i]);
         }
     }
 

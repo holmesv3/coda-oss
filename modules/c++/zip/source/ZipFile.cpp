@@ -85,8 +85,7 @@ ZipFile::Iterator ZipFile::lookup(std::string fileName) const
 void ZipFile::readCentralDir()
 {
     if (mCompressedLength < EOCD_LEN)
-        throw except::IOException(
-                Ctxt("stream source too small to be a zip stream"));
+        throw except::IOException(Ctxt("stream source too small to be a zip stream"));
     sys::ubyte* start;
 
     if (mCompressedLength > MAX_EOCD_SEARCH)
@@ -183,8 +182,7 @@ ZipEntry* ZipFile::newCentralDirEntry(sys::ubyte** buf, sys::SSize_T len)
 
     extraFieldLength = readShort(&p[0x1c]);
 
-    sys::Size_T dataOffset =
-            localHeaderRelOffset + LFH_SIZE + fileNameLength + extraFieldLength;
+    sys::Size_T dataOffset = localHeaderRelOffset + LFH_SIZE + fileNameLength + extraFieldLength;
 
     return new ZipEntry(mCompressed + dataOffset,
                         compressedSize,

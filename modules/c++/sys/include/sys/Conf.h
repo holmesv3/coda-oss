@@ -124,8 +124,7 @@ typedef Int64_T SSize_T;
 static_assert(sizeof(size_t) == 4, "wrong sizeof(size_t)");
 typedef Int32_T SSize_T;
 #endif
-static_assert(sizeof(size_t) == sizeof(SSize_T),
-              "size_t and SSize_T should be the same size");
+static_assert(sizeof(size_t) == sizeof(SSize_T), "size_t and SSize_T should be the same size");
 }
 #else  // !windows
 #include <dirent.h>
@@ -161,8 +160,7 @@ typedef pid_t Pid_T;
 #define SYS_FUNC NativeLayer_func__
 
 #define Ctxt(MESSAGE) \
-    except::Context(  \
-            __FILE__, __LINE__, SYS_FUNC, sys::TimeStamp().local(), MESSAGE)
+    except::Context(__FILE__, __LINE__, SYS_FUNC, sys::TimeStamp().local(), MESSAGE)
 
 namespace sys
 {
@@ -197,8 +195,7 @@ bool CODA_OSS_API isLittleEndianSystem();
  *  \throw Exception if a bad allocation occurs
  *  \return a pointer to the data (this method never returns NULL)
  */
-inline void* alignedAlloc(size_t size,
-                          size_t alignment = SSE_INSTRUCTION_ALIGNMENT)
+inline void* alignedAlloc(size_t size, size_t alignment = SSE_INSTRUCTION_ALIGNMENT)
 {
     void* p = nullptr;
 #ifdef _WIN32
@@ -220,8 +217,8 @@ inline void* alignedAlloc(size_t size,
 #error "Don't know how to implement alignedAlloc()."
 #endif
     if (!p)
-        throw except::Exception(Ctxt("Aligned allocation failure of size [" +
-                                     std::to_string(size) + "] bytes"));
+        throw except::Exception(
+                Ctxt("Aligned allocation failure of size [" + std::to_string(size) + "] bytes"));
     return p;
 }
 
@@ -247,7 +244,6 @@ inline void alignedFree(void* p) noexcept
 // 64-bit `time_t` integers. ..."
 #include <stdint.h>
 #include <time.h>
-static_assert(sizeof(time_t) >= sizeof(int64_t),
-              "Should have at least a 64-bit time_t.");
+static_assert(sizeof(time_t) >= sizeof(int64_t), "Should have at least a 64-bit time_t.");
 
 #endif  // CODA_OSS_sys_Conf_h_INCLUDED_

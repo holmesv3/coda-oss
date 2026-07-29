@@ -30,30 +30,22 @@
 
 CODA_OSS_disable_warning_system_header_push
 #if _MSC_VER
-#pragma warning(disable \
-                : 4619)  // #pragma warning: there is no warning number '...'
+#pragma warning(disable : 4619)  // #pragma warning: there is no warning number '...'
 
 #pragma warning(disable : 5027)  // '...': move assignment operator was
                                  // implicitly defined as deleted
-#pragma warning( \
-        disable  \
-        : 5026)  // '...': move constructor was implicitly defined as deleted
+#pragma warning(disable : 5026)  // '...': move constructor was implicitly defined as deleted
 #pragma warning(disable : 4626)  // '...': assignment operator was implicitly
                                  // defined as deleted
-#pragma warning( \
-        disable  \
-        : 4625)  // '...': copy constructor was implicitly defined as deleted
+#pragma warning(disable : 4625)  // '...': copy constructor was implicitly defined as deleted
 #pragma warning(disable : 4355)  // '...': used in base member initializer list
-#pragma warning(disable \
-                : 5220)  // '...': a non-static data member with a volatile
-                         // qualified type no longer implies that compiler
-                         // generated copy/move constructors and copy/move
-                         // assignment operators are not trivial
-#pragma warning( \
-        disable  \
-        : 5204)  // '...': class has virtual functions, but its trivial
-                 // destructor is not virtual; instances of objects derived from
-                 // this class may not be destructed correctly
+#pragma warning(disable : 5220)  // '...': a non-static data member with a volatile
+                                 // qualified type no longer implies that compiler
+                                 // generated copy/move constructors and copy/move
+                                 // assignment operators are not trivial
+#pragma warning(disable : 5204)  // '...': class has virtual functions, but its trivial
+                                 // destructor is not virtual; instances of objects derived from
+                                 // this class may not be destructed correctly
 #pragma warning(disable : 5264)  // '...': '...' variable is not used
 #endif  // _MSC_VER
 

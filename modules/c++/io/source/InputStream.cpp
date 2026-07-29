@@ -40,8 +40,7 @@ sys::SSize_T InputStream::read(void* buffer, size_t len, bool verifyFullRead)
         else if (numBytes != static_cast<sys::SSize_T>(len))
         {
             std::ostringstream ostr;
-            ostr << "Tried to read " << len << " bytes but only read "
-                 << numBytes << " bytes";
+            ostr << "Tried to read " << len << " bytes but only read " << numBytes << " bytes";
             throw except::IOException(Ctxt(ostr));
         }
     }
@@ -62,11 +61,9 @@ sys::SSize_T InputStream::streamTo(OutputStream& soi, sys::SSize_T bytesToPipe)
     sys::SSize_T bytesRead = 0;
     sys::SSize_T totalBytesTransferred = 0;
 
-    constexpr auto defaultChunkSize =
-            static_cast<sys::SSize_T>(DEFAULT_CHUNK_SIZE);
+    constexpr auto defaultChunkSize = static_cast<sys::SSize_T>(DEFAULT_CHUNK_SIZE);
 
-    sys::SSize_T sizeOfVec =
-            (bytesToPipe <= defaultChunkSize) ? bytesToPipe : defaultChunkSize;
+    sys::SSize_T sizeOfVec = (bytesToPipe <= defaultChunkSize) ? bytesToPipe : defaultChunkSize;
     sys::byte vec[DEFAULT_CHUNK_SIZE];
     memset(vec, 0, DEFAULT_CHUNK_SIZE);
 
@@ -87,8 +84,7 @@ sys::SSize_T InputStream::streamTo(OutputStream& soi, sys::SSize_T bytesToPipe)
     return totalBytesTransferred;
 }
 
-sys::SSize_T InputStream::readln(sys::byte* cStr,
-                                 const sys::Size_T strLenPlusNullByte)
+sys::SSize_T InputStream::readln(sys::byte* cStr, const sys::Size_T strLenPlusNullByte)
 {
     // Put a null byte at the end by default
     ::memset(cStr, 0, strLenPlusNullByte);

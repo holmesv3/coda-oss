@@ -70,15 +70,9 @@ bool conv_num(const char*& buf, int& result, int llim, int ulim)
 
 char* strptime(const char* buf, const char* fmt, struct tm& tm, double& millis)
 {
-    const std::string DAY[7] = {"sunday",
-                                "monday",
-                                "tuesday",
-                                "wednesday",
-                                "thursday",
-                                "friday",
-                                "saturday"};
-    const std::string AB_DAY[7] = {
-            "sun", "mon", "tue", "wed", "thu", "fri", "sat"};
+    const std::string DAY[7] = {
+            "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"};
+    const std::string AB_DAY[7] = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
 
     const std::string MONTH[12] = {"january",
                                    "february",
@@ -92,18 +86,8 @@ char* strptime(const char* buf, const char* fmt, struct tm& tm, double& millis)
                                    "october",
                                    "november",
                                    "december"};
-    const std::string AB_MONTH[12] = {"jan",
-                                      "feb",
-                                      "mar",
-                                      "apr",
-                                      "may",
-                                      "jun",
-                                      "jul",
-                                      "aug",
-                                      "sep",
-                                      "oct",
-                                      "nov",
-                                      "dec"};
+    const std::string AB_MONTH[12] = {
+            "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"};
 
     char bc, fc;
     size_t len = 0;
@@ -121,8 +105,7 @@ char* strptime(const char* buf, const char* fmt, struct tm& tm, double& millis)
         {
             bc = *bp++;
             if (bc != fc)
-                throw except::Exception(Ctxt("Value does not match format (" +
-                                             str::toString(fc) +
+                throw except::Exception(Ctxt("Value does not match format (" + str::toString(fc) +
                                              "):  " + str::toString(bc)));
             continue;
         }
@@ -138,8 +121,7 @@ char* strptime(const char* buf, const char* fmt, struct tm& tm, double& millis)
         case '%':  // "%%" is converted to "%".
             bc = *bp++;
             if (bc != '%')
-                throw except::Exception(
-                        Ctxt("Value does not match format (%%):  " + bc));
+                throw except::Exception(Ctxt("Value does not match format (%%):  " + bc));
             break;
 
         /*
@@ -329,8 +311,7 @@ char* strptime(const char* buf, const char* fmt, struct tm& tm, double& millis)
         case 'Y':  // The year.
             i = TM_YEAR_BASE;
             if (!(conv_num(bp, i, 0, 9999)))
-                throw except::Exception(
-                        Ctxt("Invalid year: " + std::to_string(i)));
+                throw except::Exception(Ctxt("Invalid year: " + std::to_string(i)));
             tm.tm_year = i - TM_YEAR_BASE;
             break;
 
@@ -357,8 +338,7 @@ char* strptime(const char* buf, const char* fmt, struct tm& tm, double& millis)
             break;
 
         default:  // Unknown/unsupported conversion.
-            throw except::Exception(
-                    Ctxt("Unknown/unsupported format type:  %" + fc));
+            throw except::Exception(Ctxt("Unknown/unsupported format type:  %" + fc));
         }
     }
 
@@ -465,8 +445,7 @@ std::string sys::DateTime::monthToString(int month)
     case 12:
         return "December";
     default:
-        throw except::InvalidArgumentException(
-                "Value not in the valid range {1:12}");
+        throw except::InvalidArgumentException("Value not in the valid range {1:12}");
     }
 }
 
@@ -489,8 +468,7 @@ std::string sys::DateTime::dayOfWeekToString(int dayOfWeek)
     case 7:
         return "Saturday";
     default:
-        throw except::InvalidArgumentException(
-                "Value not in the valid range {1:7}");
+        throw except::InvalidArgumentException("Value not in the valid range {1:7}");
     }
 }
 
@@ -532,8 +510,7 @@ int sys::DateTime::monthToValue(const std::string& month)
     else if (str::startsWith(m, "dec"))
         return 12;
     else
-        throw except::InvalidArgumentException(
-                "Value not in the valid range {Jan:Dec}");
+        throw except::InvalidArgumentException("Value not in the valid range {Jan:Dec}");
 }
 
 int sys::DateTime::dayOfWeekToValue(const std::string& dayOfWeek)
@@ -554,8 +531,7 @@ int sys::DateTime::dayOfWeekToValue(const std::string& dayOfWeek)
     else if (str::startsWith(d, "sat"))
         return 7;
     else
-        throw except::InvalidArgumentException(
-                "Value not in the valid range {Sun:Sat}");
+        throw except::InvalidArgumentException("Value not in the valid range {Sun:Sat}");
 }
 
 void sys::DateTime::setDayOfMonth(int dayOfMonth)
@@ -604,8 +580,7 @@ void sys::DateTime::setTime(const std::string& time, const std::string& format)
 {
     // init
     struct tm t;
-    t.tm_sec = t.tm_min = t.tm_hour = t.tm_mday = t.tm_mon = t.tm_year =
-            t.tm_wday = t.tm_yday = 0;
+    t.tm_sec = t.tm_min = t.tm_hour = t.tm_mday = t.tm_mon = t.tm_year = t.tm_wday = t.tm_yday = 0;
     t.tm_isdst = -1;
 
     strptime(time.c_str(), format.c_str(), t, mTimeInMillis);
@@ -625,8 +600,7 @@ std::string sys::DateTime::format(const std::string& formatStr) const
     tm localTime;
     getTime(localTime);
     if (!strftime(str, maxSize, formatStr.c_str(), &localTime))
-        throw except::InvalidFormatException(
-                "The format string was unable to be expanded");
+        throw except::InvalidFormatException("The format string was unable to be expanded");
 
     return std::string(str);
 }
@@ -670,8 +644,8 @@ void sys::DateTime::localtime(time_t numSecondsSinceEpoch, tm& t)
     if (::localtime_r(&numSecondsSinceEpoch, &t) == nullptr)
     {
         int const errnum = errno;
-        throw except::Exception(Ctxt("localtime_r() failed (" +
-                                     std::string(::strerror(errnum)) + ")"));
+        throw except::Exception(
+                Ctxt("localtime_r() failed (" + std::string(::strerror(errnum)) + ")"));
     }
 #elif _WIN32
     const auto errnum = ::localtime_s(&t, &numSecondsSinceEpoch);
@@ -679,15 +653,13 @@ void sys::DateTime::localtime(time_t numSecondsSinceEpoch, tm& t)
     {
         char buffer[1024];
         strerror_s(buffer, errnum);
-        throw except::Exception(
-                Ctxt("localtime_s() failed (" + std::string(buffer) + ")"));
+        throw except::Exception(Ctxt("localtime_s() failed (" + std::string(buffer) + ")"));
     }
 #else
     const auto errnum = localtime_s_(&t, &numSecondsSinceEpoch);
     if (errnum != 0)
     {
-        throw except::Exception(Ctxt("localtime failed (" +
-                                     std::string(::strerror(errnum)) + ")"));
+        throw except::Exception(Ctxt("localtime failed (" + std::string(::strerror(errnum)) + ")"));
     }
 #endif
 }
@@ -701,8 +673,8 @@ void sys::DateTime::gmtime(time_t numSecondsSinceEpoch, tm& t)
     if (::gmtime_r(&numSecondsSinceEpoch, &t) == nullptr)
     {
         int const errnum = errno;
-        throw except::Exception(Ctxt("gmtime_r() failed (" +
-                                     std::string(::strerror(errnum)) + ")"));
+        throw except::Exception(
+                Ctxt("gmtime_r() failed (" + std::string(::strerror(errnum)) + ")"));
     }
 #elif _WIN32
     const auto errnum = ::gmtime_s(&t, &numSecondsSinceEpoch);
@@ -710,15 +682,13 @@ void sys::DateTime::gmtime(time_t numSecondsSinceEpoch, tm& t)
     {
         char buffer[1024];
         strerror_s(buffer, errnum);
-        throw except::Exception(
-                Ctxt("gmtime_s() failed (" + std::string(buffer) + ")"));
+        throw except::Exception(Ctxt("gmtime_s() failed (" + std::string(buffer) + ")"));
     }
 #else
     const auto errnum = gmtime_s_(&t, &numSecondsSinceEpoch);
     if (errnum != 0)
     {
-        throw except::Exception(Ctxt("gmtime failed (" +
-                                     std::string(::strerror(errnum)) + ")"));
+        throw except::Exception(Ctxt("gmtime failed (" + std::string(::strerror(errnum)) + ")"));
     }
 #endif
 }
@@ -730,8 +700,7 @@ int64_t sys::DateTime::getEpochSeconds() noexcept
     // number of seconds (not counting leap seconds) since 00:00, Jan 1 1970
     // UTC, corresponding to POSIX time.
     // https://en.cppreference.com/w/cpp/chrono/c/time
-    static_assert(sizeof(time_t) >= sizeof(int64_t),
-                  "should have at least a 64-bit time_t");
+    static_assert(sizeof(time_t) >= sizeof(int64_t), "should have at least a 64-bit time_t");
     const auto result = std::time(nullptr);
     return gsl::narrow<int64_t>(result);
 }

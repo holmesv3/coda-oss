@@ -66,8 +66,7 @@ long sio::lite::FileHeader::getLength() const
 
     if (!userData.empty())
         length += 4;  // num fields int
-    for (sio::lite::UserDataDictionary::ConstIterator it = userData.begin();
-         it != userData.end();
+    for (sio::lite::UserDataDictionary::ConstIterator it = userData.begin(); it != userData.end();
          ++it)
     {
         length += 4;  // key size
@@ -85,17 +84,14 @@ bool sio::lite::FileHeader::userDataFieldExists(const std::string& key) const
     return userData.exists(key);
 }
 
-void sio::lite::FileHeader::getAllUserDataFields(
-        std::vector<std::string>& keys) const
+void sio::lite::FileHeader::getAllUserDataFields(std::vector<std::string>& keys) const
 {
-    for (sio::lite::UserDataDictionary::ConstIterator p = userData.begin();
-         p != userData.end();
+    for (sio::lite::UserDataDictionary::ConstIterator p = userData.begin(); p != userData.end();
          ++p)
         keys.push_back(p->first);
 }
 
-std::vector<sys::byte>& sio::lite::FileHeader::getUserData(
-        const std::string& key)
+std::vector<sys::byte>& sio::lite::FileHeader::getUserData(const std::string& key)
 {
     if (!userData.exists(key))
         throw except::NoSuchKeyException(key);
@@ -166,9 +162,7 @@ void sio::lite::FileHeader::writeUserData(io::OutputStream& os)
     const auto numFields = gsl::narrow<int32_t>(userData.size());
     os.write((const sys::byte*)&numFields, 4);
 
-    for (sio::lite::UserDataDictionary::Iterator it = userData.begin();
-         it != userData.end();
-         ++it)
+    for (sio::lite::UserDataDictionary::Iterator it = userData.begin(); it != userData.end(); ++it)
     {
         std::string key = it->first;
         // add 1 for null-byte termination
@@ -181,9 +175,7 @@ void sio::lite::FileHeader::writeUserData(io::OutputStream& os)
         os.write((const sys::byte*)&udSize, 4);
 
         // Do we need to check for endian-ness and possibly byteswap???
-        for (std::vector<sys::byte>::iterator iter = uData.begin();
-             iter != uData.end();
-             ++iter)
+        for (std::vector<sys::byte>::iterator iter = uData.begin(); iter != uData.end(); ++iter)
         {
             sys::byte x = *iter;
             os.write(&x, 1);
@@ -191,11 +183,9 @@ void sio::lite::FileHeader::writeUserData(io::OutputStream& os)
     }
 }
 
-void sio::lite::FileHeader::addUserData(const std::string& field,
-                                        const std::string& data)
+void sio::lite::FileHeader::addUserData(const std::string& field, const std::string& data)
 {
-    const sys::byte* const begin =
-            reinterpret_cast<const sys::byte*>(data.c_str());
+    const sys::byte* const begin = reinterpret_cast<const sys::byte*>(data.c_str());
 
     const std::vector<sys::byte> vec(begin, begin + data.length());
     userData.add(field, vec);

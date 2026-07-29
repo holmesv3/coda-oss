@@ -22,16 +22,13 @@
 
 #include "plugin/ErrorHandler.h"
 
-plugin::DefaultErrorHandler::DefaultErrorHandler(logging::LoggerPtr logger) :
-    mLogger(logger)
+plugin::DefaultErrorHandler::DefaultErrorHandler(logging::LoggerPtr logger) : mLogger(logger)
 {
 }
 
-void plugin::DefaultErrorHandler::onPluginDirectoryNotFound(
-        const std::string& dir)
+void plugin::DefaultErrorHandler::onPluginDirectoryNotFound(const std::string& dir)
 {
-    throw except::FileNotFoundException(
-            Ctxt(std::string("Plugin directory not found: ") + dir));
+    throw except::FileNotFoundException(Ctxt(std::string("Plugin directory not found: ") + dir));
 }
 
 void plugin::DefaultErrorHandler::onPluginLoadFailed(const std::string& file)
@@ -46,8 +43,7 @@ void plugin::DefaultErrorHandler::onPluginLoadedAlready(const std::string& file)
         mLogger->info("Plugin manager already loaded: " + file);
 }
 
-void plugin::DefaultErrorHandler::onPluginVersionUnsupported(
-        const std::string& message)
+void plugin::DefaultErrorHandler::onPluginVersionUnsupported(const std::string& message)
 {
     if (mLogger.get())
         mLogger->warn(message);

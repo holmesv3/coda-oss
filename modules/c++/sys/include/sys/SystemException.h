@@ -47,8 +47,7 @@ public:
      *  Constructs the user message, and retrieves the last error.
      *  \param userMessage The user's message
      */
-    SystemException(const std::string& userMessage) :
-        except::Exception(userMessage)
+    SystemException(const std::string& userMessage) : except::Exception(userMessage)
     {
         Err e;
         mMessage += std::string(": ") + e.toString();
@@ -79,8 +78,7 @@ public:
      *  \param userMessage A user's message
      *  \param errorId the system error id
      */
-    SystemException(const char* userMessage, int errorId) :
-        except::Exception(userMessage)
+    SystemException(const char* userMessage, int errorId) : except::Exception(userMessage)
     {
         Err e(errorId);
         mMessage += std::string(": ") + e.toString();
@@ -91,8 +89,7 @@ public:
      *  \param userMessage A user's message
      *  \param errorId the system error id
      */
-    SystemException(const std::string& userMessage, int errorId) :
-        except::Exception(userMessage)
+    SystemException(const std::string& userMessage, int errorId) : except::Exception(userMessage)
     {
         Err e(errorId);
         mMessage += std::string(": ") + e.toString();
@@ -134,8 +131,7 @@ public:
      *  \param userMessage A user's message
      *  \param errorId the system error id
      */
-    SystemError(const char* userMessage, int errorId) :
-        except::Error(userMessage)
+    SystemError(const char* userMessage, int errorId) : except::Error(userMessage)
     {
         Err e(errorId);
         mMessage += std::string(": ") + e.toString();
@@ -146,8 +142,7 @@ public:
      *  \param userMessage A user's message
      *  \param errorId the system error id
      */
-    SystemError(const std::string& userMessage, int errorId) :
-        except::Error(userMessage)
+    SystemError(const std::string& userMessage, int errorId) : except::Error(userMessage)
     {
         Err e(errorId);
         mMessage += std::string(": ") + e.toString();

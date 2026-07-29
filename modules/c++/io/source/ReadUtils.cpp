@@ -36,8 +36,7 @@ void readFileContents_(const TPath& pathname, std::vector<T>& buffer)
         inStream.read(coda_oss::span<T>(buffer.data(), buffer.size()), true);
     }
 }
-void readFileContents(const std::string& pathname,
-                      std::vector<sys::byte>& buffer)
+void readFileContents(const std::string& pathname, std::vector<sys::byte>& buffer)
 {
     readFileContents_(pathname, buffer);
 }

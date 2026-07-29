@@ -52,10 +52,8 @@ TEST_CASE(TestRangeList)
     startVal.insert(r0);
     startVal.insert(r1);
     json expected = {
-            {{"mStartElement", r0.mStartElement},
-             {"mNumElements", r0.mNumElements}},
-            {{"mStartElement", r1.mStartElement},
-             {"mNumElements", r1.mNumElements}},
+            {{"mStartElement", r0.mStartElement}, {"mNumElements", r0.mNumElements}},
+            {{"mStartElement", r1.mStartElement}, {"mNumElements", r1.mNumElements}},
 
     };
     json serialized = startVal;
@@ -84,17 +82,14 @@ TEST_CASE(TestRowCol)
 TEST_CASE(TestPageRowCol)
 {
     types::PageRowCol<uint32_t> startVal(0, 1, 2);
-    json expected = {{"page", startVal.page},
-                     {"row", startVal.row},
-                     {"col", startVal.col}};
+    json expected = {{"page", startVal.page}, {"row", startVal.row}, {"col", startVal.col}};
     json serialized = startVal;
     auto deserialized = serialized.template get<types::PageRowCol<uint32_t>>();
     TEST_ASSERT(serialized == expected);
     TEST_ASSERT(startVal == deserialized);
 }
 
-TEST_MAIN(TEST_CHECK(TestComplex); TEST_CHECK(TestRange);
-          TEST_CHECK(TestRangeList);
+TEST_MAIN(TEST_CHECK(TestComplex); TEST_CHECK(TestRange); TEST_CHECK(TestRangeList);
           TEST_CHECK(TestRgAz);
           TEST_CHECK(TestRowCol);
           TEST_CHECK(TestPageRowCol);)

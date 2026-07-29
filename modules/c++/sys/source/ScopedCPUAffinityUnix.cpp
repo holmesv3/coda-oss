@@ -90,8 +90,7 @@ int ScopedCPUMaskUnix::getNumOnlineCPUs()
     }
     return gsl::narrow<int>(numOnlineCPUs);
 #else
-    throw except::NotImplementedException(
-            Ctxt("Unable to get the number of CPUs"));
+    throw except::NotImplementedException(Ctxt("Unable to get the number of CPUs"));
 #endif
 }
 

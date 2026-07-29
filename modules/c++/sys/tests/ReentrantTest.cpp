@@ -47,11 +47,9 @@ int main()
 {
     try
     {
-        std::cout << "Your implementation of sys is multi-threaded"
-                  << std::endl;
+        std::cout << "Your implementation of sys is multi-threaded" << std::endl;
         NoteThread* nThr = new NoteThread;
-        std::cout << "Your thread type is: " << nThr->getNativeType()
-                  << std::endl;
+        std::cout << "Your thread type is: " << nThr->getNativeType() << std::endl;
 
         nThr->start();
         nThr->join();

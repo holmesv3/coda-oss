@@ -45,8 +45,7 @@ TEST_CASE(testXmlCreateRoot)
     xml::lite::MinidomParser xmlParser;
     auto& document = getDocument(xmlParser);
 
-    auto documents_ =
-            document.createElement(xml::lite::QName(""_u, "abc"), "abc");
+    auto documents_ = document.createElement(xml::lite::QName(""_u, "abc"), "abc");
     auto& documents = *documents_;
     auto actual = print(documents);
     TEST_ASSERT_EQ("<abc>abc</abc>", actual);
@@ -64,8 +63,7 @@ TEST_CASE(testXmlCreateNested)
     xml::lite::MinidomParser xmlParser;
     auto& document = getDocument(xmlParser);
 
-    auto documents_ =
-            document.createElement(xml::lite::QName(""_u, "documents"), "");
+    auto documents_ = document.createElement(xml::lite::QName(""_u, "documents"), "");
     auto& documents = *documents_;
     std::ignore = addChild(documents, "html");
     auto actual = print(documents);
@@ -105,8 +103,7 @@ TEST_CASE(testXmlCreateEmpty)
     xml::lite::MinidomParser xmlParser;
     auto& document = getDocument(xmlParser);
 
-    auto documents_ =
-            document.createElement(xml::lite::QName(""_u, "empty"), "");
+    auto documents_ = document.createElement(xml::lite::QName(""_u, "empty"), "");
     auto& documents = *documents_;
     auto actual = print(documents);
     TEST_ASSERT_EQ("<empty/>", actual);
@@ -120,12 +117,10 @@ TEST_CASE(testXmlCreateWhitespace)
     auto& document = getDocument(xmlParser);
 
     const auto text = str::u8FromNative("     ");
-    auto documents_ =
-            document.createElement(xml::lite::QName(""_u, "text"), text);
+    auto documents_ = document.createElement(xml::lite::QName(""_u, "text"), text);
     auto& documents = *documents_;
     auto strXml = str::u8FromNative(print(documents));
-    const auto expected =
-            str::u8FromNative("<text>") + text + str::u8FromNative("</text>");
+    const auto expected = str::u8FromNative("<text>") + text + str::u8FromNative("</text>");
     TEST_ASSERT(strXml == expected);
 
     {

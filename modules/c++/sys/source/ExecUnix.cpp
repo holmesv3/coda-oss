@@ -100,11 +100,7 @@ FILE* ExecPipe::openPipe(const std::string& command, const std::string& type)
         //! call our command --
         //  this command replaces the forked process with
         //  command the user specified
-        execl("/bin/sh",
-              "sh",
-              "-c",
-              command.c_str(),
-              static_cast<char*>(nullptr));
+        execl("/bin/sh", "sh", "-c", command.c_str(), static_cast<char*>(nullptr));
 
         //! exit the subprocess once it has completed
         exit(127);
@@ -163,24 +159,21 @@ int ExecPipe::closePipe()
         // due to uncaught signal (ex. segFault)
         if (WIFSIGNALED(encodedStatus))
         {
-            throw except::IOException(
-                    Ctxt("The child process was terminated by "
-                         "an uncaught signal: " +
-                         str::toString(WTERMSIG(encodedStatus))));
+            throw except::IOException(Ctxt("The child process was terminated by "
+                                           "an uncaught signal: " +
+                                           str::toString(WTERMSIG(encodedStatus))));
         }
         // due to unplanned stoppage
         if (WIFSTOPPED(encodedStatus))
         {
-            throw except::IOException(
-                    Ctxt("The child process was unexpectedly stopped: " +
-                         str::toString(WSTOPSIG(encodedStatus))));
+            throw except::IOException(Ctxt("The child process was unexpectedly stopped: " +
+                                           str::toString(WSTOPSIG(encodedStatus))));
         }
 
         // all other errors
         sys::SocketErr err;
         throw except::IOException(
-                Ctxt("Failure while closing stream to child process: " +
-                     err.toString()));
+                Ctxt("Failure while closing stream to child process: " + err.toString()));
     }
 
     return exitStatus;

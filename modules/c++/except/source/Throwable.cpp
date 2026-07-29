@@ -101,15 +101,12 @@ except::Throwable::Throwable(except::Context c) : Throwable(&c)
 {
 }
 
-except::Throwable::Throwable(const except::Throwable& t, except::Context c) :
-    Throwable(&c, &t)
+except::Throwable::Throwable(const except::Throwable& t, except::Context c) : Throwable(&c, &t)
 {
 }
-except::Throwable::Throwable(const except::ThrowableEx& t, except::Context c) :
-    Throwable(&c, &t)
+except::Throwable::Throwable(const except::ThrowableEx& t, except::Context c) : Throwable(&c, &t)
 {
 }
-except::Throwable::Throwable(const except::ThrowableEx& t) :
-    Throwable(nullptr, &t)
+except::Throwable::Throwable(const except::ThrowableEx& t) : Throwable(nullptr, &t)
 {
 }

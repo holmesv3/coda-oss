@@ -134,11 +134,7 @@ public:
     template <typename T>
     void setOption(int level, int option, const T& val)
     {
-        if (::setsockopt(mNative,
-                         level,
-                         option,
-                         (const char*)&val,
-                         (net::SockLen_T)sizeof(T)) != 0)
+        if (::setsockopt(mNative, level, option, (const char*)&val, (net::SockLen_T)sizeof(T)) != 0)
         {
             // capture the error
             sys::SocketErr err;
@@ -158,16 +154,14 @@ public:
              * IP_TOS & IP_MULTICAST_LOOP can't be set on some versions
              * of Windows.
              */
-            if ((WSAGetLastError() == WSAENOPROTOOPT) &&
-                (level == IPPROTO_IP) &&
+            if ((WSAGetLastError() == WSAENOPROTOOPT) && (level == IPPROTO_IP) &&
                 (option == IP_TOS || option == IP_MULTICAST_LOOP))
                 return;
 
             /*
              * IP_TOS can't be set on unbound UDP sockets.
              */
-            if ((WSAGetLastError() == WSAEINVAL) && (level == IPPROTO_IP) &&
-                (option == IP_TOS))
+            if ((WSAGetLastError() == WSAEINVAL) && (level == IPPROTO_IP) && (option == IP_TOS))
                 return;
 #endif
 
@@ -230,10 +224,7 @@ public:
      *  \param len The number of bytes read
      *  \param flags The flags (usually not specified)
      */
-    void sendTo(const SocketAddress& address,
-                const void* b,
-                size_t len,
-                int flags = 0);
+    void sendTo(const SocketAddress& address, const void* b, size_t len, int flags = 0);
 
     /*!
      *  Accept a connection while listening on a passive socket.
@@ -256,8 +247,7 @@ protected:
     net::Socket_T mNative;
 
     //! only this object should have access
-    Socket(net::Socket_T socket, bool isSocket) :
-        mNative(isSocket ? socket : INVALID_SOCKET)
+    Socket(net::Socket_T socket, bool isSocket) : mNative(isSocket ? socket : INVALID_SOCKET)
     {
         if (mNative == INVALID_SOCKET)
         {
@@ -266,8 +256,7 @@ protected:
             mNative = ::socket(AF_INET, type, 0);
             if (mNative == INVALID_SOCKET)
             {
-                throw sys::SocketException(
-                        Ctxt("Socket initialization failed"));
+                throw sys::SocketException(Ctxt("Socket initialization failed"));
             }
         }
     }

@@ -43,10 +43,7 @@ public:
      * \param length    the length (in elements, not bytes) of the buffer
      * \param skip      optional stride to use
      */
-    SerializableArray(T* buf,
-                      sys::Size_T offset,
-                      sys::Size_T length,
-                      sys::Size_T skip = 0) :
+    SerializableArray(T* buf, sys::Size_T offset, sys::Size_T length, sys::Size_T skip = 0) :
         mBuf(buf), mOffset(offset), mLength(length), mSkip(skip)
     {
     }
@@ -55,8 +52,7 @@ public:
      * \param buf       the data buffer
      * \param length    the length (in elements, not bytes) of the buffer
      */
-    SerializableArray(T* buf, sys::Size_T length) :
-        mBuf(buf), mOffset(0), mLength(length), mSkip(0)
+    SerializableArray(T* buf, sys::Size_T length) : mBuf(buf), mOffset(0), mLength(length), mSkip(0)
     {
     }
 

@@ -93,8 +93,7 @@ public:
         if (A.rows() != A.cols())
         {
             throw except::Exception(
-                    Ctxt("Expected square matrix but got rows = " +
-                         std::to_string(A.rows()) +
+                    Ctxt("Expected square matrix but got rows = " + std::to_string(A.rows()) +
                          ", cols = " + std::to_string(A.cols())));
         }
 
@@ -576,8 +575,7 @@ private:
     }
 
     // Complex scalar division.
-    static void cdiv(
-            RealT xr, RealT xi, RealT yr, RealT yi, RealT& cdivr, RealT& cdivi)
+    static void cdiv(RealT xr, RealT xi, RealT yr, RealT yi, RealT& cdivr, RealT& cdivi)
     {
         RealT r, mD;
         if (std::abs(yr) > std::abs(yi))
@@ -816,8 +814,7 @@ private:
                     {
                         break;
                     }
-                    if (std::abs(mH[m][m - 1]) * (std::abs(q) + std::abs(r)) <
-                        eps *
+                    if (std::abs(mH[m][m - 1]) * (std::abs(q) + std::abs(r)) < eps *
                                 (std::abs(p) *
                                  (std::abs(mH[m - 1][m - 1]) + std::abs(z) +
                                   std::abs(mH[m + 1][m + 1]))))
@@ -1020,12 +1017,7 @@ private:
                 {
                     RealT cdivr;
                     RealT cdivi;
-                    cdiv(RealT(0.0),
-                         -mH[mN - 1][mN],
-                         mH[mN - 1][mN - 1] - p,
-                         q,
-                         cdivr,
-                         cdivi);
+                    cdiv(RealT(0.0), -mH[mN - 1][mN], mH[mN - 1][mN - 1] - p, q, cdivr, cdivi);
                     mH[mN - 1][mN - 1] = cdivr;
                     mH[mN - 1][mN] = cdivi;
                 }
@@ -1066,14 +1058,12 @@ private:
 
                             x = mH[i][i + 1];
                             y = mH[i + 1][i];
-                            vr = (mD[i] - p) * (mD[i] - p) + mE[i] * mE[i] -
-                                    q * q;
+                            vr = (mD[i] - p) * (mD[i] - p) + mE[i] * mE[i] - q * q;
                             vi = (mD[i] - p) * 2.0 * q;
                             if ((vr == RealT(0.0)) && (vi == RealT(0.0)))
                             {
                                 vr = eps * norm *
-                                        (std::abs(w) + std::abs(q) +
-                                         std::abs(x) + std::abs(y) +
+                                        (std::abs(w) + std::abs(q) + std::abs(x) + std::abs(y) +
                                          std::abs(z));
                             }
 
@@ -1090,12 +1080,8 @@ private:
                             mH[i][mN] = cdivi;
                             if (std::abs(x) > (std::abs(z) + std::abs(q)))
                             {
-                                mH[i + 1][mN - 1] = (-ra - w * mH[i][mN - 1] +
-                                                     q * mH[i][mN]) /
-                                        x;
-                                mH[i + 1][mN] = (-sa - w * mH[i][mN] -
-                                                 q * mH[i][mN - 1]) /
-                                        x;
+                                mH[i + 1][mN - 1] = (-ra - w * mH[i][mN - 1] + q * mH[i][mN]) / x;
+                                mH[i + 1][mN] = (-sa - w * mH[i][mN] - q * mH[i][mN - 1]) / x;
                             }
                             else
                             {
@@ -1113,8 +1099,7 @@ private:
 
                         // Overflow control
 
-                        t = std::max<RealT>(std::abs(mH[i][mN - 1]),
-                                            std::abs(mH[i][mN]));
+                        t = std::max<RealT>(std::abs(mH[i][mN - 1]), std::abs(mH[i][mN]));
                         if ((eps * t) * t > 1)
                         {
                             for (int j = i; j <= mN; j++)

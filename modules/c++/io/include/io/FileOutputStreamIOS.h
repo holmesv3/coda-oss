@@ -64,8 +64,7 @@ struct FileOutputStreamIOS : public OutputStream
      *  \param creationFlags see sys::File
      */
     FileOutputStreamIOS(const std::string& outputFile,
-                        int creationFlags = sys::File::CREATE |
-                                sys::File::TRUNCATE);
+                        int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
 
     /*!
      *  Alternate Constructor.  Takes an output file and a mode
@@ -73,8 +72,7 @@ struct FileOutputStreamIOS : public OutputStream
      *  \param creationFlags see sys::File
      */
     FileOutputStreamIOS(const char* outputFile,
-                        int creationFlags = sys::File::CREATE |
-                                sys::File::TRUNCATE);
+                        int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
 
     //! Deconstructor, closes the file stream.
     virtual ~FileOutputStreamIOS()
@@ -94,8 +92,7 @@ struct FileOutputStreamIOS : public OutputStream
      *  \param file The file to open
      *  \param mode The mode
      */
-    virtual void open(const char* file,
-                      std::ios::openmode mode = std::ios::out);
+    virtual void open(const char* file, std::ios::openmode mode = std::ios::out);
 
     using OutputStream::write;
 

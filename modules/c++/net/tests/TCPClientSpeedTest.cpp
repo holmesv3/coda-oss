@@ -54,8 +54,7 @@ int main(int argc, char** argv)
         const size_t bytesToSend = str::toType<size_t>(argv[4]) * 1024 * 1024;
 
         net::SocketAddress sa(host, port);
-        std::unique_ptr<net::Socket> socket =
-                net::TCPClientSocketFactory().create(sa);
+        std::unique_ptr<net::Socket> socket = net::TCPClientSocketFactory().create(sa);
 
         std::vector<sys::ubyte> bufferVec(std::min(bufferSize, bytesToSend), 0);
         sys::ubyte* const buffer = &bufferVec[0];
@@ -69,8 +68,7 @@ int main(int argc, char** argv)
         size_t numBytesSent(0);
         while (numBytesSent < bytesToSend)
         {
-            const size_t numBytesThisTime =
-                    std::min(bufferSize, bytesToSend - numBytesSent);
+            const size_t numBytesThisTime = std::min(bufferSize, bytesToSend - numBytesSent);
             socket->send(buffer, numBytesThisTime);
             numBytesSent += numBytesThisTime;
         }
@@ -82,12 +80,11 @@ int main(int argc, char** argv)
 
         socket->close();
 
-        const double numSec =
-                (stop.getTimeInMillis() - start.getTimeInMillis()) / 1000;
+        const double numSec = (stop.getTimeInMillis() - start.getTimeInMillis()) / 1000;
         const double numMB = bytesToSend / (1024.0 * 1024);
         const double mbPerSec = numMB / numSec;
-        std::cout << "Sent " << numMB << " MB in " << numSec << " sec ("
-                  << mbPerSec << " MB / s)\n";
+        std::cout << "Sent " << numMB << " MB in " << numSec << " sec (" << mbPerSec
+                  << " MB / s)\n";
 
         return 0;
     }

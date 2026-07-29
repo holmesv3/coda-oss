@@ -29,8 +29,7 @@
 #include <vector>
 
 // return true if the string sequences are the same, false otherwise
-bool compareStringSequence(const std::vector<std::string>& a,
-                           const std::vector<std::string>& b)
+bool compareStringSequence(const std::vector<std::string>& a, const std::vector<std::string>& b)
 {
     if (a.size() != b.size())
     {
@@ -89,8 +88,7 @@ bool streamSplitterTestRunner(size_t numLines,
     std::string substring;
     size_t numBytesReturned = 0;
 
-    if (splitter.getNumSubstringsReturned() != 0 ||
-        splitter.getNumBytesReturned() != 0 ||
+    if (splitter.getNumSubstringsReturned() != 0 || splitter.getNumBytesReturned() != 0 ||
         splitter.getNumBytesProcessed() != 0)
     {
         return false;
@@ -107,8 +105,7 @@ bool streamSplitterTestRunner(size_t numLines,
 
         numBytesReturned += substring.size();
         if (numBytesReturned != splitter.getNumBytesReturned() ||
-            (numBytesCumulative[outputLines.size() - 1] !=
-             splitter.getNumBytesProcessed()))
+            (numBytesCumulative[outputLines.size() - 1] != splitter.getNumBytesProcessed()))
         {
             return false;
         }
@@ -181,20 +178,17 @@ TEST_CASE(testStreamSplitter)
     for (size_t i_lineCount = 0; i_lineCount < lineCounts.size(); ++i_lineCount)
     {
         const size_t lineCount = lineCounts[i_lineCount];
-        for (size_t i_lineLength = 0; i_lineLength < lineLengths.size();
-             ++i_lineLength)
+        for (size_t i_lineLength = 0; i_lineLength < lineLengths.size(); ++i_lineLength)
         {
             const size_t lineLength = lineLengths[i_lineLength];
-            for (size_t i_delimiter = 0; i_delimiter < delimiters.size();
-                 ++i_delimiter)
+            for (size_t i_delimiter = 0; i_delimiter < delimiters.size(); ++i_delimiter)
             {
                 const std::string delimiter = delimiters[i_delimiter];
-                for (size_t i_bufferSize = 0; i_bufferSize < bufferSizes.size();
-                     ++i_bufferSize)
+                for (size_t i_bufferSize = 0; i_bufferSize < bufferSizes.size(); ++i_bufferSize)
                 {
                     const size_t bufferSize = bufferSizes[i_bufferSize];
-                    TEST_ASSERT(streamSplitterTestRunner(
-                            lineCount, lineLength, delimiter, bufferSize));
+                    TEST_ASSERT(
+                            streamSplitterTestRunner(lineCount, lineLength, delimiter, bufferSize));
                 }
             }
         }

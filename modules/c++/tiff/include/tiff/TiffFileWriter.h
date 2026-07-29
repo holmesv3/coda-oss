@@ -221,9 +221,8 @@ void writeTIFF(const T* image,
     ifd->addEntry(::tiff::KnownTags::IMAGE_WIDTH, cols);
     ifd->addEntry(::tiff::KnownTags::IMAGE_LENGTH, rows);
 
-    ifd->addEntry(
-            ::tiff::KnownTags::COMPRESSION,
-            (unsigned short)::tiff::Const::CompressionType::NO_COMPRESSION);
+    ifd->addEntry(::tiff::KnownTags::COMPRESSION,
+                  (unsigned short)::tiff::Const::CompressionType::NO_COMPRESSION);
 
     ifd->addEntry(::tiff::KnownTags::PHOTOMETRIC_INTERPRETATION, photoInterp);
     // Added this for RGBA, because otherwise the ImageWriter::validate()
@@ -241,8 +240,7 @@ void writeTIFF(const T* image,
     {
         bps->addValue(::tiff::TypeFactory::create((unsigned char*)&bitsPerBand,
                                                   ::tiff::Const::Type::SHORT));
-        sf->addValue(::tiff::TypeFactory::create((unsigned char*)&et,
-                                                 ::tiff::Const::Type::SHORT));
+        sf->addValue(::tiff::TypeFactory::create((unsigned char*)&et, ::tiff::Const::Type::SHORT));
     }
 
     // If the alpha channel is on (note 0 is a valid value for ExtraSamples,

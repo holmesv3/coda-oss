@@ -29,14 +29,12 @@ using namespace std;
 
 int main(int, char**)
 {
-    std::cout << LoggerFactory::getInstance().getLogger("test")->getName()
-              << std::endl;
+    std::cout << LoggerFactory::getInstance().getLogger("test")->getName() << std::endl;
 
     Logger* logger = LoggerFactory::getInstance().getLogger("tomsLogger");
     logger->error("This should get logged to stdout");
 
-    LoggerFactory::getInstance().getLogger()->info(
-            "A message from the root logger.");
+    LoggerFactory::getInstance().getLogger()->info("A message from the root logger.");
 
     // by default, the loglevel is WARN, so these won't get logged
     logger->info("Info message 1");

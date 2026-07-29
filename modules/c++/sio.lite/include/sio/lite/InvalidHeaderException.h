@@ -50,8 +50,7 @@ public:
      *  \param message The message to report
      *
      */
-    InvalidHeaderException(const std::string& message) :
-        except::Exception(message)
+    InvalidHeaderException(const std::string& message) : except::Exception(message)
     {
     }
 

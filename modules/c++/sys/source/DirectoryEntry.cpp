@@ -22,8 +22,7 @@
 
 #include "sys/DirectoryEntry.h"
 
-bool operator==(const sys::DirectoryEntry::Iterator& lhs,
-                const sys::DirectoryEntry::Iterator& rhs)
+bool operator==(const sys::DirectoryEntry::Iterator& lhs, const sys::DirectoryEntry::Iterator& rhs)
 {
     const sys::DirectoryEntry* lhsD = lhs.get();
     const sys::DirectoryEntry* rhsD = rhs.get();
@@ -34,11 +33,9 @@ bool operator==(const sys::DirectoryEntry::Iterator& lhs,
         return false;
     }
     else
-        return ((lhsD->getName() == rhsD->getName()) &&
-                (lhsD->getCurrent() == rhsD->getCurrent()));
+        return ((lhsD->getName() == rhsD->getName()) && (lhsD->getCurrent() == rhsD->getCurrent()));
 }
-bool operator!=(const sys::DirectoryEntry::Iterator& lhs,
-                const sys::DirectoryEntry::Iterator& rhs)
+bool operator!=(const sys::DirectoryEntry::Iterator& lhs, const sys::DirectoryEntry::Iterator& rhs)
 {
     const sys::DirectoryEntry* lhsD = lhs.get();
     const sys::DirectoryEntry* rhsD = rhs.get();
@@ -49,6 +46,5 @@ bool operator!=(const sys::DirectoryEntry::Iterator& lhs,
         return false;
     }
     else
-        return ((lhsD->getName() != rhsD->getName()) ||
-                (lhsD->getCurrent() != rhsD->getCurrent()));
+        return ((lhsD->getName() != rhsD->getName()) || (lhsD->getCurrent() != rhsD->getCurrent()));
 }

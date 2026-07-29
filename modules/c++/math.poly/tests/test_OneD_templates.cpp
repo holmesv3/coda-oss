@@ -90,8 +90,7 @@ TEST_CASE(testVector3)
     TEST_ASSERT_EQ(integral[1], 16.0 / 3.0);
     TEST_ASSERT_EQ(integral[2], 7.166666666666666);
 
-    math::poly::OneD<math::linear::VectorN<3, double>> derivative =
-            poly.derivative();
+    math::poly::OneD<math::linear::VectorN<3, double>> derivative = poly.derivative();
     math::linear::VectorN<3, double>& derivativeCoeffs0 = derivative[0];
     math::linear::VectorN<3, double>& derivativeCoeffs1 = derivative[1];
     TEST_ASSERT_EQ(derivativeCoeffs0[0], 3);

@@ -41,20 +41,17 @@ TEST_CASE(TestGetNumSharedElements)
 
     // Intersects 'range' at its upper bound but doesn't cover the
     // full extent - shares [120, 150)
-    TEST_ASSERT_EQ(range.getNumSharedElements(120, 45),
-                   static_cast<size_t>(30));
+    TEST_ASSERT_EQ(range.getNumSharedElements(120, 45), static_cast<size_t>(30));
 
     // Lays between the upper and lower bound of 'range' - 'range' should
     // share all elements [120, 135]
-    TEST_ASSERT_EQ(range.getNumSharedElements(120, 15),
-                   static_cast<size_t>(15));
+    TEST_ASSERT_EQ(range.getNumSharedElements(120, 15), static_cast<size_t>(15));
 
     // Covers the entirety of 'range', should share [100, 150)
     TEST_ASSERT_EQ(range.getNumSharedElements(0, 200), static_cast<size_t>(50));
 
     // Ranges are the same - should share [100, 150)
-    TEST_ASSERT_EQ(range.getNumSharedElements(100, 50),
-                   static_cast<size_t>(50));
+    TEST_ASSERT_EQ(range.getNumSharedElements(100, 50), static_cast<size_t>(50));
 }
 
 TEST_CASE(TestTouches)
@@ -123,8 +120,7 @@ TEST_CASE(TestSplit)
         const types::Range A(5, 10);
         const types::Range splitRange = A.split(0);
         TEST_ASSERT_EQ(splitRange.mNumElements, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(splitRange.mStartElement,
-                       std::numeric_limits<size_t>::max());
+        TEST_ASSERT_EQ(splitRange.mStartElement, std::numeric_limits<size_t>::max());
     }
 
     // Test splitting more elements than are available
@@ -140,10 +136,8 @@ TEST_CASE(TestSplit)
         const types::Range A(0, 0);
         const types::Range splitRange = A.split(10);
         TEST_ASSERT_EQ(splitRange.mNumElements, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(splitRange.mStartElement,
-                       std::numeric_limits<size_t>::max());
+        TEST_ASSERT_EQ(splitRange.mStartElement, std::numeric_limits<size_t>::max());
     }
 }
 
-TEST_MAIN(TEST_CHECK(TestGetNumSharedElements); TEST_CHECK(TestTouches);
-          TEST_CHECK(TestSplit);)
+TEST_MAIN(TEST_CHECK(TestGetNumSharedElements); TEST_CHECK(TestTouches); TEST_CHECK(TestSplit);)

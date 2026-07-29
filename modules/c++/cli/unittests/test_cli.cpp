@@ -73,12 +73,7 @@ TEST_CASE(testChoices)
             ->addChoice("type1")
             ->addChoice("type2")
             ->addChoice("type3");
-    parser.addArgument("-m --many",
-                       "Specify a type to use",
-                       cli::STORE,
-                       "choices",
-                       "CHOICES",
-                       0)
+    parser.addArgument("-m --many", "Specify a type to use", cli::STORE, "choices", "CHOICES", 0)
             ->addChoice("type1")
             ->addChoice("type2")
             ->addChoice("type3");
@@ -109,17 +104,14 @@ TEST_CASE(testChoices)
     }
     results.reset(parser.parse(str::split("-t type2", " ")));
 
-    results.reset(
-            parser.parse(str::split("-m type2 --many type1 -m type3", " ")));
+    results.reset(parser.parse(str::split("-m type2 --many type1 -m type3", " ")));
 }
 
 TEST_CASE(testMultiple)
 {
     cli::ArgumentParser parser;
     parser.setProgram("tester");
-    parser.addArgument("-v --verbose --loud -l",
-                       "Toggle verbose",
-                       cli::STORE_TRUE);
+    parser.addArgument("-v --verbose --loud -l", "Toggle verbose", cli::STORE_TRUE);
 
     std::unique_ptr<cli::Results> results(parser.parse(str::split("-v")));
     TEST_ASSERT(results->hasValue("verbose"));
@@ -144,20 +136,17 @@ TEST_CASE(testSubOptions)
     std::ostringstream buf;
     parser.printHelp(buf);
 
-    std::unique_ptr<cli::Results> results(
-            parser.parse(str::split("-x:special")));
+    std::unique_ptr<cli::Results> results(parser.parse(str::split("-x:special")));
     TEST_ASSERT(results->hasSubResults("extra"));
     TEST_ASSERT(results->getSubResults("extra")->get<bool>("special"));
 
     results.reset(parser.parse(str::split("--extra:arg=something -x:arg2 1")));
     TEST_ASSERT(results->hasSubResults("extra"));
-    TEST_ASSERT_EQ(results->getSubResults("extra")->get<std::string>("arg"),
-                   "something");
+    TEST_ASSERT_EQ(results->getSubResults("extra")->get<std::string>("arg"), "something");
     TEST_ASSERT_EQ(results->getSubResults("extra")->get<int>("arg2"), 1);
 
-    results.reset(
-            parser.parse(str::split("--config /path/to/file --config:flag1 "
-                                    "-c:flag2=true --config:flag3 false")));
+    results.reset(parser.parse(str::split("--config /path/to/file --config:flag1 "
+                                          "-c:flag2=true --config:flag3 false")));
     TEST_ASSERT_EQ(results->get<std::string>("config"), "/path/to/file");
     TEST_ASSERT(results->hasSubResults("config"));
     TEST_ASSERT(results->getSubResults("config")->get<bool>("flag1"));
@@ -172,8 +161,7 @@ TEST_CASE(testIterate)
     parser.addArgument("-v --verbose", "Toggle verbose", cli::STORE_TRUE);
     parser.addArgument("-c --config", "Specify a config file", cli::STORE);
 
-    std::unique_ptr<cli::Results> results(
-            parser.parse(str::split("-v -c config.xml")));
+    std::unique_ptr<cli::Results> results(parser.parse(str::split("-v -c config.xml")));
     std::vector<std::string> keys;
     for (auto it = results->begin(); it != results->end(); ++it)
         keys.push_back(it->first);
@@ -187,8 +175,7 @@ TEST_CASE(testRequired)
 {
     cli::ArgumentParser parser;
     parser.setProgram("tester");
-    parser.addArgument("-c --config", "Specify a config file", cli::STORE)
-            ->setRequired(true);
+    parser.addArgument("-c --config", "Specify a config file", cli::STORE)->setRequired(true);
 
     const std::string program(testName);
     const auto results = parser.parse(program, str::split("-c configFile"));
@@ -199,8 +186,7 @@ TEST_CASE(testRequiredThrows)
 {
     cli::ArgumentParser parser;
     parser.setProgram("tester");
-    parser.addArgument("-c --config", "Specify a config file", cli::STORE)
-            ->setRequired(true);
+    parser.addArgument("-c --config", "Specify a config file", cli::STORE)->setRequired(true);
 
     const std::string program(testName);
     TEST_EXCEPTION(parser.parse(program, str::split("")));
@@ -255,8 +241,7 @@ TEST_CASE(testUnknownArgumentsOptions)
     cli::ArgumentParser parser2;
     parser2.setProgram("tester");
     parser2.addArgument("-v --verbose", "Toggle verbose", cli::STORE_TRUE);
-    TEST_EXCEPTION(
-            results.reset(parser2.parse(str::split("-f C:/Data/File.txt"))));
+    TEST_EXCEPTION(results.reset(parser2.parse(str::split("-f C:/Data/File.txt"))));
 
     // Test ignoreUnknownArguments with more complex arguments
     std::ostringstream outStream3;
@@ -265,8 +250,7 @@ TEST_CASE(testUnknownArgumentsOptions)
     parser3.addArgument("-v --verbose", "Toggle verbose", cli::STORE_TRUE);
     parser3.addArgument("-c --config", "Specify a config file", cli::STORE);
     parser3.addArgument("-t --type", "Type", cli::STORE_TRUE);
-    results.reset(parser3.parse(
-            str::split("-v --badarg1 -c config.txt --filename=file.txt -z")));
+    results.reset(parser3.parse(str::split("-v --badarg1 -c config.txt --filename=file.txt -z")));
     TEST_ASSERT_TRUE(results->get<bool>("verbose"));
     TEST_ASSERT_FALSE(results->get<bool>("type"));
     TEST_ASSERT_EQ(results->get<std::string>("config"), "config.txt");
@@ -278,8 +262,7 @@ TEST_CASE(testUnknownArgumentsOptions)
     TEST_ASSERT_EQ(results->get<std::string>("config"), "config.txt");
 }
 
-TEST_MAIN(TEST_CHECK(testValue); TEST_CHECK(testChoices);
-          TEST_CHECK(testMultiple);
+TEST_MAIN(TEST_CHECK(testValue); TEST_CHECK(testChoices); TEST_CHECK(testMultiple);
           TEST_CHECK(testSubOptions);
           TEST_CHECK(testIterate);
           TEST_CHECK(testRequired);

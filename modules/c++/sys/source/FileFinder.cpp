@@ -46,8 +46,7 @@ bool sys::DirectoryOnlyPredicate::operator()(const std::string& entry) const
     return sys::Path(entry).isDirectory();
 }
 
-sys::FragmentPredicate::FragmentPredicate(const std::string& fragment,
-                                          bool ignoreCase) :
+sys::FragmentPredicate::FragmentPredicate(const std::string& fragment, bool ignoreCase) :
     mFragment(fragment), mIgnoreCase(ignoreCase)
 {
 }
@@ -64,8 +63,7 @@ bool sys::FragmentPredicate::operator()(const std::string& entry) const
         return str::contains(entry, mFragment);
 }
 
-sys::ExtensionPredicate::ExtensionPredicate(const std::string& ext,
-                                            bool ignoreCase) :
+sys::ExtensionPredicate::ExtensionPredicate(const std::string& ext, bool ignoreCase) :
     mExt(ext), mIgnoreCase(ignoreCase)
 {
 }
@@ -104,8 +102,7 @@ bool sys::NotPredicate::operator()(const std::string& entry) const
     return !(*mPredicate.first)(entry);
 }
 
-sys::LogicalPredicate::LogicalPredicate(bool orOperator) :
-    mOrOperator(orOperator)
+sys::LogicalPredicate::LogicalPredicate(bool orOperator) : mOrOperator(orOperator)
 {
 }
 
@@ -137,23 +134,19 @@ bool sys::LogicalPredicate::operator()(const std::string& entry) const
     return ok;
 }
 
-sys::LogicalPredicate& sys::LogicalPredicate::addPredicate(
-        FilePredicate* filter, bool ownIt)
+sys::LogicalPredicate& sys::LogicalPredicate::addPredicate(FilePredicate* filter, bool ownIt)
 {
     mPredicates.push_back(sys::LogicalPredicate::PredicatePair(filter, ownIt));
     return *this;
 }
 
-std::vector<std::string> sys::FileFinder::search(
-        const FilePredicate& filter,
-        const std::vector<std::string>& searchPaths,
-        bool recursive)
+std::vector<std::string> sys::FileFinder::search(const FilePredicate& filter,
+                                                 const std::vector<std::string>& searchPaths,
+                                                 bool recursive)
 {
     // turn it into a list so we can queue additional entries
     std::list<std::string> paths;
-    std::copy(searchPaths.begin(),
-              searchPaths.end(),
-              std::back_inserter(paths));
+    std::copy(searchPaths.begin(), searchPaths.end(), std::back_inserter(paths));
 
     std::vector<std::string> files;
     size_t numInputPaths = searchPaths.size();
@@ -179,16 +172,13 @@ std::vector<std::string> sys::FileFinder::search(
                 if (pathIdx < numInputPaths || recursive)
                 {
                     sys::DirectoryEntry d(path.getPath());
-                    for (sys::DirectoryEntry::Iterator p = d.begin();
-                         p != d.end();
-                         ++p)
+                    for (sys::DirectoryEntry::Iterator p = d.begin(); p != d.end(); ++p)
                     {
                         std::string fname(*p);
                         if (fname != "." && fname != "..")
                         {
                             // add it to the list
-                            paths.push_back(sys::Path::joinPaths(path.getPath(),
-                                                                 fname));
+                            paths.push_back(sys::Path::joinPaths(path.getPath(), fname));
                         }
                     }
                 }
@@ -209,37 +199,31 @@ static fs::path parent_path(const fs::path& p)
     return retval;
 }
 
-static fs::path findFirst(const sys::FilePredicate& pred,
-                          const fs::path& startingDirectory)
+static fs::path findFirst(const sys::FilePredicate& pred, const fs::path& startingDirectory)
 {
     auto dir = startingDirectory;
     while (true)
     {
         const std::vector<std::string> searchPaths{dir.string()};
-        const auto results =
-                sys::FileFinder::search(pred, searchPaths, true /*recursive*/);
+        const auto results = sys::FileFinder::search(pred, searchPaths, true /*recursive*/);
         if (results.size() == 1)
         {
             return results[0];
         }
         if (results.size() > 1)
         {
-            throw std::logic_error(
-                    "Found the same file at multiple locations: " +
-                    searchPaths[0]);
+            throw std::logic_error("Found the same file at multiple locations: " + searchPaths[0]);
         }
 
         if (is_directory(dir / ".git"))
         {
-            throw std::logic_error("Won't traverse above .git directory at: " +
-                                   dir.string());
+            throw std::logic_error("Won't traverse above .git directory at: " + dir.string());
         }
 
         dir = parent_path(dir);
     }
 }
-fs::path sys::findFirstFile(const fs::path& startingDirectory,
-                            const fs::path& filename)
+fs::path sys::findFirstFile(const fs::path& startingDirectory, const fs::path& filename)
 {
     struct FileExistsPredicate final : public FileOnlyPredicate
     {
@@ -256,8 +240,7 @@ fs::path sys::findFirstFile(const fs::path& startingDirectory,
     const FileExistsPredicate pred(filename);
     return findFirst(pred, startingDirectory);
 }
-fs::path sys::findFirstDirectory(const fs::path& startingDirectory,
-                                 const fs::path& dir)
+fs::path sys::findFirstDirectory(const fs::path& startingDirectory, const fs::path& dir)
 {
     struct DirectoryExistsPredicate final : public DirectoryOnlyPredicate
     {
@@ -275,13 +258,11 @@ fs::path sys::findFirstDirectory(const fs::path& startingDirectory,
     return findFirst(pred, startingDirectory);
 }
 
-fs::path sys::test::findRootDirectory(
-        const fs::path& p,
-        const std::string& rootName,
-        std::function<bool(const fs::path&)> isRoot)
+fs::path sys::test::findRootDirectory(const fs::path& p,
+                                      const std::string& rootName,
+                                      std::function<bool(const fs::path&)> isRoot)
 {
-    const auto isRootDirectory = [&](const fs::path& v)
-    { return is_directory(v) && isRoot(v); };
+    const auto isRootDirectory = [&](const fs::path& v) { return is_directory(v) && isRoot(v); };
 
     // Does the given path look good?
     if (isRootDirectory(p))
@@ -322,8 +303,7 @@ fs::path sys::test::findRootDirectory(
 }
 
 static const sys::OS os;
-static inline std::string
-Configuration()  // "Configuration" is typically "Debug" or "Release"
+static inline std::string Configuration()  // "Configuration" is typically "Debug" or "Release"
 {
     return os.getSpecialEnv("Configuration");
 }
@@ -361,9 +341,7 @@ static fs::path findCMakeRoot(const fs::path& path, const fs::path& dir)
     return sys::test::findRootDirectory(path, "", pred);
 }
 
-fs::path findCMake_Root(const fs::path& path,
-                        const std::string& build,
-                        const std::string& install)
+fs::path findCMake_Root(const fs::path& path, const std::string& build, const std::string& install)
 {
     // Calling these directories "build" and "install" for clarity, even though
     // they may be "install" and "build" (or maybe even something else).
@@ -379,8 +357,7 @@ fs::path findCMake_Root(const fs::path& path,
 
     // Might be given a path to something in "install" ...
     std::clog << "path: " << path << '\n';
-    const auto configAndPlatformDir =
-            findCMakeRoot(path, install);  // should be, e.g., "x64-Debug"
+    const auto configAndPlatformDir = findCMakeRoot(path, install);  // should be, e.g., "x64-Debug"
     const auto installDir = configAndPlatformDir.parent_path();
     if (installDir.filename() == install)
     {
@@ -419,8 +396,7 @@ bool sys::test::isCMakeBuild(const fs::path& path)
     }
 }
 
-static fs::path find_dotGITDirectory_(const fs::path& p,
-                                      const fs::path& initial)
+static fs::path find_dotGITDirectory_(const fs::path& p, const fs::path& initial)
 {
     // Walk up the directory tree starting at "p" until we find a .git directory
     if (is_directory(p / ".git"))
@@ -451,10 +427,10 @@ fs::path sys::test::findModuleFile(const fs::path& root,
         return retval;
     }
 
-    static const std::vector<fs::path> subDirectories{
-            "externals",  // NITRO and SIX
-            fs::path("externals") / "coda" / "externals",  // di
-            fs::path("src") / "OSS" / "di"};
+    static const std::vector<fs::path> subDirectories{"externals",  // NITRO and SIX
+                                                      fs::path("externals") / "coda" /
+                                                              "externals",  // di
+                                                      fs::path("src") / "OSS" / "di"};
     for (const auto& subDir : subDirectories)
     {
         retval = root / subDir / externalsName / modulePath / moduleFile;
@@ -475,14 +451,11 @@ fs::path sys::test::findModuleFile(const fs::path& root,
         const auto path = dir / filename;
         if (exists(path))
         {
-            module_to_path[module_name_and_path.string()] =
-                    (dir / module_name_and_path).string();
+            module_to_path[module_name_and_path.string()] = (dir / module_name_and_path).string();
             it = module_to_path.find(module_name_and_path.string());
         }
     }
-    if (it !=
-        module_to_path
-                .end())  // perhaps changed with successful sys::findFirstFile()
+    if (it != module_to_path.end())  // perhaps changed with successful sys::findFirstFile()
     {
         retval = fs::path(it->second) / moduleFile;
         if (exists(retval))

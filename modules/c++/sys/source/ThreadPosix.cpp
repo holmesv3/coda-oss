@@ -31,10 +31,9 @@ void sys::ThreadPosix::start()
 {
     if (getLevel() != DEFAULT_LEVEL)
     {
-        throw sys::SystemException(
-                "Cannot determine upfront wheteher pthread threads are "
-                "implemented using kernel or user level threads.  Set the "
-                "level to DEFAULT_LEVEL");
+        throw sys::SystemException("Cannot determine upfront wheteher pthread threads are "
+                                   "implemented using kernel or user level threads.  Set the "
+                                   "level to DEFAULT_LEVEL");
     }
 
     if (getPriority() != NORMAL_PRIORITY)
@@ -51,19 +50,15 @@ void sys::ThreadPosix::start()
         pthread_attr_init(&attr);
         pthread_attr_setschedparam(&attr, &sp);
 
-        if (::pthread_create(&mNative,
-                             &attr,
-                             static_cast<void* (*)(void*)>(this->__start),
-                             this) != 0)
+        if (::pthread_create(&mNative, &attr, static_cast<void* (*)(void*)>(this->__start), this) !=
+            0)
             throw sys::SystemException("pthread_create()");
         pthread_attr_destroy(&attr);
     }
     else
     {
-        if (::pthread_create(&mNative,
-                             nullptr,
-                             static_cast<void* (*)(void*)>(this->__start),
-                             this) != 0)
+        if (::pthread_create(
+                    &mNative, nullptr, static_cast<void* (*)(void*)>(this->__start), this) != 0)
             throw sys::SystemException("pthread_create()");
     }
 }

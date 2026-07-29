@@ -70,11 +70,7 @@ public:
     /**
      *  Constructor.
      */
-    FileHeader(int numLines,
-               int numElements,
-               int elementSize,
-               int elementType,
-               int ver = 1) :
+    FileHeader(int numLines, int numElements, int elementSize, int elementType, int ver = 1) :
         nl(numLines),
         ne(numElements),
         es(elementSize),
@@ -84,8 +80,7 @@ public:
     {
     }
 
-    FileHeader() :
-        nl(0), ne(0), es(0), et(0), version(1), nullTerminatedIds(true)
+    FileHeader() : nl(0), ne(0), es(0), et(0), version(1), nullTerminatedIds(true)
     {
     }
 
@@ -252,8 +247,7 @@ public:
     //! Add a std::string user data field
     void addUserData(const std::string& field, const std::string& data);
     //! Add a std::vector<sys::byte> user data field
-    void addUserData(const std::string& field,
-                     const std::vector<sys::byte>& data);
+    void addUserData(const std::string& field, const std::vector<sys::byte>& data);
     //! Add an int user data field
     void addUserData(const std::string& field, int data);
 

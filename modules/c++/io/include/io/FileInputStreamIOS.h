@@ -75,8 +75,7 @@ public:
      *  \param inputFile The file name
      *  \param mode The mode to open the file in
      */
-    FileInputStreamIOS(const char* inputFile,
-                       std::ios::openmode mode = std::ios::in);
+    FileInputStreamIOS(const char* inputFile, std::ios::openmode mode = std::ios::in);
 
     virtual ~FileInputStreamIOS()
     {

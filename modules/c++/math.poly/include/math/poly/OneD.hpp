@@ -66,9 +66,8 @@ _T OneD<_T>::integrate(double start, double end) const
 }
 
 template <>
-inline math::linear::VectorN<3, double>
-OneD<math::linear::VectorN<3, double>>::integrate(double start,
-                                                  double end) const
+inline math::linear::VectorN<3, double> OneD<math::linear::VectorN<3, double>>::integrate(
+        double start, double end) const
 {
     math::linear::VectorN<3, double> ret(0.0);
 
@@ -109,8 +108,8 @@ OneD<T> OneD<T>::derivative() const
 }
 
 template <>
-inline OneD<math::linear::VectorN<3, double>>
-OneD<math::linear::VectorN<3, double>>::derivative() const
+inline OneD<math::linear::VectorN<3, double>> OneD<math::linear::VectorN<3, double>>::derivative()
+        const
 {
     OneD<math::linear::VectorN<3, double>> ret(0);
 
@@ -188,8 +187,7 @@ _T& OneD<_T>::operator[](size_t i)
     else
     {
         std::ostringstream str;
-        str << "index: " << i << " not within range [0..." << mCoef.size()
-            << ")";
+        str << "index: " << i << " not within range [0..." << mCoef.size() << ")";
         throw except::IndexOutOfRangeException(Ctxt(str));
     }
 }
@@ -414,8 +412,7 @@ OneD<_T> OneD<_T>::truncateToNonZeros(double zeroEpsilon) const
 
 template <>
 inline OneD<math::linear::VectorN<3, double>>
-OneD<math::linear::VectorN<3, double>>::truncateToNonZeros(
-        double zeroEpsilon) const
+OneD<math::linear::VectorN<3, double>>::truncateToNonZeros(double zeroEpsilon) const
 {
     zeroEpsilon = std::abs(zeroEpsilon);
     size_t newOrder(0);
@@ -423,8 +420,7 @@ OneD<math::linear::VectorN<3, double>>::truncateToNonZeros(
     // Find the highest order non-zero coefficient
     for (size_t ii = 0, idx = order(); ii <= order(); ++ii, --idx)
     {
-        if (std::abs((*this)[idx][0]) > zeroEpsilon ||
-            std::abs((*this)[idx][1]) > zeroEpsilon ||
+        if (std::abs((*this)[idx][0]) > zeroEpsilon || std::abs((*this)[idx][1]) > zeroEpsilon ||
             std::abs((*this)[idx][2]) > zeroEpsilon)
         {
             newOrder = idx;

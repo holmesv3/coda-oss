@@ -87,8 +87,7 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
      *
      *  \return True upon success, false if failure
      */
-    virtual bool move(const std::string& path,
-                      const std::string& newPath) const;
+    virtual bool move(const std::string& path, const std::string& newPath) const;
 
     /*!
      *  Does this path resolve to a file?
@@ -166,9 +165,7 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
     /*!
      *  Set an environment variable
      */
-    virtual void setEnv(const std::string& var,
-                        const std::string& val,
-                        bool overwrite);
+    virtual void setEnv(const std::string& var, const std::string& val, bool overwrite);
 
     /*!
      * Unset an environment variable
@@ -220,8 +217,7 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
      *                    'physicalCPUs'. Size of
      *                    getNumCPUsAvailable() - getNumPhysicalCPUsAvailable().
      */
-    virtual void getAvailableCPUs(std::vector<int>& physicalCPUs,
-                                  std::vector<int>& htCPUs) const;
+    virtual void getAvailableCPUs(std::vector<int>& physicalCPUs, std::vector<int>& htCPUs) const;
 
     /*!
      * Figure out what SIMD instrunctions are available.  Keep in mind these
@@ -248,8 +244,7 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
     /*!
      *  Get the absolute path to the current executable
      */
-    virtual std::string getCurrentExecutable(
-            const std::string& argvPathname = "") const;
+    virtual std::string getCurrentExecutable(const std::string& argvPathname = "") const;
 
 protected:
     /*!

@@ -48,8 +48,8 @@ inline coda_oss::span<const T> make_const_span(T* ptr, size_t sz) noexcept
     return coda_oss::span<const T>(ptr, sz);
 }
 template <typename T>
-inline coda_oss::span<T> make_writable_span(
-        T* ptr, size_t sz) noexcept  // c.f., as_writable_bytes()
+inline coda_oss::span<T> make_writable_span(T* ptr,
+                                            size_t sz) noexcept  // c.f., as_writable_bytes()
 {
     return coda_oss::span<T>(ptr, sz);
 }
@@ -76,8 +76,7 @@ inline auto make_span(void* ptr, size_t sz) noexcept
 }
 
 template <typename T>
-inline auto make_const_span(
-        coda_oss::span<T> v) noexcept  // turn span<T> into span<const T>
+inline auto make_const_span(coda_oss::span<T> v) noexcept  // turn span<T> into span<const T>
 {
     return make_const_span(v.data(), v.size());
 }

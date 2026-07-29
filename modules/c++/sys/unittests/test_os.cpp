@@ -172,8 +172,7 @@ TEST_CASE(testSplitEnv)
     }
 
     // create an environemnt variable with a known bogus path
-    const auto bogusValue =
-            paths[0] + sys::Path::separator() + "this does not exist";
+    const auto bogusValue = paths[0] + sys::Path::separator() + "this does not exist";
     paths.clear();
     const std::string bogusEnvVar = "CODA_OSS_TEST_PATH";
     std::string value;
@@ -185,19 +184,15 @@ TEST_CASE(testSplitEnv)
 
     // PATHs are directories, not files
     paths.clear();
-    result = os.splitEnv(pathEnvVar,
-                         paths,
-                         std::filesystem::file_type::directory);
+    result = os.splitEnv(pathEnvVar, paths, std::filesystem::file_type::directory);
     TEST_ASSERT_TRUE(result);
     TEST_ASSERT_FALSE(paths.empty());
     paths.clear();
-    result =
-            os.splitEnv(pathEnvVar, paths, std::filesystem::file_type::regular);
+    result = os.splitEnv(pathEnvVar, paths, std::filesystem::file_type::regular);
     TEST_ASSERT_FALSE(result);
     TEST_ASSERT_TRUE(paths.empty());
 
-    const std::string notFoundEnvVar =
-            "CODA_OSS_SOME_VAR_THAT_WE_KNOW_WONT_BE_SET";
+    const std::string notFoundEnvVar = "CODA_OSS_SOME_VAR_THAT_WE_KNOW_WONT_BE_SET";
     paths.clear();
     result = os.splitEnv(notFoundEnvVar, paths);
     TEST_ASSERT_FALSE(result);
@@ -303,8 +298,7 @@ TEST_CASE(testBacktrace)
 
     size_t expected = 0;
     // size_t expected_other = 0;
-    auto version_sys_backtrace_ =
-            version::sys::backtrace;  // "Conditional expression is constant"
+    auto version_sys_backtrace_ = version::sys::backtrace;  // "Conditional expression is constant"
     if (version_sys_backtrace_ >= 20210216L)
     {
         TEST_ASSERT_TRUE(supported);
@@ -333,8 +327,7 @@ TEST_CASE(testBacktrace)
     }
     TEST_ASSERT_GREATER_EQ(frames.size(), expected);
 
-    const auto msg =
-            std::accumulate(frames.begin(), frames.end(), std::string());
+    const auto msg = std::accumulate(frames.begin(), frames.end(), std::string());
     if (supported)
     {
         TEST_ASSERT_EQ(result, msg);
@@ -532,15 +525,13 @@ TEST_CASE(test_SIMD_Instructions)
 
     const auto isSSE2 = simdInstructionSet == sys::SIMDInstructionSet::SSE2;
     const auto isAVX2 = simdInstructionSet == sys::SIMDInstructionSet::AVX2;
-    const auto isAVX512F =
-            simdInstructionSet == sys::SIMDInstructionSet::AVX512F;
+    const auto isAVX512F = simdInstructionSet == sys::SIMDInstructionSet::AVX512F;
     TEST_ASSERT(isSSE2 || isAVX2 || isAVX512F);
 }
 
 TEST_MAIN(
         // sys::AbstractOS::setArgvPathname(argv[0]);
-        TEST_CHECK(testRecursiveRemove); TEST_CHECK(testForcefulMove);
-        TEST_CHECK(testEnvVariables);
+        TEST_CHECK(testRecursiveRemove); TEST_CHECK(testForcefulMove); TEST_CHECK(testEnvVariables);
         TEST_CHECK(testSplitEnv);
         TEST_CHECK(testFsExtension);
         TEST_CHECK(testFsOutput);

@@ -50,8 +50,8 @@ namespace sys
  *  \param elemSize
  *  \param numElems
  */
-coda_oss::span<const coda_oss::byte> CODA_OSS_API
-byteSwap(coda_oss::span<coda_oss::byte> buffer, size_t elemSize);
+coda_oss::span<const coda_oss::byte> CODA_OSS_API byteSwap(coda_oss::span<coda_oss::byte> buffer,
+                                                           size_t elemSize);
 void CODA_OSS_API byteSwap(void* buffer, size_t elemSize, size_t numElems);
 
 // If the caller has given us bytes, assume she knows what she's doing; i.e.,
@@ -139,8 +139,7 @@ template <typename T>
 inline auto byteSwap(coda_oss::span<T> buffer)
 {
     static_assert(!std::is_const<T>::value, "T cannot be 'const'");
-    static_assert(details::is_byte_swappable<T>(),
-                  "T should not be a 'struct'");
+    static_assert(details::is_byte_swappable<T>(), "T should not be a 'struct'");
     return byteSwap(as_writable_bytes(buffer), sizeof(T));
 }
 
@@ -173,10 +172,7 @@ void CODA_OSS_API byteSwap(const void* buffer,
 // If the caller has given us bytes, assume she knows what she's doing; i.e.,
 // don't check sizeof(T)
 template <typename TByte, typename U>
-inline void byteSwap_(const TByte* buffer,
-                      size_t elemSize,
-                      size_t numElems,
-                      U* outputBuffer)
+inline void byteSwap_(const TByte* buffer, size_t elemSize, size_t numElems, U* outputBuffer)
 {
     const void* const buffer_ = buffer;
     void* const outputBuffer_ = outputBuffer;
@@ -191,28 +187,19 @@ inline void byteSwap(const coda_oss::byte* buffer,
     byteSwap_(buffer, elemSize, numElems, outputBuffer);
 }
 template <typename U>
-inline void byteSwap(const byte* buffer,
-                     size_t elemSize,
-                     size_t numElems,
-                     U* outputBuffer)
+inline void byteSwap(const byte* buffer, size_t elemSize, size_t numElems, U* outputBuffer)
 {
     byteSwap_(buffer, elemSize, numElems, outputBuffer);
 }
 template <typename U>
-inline void byteSwap(const ubyte* buffer,
-                     size_t elemSize,
-                     size_t numElems,
-                     U* outputBuffer)
+inline void byteSwap(const ubyte* buffer, size_t elemSize, size_t numElems, U* outputBuffer)
 {
     byteSwap_(buffer, elemSize, numElems, outputBuffer);
 }
 
 // Otherwise, we can sanity-check the `elemSize` parameter
 template <typename T, typename U>
-inline void byteSwap(const T* buffer,
-                     size_t elemSize,
-                     size_t numElems,
-                     U* outputBuffer)
+inline void byteSwap(const T* buffer, size_t elemSize, size_t numElems, U* outputBuffer)
 {
     details::check_elemSize<T>(elemSize);
     const void* const buffer_ = buffer;
@@ -235,11 +222,9 @@ inline void byteSwap(const std::complex<T>* buffer,
 }
 
 template <typename T>
-inline auto byteSwap(coda_oss::span<const T> buffer,
-                     coda_oss::span<coda_oss::byte> outputBuffer)
+inline auto byteSwap(coda_oss::span<const T> buffer, coda_oss::span<coda_oss::byte> outputBuffer)
 {
-    static_assert(details::is_byte_swappable<T>(),
-                  "T should not be a 'struct'");
+    static_assert(details::is_byte_swappable<T>(), "T should not be a 'struct'");
     return byteSwap(as_bytes(buffer), sizeof(T), outputBuffer);
 }
 // Take care of treating std::complex<T> as T[]
@@ -326,12 +311,10 @@ struct ByteSwapCopyRunnable final : public sys::Runnable
                          size_t startElement,
                          size_t numElements,
                          void* outputBuffer) noexcept :
-        mBuffer(static_cast<const coda_oss::byte*>(buffer) +
-                startElement * elemSize),
+        mBuffer(static_cast<const coda_oss::byte*>(buffer) + startElement * elemSize),
         mElemSize(elemSize),
         mNumElements(numElements),
-        mOutputBuffer(static_cast<coda_oss::byte*>(outputBuffer) +
-                      startElement * elemSize)
+        mOutputBuffer(static_cast<coda_oss::byte*>(outputBuffer) + startElement * elemSize)
     {
     }
     void run() override

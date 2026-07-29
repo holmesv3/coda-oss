@@ -131,8 +131,7 @@ public:
      *         the key does not exist, or index of buffer is out of bounds
      */
     template <typename T>
-    BufferView<const T> getBufferView(const std::string& key,
-                                      size_t indexBuffer = 0) const;
+    BufferView<const T> getBufferView(const std::string& key, size_t indexBuffer = 0) const;
 
     /*!
      * \brief Ensure underlying memory is properly set up and position segment
@@ -146,8 +145,7 @@ public:
      *         to hold the requested scratch memory or has size > 0 with null
      *         data pointer
      */
-    void setup(const BufferView<sys::ubyte>& scratchBuffer =
-                       BufferView<sys::ubyte>());
+    void setup(const BufferView<sys::ubyte>& scratchBuffer = BufferView<sys::ubyte>());
 
     /*!
      * \brief Get number of bytes needed to store scratch memory, including the
@@ -164,10 +162,7 @@ public:
 private:
     struct CODA_OSS_API Segment final
     {
-        Segment(size_t numBytes,
-                size_t numBuffers,
-                size_t alignment,
-                size_t offset);
+        Segment(size_t numBytes, size_t numBuffers, size_t alignment, size_t offset);
 
         size_t numBytes;
         size_t numBuffers;
@@ -176,8 +171,7 @@ private:
         std::vector<sys::ubyte*> buffers;
     };
 
-    const Segment& lookupSegment(const std::string& key,
-                                 size_t indexBuffer) const;
+    const Segment& lookupSegment(const std::string& key, size_t indexBuffer) const;
 
     std::map<std::string, Segment> mSegments;
     std::vector<sys::ubyte> mStorage;

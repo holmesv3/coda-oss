@@ -39,8 +39,7 @@ void tiff::IFDEntry::serialize(io::OutputStream& output)
 {
     io::Seekable* seekable = dynamic_cast<io::Seekable*>(&output);
     if (seekable == nullptr)
-        throw except::Exception(
-                Ctxt("Can only serialize IFDEntry to seekable stream"));
+        throw except::Exception(Ctxt("Can only serialize IFDEntry to seekable stream"));
 
     output.write((sys::byte*)&mTag, sizeof(mTag));
     output.write((sys::byte*)&mType, sizeof(mType));
@@ -74,8 +73,7 @@ void tiff::IFDEntry::serialize(io::OutputStream& output)
             const auto iterations = (4 / mCount) / mValues[i]->size();
 
             for (size_t j = 0; j < iterations; ++j)
-                output.write((sys::byte*)mValues[i]->data(),
-                             mValues[i]->size());
+                output.write((sys::byte*)mValues[i]->data(), mValues[i]->size());
         }
     }
 }
@@ -85,13 +83,11 @@ void tiff::IFDEntry::deserialize(io::InputStream& input)
     deserialize(input, false);
 }
 
-void tiff::IFDEntry::deserialize(io::InputStream& input,
-                                 const bool reverseBytes)
+void tiff::IFDEntry::deserialize(io::InputStream& input, const bool reverseBytes)
 {
     io::Seekable* seekable = dynamic_cast<io::Seekable*>(&input);
     if (seekable == nullptr)
-        throw except::Exception(
-                Ctxt("Can only deserialize IFDEntry from seekable stream"));
+        throw except::Exception(Ctxt("Can only deserialize IFDEntry from seekable stream"));
 
     input.read((char*)&mTag, sizeof(mTag));
     input.read((char*)&mType, sizeof(mType));
@@ -122,8 +118,7 @@ void tiff::IFDEntry::deserialize(io::InputStream& input,
         {
             auto elementSize = tiff::Const::sizeOf(mType);
             sys::Uint32_T numElements = mCount;
-            if ((mType == tiff::Const::Type::RATIONAL) ||
-                (mType == tiff::Const::Type::SRATIONAL))
+            if ((mType == tiff::Const::Type::RATIONAL) || (mType == tiff::Const::Type::SRATIONAL))
             {
                 elementSize = tiff::Const::sizeOf(mType) / 2;
                 numElements = mCount * 2;
@@ -145,9 +140,7 @@ void tiff::IFDEntry::deserialize(io::InputStream& input,
             // Re-reverse because a value may be less than 4 bytes.
             mOffset = sys::byteSwap(mOffset);
             const auto elementSize = tiff::Const::sizeOf(mType);
-            sys::byteSwap((sys::byte*)&mOffset,
-                          elementSize,
-                          sizeof(mOffset) / elementSize);
+            sys::byteSwap((sys::byte*)&mOffset, elementSize, sizeof(mOffset) / elementSize);
         }
         parseValues((unsigned char*)&mOffset);
     }
@@ -160,8 +153,7 @@ void tiff::IFDEntry::deserialize(io::InputStream& input,
 void tiff::IFDEntry::print(io::OutputStream& output) const
 {
     std::ostringstream message;
-    message << "Tag:                 " << mTag << " (\"" << mName << "\")"
-            << std::endl;
+    message << "Tag:                 " << mTag << " (\"" << mName << "\")" << std::endl;
     message << "Element Type:        " << mType << std::endl;
     message << "Number of Elements:  " << mCount << std::endl;
 
@@ -181,8 +173,7 @@ void tiff::IFDEntry::print(io::OutputStream& output) const
     output.write(message.str());
 }
 
-void tiff::IFDEntry::parseValues(const unsigned char* buffer,
-                                 const sys::Uint32_T count)
+void tiff::IFDEntry::parseValues(const unsigned char* buffer, const sys::Uint32_T count)
 {
     mCount = count;
     parseValues(buffer);
@@ -190,8 +181,7 @@ void tiff::IFDEntry::parseValues(const unsigned char* buffer,
 
 void tiff::IFDEntry::addValue(double value)
 {
-    const unsigned char* const valuePtr =
-            reinterpret_cast<unsigned char*>(&value);
+    const unsigned char* const valuePtr = reinterpret_cast<unsigned char*>(&value);
 
     addValue(tiff::TypeFactory::create(valuePtr, tiff::Const::Type::DOUBLE));
 }
@@ -200,8 +190,8 @@ void tiff::IFDEntry::addValues(const std::string& str, int tiffType)
 {
     for (const unsigned char chr : str)
     {
-        std::unique_ptr<tiff::TypeInterface> value(tiff::TypeFactory::create(
-                &chr, static_cast<unsigned short>(tiffType)));
+        std::unique_ptr<tiff::TypeInterface> value(
+                tiff::TypeFactory::create(&chr, static_cast<unsigned short>(tiffType)));
         addValue(value.release());
     }
 }
@@ -211,8 +201,7 @@ void tiff::IFDEntry::parseValues(const unsigned char* buffer)
     unsigned char* marker = (unsigned char*)buffer;
     for (sys::Uint32_T i = 0; i < mCount; i++)
     {
-        tiff::TypeInterface* nextValue =
-                tiff::TypeFactory::create(marker, mType);
+        tiff::TypeInterface* nextValue = tiff::TypeFactory::create(marker, mType);
         mValues.push_back(nextValue);
         unsigned short size = nextValue->size();
         marker = marker + size;

@@ -70,8 +70,7 @@ struct OSUnix final : public AbstractOS
      *  Move file with this path name to the newPath
      *  \return True upon success, false if failure
      */
-    virtual bool move(const std::string& path,
-                      const std::string& newPath) const override;
+    virtual bool move(const std::string& path, const std::string& newPath) const override;
 
     /*!
      *  Does this path resolve to a file?
@@ -107,9 +106,8 @@ struct OSUnix final : public AbstractOS
      *  Get a suitable temporary file name
      *  \return The file name
      */
-    virtual std::string getTempName(
-            const std::string& path = ".",
-            const std::string& prefix = "TMP") const override;
+    virtual std::string getTempName(const std::string& path = ".",
+                                    const std::string& prefix = "TMP") const override;
 
     /*!
      *  Return the size in bytes of a file
@@ -120,8 +118,7 @@ struct OSUnix final : public AbstractOS
     /**
      * Returns the last modified time of the file/directory
      */
-    virtual sys::Off_T getLastModifiedTime(
-            const std::string& path) const override;
+    virtual sys::Off_T getLastModifiedTime(const std::string& path) const override;
 
     /*!
      *  This is a system independent sleep function.
@@ -147,9 +144,7 @@ struct OSUnix final : public AbstractOS
     /*!
      *  Set an environment variable
      */
-    virtual void setEnv(const std::string& var,
-                        const std::string& val,
-                        bool overwrite) override;
+    virtual void setEnv(const std::string& var, const std::string& val, bool overwrite) override;
 
     /*!
      * Unset an environment variable
@@ -210,27 +205,23 @@ struct OSUnix final : public AbstractOS
     /*!
      *  Create a symlink, pathnames can be either absolute or relative
      */
-    virtual void createSymlink(
-            const std::string& origPathname,
-            const std::string& symlinkPathname) const override;
+    virtual void createSymlink(const std::string& origPathname,
+                               const std::string& symlinkPathname) const override;
 
     /*!
      * Remove a symlink, pathname can be absolute or relative
      */
-    virtual void removeSymlink(
-            const std::string& symlinkPathname) const override;
+    virtual void removeSymlink(const std::string& symlinkPathname) const override;
 
     /*!
      *  Get the total RAM and available RAM on the system in megabytes
      */
-    virtual void getMemInfo(size_t& totalPhysMem,
-                            size_t& freePhysMem) const override;
+    virtual void getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const override;
 
     /*!
      *  Get the absolute path to the current executable
      */
-    virtual std::string getCurrentExecutable(
-            const std::string& argvPathname = "") const override;
+    virtual std::string getCurrentExecutable(const std::string& argvPathname = "") const override;
 
 protected:
     /*!

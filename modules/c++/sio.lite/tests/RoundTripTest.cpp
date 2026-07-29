@@ -54,15 +54,12 @@ int main(int argc, char** argv)
         sys::byte* buf = new sys::byte[len * elemSize];
         r.read(buf, len * elemSize);
 
-        std::cout << "Different byte order? "
-                  << (header->isDifferentByteOrdering() ? "yes" : "no")
+        std::cout << "Different byte order? " << (header->isDifferentByteOrdering() ? "yes" : "no")
                   << std::endl;
-        std::cout << "Input Header length: " << header->getLength()
-                  << std::endl;
+        std::cout << "Input Header length: " << header->getLength() << std::endl;
         std::cout << "Input Data length: " << (len * elemSize) << std::endl;
 
-        std::string outputFile =
-                ((argc == 3) ? (argv[2]) : (std::string(argv[1]) + ".out"));
+        std::string outputFile = ((argc == 3) ? (argv[2]) : (std::string(argv[1]) + ".out"));
         FileWriter writer(outputFile);
         writer.write(header, buf, 1);
         delete[] buf;
@@ -74,8 +71,7 @@ int main(int argc, char** argv)
 
         len = header->getNumElements() * header->getNumLines();
         elemSize = header->getElementSize();
-        std::cout << "Output Header length: " << header->getLength()
-                  << std::endl;
+        std::cout << "Output Header length: " << header->getLength() << std::endl;
         std::cout << "Output Data length: " << (len * elemSize) << std::endl;
     }
     catch (Exception& e)

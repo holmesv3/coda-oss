@@ -95,8 +95,7 @@ FILE* ExecPipe::openPipe(const std::string& command, const std::string& type)
     if (type == "r")
     {
         int readDescriptor = 0;
-        if ((readDescriptor = _open_osfhandle((intptr_t)outIO[READ_PIPE],
-                                              _O_RDONLY)) == -1)
+        if ((readDescriptor = _open_osfhandle((intptr_t)outIO[READ_PIPE], _O_RDONLY)) == -1)
         {
             return nullptr;
         }
@@ -139,8 +138,7 @@ int ExecPipe::closePipe()
     {
         sys::SocketErr err;
         throw except::IOException(
-                Ctxt("Failure while closing stream to child process: " +
-                     err.toString()));
+                Ctxt("Failure while closing stream to child process: " + err.toString()));
     }
 
     return exitStatus;

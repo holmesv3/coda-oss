@@ -41,8 +41,7 @@ public:
      *  \param message The message to report
      *
      */
-    UnsupportedDataTypeException(const char* message) :
-        except::Exception(message)
+    UnsupportedDataTypeException(const char* message) : except::Exception(message)
     {
     }
 
@@ -51,8 +50,7 @@ public:
      *  \param message The message to report
      *
      */
-    UnsupportedDataTypeException(const std::string& message) :
-        except::Exception(message)
+    UnsupportedDataTypeException(const std::string& message) : except::Exception(message)
     {
     }
 
@@ -61,8 +59,7 @@ public:
      *  \param c The context with the message to report
      *
      */
-    UnsupportedDataTypeException(const except::Context& c) :
-        except::Exception(c)
+    UnsupportedDataTypeException(const except::Context& c) : except::Exception(c)
     {
     }
 };

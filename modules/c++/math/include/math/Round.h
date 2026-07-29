@@ -56,8 +56,7 @@ template <typename T>
 inline T round(T value_)
 {
     const double value = value_;
-    const auto result =
-            value > 0.0 ? std::floor(value + 0.5) : std::ceil(value - 0.5);
+    const auto result = value > 0.0 ? std::floor(value + 0.5) : std::ceil(value - 0.5);
     return static_cast<T>(result);
 }
 
@@ -78,9 +77,8 @@ inline T round(T value_, size_t fractionalDigits)
     }
 
     const double value = value_;
-    const auto result = value > 0.0
-            ? std::floor(value * power10 + 0.5) / power10
-            : std::ceil(value * power10 - 0.5) / power10;
+    const auto result = value > 0.0 ? std::floor(value * power10 + 0.5) / power10
+                                    : std::ceil(value * power10 - 0.5) / power10;
     return static_cast<T>(result);
 }
 

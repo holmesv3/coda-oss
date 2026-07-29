@@ -59,8 +59,7 @@ public:
     {
         *this = r;
     }
-    AutoPtr& operator=(const AutoPtr&) =
-            delete;  // can't change a "const" object
+    AutoPtr& operator=(const AutoPtr&) = delete;  // can't change a "const" object
     AutoPtr(const AutoPtr&) = delete;
 
     ~AutoPtr() = default;

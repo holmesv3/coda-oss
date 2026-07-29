@@ -182,8 +182,7 @@ struct CODA_OSS_API AbstractOS
      *  Move file with this path name to the newPath
      *  \return True upon success, false if failure
      */
-    virtual bool move(const std::string& path,
-                      const std::string& newPath) const = 0;
+    virtual bool move(const std::string& path, const std::string& newPath) const = 0;
 
     /*!
      *  Does this path resolve to a file?
@@ -286,19 +285,13 @@ struct CODA_OSS_API AbstractOS
                   coda_oss::filesystem::file_type) const;
 
     // Modify the specified env-var as indicated.
-    void prependEnv(const std::string& envVar,
-                    const std::vector<std::string>&,
-                    bool overwrite);
-    void appendEnv(const std::string& envVar,
-                   const std::vector<std::string>&,
-                   bool overwrite);
+    void prependEnv(const std::string& envVar, const std::vector<std::string>&, bool overwrite);
+    void appendEnv(const std::string& envVar, const std::vector<std::string>&, bool overwrite);
 
     /*!
      *  Set an environment variable
      */
-    virtual void setEnv(const std::string& var,
-                        const std::string& val,
-                        bool overwrite) = 0;
+    virtual void setEnv(const std::string& var, const std::string& val, bool overwrite) = 0;
 
     /*!
      * Unset an environment variable
@@ -372,8 +365,7 @@ struct CODA_OSS_API AbstractOS
     /*!
      *  Get the total RAM and available RAM on the system in megabytes
      */
-    virtual void getMemInfo(size_t& totalPhysMem,
-                            size_t& freePhysMem) const = 0;
+    virtual void getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const = 0;
 
     /*!
      *  Get the absolute path to the current executable
@@ -381,8 +373,7 @@ struct CODA_OSS_API AbstractOS
      *          way fails
      *  \return absolute path to the current exectuable
      */
-    virtual std::string getCurrentExecutable(
-            const std::string& argvPathname = "") const;
+    virtual std::string getCurrentExecutable(const std::string& argvPathname = "") const;
     // Access to argv[0] might be far away from a getCurrentExecutable() call.
     static void setArgvPathname(const std::string& argvPathname);
 

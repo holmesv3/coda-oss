@@ -69,9 +69,7 @@ inline bool isNaN(T value) noexcept
 // https://man7.org/linux/man-pages/man3/sincos.3.html
 CODA_OSS_API void SinCos(float angle, float& sin, float& cos) noexcept;
 CODA_OSS_API void SinCos(double angle, double& sin, double& cos) noexcept;
-CODA_OSS_API void SinCos(long double angle,
-                         long double& sin,
-                         long double& cos) noexcept;
+CODA_OSS_API void SinCos(long double angle, long double& sin, long double& cos) noexcept;
 
 /*
  * Calculate the binomial coefficient

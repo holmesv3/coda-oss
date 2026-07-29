@@ -58,10 +58,7 @@ class ZipEntry
     sys::Uint16_T mInternalAttrs;
     sys::Uint32_T mExternalAttrs;
 
-    static void inflate(sys::ubyte* out,
-                        sys::Size_T outLen,
-                        sys::ubyte* in,
-                        sys::Size_T inLen);
+    static void inflate(sys::ubyte* out, sys::Size_T outLen, sys::ubyte* in, sys::Size_T inLen);
 
 public:
     ZipEntry(sys::ubyte* compressedData,

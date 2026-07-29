@@ -74,8 +74,7 @@ public:
      *  \zipPathname The path and file name you want the inputPathname to
      *               appear as in the zip file.
      */
-    void write(const std::string& inputPathname,
-               const std::string& zipPathname);
+    void write(const std::string& inputPathname, const std::string& zipPathname);
 
     virtual void write(const void* buffer, size_t len) override;
 

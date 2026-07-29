@@ -36,20 +36,19 @@
     }
 
 #define TEST_CASE(X) void X(const std::string& testName)
-#define TEST_CHECK(X)                                                  \
-    try                                                                \
-    {                                                                  \
-        X(#X);                                                         \
-        std::clog << #X << ": PASSED\n";                               \
-    }                                                                  \
-    catch (const std::exception& ex)                                   \
-    {                                                                  \
-        std::cerr << #X << ": FAILED: Exception thrown: " << ex.what() \
-                  << "\n";                                             \
-        exit(EXIT_FAILURE);                                            \
-    }                                                                  \
-    catch (...)                                                        \
-    {                                                                  \
-        std::cerr << #X << ": FAILED: Unknown exception thrown\n";     \
-        exit(EXIT_FAILURE);                                            \
+#define TEST_CHECK(X)                                                           \
+    try                                                                         \
+    {                                                                           \
+        X(#X);                                                                  \
+        std::clog << #X << ": PASSED\n";                                        \
+    }                                                                           \
+    catch (const std::exception& ex)                                            \
+    {                                                                           \
+        std::cerr << #X << ": FAILED: Exception thrown: " << ex.what() << "\n"; \
+        exit(EXIT_FAILURE);                                                     \
+    }                                                                           \
+    catch (...)                                                                 \
+    {                                                                           \
+        std::cerr << #X << ": FAILED: Unknown exception thrown\n";              \
+        exit(EXIT_FAILURE);                                                     \
     }

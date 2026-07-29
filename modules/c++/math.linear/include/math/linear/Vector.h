@@ -242,8 +242,7 @@ public:
         _T acc(0);
         size_t sz = mRaw.size();
         if (vec_.size() != sz)
-            throw except::Exception(
-                    Ctxt("Dot product requires equal size vectors"));
+            throw except::Exception(Ctxt("Dot product requires equal size vectors"));
         for (size_t i = 0; i < sz; ++i)
         {
             acc += vec_[i] * mRaw.mRaw[i];

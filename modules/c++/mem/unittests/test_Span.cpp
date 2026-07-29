@@ -30,9 +30,7 @@
 #include "TestCase.h"
 
 template <typename TContainer, typename TSpan>
-static void testSpanBuffer_(const std::string& testName,
-                            const TContainer& ints,
-                            const TSpan& span)
+static void testSpanBuffer_(const std::string& testName, const TContainer& ints, const TSpan& span)
 {
     (void)testName;
     TEST_ASSERT_EQ(ints.size(), span.size());
@@ -58,9 +56,7 @@ TEST_CASE(testSpanBuffer)
 }
 
 template <typename TContainer, typename TSpan>
-static void testSpanVector_(const std::string& testName,
-                            const TContainer& ints,
-                            const TSpan& span)
+static void testSpanVector_(const std::string& testName, const TContainer& ints, const TSpan& span)
 {
     (void)testName;
     TEST_ASSERT_EQ(ints.size(), span.size());
@@ -85,13 +81,13 @@ TEST_CASE(testSpanVector)
 TEST_CASE(testGslNarrow)
 {
     constexpr int i = INT16_MAX;
-    static /*constexpr*/ auto s = gsl::narrow<int16_t>(
-            i);  // avoid "conditional expression is constant"
+    static /*constexpr*/ auto s =
+            gsl::narrow<int16_t>(i);  // avoid "conditional expression is constant"
     TEST_ASSERT_EQ(INT16_MAX, s);
 
     constexpr double d = 3.14;
-    static /*constexpr*/ auto v = gsl::narrow_cast<int>(
-            d);  // avoid "conditional expression is constant"
+    static /*constexpr*/ auto v =
+            gsl::narrow_cast<int>(d);  // avoid "conditional expression is constant"
     TEST_ASSERT_EQ(3, v);
 
     TEST_THROWS(gsl::narrow<int>(d));
@@ -131,6 +127,5 @@ TEST_CASE(test_sys_make_span)
     TEST_ASSERT_EQ(u[0], 314);
 }
 
-TEST_MAIN(TEST_CHECK(testSpanBuffer); TEST_CHECK(testSpanVector);
-          TEST_CHECK(testGslNarrow);
+TEST_MAIN(TEST_CHECK(testSpanBuffer); TEST_CHECK(testSpanVector); TEST_CHECK(testGslNarrow);
           TEST_CHECK(test_sys_make_span);)

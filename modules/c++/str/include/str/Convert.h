@@ -145,12 +145,9 @@ inline std::string toString(std::string::const_pointer pStr)
     return toString(std::string(pStr));
 }
 // can't be a template; `bool` overload above is a better match
-std::string toString(std::wstring::const_pointer) =
-        delete;  // only used in unittests
-std::string toString(std::u16string::const_pointer) =
-        delete;  // only used in unittests
-std::string toString(std::u32string::const_pointer) =
-        delete;  // only used in unittests
+std::string toString(std::wstring::const_pointer) = delete;  // only used in unittests
+std::string toString(std::u16string::const_pointer) = delete;  // only used in unittests
+std::string toString(std::u32string::const_pointer) = delete;  // only used in unittests
 
 inline std::ostream& operator<<(std::ostream& os, const coda_oss::u8string& s)
 {
@@ -180,12 +177,8 @@ template <typename T>
 T toType(const std::string& s)
 {
     if (s.empty())
-        throw except::BadCastException(
-                except::Context(__FILE__,
-                                __LINE__,
-                                std::string(""),
-                                std::string(""),
-                                std::string("Empty string")));
+        throw except::BadCastException(except::Context(
+                __FILE__, __LINE__, std::string(""), std::string(""), std::string("Empty string")));
 
     T value;
 
@@ -195,14 +188,13 @@ T toType(const std::string& s)
 
     if (buf.fail())
     {
-        throw except::BadCastException(
-                except::Context(__FILE__,
-                                __LINE__,
-                                std::string(""),
-                                std::string(""),
-                                std::string("Conversion failed: '") + s +
-                                        std::string("' -> ") +
-                                        typeid(T).name()));
+        throw except::BadCastException(except::Context(__FILE__,
+                                                       __LINE__,
+                                                       std::string(""),
+                                                       std::string(""),
+                                                       std::string("Conversion failed: '") + s +
+                                                               std::string("' -> ") +
+                                                               typeid(T).name()));
     }
 
     return value;
@@ -220,9 +212,7 @@ CODA_OSS_API long long strtoll(const char* str, char** endptr, int base);
 /**
  *  strtoull wrapper for msvc compatibility.
  */
-CODA_OSS_API unsigned long long strtoull(const char* str,
-                                         char** endptr,
-                                         int base);
+CODA_OSS_API unsigned long long strtoull(const char* str, char** endptr, int base);
 
 /**
  *  Convert a string containing a number in any base to a numerical type.
@@ -254,10 +244,8 @@ T toType(const std::string& s, int base)
     else
     {
         const unsigned long long longRes = str::strtoull(str, &end, base);
-        if (longRes < static_cast<unsigned long long>(
-                              std::numeric_limits<T>::min()) ||
-            longRes > static_cast<unsigned long long>(
-                              std::numeric_limits<T>::max()))
+        if (longRes < static_cast<unsigned long long>(std::numeric_limits<T>::min()) ||
+            longRes > static_cast<unsigned long long>(std::numeric_limits<T>::max()))
         {
             overflow = true;
         }
@@ -265,25 +253,23 @@ T toType(const std::string& s, int base)
     }
 
     if (overflow || errno == ERANGE)
-        throw except::BadCastException(
-                except::Context(__FILE__,
-                                __LINE__,
-                                std::string(""),
-                                std::string(""),
-                                std::string("Overflow: '") + s +
-                                        std::string("' -> ") +
-                                        typeid(T).name()));
+        throw except::BadCastException(except::Context(__FILE__,
+                                                       __LINE__,
+                                                       std::string(""),
+                                                       std::string(""),
+                                                       std::string("Overflow: '") + s +
+                                                               std::string("' -> ") +
+                                                               typeid(T).name()));
     // If the end pointer is at the start of the string, we didn't convert
     // anything.
     else if (end == str)
-        throw except::BadCastException(
-                except::Context(__FILE__,
-                                __LINE__,
-                                std::string(""),
-                                std::string(""),
-                                std::string("Conversion failed: '") + s +
-                                        std::string("' -> ") +
-                                        typeid(T).name()));
+        throw except::BadCastException(except::Context(__FILE__,
+                                                       __LINE__,
+                                                       std::string(""),
+                                                       std::string(""),
+                                                       std::string("Conversion failed: '") + s +
+                                                               std::string("' -> ") +
+                                                               typeid(T).name()));
 
     return res;
 }

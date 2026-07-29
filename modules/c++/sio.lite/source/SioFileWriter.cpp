@@ -39,14 +39,11 @@ void sio::lite::FileWriter::write(int numLines,
                                   int elementType,
                                   std::vector<io::InputStream*> bandStreams)
 {
-    sio::lite::FileHeader hdr(
-            numLines, numElements, elementSize, elementType, 1);
+    sio::lite::FileHeader hdr(numLines, numElements, elementSize, elementType, 1);
     write(&hdr, bandStreams);
 }
 
-void sio::lite::FileWriter::write(sio::lite::FileHeader* header,
-                                  const void* data,
-                                  int numBands)
+void sio::lite::FileWriter::write(sio::lite::FileHeader* header, const void* data, int numBands)
 {
     header->to(numBands, *mStream);  // write header
     mStream->write(static_cast<const sys::byte*>(data),

@@ -183,8 +183,7 @@ TEST_CASE(testNormalize)
     TEST_ASSERT_ALMOST_EQ(v1[2], truth[2]);
 }
 
-TEST_MAIN(TEST_CHECK(testEquality); TEST_CHECK(testNormalize);
-          TEST_CHECK(testPtrAssign);
+TEST_MAIN(TEST_CHECK(testEquality); TEST_CHECK(testNormalize); TEST_CHECK(testPtrAssign);
           TEST_CHECK(testSTLVectorAssign);
           TEST_CHECK(testEmptyDim);
           TEST_CHECK(testPtrDecorator);

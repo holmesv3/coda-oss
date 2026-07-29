@@ -33,8 +33,7 @@ int main(int argc, char** argv)
     {
         if (argc != 2)
         {
-            std::cerr << "Usage: " << sys::Path::basename(argv[0])
-                      << " <file to read in>\n\n";
+            std::cerr << "Usage: " << sys::Path::basename(argv[0]) << " <file to read in>\n\n";
             return 1;
         }
 

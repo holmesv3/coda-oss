@@ -50,17 +50,15 @@ std::string net::NetConnectionServer::getHostName()
 net::NetConnection* net::NetConnectionServer::accept()
 {
     net::SocketAddress sa;
-    std::unique_ptr<net::NetConnection> tmp(
-            new net::NetConnection(mSocket->accept(sa)));
+    std::unique_ptr<net::NetConnection> tmp(new net::NetConnection(mSocket->accept(sa)));
     return tmp.release();
 }
 
 void net::NetConnectionServer::initialize(net::RequestHandlerFactory* factory,
                                           net::AllocStrategy* newStrategy)
 {
-    std::unique_ptr<net::AllocStrategy> tmp((newStrategy == nullptr)
-                                                    ? new DefaultAllocStrategy()
-                                                    : newStrategy);
+    std::unique_ptr<net::AllocStrategy> tmp((newStrategy == nullptr) ? new DefaultAllocStrategy()
+                                                                     : newStrategy);
 
     tmp->setRequestHandlerFactory(factory);
     tmp->initialize();

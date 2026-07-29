@@ -48,10 +48,7 @@ _T TwoD<_T>::operator()(double atX, double atY) const
 }
 
 template <typename _T>
-_T TwoD<_T>::integrate(double xStart,
-                       double xEnd,
-                       double yStart,
-                       double yEnd) const
+_T TwoD<_T>::integrate(double xStart, double xEnd, double yStart, double yEnd) const
 {
     _T ret(0.0);
     double endAtPwr = xEnd;
@@ -179,8 +176,7 @@ OneD<_T> TwoD<_T>::operator[](size_t i) const
     else
     {
         std::ostringstream str;
-        str << "index:" << i << " not within range [0..." << mCoef.size()
-            << ")";
+        str << "index:" << i << " not within range [0..." << mCoef.size() << ")";
         throw except::IndexOutOfRangeException(Ctxt(str));
     }
     return ret;
@@ -196,8 +192,7 @@ _T* TwoD<_T>::operator[](size_t i)
     else
     {
         std::ostringstream str;
-        str << "index: " << i << " not within range [0..." << mCoef.size()
-            << ")";
+        str << "index: " << i << " not within range [0..." << mCoef.size() << ")";
         throw except::IndexOutOfRangeException(Ctxt(str));
     }
 }
@@ -255,8 +250,7 @@ TwoD<_T> TwoD<_T>::operator*(const TwoD<_T>& p) const
 template <typename _T>
 TwoD<_T>& TwoD<_T>::operator+=(const TwoD<_T>& p)
 {
-    TwoD<_T> tmp(std::max<size_t>(orderX(), p.orderX()),
-                 std::max<size_t>(orderY(), p.orderY()));
+    TwoD<_T> tmp(std::max<size_t>(orderX(), p.orderX()), std::max<size_t>(orderY(), p.orderY()));
 
     {
         const auto sz = mCoef.size();
@@ -291,8 +285,7 @@ TwoD<_T> TwoD<_T>::operator+(const TwoD<_T>& p) const
 template <typename _T>
 TwoD<_T>& TwoD<_T>::operator-=(const TwoD<_T>& p)
 {
-    TwoD<_T> tmp(std::max<size_t>(orderX(), p.orderX()),
-                 std::max<size_t>(orderY(), p.orderY()));
+    TwoD<_T> tmp(std::max<size_t>(orderX(), p.orderX()), std::max<size_t>(orderY(), p.orderY()));
 
     {
         const auto sz = mCoef.size();
@@ -496,8 +489,7 @@ TwoD<_T> TwoD<_T>::transformInput(const math::poly::TwoD<_T>& gx,
 }
 
 template <typename _T>
-TwoD<_T> TwoD<_T>::transformInput(const math::poly::TwoD<_T>& gx,
-                                  double zeroEpsilon) const
+TwoD<_T> TwoD<_T>::transformInput(const math::poly::TwoD<_T>& gx, double zeroEpsilon) const
 {
     // We want to retain our y value. So create a polynomial which
     // is y = y.

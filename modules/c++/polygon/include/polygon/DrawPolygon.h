@@ -56,14 +56,13 @@ namespace polygon
  * See Intersections class for additional details
  */
 template <typename PointT, typename OutT>
-void drawPolygon(
-        const std::vector<types::RowCol<PointT>>& points,
-        size_t numRows,
-        size_t numCols,
-        OutT color,
-        OutT* out,
-        bool invert = false,
-        types::RowCol<sys::SSize_T> offset = types::RowCol<sys::SSize_T>(0, 0))
+void drawPolygon(const std::vector<types::RowCol<PointT>>& points,
+                 size_t numRows,
+                 size_t numCols,
+                 OutT color,
+                 OutT* out,
+                 bool invert = false,
+                 types::RowCol<sys::SSize_T> offset = types::RowCol<sys::SSize_T>(0, 0))
 {
     if (points.empty())
     {
@@ -72,8 +71,9 @@ void drawPolygon(
     }
 
     // We need to get all scanline intersections of polygon edges
-    const Intersections<PointT> intersections(
-            points, types::RowCol<size_t>(numRows, numCols), offset);
+    const Intersections<PointT> intersections(points,
+                                              types::RowCol<size_t>(numRows, numCols),
+                                              offset);
 
     // Draw all intersection pairs
     std::vector<typename Intersections<PointT>::Intersection> intersectionsVec;
@@ -91,8 +91,8 @@ void drawPolygon(
         {
             for (size_t pair = 0; pair < intersectionsVec.size(); ++pair)
             {
-                const typename Intersections<PointT>::Intersection&
-                        intersection = intersectionsVec[pair];
+                const typename Intersections<PointT>::Intersection& intersection =
+                        intersectionsVec[pair];
 
                 if (invert)
                 {
@@ -104,9 +104,7 @@ void drawPolygon(
                 }
                 else
                 {
-                    std::fill_n(out + rowIdx + intersection.first,
-                                intersection.length(),
-                                color);
+                    std::fill_n(out + rowIdx + intersection.first, intersection.length(), color);
                 }
             }
         }

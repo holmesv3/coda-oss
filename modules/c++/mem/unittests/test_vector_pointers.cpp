@@ -104,23 +104,19 @@ TEST_CASE(testVecOfSharedPointers)
     TEST_ASSERT_TRUE(myVec.empty());
 
     {
-        mem::VectorOfSharedPointers<int> myVec2 =
-                mem_VectorOfSharedPointers_int();  // copy
+        mem::VectorOfSharedPointers<int> myVec2 = mem_VectorOfSharedPointers_int();  // copy
         myVec = mem_VectorOfSharedPointers_int();  // assignment
     }
     {
-        mem::VectorOfSharedPointers<int> myVec2 =
-                std_vector_shared_ptr_int();  // copy
+        mem::VectorOfSharedPointers<int> myVec2 = std_vector_shared_ptr_int();  // copy
         myVec = std_vector_shared_ptr_int();  // assignment
     }
 
     {
-        std::vector<std::shared_ptr<int>> myVec2 =
-                mem_VectorOfSharedPointers_int();  // copy
+        std::vector<std::shared_ptr<int>> myVec2 = mem_VectorOfSharedPointers_int();  // copy
     }
     {
-        std::vector<std::shared_ptr<int>> myVec2 =
-                std_vector_shared_ptr_int();  // copy
+        std::vector<std::shared_ptr<int>> myVec2 = std_vector_shared_ptr_int();  // copy
     }
 }
 
@@ -138,8 +134,7 @@ static void test_cx_view(const std::string& testName, const TView& view)
     TEST_ASSERT_EQ(view[3].imag(), 8.0f);
 }
 template <typename TView>
-static void test_mem_ComplexParallelView(const std::string& testName,
-                                         const TView& view)
+static void test_mem_ComplexParallelView(const std::string& testName, const TView& view)
 {
     test_cx_view(testName, view);
 
@@ -200,10 +195,9 @@ TEST_CASE(testComplexParallelViewFloat)
     }
 }
 
-static void test_mem_ComplexViewConstIterator(
-        const std::string& testName,
-        mem::ComplexViewConstIterator<float> begin,
-        mem::ComplexViewConstIterator<float> end)
+static void test_mem_ComplexViewConstIterator(const std::string& testName,
+                                              mem::ComplexViewConstIterator<float> begin,
+                                              mem::ComplexViewConstIterator<float> end)
 {
     TEST_ASSERT(begin != end);
 
@@ -227,14 +221,12 @@ static void test_mem_ComplexViewConstIterator(
     TEST_ASSERT_EQ(it->imag(), 8.0f);
 }
 template <typename TView>
-static void test_mem_ComplexViewConstIterator(const std::string& testName,
-                                              TView view)
+static void test_mem_ComplexViewConstIterator(const std::string& testName, TView view)
 {
     test_mem_ComplexViewConstIterator(testName, view.begin(), view.end());
 
-    using cxvalue_t =
-            typename decltype(view.begin())::value_type;  // i.e.,
-                                                          // std::complex<float>
+    using cxvalue_t = typename decltype(view.begin())::value_type;  // i.e.,
+                                                                    // std::complex<float>
     cxvalue_t cx{1.0f, 2.0f};
     for (auto&& v : view)
     {

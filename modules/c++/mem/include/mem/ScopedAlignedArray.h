@@ -38,9 +38,8 @@ struct ScopedAlignedArray
 {
     typedef T ElementType;
 
-    explicit ScopedAlignedArray(
-            size_t numElements = 0,
-            size_t alignment = sys::SSE_INSTRUCTION_ALIGNMENT) :
+    explicit ScopedAlignedArray(size_t numElements = 0,
+                                size_t alignment = sys::SSE_INSTRUCTION_ALIGNMENT) :
         mArray(allocate(numElements, alignment))
     {
     }
@@ -61,8 +60,7 @@ struct ScopedAlignedArray
         }
     }
 
-    void reset(size_t numElements = 0,
-               size_t alignment = sys::SSE_INSTRUCTION_ALIGNMENT)
+    void reset(size_t numElements = 0, size_t alignment = sys::SSE_INSTRUCTION_ALIGNMENT)
     {
         if (mArray)
         {

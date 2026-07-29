@@ -44,15 +44,13 @@ namespace io
  *      SeekableInputStream, SeekableOutputStream
  */
 template <typename T>
-struct BufferViewStream : public SeekableInputStream,
-                          public SeekableOutputStream
+struct BufferViewStream : public SeekableInputStream, public SeekableOutputStream
 {
     /*!
      * Default constructor
      * \param bufferView The BufferView to wrap in the stream
      */
-    BufferViewStream(const mem::BufferView<T>& bufferView) :
-        mBufferView(bufferView)
+    BufferViewStream(const mem::BufferView<T>& bufferView) : mBufferView(bufferView)
     {
     }
     BufferViewStream(const BufferViewStream&) = delete;
@@ -80,8 +78,7 @@ struct BufferViewStream : public SeekableInputStream,
      */
     virtual sys::Off_T available() override
     {
-        return gsl::narrow<sys::Off_T>((mBufferView.size - mPosition) *
-                                       sizeof(T));
+        return gsl::narrow<sys::Off_T>((mBufferView.size - mPosition) * sizeof(T));
     }
 
     using InputStream::read;

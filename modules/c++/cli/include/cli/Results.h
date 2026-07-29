@@ -167,9 +167,7 @@ private:
     void destroy()
     {
         mValues.clear();
-        for (ResultsIter_T it = mResults.begin(), end = mResults.end();
-             it != end;
-             ++it)
+        for (ResultsIter_T it = mResults.begin(), end = mResults.end(); it != end; ++it)
             delete it->second;
         mResults.clear();
     }

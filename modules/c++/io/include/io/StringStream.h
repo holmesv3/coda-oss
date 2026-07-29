@@ -163,8 +163,7 @@ private:
         return gsl::narrow<sys::SSize_T>(len);
     }
 
-    stringstream mData{stringstream::in | stringstream::out |
-                       stringstream::binary};
+    stringstream mData{stringstream::in | stringstream::out | stringstream::binary};
 };
 
 using StringStream = StringStreamT<std::string::value_type>;

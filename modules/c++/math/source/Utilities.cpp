@@ -42,8 +42,7 @@ sys::Uint64_T nChooseK(size_t n, size_t k)
     {
         throw except::Exception(Ctxt("n Choose k undefined for n < k.\n"
                                      "n: " +
-                                     std::to_string(n) +
-                                     " k: " + std::to_string(k)));
+                                     std::to_string(n) + " k: " + std::to_string(k)));
     }
 
     // Algorithm to compute n Choose k without using factorials found here:

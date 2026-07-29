@@ -38,8 +38,7 @@ namespace sys
 class CODA_OSS_API SemaphoreWin32 : public SemaphoreInterface
 {
 public:
-    SemaphoreWin32(unsigned int count = 0,
-                   size_t maxCount = std::numeric_limits<size_t>::max());
+    SemaphoreWin32(unsigned int count = 0, size_t maxCount = std::numeric_limits<size_t>::max());
 
     void wait();
 

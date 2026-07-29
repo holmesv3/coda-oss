@@ -32,10 +32,7 @@ namespace
 class ChunkReadRunnable : public sys::Runnable
 {
 public:
-    ChunkReadRunnable(sys::File& file,
-                      size_t offset,
-                      size_t len,
-                      void* buffer) :
+    ChunkReadRunnable(sys::File& file, size_t offset, size_t len, void* buffer) :
         mFile(file), mOffset(offset), mLen(len), mBuffer(buffer)
     {
     }
@@ -92,8 +89,7 @@ sys::SSize_T io::FileInputStreamOS::readImpl(void* buffer, size_t len)
         len = static_cast<sys::Size_T>(avail);
     }
 
-    if (mMaxReadThreads <= 1 ||
-        len <= mParallelChunkSize * mMinChunksForThreading)
+    if (mMaxReadThreads <= 1 || len <= mParallelChunkSize * mMinChunksForThreading)
     {
         // No need to clear buffer because the readInto call will write every
         // byte
@@ -114,11 +110,10 @@ sys::SSize_T io::FileInputStreamOS::readImpl(void* buffer, size_t len)
     while (planner.getThreadInfo(threadNum++, threadOffset, threadNumChunks))
     {
         size_t bufferOffset = threadOffset * mParallelChunkSize;
-        threadGroup.createThread(
-                new ChunkReadRunnable(mFile,
-                                      baseLocation + bufferOffset,
-                                      threadNumChunks * mParallelChunkSize,
-                                      bufferPtr + bufferOffset));
+        threadGroup.createThread(new ChunkReadRunnable(mFile,
+                                                       baseLocation + bufferOffset,
+                                                       threadNumChunks * mParallelChunkSize,
+                                                       bufferPtr + bufferOffset));
     }
 
     threadGroup.joinAll();

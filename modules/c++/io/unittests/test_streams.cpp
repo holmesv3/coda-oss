@@ -99,8 +99,7 @@ TEST_CASE(testByteStream)
     }
     {
         stream.clear();
-        const std::span<const std::string::value_type> test_span(test.data(),
-                                                                 test.size());
+        const std::span<const std::string::value_type> test_span(test.data(), test.size());
         stream.write(test_span);
         stream.seek(0, io::Seekable::START);
         TEST_ASSERT_EQ(stream.available(), 4);
@@ -195,8 +194,7 @@ TEST_CASE(testBufferViewIntStream)
     auto result = stream.read(&output[0], 2);
     TEST_ASSERT_EQ(result, 2);
     TEST_ASSERT_EQ(stream.tell(), static_cast<sys::Off_T>(2 * sizeof(int)));
-    TEST_ASSERT_EQ(stream.available(),
-                   static_cast<sys::Off_T>(2 * sizeof(int)));
+    TEST_ASSERT_EQ(stream.available(), static_cast<sys::Off_T>(2 * sizeof(int)));
     stream.seek(1 * sizeof(int), io::Seekable::CURRENT);
     result = stream.read(&output[2], 1);
     TEST_ASSERT_EQ(result, 1);

@@ -18,10 +18,7 @@ namespace mt
  * \param numElements Number of elements in 'buffer'
  * \param numThreads Number of threads to use for byte-swapping
  */
-inline void threadedByteSwap(void* buffer,
-                             size_t elemSize,
-                             size_t numElements,
-                             size_t numThreads)
+inline void threadedByteSwap(void* buffer, size_t elemSize, size_t numElements, size_t numThreads)
 {
     if (numThreads <= 1)
     {
@@ -35,12 +32,12 @@ inline void threadedByteSwap(void* buffer,
         size_t threadNum(0);
         size_t startElement(0);
         size_t numElementsThisThread(0);
-        while (planner.getThreadInfo(threadNum++,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum++, startElement, numElementsThisThread))
         {
-            auto thread = std::make_unique<sys::ByteSwapRunnable>(
-                    buffer, elemSize, startElement, numElementsThisThread);
+            auto thread = std::make_unique<sys::ByteSwapRunnable>(buffer,
+                                                                  elemSize,
+                                                                  startElement,
+                                                                  numElementsThisThread);
 
             threads.createThread(thread.release());
         }
@@ -75,16 +72,10 @@ inline void threadedByteSwap(const void* buffer,
         size_t threadNum(0);
         size_t startElement(0);
         size_t numElementsThisThread(0);
-        while (planner.getThreadInfo(threadNum++,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum++, startElement, numElementsThisThread))
         {
             auto thread = std::make_unique<sys::ByteSwapCopyRunnable>(
-                    buffer,
-                    elemSize,
-                    startElement,
-                    numElementsThisThread,
-                    outputBuffer);
+                    buffer, elemSize, startElement, numElementsThisThread, outputBuffer);
 
             threads.createThread(thread.release());
         }

@@ -78,8 +78,7 @@ constexpr uint16_t LEAD_SURROGATE_MAX = 0xdbffu;
 constexpr uint16_t TRAIL_SURROGATE_MIN = 0xdc00u;
 constexpr uint16_t TRAIL_SURROGATE_MAX = 0xdfffu;
 constexpr uint16_t LEAD_OFFSET = LEAD_SURROGATE_MIN - (0x10000 >> 10);
-constexpr uint32_t SURROGATE_OFFSET =
-        0x10000u - (LEAD_SURROGATE_MIN << 10) - TRAIL_SURROGATE_MIN;
+constexpr uint32_t SURROGATE_OFFSET = 0x10000u - (LEAD_SURROGATE_MIN << 10) - TRAIL_SURROGATE_MIN;
 
 // Maximum valid value for a Unicode code point
 constexpr uint32_t CODE_POINT_MAX = 0x0010ffffu;
@@ -125,9 +124,8 @@ inline constexpr bool is_code_point_valid(u32 cp)
 }
 
 template <typename octet_iterator>
-inline /*constexpr*/ typename std::iterator_traits<
-        octet_iterator>::difference_type
-sequence_length(octet_iterator lead_it)
+inline /*constexpr*/ typename std::iterator_traits<octet_iterator>::difference_type sequence_length(
+        octet_iterator lead_it)
 {
     uint8_t lead = mask8(*lead_it);
     if (lead < 0x80)
@@ -143,8 +141,7 @@ sequence_length(octet_iterator lead_it)
 }
 
 template <typename octet_difference_type>
-inline /*constexpr*/ bool is_overlong_sequence(uint32_t cp,
-                                               octet_difference_type length)
+inline /*constexpr*/ bool is_overlong_sequence(uint32_t cp, octet_difference_type length)
 {
     if (cp < 0x80)
     {
@@ -197,9 +194,7 @@ utf_error increase_safely(octet_iterator& it, octet_iterator end)
 
 /// get_sequence_x functions decode utf-8 sequences of the length x
 template <typename octet_iterator>
-utf_error get_sequence_1(octet_iterator& it,
-                         octet_iterator end,
-                         uint32_t& code_point)
+utf_error get_sequence_1(octet_iterator& it, octet_iterator end, uint32_t& code_point)
 {
     if (it == end)
         return NOT_ENOUGH_ROOM;
@@ -210,9 +205,7 @@ utf_error get_sequence_1(octet_iterator& it,
 }
 
 template <typename octet_iterator>
-utf_error get_sequence_2(octet_iterator& it,
-                         octet_iterator end,
-                         uint32_t& code_point)
+utf_error get_sequence_2(octet_iterator& it, octet_iterator end, uint32_t& code_point)
 {
     if (it == end)
         return NOT_ENOUGH_ROOM;
@@ -227,9 +220,7 @@ utf_error get_sequence_2(octet_iterator& it,
 }
 
 template <typename octet_iterator>
-utf_error get_sequence_3(octet_iterator& it,
-                         octet_iterator end,
-                         uint32_t& code_point)
+utf_error get_sequence_3(octet_iterator& it, octet_iterator end, uint32_t& code_point)
 {
     if (it == end)
         return NOT_ENOUGH_ROOM;
@@ -248,9 +239,7 @@ utf_error get_sequence_3(octet_iterator& it,
 }
 
 template <typename octet_iterator>
-utf_error get_sequence_4(octet_iterator& it,
-                         octet_iterator end,
-                         uint32_t& code_point)
+utf_error get_sequence_4(octet_iterator& it, octet_iterator end, uint32_t& code_point)
 {
     if (it == end)
         return NOT_ENOUGH_ROOM;
@@ -259,8 +248,7 @@ utf_error get_sequence_4(octet_iterator& it,
 
     UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(it, end)
 
-    code_point =
-            ((code_point << 18) & 0x1fffff) + ((mask8(*it) << 12) & 0x3ffff);
+    code_point = ((code_point << 18) & 0x1fffff) + ((mask8(*it) << 12) & 0x3ffff);
 
     UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(it, end)
 
@@ -276,9 +264,7 @@ utf_error get_sequence_4(octet_iterator& it,
 #undef UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR
 
 template <typename octet_iterator>
-utf_error validate_next(octet_iterator& it,
-                        octet_iterator end,
-                        uint32_t& code_point)
+utf_error validate_next(octet_iterator& it, octet_iterator end, uint32_t& code_point)
 {
     // Save the original value of it so we can go back in case of failure
     // Of course, it does not make much sense with i.e. stream iterators
@@ -286,8 +272,7 @@ utf_error validate_next(octet_iterator& it,
 
     uint32_t cp = 0;
     // Determine the sequence length based on the lead octet
-    typedef typename std::iterator_traits<octet_iterator>::difference_type
-            octet_difference_type;
+    typedef typename std::iterator_traits<octet_iterator>::difference_type octet_difference_type;
     const octet_difference_type length = sequence_length(it);
 
     // Get trail octets and calculate the code point
@@ -585,8 +570,8 @@ void advance(octet_iterator& it, distance_type n, octet_iterator end)
 }
 
 template <typename octet_iterator>
-typename std::iterator_traits<octet_iterator>::difference_type distance(
-        octet_iterator first, octet_iterator last)
+typename std::iterator_traits<octet_iterator>::difference_type distance(octet_iterator first,
+                                                                        octet_iterator last)
 {
     typename std::iterator_traits<octet_iterator>::difference_type dist;
     for (dist = 0; first < last; ++dist)
@@ -595,9 +580,7 @@ typename std::iterator_traits<octet_iterator>::difference_type distance(
 }
 
 template <typename u16bit_iterator, typename octet_iterator>
-octet_iterator utf16to8(u16bit_iterator start,
-                        u16bit_iterator end,
-                        octet_iterator result)
+octet_iterator utf16to8(u16bit_iterator start, u16bit_iterator end, octet_iterator result)
 {
     while (start != end)
     {
@@ -626,9 +609,7 @@ octet_iterator utf16to8(u16bit_iterator start,
 }
 
 template <typename u16bit_iterator, typename octet_iterator>
-u16bit_iterator utf8to16(octet_iterator start,
-                         octet_iterator end,
-                         u16bit_iterator result)
+u16bit_iterator utf8to16(octet_iterator start, octet_iterator end, u16bit_iterator result)
 {
     while (start != end)
     {
@@ -636,8 +617,7 @@ u16bit_iterator utf8to16(octet_iterator start,
         if (cp > 0xffff)
         {  // make a surrogate pair
             *result++ = static_cast<uint16_t>((cp >> 10) + impl::LEAD_OFFSET);
-            *result++ = static_cast<uint16_t>((cp & 0x3ff) +
-                                              impl::TRAIL_SURROGATE_MIN);
+            *result++ = static_cast<uint16_t>((cp & 0x3ff) + impl::TRAIL_SURROGATE_MIN);
         }
         else
             *result++ = static_cast<uint16_t>(cp);
@@ -646,9 +626,7 @@ u16bit_iterator utf8to16(octet_iterator start,
 }
 
 template <typename octet_iterator, typename u32bit_iterator>
-octet_iterator utf32to8(u32bit_iterator start,
-                        u32bit_iterator end,
-                        octet_iterator result)
+octet_iterator utf32to8(u32bit_iterator start, u32bit_iterator end, octet_iterator result)
 {
     while (start != end)
         result = utf8::append(*(start++), result);
@@ -657,9 +635,7 @@ octet_iterator utf32to8(u32bit_iterator start,
 }
 
 template <typename octet_iterator, typename u32bit_iterator>
-u32bit_iterator utf8to32(octet_iterator start,
-                         octet_iterator end,
-                         u32bit_iterator result)
+u32bit_iterator utf8to32(octet_iterator start, octet_iterator end, u32bit_iterator result)
 {
     while (start != end)
         (*result++) = utf8::next(start, end);
@@ -719,8 +695,7 @@ public:
     bool operator==(const iterator& rhs) const
     {
         if (range_start != rhs.range_start || range_end != rhs.range_end)
-            throw std::logic_error(
-                    "Comparing utf-8 iterators defined with different ranges");
+            throw std::logic_error("Comparing utf-8 iterators defined with different ranges");
         return (it == rhs.it);
     }
     bool operator!=(const iterator& rhs) const

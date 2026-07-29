@@ -62,11 +62,9 @@ TEST_CASE(test_getSIMDInstructionSet)
     static_assert(simdInstructionSet == sys::SIMDInstructionSet::AVX512F,
                   "getSIMDInstructionSet()");
 #elif __AVX2__
-    static_assert(simdInstructionSet == sys::SIMDInstructionSet::AVX2,
-                  "getSIMDInstructionSet()");
+    static_assert(simdInstructionSet == sys::SIMDInstructionSet::AVX2, "getSIMDInstructionSet()");
 #else
-    static_assert(simdInstructionSet == sys::SIMDInstructionSet::SSE2,
-                  "getSIMDInstructionSet()");
+    static_assert(simdInstructionSet == sys::SIMDInstructionSet::SSE2, "getSIMDInstructionSet()");
 #endif
 #else
     static_assert(simdInstructionSet == sys::SIMDInstructionSet::Disabled,

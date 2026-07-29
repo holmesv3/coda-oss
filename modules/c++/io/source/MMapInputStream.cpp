@@ -28,8 +28,7 @@ void io::MMapInputStream::open(const std::string& fname, char* flags)
     //    std::cout << mLength << std::endl;
     mFile = fopen(fname.c_str(), "r");
     if (!mFile)
-        throw sys::SystemException(
-                str::Format("Failure while opening file: %s", fname));
+        throw sys::SystemException(str::Format("Failure while opening file: %s", fname));
 
     _map();
 }
@@ -57,8 +56,7 @@ void io::MMapInputStream::_unmap()
 sys::Handle_T io::MMapInputStream::getHandle()
 {
     if (!mFile)
-        throw except::NullPointerReference(
-                Ctxt("Uninitialized memory mapped file stream!"));
+        throw except::NullPointerReference(Ctxt("Uninitialized memory mapped file stream!"));
     return ::fileno(mFile);
 }
 

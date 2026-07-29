@@ -49,8 +49,7 @@ tiff::FileWriter::~FileWriter() noexcept
 void tiff::FileWriter::openFile(const std::string& fileName)
 {
     if (mOutput.isOpen())
-        throw except::Exception(
-                Ctxt("Last file not closed; call close() first."));
+        throw except::Exception(Ctxt("Last file not closed; call close() first."));
 
     if (fileName == "-")
         throw except::Exception(Ctxt("Cannot write TIFF to std::cout"));

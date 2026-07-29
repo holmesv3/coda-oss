@@ -30,11 +30,9 @@ int main(int, char**)
     {
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning( \
-        disable  \
-        : 4996)  // '...': This function or variable may be unsafe. Consider
-                 // using fopen_s instead. To disable deprecation, use
-                 // _CRT_SECURE_NO_WARNINGS. See online help for details.
+#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. Consider
+                                 // using fopen_s instead. To disable deprecation, use
+                                 // _CRT_SECURE_NO_WARNINGS. See online help for details.
 #endif
 
         // open non-existant file
@@ -53,15 +51,11 @@ int main(int, char**)
         sys::Err copyErr(err);
         sys::Err assignErr = err;
 
-        std::cout << "Default Constructed Error        : " << err.toString()
-                  << std::endl;
-        std::cout << "Copy Constructed Error           : " << copyErr.toString()
-                  << std::endl;
-        std::cout << "Assignment Constructed Error     : "
-                  << assignErr.toString() << std::endl;
+        std::cout << "Default Constructed Error        : " << err.toString() << std::endl;
+        std::cout << "Copy Constructed Error           : " << copyErr.toString() << std::endl;
+        std::cout << "Assignment Constructed Error     : " << assignErr.toString() << std::endl;
 
         sys::SocketErr socErr;
-        std::cout << "Default Constructed Socket Error : " << socErr.toString()
-                  << std::endl;
+        std::cout << "Default Constructed Socket Error : " << socErr.toString() << std::endl;
     }
 }

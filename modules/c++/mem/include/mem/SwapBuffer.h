@@ -57,8 +57,7 @@ struct SwapBuffer
      *  during processing.
      *  This internally creates and manages the memory requested.
      */
-    SwapBuffer(size_t numBytes,
-               size_t alignment = sys::SSE_INSTRUCTION_ALIGNMENT) :
+    SwapBuffer(size_t numBytes, size_t alignment = sys::SSE_INSTRUCTION_ALIGNMENT) :
         mNumBytes(numBytes),
         mAlignedValid(mNumBytes, alignment),
         mAlignedScratch(mNumBytes, alignment),

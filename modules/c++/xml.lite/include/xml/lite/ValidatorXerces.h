@@ -137,8 +137,7 @@ struct CODA_OSS_API ValidatorXerces : public ValidatorInterface
 
     // Search each directory for XSD files
     static std::vector<coda_oss::filesystem::path> loadSchemas(
-            const std::vector<coda_oss::filesystem::path>& schemaPaths,
-            bool recursive = true);
+            const std::vector<coda_oss::filesystem::path>& schemaPaths, bool recursive = true);
 
 private:
     XercesContext mCtxt;
@@ -153,8 +152,7 @@ private:
 };
 
 //! stream the entire log -- newline separated
-std::ostream& operator<<(std::ostream& out,
-                         const ValidationErrorHandler& errorHandler);
+std::ostream& operator<<(std::ostream& out, const ValidationErrorHandler& errorHandler);
 }
 }
 

@@ -58,8 +58,7 @@ namespace io
  *  0's can be anywhere (Null-bytes) making it impossible to use
  *  strings as containers.
  */
-struct CODA_OSS_API ByteStream : public SeekableInputStream,
-                                 public SeekableOutputStream
+struct CODA_OSS_API ByteStream : public SeekableInputStream, public SeekableOutputStream
 {
     ByteStream() = default;
     virtual ~ByteStream() = default;

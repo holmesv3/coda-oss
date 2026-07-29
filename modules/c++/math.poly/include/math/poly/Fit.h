@@ -76,10 +76,9 @@ OneD<double> fit(const Vector_T& x, const Vector_T& y, size_t order)
     if (sizeX <= order)
     {
         std::ostringstream excSS;
-        excSS << "Not enough points for a unique fit solution (" << sizeX
-              << " points for an order-" << order
-              << "fit)!  You should really have at least (order+1) = "
-              << (order + 1) << " points for this to do what you expect.";
+        excSS << "Not enough points for a unique fit solution (" << sizeX << " points for an order-"
+              << order << "fit)!  You should really have at least (order+1) = " << (order + 1)
+              << " points for this to do what you expect.";
         throw except::Exception(Ctxt(excSS));
     }
 
@@ -91,8 +90,7 @@ OneD<double> fit(const Vector_T& x, const Vector_T& y, size_t order)
     auto xp = vx - offv;
 
     // Normalize the values in the vector using standard deviation
-    const double rxrms =
-            1.0 / std::sqrt(xp.normSq() / static_cast<double>(sizeX));
+    const double rxrms = 1.0 / std::sqrt(xp.normSq() / static_cast<double>(sizeX));
     xp.scale(rxrms);
 
     math::linear::Matrix2D<double> A(sizeX, order + 1);
@@ -137,10 +135,7 @@ OneD<double> fit(const Vector_T& x, const Vector_T& y, size_t order)
  *  This method allows us to fit a set of observations using raw
  *  pointers
  */
-inline OneD<double> fit(size_t numObs,
-                        const double* x,
-                        const double* y,
-                        size_t order)
+inline OneD<double> fit(size_t numObs, const double* x, const double* y, size_t order)
 {
     const math::linear::Vector<double> xv(numObs, x);
     const math::linear::Vector<double> yv(numObs, y);
@@ -202,10 +197,10 @@ inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
     if (x.size() < acols)
     {
         std::ostringstream excSS;
-        excSS << "Not enough points for a unique fit solution (" << x.size()
-              << " points for a " << acols << "-coefficient fit)!"
-              << " You should really have at least (orderX+1)*(orderY+1) = "
-              << acols << " points for this to do what you expect.";
+        excSS << "Not enough points for a unique fit solution (" << x.size() << " points for a "
+              << acols << "-coefficient fit)!"
+              << " You should really have at least (orderX+1)*(orderY+1) = " << acols
+              << " points for this to do what you expect.";
         throw except::Exception(Ctxt(excSS));
     }
 
@@ -337,8 +332,7 @@ inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
         size_t order)
 {
     const auto numObs = xObs.size();
-    if (yObs0.size() != numObs || yObs1.size() != numObs ||
-        yObs2.size() != numObs)
+    if (yObs0.size() != numObs || yObs1.size() != numObs || yObs2.size() != numObs)
     {
         throw except::Exception(Ctxt("Must have the same number of observed y "
                                      "values as observed x values"));
@@ -393,8 +387,7 @@ inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
 {
     if (yObsMatrix.rows() != 3)
     {
-        throw except::Exception(
-                Ctxt("Matrix of observed Y values must have 3 rows"));
+        throw except::Exception(Ctxt("Matrix of observed Y values must have 3 rows"));
     }
 
     // Vector size error checking will be done by the base fit() function
@@ -424,12 +417,11 @@ inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
  * Bn2, Bn3)x^n
  */
 
-inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
-        const std::vector<double>& xObs,
-        const std::vector<double>& yObs0,
-        const std::vector<double>& yObs1,
-        const std::vector<double>& yObs2,
-        size_t order)
+inline math::poly::OneD<math::linear::VectorN<3, double>> fit(const std::vector<double>& xObs,
+                                                              const std::vector<double>& yObs0,
+                                                              const std::vector<double>& yObs1,
+                                                              const std::vector<double>& yObs2,
+                                                              size_t order)
 {
     // Vector size error checking will be done by the base fit() function
     math::poly::OneD<math::linear::VectorN<3, double>> polyVector3 =

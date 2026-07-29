@@ -69,8 +69,7 @@ static void parse(SAX2XMLReader& parser,
     catch (const except::Error& e)
     {
         const auto msg = e.getMessage();
-        if (msg !=
-            " (1,1): invalid byte 'X' at position 2 of a 2-byte sequence")
+        if (msg != " (1,1): invalid byte 'X' at position 2 of a 2-byte sequence")
         {
             throw;
         }
@@ -103,8 +102,7 @@ void xml::lite::XMLReaderXerces::parse(io::InputStream& is,
     oss.read(buffer.data(), buffer.size());
 
     const auto pInitialEncoding = static_cast<const XMLCh*>(pInitialEncoding_);
-    const auto pFallbackEncoding =
-            static_cast<const XMLCh*>(pFallbackEncoding_);
+    const auto pFallbackEncoding = static_cast<const XMLCh*>(pFallbackEncoding_);
     ::parse(*mNative, buffer, pInitialEncoding, pFallbackEncoding);
 }
 void xml::lite::XMLReaderXerces::parse(io::InputStream& is, int size)

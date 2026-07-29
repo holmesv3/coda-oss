@@ -110,13 +110,10 @@ TEST_CASE(testDecrement)
     testDecrement_<sys::AtomicCounter>(testName);
 }
 
-template <typename TAtomicCounter,
-          typename ValueType = typename TAtomicCounter::ValueType>
+template <typename TAtomicCounter, typename ValueType = typename TAtomicCounter::ValueType>
 struct IncrementAtomicCounterT final : public sys::Runnable
 {
-    IncrementAtomicCounterT(size_t numIncrements,
-                            TAtomicCounter& ctr,
-                            ValueType* values) :
+    IncrementAtomicCounterT(size_t numIncrements, TAtomicCounter& ctr, ValueType* values) :
         mNumIncrements(numIncrements), mCtr(ctr), mValues(values)
     {
     }
@@ -153,8 +150,7 @@ static void testThreadedIncrement_(const std::string& testName)
     ValueType* ptr(&values[0]);
     for (size_t ii = 0; ii < numThreads; ++ii, ptr += numIncrements)
     {
-        threads[ii] = new sys::Thread(
-                new IncrementAtomicCounter(numIncrements, ctr, ptr));
+        threads[ii] = new sys::Thread(new IncrementAtomicCounter(numIncrements, ctr, ptr));
         valuesPtr[ii] = ptr;
     }
 
@@ -184,8 +180,7 @@ static void testThreadedIncrement_(const std::string& testName)
     std::sort(values.begin(), values.end());
     for (size_t ii = 0; ii < values.size(); ++ii)
     {
-        TEST_ASSERT_EQ(static_cast<int64_t>(values[ii]),
-                       static_cast<int64_t>(ii));
+        TEST_ASSERT_EQ(static_cast<int64_t>(values[ii]), static_cast<int64_t>(ii));
     }
 }
 TEST_CASE(testThreadedIncrement)
@@ -195,13 +190,10 @@ TEST_CASE(testThreadedIncrement)
     testThreadedIncrement_<sys::AtomicCounter>(testName);
 }
 
-template <typename TAtomicCounter,
-          typename ValueType = typename TAtomicCounter::ValueType>
+template <typename TAtomicCounter, typename ValueType = typename TAtomicCounter::ValueType>
 struct DecrementAtomicCounterT final : public sys::Runnable
 {
-    DecrementAtomicCounterT(size_t numDecrements,
-                            TAtomicCounter& ctr,
-                            ValueType* values) :
+    DecrementAtomicCounterT(size_t numDecrements, TAtomicCounter& ctr, ValueType* values) :
         mNumDecrements(numDecrements), mCtr(ctr), mValues(values)
     {
     }
@@ -238,8 +230,7 @@ static void testThreadedDecrement_(const std::string& testName)
     ValueType* ptr(&values[0]);
     for (size_t ii = 0; ii < numThreads; ++ii, ptr += numDecrements)
     {
-        threads[ii] = new sys::Thread(
-                new DecrementAtomicCounter(numDecrements, ctr, ptr));
+        threads[ii] = new sys::Thread(new DecrementAtomicCounter(numDecrements, ctr, ptr));
         valuesPtr[ii] = ptr;
     }
 
@@ -269,8 +260,7 @@ static void testThreadedDecrement_(const std::string& testName)
     std::sort(values.begin(), values.end());
     for (size_t ii = 0; ii < values.size(); ++ii)
     {
-        TEST_ASSERT_EQ(static_cast<int64_t>(values[ii]),
-                       static_cast<int64_t>(ii));
+        TEST_ASSERT_EQ(static_cast<int64_t>(values[ii]), static_cast<int64_t>(ii));
     }
 }
 TEST_CASE(testThreadedDecrement)
@@ -280,7 +270,6 @@ TEST_CASE(testThreadedDecrement)
     testThreadedDecrement_<sys::AtomicCounter>(testName);
 }
 
-TEST_MAIN(TEST_CHECK(testConstructor); TEST_CHECK(testIncrement);
-          TEST_CHECK(testDecrement);
+TEST_MAIN(TEST_CHECK(testConstructor); TEST_CHECK(testIncrement); TEST_CHECK(testDecrement);
           TEST_CHECK(testThreadedIncrement);
           TEST_CHECK(testThreadedDecrement);)

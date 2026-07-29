@@ -29,8 +29,7 @@ GZipInputStream::GZipInputStream(const std::string& file)
     mFile = gzopen(file.c_str(), "rb");
     if (mFile == nullptr)
     {
-        throw except::IOException(
-                Ctxt("Failed to open gzip stream [" + file + "]"));
+        throw except::IOException(Ctxt("Failed to open gzip stream [" + file + "]"));
     }
 }
 

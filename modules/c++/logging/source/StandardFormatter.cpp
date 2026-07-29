@@ -43,11 +43,9 @@ StandardFormatter::StandardFormatter(const std::string& fmt,
 {
 }
 
-void StandardFormatter::format(const LogRecord* record,
-                               io::OutputStream& os) const
+void StandardFormatter::format(const LogRecord* record, io::OutputStream& os) const
 {
-    std::string name =
-            (record->getName().empty()) ? ("DEFAULT") : record->getName();
+    std::string name = (record->getName().empty()) ? ("DEFAULT") : record->getName();
 
     // populate log
     long threadId = sys::getThreadID();

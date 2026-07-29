@@ -55,8 +55,7 @@ sys::SSize_T io::PipeStream::readImpl(void* buffer, size_t numBytes)
     return gsl::narrow<sys::SSize_T>(numBytes - bytesLeft);
 }
 
-sys::SSize_T io::PipeStream::readln(sys::byte* cStr,
-                                    const sys::Size_T strLenPlusNullByte)
+sys::SSize_T io::PipeStream::readln(sys::byte* cStr, const sys::Size_T strLenPlusNullByte)
 {
     FILE* pipe = mExecPipe.getPipe();
 
@@ -96,8 +95,7 @@ sys::SSize_T io::PipeStream::streamTo(OutputStream& soi, sys::SSize_T numBytes)
         while (bytesLeft && !feof(mExecPipe.getPipe()))
         {
             // don't read more bytes than streaming forward or buff size
-            const auto bytesRead =
-                    read(mCharString.get(), std::min(bytesLeft, mBufferSize));
+            const auto bytesRead = read(mCharString.get(), std::min(bytesLeft, mBufferSize));
             if (bytesRead > 0)
             {
                 soi.write(mCharString.get(), gsl::narrow<size_t>(bytesRead));

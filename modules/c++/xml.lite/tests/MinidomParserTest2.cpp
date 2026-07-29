@@ -43,10 +43,7 @@ const std::string LOCATION_URI = "";
 const std::string NAME_TAG = "name";
 const std::string NAME_URI = "";
 
-void addService(Document* doc,
-                Element* rootElement,
-                string name,
-                string location);
+void addService(Document* doc, Element* rootElement, string name, string location);
 bool removeService(Document* doc, Element* rootElement, string name);
 bool findService(Document* doc, Element* rootElement, string name);
 
@@ -56,10 +53,10 @@ int main(int argc, char** argv)
     {
         if (argc != 5)
         {
-            throw Exception(Ctxt(str::Format(
-                    "Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd "
-                    "service\n\t-s\tsubtract service\n\t-o\toutput file\n",
-                    argv[0])));
+            throw Exception(
+                    Ctxt(str::Format("Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd "
+                                     "service\n\t-s\tsubtract service\n\t-o\toutput file\n",
+                                     argv[0])));
         }
 
         StandardOutStream out;
@@ -131,10 +128,10 @@ int main(int argc, char** argv)
                 rootElement->print(out);
             break;
         default:
-            throw Exception(Ctxt(str::Format(
-                    "Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd "
-                    "service\n\t-s\tsubtract service\n\t-o\toutput file\n",
-                    argv[0])));
+            throw Exception(
+                    Ctxt(str::Format("Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd "
+                                     "service\n\t-s\tsubtract service\n\t-o\toutput file\n",
+                                     argv[0])));
         }
 
         outXmlFile.close();
@@ -149,10 +146,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-void addService(Document* doc,
-                Element* rootElement,
-                string name,
-                string location)
+void addService(Document* doc, Element* rootElement, string name, string location)
 {
     Element *toAdd, *child;
 

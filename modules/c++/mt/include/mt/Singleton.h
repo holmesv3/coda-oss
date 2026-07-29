@@ -90,11 +90,9 @@ struct SingletonAutoDestroyer<true>
     {
         CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning( \
-        disable  \
-        : 5039)  // '...': pointer or reference to potentially throwing function
-                 // passed to '...' function under -EHc. Undefined behavior may
-                 // occur if this function throws an exception.
+#pragma warning(disable : 5039)  // '...': pointer or reference to potentially throwing function
+                                 // passed to '...' function under -EHc. Undefined behavior may
+                                 // occur if this function throws an exception.
 #endif
 
                 std::atexit(function);

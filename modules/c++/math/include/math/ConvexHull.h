@@ -91,10 +91,9 @@ public:
     {
         if (rawPoints.size() < 2)
         {
-            throw except::Exception(Ctxt(
-                    "ConvexHull constructor error: must use at least 2 input "
-                    "points but " +
-                    std::to_string(rawPoints.size()) + " were used"));
+            throw except::Exception(Ctxt("ConvexHull constructor error: must use at least 2 input "
+                                         "points but " +
+                                         std::to_string(rawPoints.size()) + " were used"));
         }
 
         // Enforce (at compile time) that T is a signed type
@@ -139,9 +138,7 @@ private:
      *        0  p2 is on a straight line
      *
      */
-    static sys::SSize_T direction(const RowCol& p0,
-                                  const RowCol& p1,
-                                  const RowCol& p2) noexcept
+    static sys::SSize_T direction(const RowCol& p0, const RowCol& p1, const RowCol& p2) noexcept
     {
         const T firstTerm = (p0.col - p1.col) * (p2.row - p1.row);
         const T secondTerm = (p2.col - p1.col) * (p0.row - p1.row);
@@ -204,9 +201,7 @@ private:
      * \param output [output] The points in the corresponding convex hull
      *
      */
-    void buildHalfHull(sys::SSize_T factor,
-                       std::vector<RowCol>& input,
-                       std::vector<RowCol>& output)
+    void buildHalfHull(sys::SSize_T factor, std::vector<RowCol>& input, std::vector<RowCol>& output)
     {
         // The hull will always start with the left point and end with the
         // right point.  Accordingly, we start by adding the left point as
@@ -230,9 +225,8 @@ private:
             while (output.size() >= 3)
             {
                 size_t const last = output.size() - 1;
-                sys::SSize_T const dir = direction(output[last - 2],
-                                                   output[last],
-                                                   output[last - 1]);
+                sys::SSize_T const dir =
+                        direction(output[last - 2], output[last], output[last - 1]);
 
                 if (factor * dir <= 0)
                 {
@@ -279,8 +273,7 @@ private:
         ///        point since we're not skipping it in the upper hull
         ///        even though it's a duplicate, but this seems to be
         ///        convention.
-        for (typename std::vector<RowCol>::reverse_iterator iter =
-                     upperHull.rbegin() + 1;
+        for (typename std::vector<RowCol>::reverse_iterator iter = upperHull.rbegin() + 1;
              iter != upperHull.rend();
              ++iter)
         {

@@ -51,10 +51,7 @@ struct PageRowCol
     // where one or more fields is set and the remaining ones are not,
     // especially when doing scalar operations that might otherwise
     // create ambiguities
-    PageRowCol() :
-        page(static_cast<T>(0.0)),
-        row(static_cast<T>(0.0)),
-        col(static_cast<T>(0.0))
+    PageRowCol() : page(static_cast<T>(0.0)), row(static_cast<T>(0.0)), col(static_cast<T>(0.0))
     {
     }
 
@@ -238,8 +235,7 @@ struct PageRowCol
         //  (like size_t)
         //  So, cast to double and at that point we might as well just call
         //  std::sqrt()
-        return static_cast<T>(std::sqrt(
-                static_cast<double>(page * page + row * row + col * col)));
+        return static_cast<T>(std::sqrt(static_cast<double>(page * page + row * row + col * col)));
     }
 };
 

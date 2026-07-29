@@ -64,8 +64,7 @@ int main(int /*argc*/, char** /*argv*/)
     }
     catch (const except::Exception& ex)
     {
-        std::cerr << "Caught except::exception: " << ex.getMessage()
-                  << std::endl;
+        std::cerr << "Caught except::exception: " << ex.getMessage() << std::endl;
     }
     catch (const std::exception& ex)
     {

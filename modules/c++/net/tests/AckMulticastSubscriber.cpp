@@ -64,8 +64,7 @@ public:
                            const std::string& replyTo,
                            int replyToPort)
     {
-        mMulticastSubscriber =
-                createMulticastSubscriber(mcastGroup, mcastLocalPort);
+        mMulticastSubscriber = createMulticastSubscriber(mcastGroup, mcastLocalPort);
         mAckChannel = createSocketForAck(replyTo, replyToPort);
     }
 
@@ -73,8 +72,7 @@ public:
     {
     }
 
-    std::unique_ptr<Socket> createMulticastSubscriber(const std::string& group,
-                                                      int port)
+    std::unique_ptr<Socket> createMulticastSubscriber(const std::string& group, int port)
     {
         SocketAddress here(port);
         std::unique_ptr<Socket> socket(new Socket(UDP_PROTO));
@@ -92,8 +90,7 @@ public:
         return socket;
     }
 
-    std::unique_ptr<Socket> createSocketForAck(const std::string& senderHost,
-                                               int senderPort)
+    std::unique_ptr<Socket> createSocketForAck(const std::string& senderHost, int senderPort)
     {
         SocketAddress toSender(senderHost, senderPort);
         std::unique_ptr<Socket> s = UDPClientSocketFactory().create(toSender);
@@ -104,9 +101,7 @@ public:
     void waitForNotification(T& packet)
     {
         SocketAddress whereFrom;
-        mMulticastSubscriber->recvFrom(whereFrom,
-                                       (char*)&packet,
-                                       sizeof(packet));
+        mMulticastSubscriber->recvFrom(whereFrom, (char*)&packet, sizeof(packet));
     }
     void confirmDelivery(int sequenceNumber)
     {
@@ -163,10 +158,7 @@ int main(int argc, char** argv)
 
         pthread_detach(thr->getNative());
 
-        AckMulticastSubscriber<MyPacket> mcastSubs(mcastGroup,
-                                                   mcastRecvPort,
-                                                   replyTo,
-                                                   replyAt);
+        AckMulticastSubscriber<MyPacket> mcastSubs(mcastGroup, mcastRecvPort, replyTo, replyAt);
 
         MyPacket packet;
         mcastSubs.waitForNotification(packet);

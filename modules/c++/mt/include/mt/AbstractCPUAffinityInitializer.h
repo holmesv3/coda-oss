@@ -47,8 +47,7 @@ public:
      */
     std::unique_ptr<AbstractCPUAffinityThreadInitializer> newThreadInitializer()
     {
-        return std::unique_ptr<AbstractCPUAffinityThreadInitializer>(
-                newThreadInitializerImpl());
+        return std::unique_ptr<AbstractCPUAffinityThreadInitializer>(newThreadInitializerImpl());
     }
 
 private:
@@ -58,8 +57,7 @@ private:
     // Using name hiding, we can define newThreadInitializer() implementations
     // that wrap newThreadInitializerImpl() in the appropriate derived
     // class return type. This should be done in all derived classes.
-    virtual AbstractCPUAffinityThreadInitializer*
-    newThreadInitializerImpl() = 0;
+    virtual AbstractCPUAffinityThreadInitializer* newThreadInitializerImpl() = 0;
 };
 }
 

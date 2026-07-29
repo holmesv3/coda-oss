@@ -40,15 +40,13 @@ void xml::lite::NamespaceStack::pop()
     mRefStack.pop();
 }
 
-void xml::lite::NamespaceStack::newMapping(const std::string& prefix,
-                                           const Uri& uri)
+void xml::lite::NamespaceStack::newMapping(const std::string& prefix, const Uri& uri)
 {
     ++mRefStack.top();
     mMappingStack.push_back(xml::lite::NamespaceEntity(prefix, uri.value));
 }
 
-void xml::lite::NamespaceStack::getMapping(const std::string& prefix,
-                                           Uri& result) const
+void xml::lite::NamespaceStack::getMapping(const std::string& prefix, Uri& result) const
 {
     for (int i = (int)mMappingStack.size() - 1; i >= 0; --i)
     {
@@ -61,8 +59,7 @@ void xml::lite::NamespaceStack::getMapping(const std::string& prefix,
     result = xml::lite::Uri();
 }
 
-void xml::lite::NamespaceStack::getAllPrefixes(
-        std::vector<std::string>& allPrefixes) const
+void xml::lite::NamespaceStack::getAllPrefixes(std::vector<std::string>& allPrefixes) const
 {
     allPrefixes.reserve(mMappingStack.size());
     for (unsigned int i = 0; i < mMappingStack.size(); i++)

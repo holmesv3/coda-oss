@@ -61,8 +61,7 @@ void net::ssl::SSLConnectionClientFactory::initializeContext()
 
     if (method == nullptr)
     {
-        throw net::ssl::SSLException(
-                Ctxt(str::Format("SSLv23_client_method failed")));
+        throw net::ssl::SSLException(Ctxt(str::Format("SSLv23_client_method failed")));
     }
     mCtx = SSL_CTX_new(method);
     if (mCtx == nullptr)
@@ -73,15 +72,11 @@ void net::ssl::SSLConnectionClientFactory::initializeContext()
     if (mClientAuthentication)
     {
         // Load our keys and certificates
-        if (!(SSL_CTX_use_certificate_file(mCtx,
-                                           mKeyfile.c_str(),
-                                           SSL_FILETYPE_PEM)))
+        if (!(SSL_CTX_use_certificate_file(mCtx, mKeyfile.c_str(), SSL_FILETYPE_PEM)))
             throw net::ssl::SSLException(Ctxt("Can't read certificate file"));
 
         // SSL_CTX_set_default_passwd_cb(mCtx, password_cb);
-        if (!(SSL_CTX_use_PrivateKey_file(mCtx,
-                                          mKeyfile.c_str(),
-                                          SSL_FILETYPE_PEM)))
+        if (!(SSL_CTX_use_PrivateKey_file(mCtx, mKeyfile.c_str(), SSL_FILETYPE_PEM)))
             throw net::ssl::SSLException(Ctxt("Can't read key file"));
 
         // Load the CAs we trust
@@ -112,8 +107,7 @@ net::NetConnection* net::ssl::SSLConnectionClientFactory::newConnection(
         std::unique_ptr<net::Socket>&& toServer)
 {
 #if defined(USE_OPENSSL)
-    return (new SSLConnection(
-            std::move(toServer), mCtx, mServerAuthentication, mUrl.getHost()));
+    return (new SSLConnection(std::move(toServer), mCtx, mServerAuthentication, mUrl.getHost()));
 #else
     return (new net::NetConnection(std::move(toServer)));
 #endif

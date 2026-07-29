@@ -78,8 +78,7 @@ void sio::lite::StreamReader::checkMagic(bool calledFromConstructor)
             killStream();
         }
 
-        throw sio::lite::InvalidHeaderException(
-                Ctxt("Invalid magic header byte"));
+        throw sio::lite::InvalidHeaderException(Ctxt("Invalid magic header byte"));
     }
     dbg_printf("Detected header version: %d\n", header->getVersion());
 }

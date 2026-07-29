@@ -37,8 +37,7 @@ namespace details
 {
 inline void throw_bad_optional_access()
 {
-    throw std::logic_error(
-            "No value for optional<>.");  // TODO: std::bad_optional_access
+    throw std::logic_error("No value for optional<>.");  // TODO: std::bad_optional_access
 }
 
 template <typename T>
@@ -126,8 +125,7 @@ public:
         return *this;
     }
 
-    template <
-            typename... Args>  // https://en.cppreference.com/w/cpp/utility/Optional/emplace
+    template <typename... Args>  // https://en.cppreference.com/w/cpp/utility/Optional/emplace
     T& emplace(Args&&... args)
     {
         value_ = value_type(std::forward<Args>(args)...);
@@ -216,16 +214,14 @@ public:
     {
         // Equivalent to bool(*this) ? **this :
         // static_cast<T>(std::forward<U>(default_value))
-        return has_value() ? **this
-                           : static_cast<T>(std::forward<U>(default_value));
+        return has_value() ? **this : static_cast<T>(std::forward<U>(default_value));
     }
     template <typename U>
     T value_or(U&& default_value) &&
     {
         // Equivalent to bool(*this) ? std::move(**this) :
         // static_cast<T>(std::forward<U>(default_value))
-        return has_value() ? std::move(**this)
-                           : static_cast<T>(std::forward<U>(default_value));
+        return has_value() ? std::move(**this) : static_cast<T>(std::forward<U>(default_value));
     }
 };
 

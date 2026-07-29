@@ -34,25 +34,17 @@ int main(int argc, char** argv)
         // create a parser and add our options to it
         cli::ArgumentParser parser;
         parser.setDescription("The detected image processor.");
-        parser.addArgument("-s --schema",
-                           "path to schema directory",
-                           cli::STORE)
-                ->setDefault(".");
-        parser.addArgument("-r --recursive",
-                           "recursively search for schemas",
-                           cli::STORE_TRUE)
+        parser.addArgument("-s --schema", "path to schema directory", cli::STORE)->setDefault(".");
+        parser.addArgument("-r --recursive", "recursively search for schemas", cli::STORE_TRUE)
                 ->setDefault(false);
         parser.addArgument("-x --xml", "xml document to validate", cli::STORE);
         // parse!
-        const std::unique_ptr<cli::Results> options(
-                parser.parse(argc, (const char**)argv));
+        const std::unique_ptr<cli::Results> options(parser.parse(argc, (const char**)argv));
         logging::LoggerPtr log(logging::setupLogger("ValidationTest"));
 
         std::vector<std::string> schemaPaths;
         schemaPaths.push_back(options->get<std::string>("schema"));
-        xml::lite::Validator validator(schemaPaths,
-                                       log.get(),
-                                       options->get<bool>("recursive"));
+        xml::lite::Validator validator(schemaPaths, log.get(), options->get<bool>("recursive"));
 
         std::vector<xml::lite::ValidationInfo> errors;
         sys::Path path(options->get<std::string>("xml"));

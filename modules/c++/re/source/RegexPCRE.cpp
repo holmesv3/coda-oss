@@ -54,14 +54,12 @@ CODA_OSS_disable_warning(-Wold - style - cast)
         //       indicates the output vector wasn't large enough like the old
         //       PCRE 5.0 code used to do.
         ScopedMatchData(const pcre2_code* code) :
-            mCode(code),
-            mMatchData(pcre2_match_data_create_from_pattern(code, nullptr))
+            mCode(code), mMatchData(pcre2_match_data_create_from_pattern(code, nullptr))
         {
             if (mMatchData == nullptr)
             {
-                throw re::RegexException(
-                        Ctxt("pcre2_match_data_create_from_pattern() failed to "
-                             "allocate memory"));
+                throw re::RegexException(Ctxt("pcre2_match_data_create_from_pattern() failed to "
+                                              "allocate memory"));
             }
         }
 
@@ -88,14 +86,13 @@ CODA_OSS_disable_warning(-Wold - style - cast)
             // This returns the number of matches
             // But for no matches, it returns PCRE2_ERROR_NOMATCH
             // Other return codes less than 0 indicate an error
-            const int returnCode =
-                    pcre2_match(mCode,
-                                reinterpret_cast<PCRE2_SPTR>(subject.c_str()),
-                                subject.length(),
-                                startOffset,
-                                options,
-                                mMatchData,
-                                nullptr);  // Match context
+            const int returnCode = pcre2_match(mCode,
+                                               reinterpret_cast<PCRE2_SPTR>(subject.c_str()),
+                                               subject.length(),
+                                               startOffset,
+                                               options,
+                                               mMatchData,
+                                               nullptr);  // Match context
 
             if (returnCode == PCRE2_ERROR_NOMATCH)
             {
@@ -134,8 +131,8 @@ CODA_OSS_disable_warning(-Wold - style - cast)
             {
                 // Presumably this never happens
                 std::ostringstream ostr;
-                ostr << "Match: Match substring out of range (" << index << ", "
-                     << end << ") for string of length " << str.length();
+                ostr << "Match: Match substring out of range (" << index << ", " << end
+                     << ") for string of length " << str.length();
                 throw re::RegexException(Ctxt(ostr));
             }
 
@@ -327,10 +324,7 @@ void Regex::split(const std::string& str, std::vector<std::string>& v)
     }
 }
 
-inline static void replace(std::string& result,
-                           size_t pos,
-                           size_t count,
-                           const std::string& str)
+inline static void replace(std::string& result, size_t pos, size_t count, const std::string& str)
 {
 // https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170
 #if _WIN32 && __SANITIZE_ADDRESS__ && (_MSC_VER <= 1933 /*VS 2022 17.3*/)

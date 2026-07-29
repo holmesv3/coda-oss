@@ -28,8 +28,7 @@ bool ThreadPlanner::getThreadInfo(size_t threadNum,
     else
     {
         size_t numElementsRemaining = mNumElements - startElement;
-        numElementsThisThread =
-                std::min(mNumElementsPerThread, numElementsRemaining);
+        numElementsThisThread = std::min(mNumElementsPerThread, numElementsRemaining);
     }
     return (numElementsThisThread != 0);
 }
@@ -42,8 +41,7 @@ size_t ThreadPlanner::getNumThreadsThatWillBeUsed() const
     }
     else
     {
-        const size_t numThreads =
-                math::ceilingDivide(mNumElements, mNumElementsPerThread);
+        const size_t numThreads = math::ceilingDivide(mNumElements, mNumElementsPerThread);
 
         return numThreads;
     }

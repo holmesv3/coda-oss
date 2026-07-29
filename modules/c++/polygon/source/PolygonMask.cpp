@@ -30,8 +30,7 @@
 
 namespace polygon
 {
-PolygonMask::PolygonMask(MarkModesEnum markMode,
-                         const types::RowCol<size_t>& dims) :
+PolygonMask::PolygonMask(MarkModesEnum markMode, const types::RowCol<size_t>& dims) :
     mMarkMode(markMode), mDims(dims)
 {
     if (mMarkMode != MARK_ALL_TRUE && mMarkMode != MARK_ALL_FALSE)
@@ -41,9 +40,7 @@ PolygonMask::PolygonMask(MarkModesEnum markMode,
 }
 
 PolygonMask::PolygonMask(const bool* mask, const types::RowCol<size_t>& dims) :
-    mMarkMode(MARK_USING_POINTS),
-    mRanges(new types::Range[dims.row]),
-    mDims(dims)
+    mMarkMode(MARK_USING_POINTS), mRanges(new types::Range[dims.row]), mDims(dims)
 {
     // TODO: Could thread this but if we really care about performance,
     //       shouldn't be using this constructor anyway
@@ -105,9 +102,7 @@ PolygonMask::PolygonMask(const std::vector<types::RowCol<double>>& points,
         std::vector<types::RowCol<double>> convexHullPoints;
         math::ConvexHull<double> convexHull(rawPoints, convexHullPoints);
 
-        const Intersections<double> intersections(convexHullPoints,
-                                                  mDims,
-                                                  offset);
+        const Intersections<double> intersections(convexHullPoints, mDims, offset);
         mRanges.reset(new types::Range[mDims.row]);
 
         std::vector<Intersections<double>::Intersection> intersectionsVec;
@@ -121,8 +116,8 @@ PolygonMask::PolygonMask(const std::vector<types::RowCol<double>>& points,
             }
             else if (intersectionsVec.size() == 1)
             {
-                mRanges[row] = types::Range(intersectionsVec[0].first,
-                                            intersectionsVec[0].length());
+                mRanges[row] =
+                        types::Range(intersectionsVec[0].first, intersectionsVec[0].length());
             }
             else
             {
@@ -130,8 +125,7 @@ PolygonMask::PolygonMask(const std::vector<types::RowCol<double>>& points,
                 // happen.
                 std::ostringstream ostr;
                 ostr << "Requires a convex polygon but these points produced "
-                     << intersectionsVec.size() << " intersections for row "
-                     << row;
+                     << intersectionsVec.size() << " intersections for row " << row;
                 throw except::Exception(Ctxt(ostr));
             }
         }
@@ -157,8 +151,7 @@ void PolygonMask::checkForAllTrueOrFalseRanges()
             }
         }
 
-        if (allRangesAreFull &&
-            (range.mStartElement != 0 || range.mNumElements != mDims.col))
+        if (allRangesAreFull && (range.mStartElement != 0 || range.mNumElements != mDims.col))
         {
             allRangesAreFull = false;
             if (!allRangesAreEmpty)

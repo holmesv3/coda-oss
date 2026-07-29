@@ -113,10 +113,7 @@ private:
 
     static void verify(CURLcode code, const std::string& prefix);
 
-    static int writeCallback(char* data,
-                             size_t size,
-                             size_t nmemb,
-                             std::string* writerData);
+    static int writeCallback(char* data, size_t size, size_t nmemb, std::string* writerData);
 
     static size_t writeBetterCallback(char* data,
                                       size_t size,

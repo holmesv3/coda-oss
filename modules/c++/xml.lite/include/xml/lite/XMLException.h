@@ -82,9 +82,7 @@ struct XMLParseException final : public XMLException
      *  \param row As reported by the parser
      *  \param column As reported by the parser
      */
-    explicit XMLParseException(const char* message,
-                               int row = 0,
-                               int column = 0) :
+    explicit XMLParseException(const char* message, int row = 0, int column = 0) :
         XMLException(message)
     {
         form(row, column);
@@ -113,10 +111,7 @@ struct XMLParseException final : public XMLException
      *  \param column As reported by the parser
      *  \param errNum An error number given by the parser
      */
-    XMLParseException(const except::Context& c,
-                      int row = 0,
-                      int column = 0,
-                      int errNum = 0) :
+    XMLParseException(const except::Context& c, int row = 0, int column = 0, int errNum = 0) :
         XMLException(c)
     {
         form(row, column, errNum);

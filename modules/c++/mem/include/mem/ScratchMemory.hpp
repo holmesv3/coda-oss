@@ -56,10 +56,7 @@ inline void ScratchMemory::put<sys::ubyte>(const std::string& key,
     }
     mSegments.insert(iterSeg,
                      std::make_pair(key,
-                                    Segment(numElements,
-                                            numBuffers,
-                                            alignment,
-                                            segmentOffset)));
+                                    Segment(numElements, numBuffers, alignment, segmentOffset)));
 
     mKeyOrder.push_back(key);
 }
@@ -67,33 +64,27 @@ inline void ScratchMemory::put<sys::ubyte>(const std::string& key,
 template <typename T>
 T* ScratchMemory::get(const std::string& key, size_t indexBuffer)
 {
-    return reinterpret_cast<T*>(
-            lookupSegment(key, indexBuffer).buffers[indexBuffer]);
+    return reinterpret_cast<T*>(lookupSegment(key, indexBuffer).buffers[indexBuffer]);
 }
 
 template <typename T>
 const T* ScratchMemory::get(const std::string& key, size_t indexBuffer) const
 {
-    return reinterpret_cast<const T*>(
-            lookupSegment(key, indexBuffer).buffers[indexBuffer]);
+    return reinterpret_cast<const T*>(lookupSegment(key, indexBuffer).buffers[indexBuffer]);
 }
 
 template <typename T>
-BufferView<T> ScratchMemory::getBufferView(const std::string& key,
-                                           size_t indexBuffer)
+BufferView<T> ScratchMemory::getBufferView(const std::string& key, size_t indexBuffer)
 {
     const Segment& segment = lookupSegment(key, indexBuffer);
-    return BufferView<T>(reinterpret_cast<T*>(segment.buffers[indexBuffer]),
-                         segment.numBytes);
+    return BufferView<T>(reinterpret_cast<T*>(segment.buffers[indexBuffer]), segment.numBytes);
 }
 
 template <typename T>
-BufferView<const T> ScratchMemory::getBufferView(const std::string& key,
-                                                 size_t indexBuffer) const
+BufferView<const T> ScratchMemory::getBufferView(const std::string& key, size_t indexBuffer) const
 {
     const Segment& segment = lookupSegment(key, indexBuffer);
-    return BufferView<const T>(reinterpret_cast<const T*>(
-                                       segment.buffers[indexBuffer]),
+    return BufferView<const T>(reinterpret_cast<const T*>(segment.buffers[indexBuffer]),
                                segment.numBytes);
 }
 }

@@ -46,8 +46,7 @@ void copyPermissions(const std::string& src, const std::string& dest)
     struct stat statBuf;
     if (stat(src.c_str(), &statBuf) == -1)
     {
-        throw except::Exception(Ctxt(
-                "Copy Failed: Could not obtain the statistics of the input"));
+        throw except::Exception(Ctxt("Copy Failed: Could not obtain the statistics of the input"));
     }
 
     // set the file with the appropriate access --
@@ -55,8 +54,7 @@ void copyPermissions(const std::string& src, const std::string& dest)
     // NOTE: this will be ignored on Windows-based mapped file systems
     if (chmod(dest.c_str(), statBuf.st_mode) == -1)
     {
-        throw except::Exception(Ctxt(
-                "Copy Failed: Could not set the permissions of the output"));
+        throw except::Exception(Ctxt("Copy Failed: Could not set the permissions of the output"));
     }
 
     // set the file ownership --
@@ -65,8 +63,7 @@ void copyPermissions(const std::string& src, const std::string& dest)
     //       and will fail otherwise
     if (chown(dest.c_str(), statBuf.st_uid, statBuf.st_gid) == -1)
     {
-        throw except::Exception(
-                Ctxt("Copy Failed: Could not set the ownership of the output"));
+        throw except::Exception(Ctxt("Copy Failed: Could not set the ownership of the output"));
     }
 #else
     UNREFERENCED_PARAMETER(src);
@@ -74,9 +71,7 @@ void copyPermissions(const std::string& src, const std::string& dest)
 #endif
 }
 
-void io::copy(const std::string& path,
-              const std::string& newPath,
-              size_t blockSize)
+void io::copy(const std::string& path, const std::string& newPath, size_t blockSize)
 {
     //! list will find '.' and '..' in the directory
     const std::string item = sys::Path::splitPath(path).second;
@@ -119,22 +114,19 @@ void io::copy(const std::string& path,
         if (numBytes < 0)
         {
             std::ostringstream oss;
-            oss << "Copy Failed: Could not copy source [" << path
-                << "] to destination [" << newFile << "]";
+            oss << "Copy Failed: Could not copy source [" << path << "] to destination [" << newFile
+                << "]";
             throw except::Exception(Ctxt(oss));
         }
     }
 }
 
-std::string io::FileUtils::createFile(std::string dirname,
-                                      std::string filename,
-                                      bool overwrite)
+std::string io::FileUtils::createFile(std::string dirname, std::string filename, bool overwrite)
 {
     sys::OS os;
 
     if (!os.exists(dirname))
-        throw except::IOException(
-                Ctxt(str::Format("Directory does not exist: %s", dirname)));
+        throw except::IOException(Ctxt(str::Format("Directory does not exist: %s", dirname)));
 
     str::trim(filename);
 
@@ -179,14 +171,12 @@ void io::FileUtils::touchFile(std::string filename)
     sys::OS os;
     if (os.exists(filename))
     {
-        io::FileOutputStream f(filename,
-                               sys::File::EXISTING | sys::File::WRITE_ONLY);
+        io::FileOutputStream f(filename, sys::File::EXISTING | sys::File::WRITE_ONLY);
         f.close();
     }
     else
     {
-        io::FileOutputStream f(filename,
-                               sys::File::CREATE | sys::File::TRUNCATE);
+        io::FileOutputStream f(filename, sys::File::CREATE | sys::File::TRUNCATE);
         f.close();
     }
 }
@@ -197,8 +187,7 @@ void io::FileUtils::forceMkdir(std::string dirname)
     if (os.exists(dirname))
     {
         if (!os.isDirectory(dirname))
-            throw except::IOException(
-                    Ctxt("Cannot create directory - file already exists"));
+            throw except::IOException(Ctxt("Cannot create directory - file already exists"));
     }
     else
     {

@@ -93,8 +93,7 @@ void tiff::IFD::addEntry(const std::string& name)
     // we can't add it b/c we don't know about this tag
     if (!mapEntry)
         throw except::Exception(
-                Ctxt(str::Format("Unable to add IFD Entry: unknown tag [%s]",
-                                 name)));
+                Ctxt(str::Format("Unable to add IFD Entry: unknown tag [%s]", name)));
 
     unsigned short id = mapEntry->getTagID();
 
@@ -126,14 +125,12 @@ void tiff::IFD::serialize(io::OutputStream& output)
 {
     io::Seekable* seekable = dynamic_cast<io::Seekable*>(&output);
     if (seekable == nullptr)
-        throw except::Exception(
-                Ctxt("Can only serialize IFD to seekable stream"));
+        throw except::Exception(Ctxt("Can only serialize IFD to seekable stream"));
 
     // Makes sure all data offsets are defined for each entry.
     // Keep the offset just past the end of the IFD.  This offset
     // is where the next potential image could be written.
-    const auto endOffset =
-            finalize(static_cast<sys::Uint32_T>(seekable->tell()));
+    const auto endOffset = finalize(static_cast<sys::Uint32_T>(seekable->tell()));
 
     // Write out IFD entry count.
     const auto ifdEntryCount = static_cast<uint16_t>(mIFD.size());
@@ -224,9 +221,8 @@ unsigned short tiff::IFD::getNumBands() const
 unsigned short tiff::IFD::getElementSize() const
 {
     auto bitsPerSample = (*this)[tiff::KnownTags::BITS_PER_SAMPLE];
-    const auto bytesPerSample = (!bitsPerSample)
-            ? 1
-            : *(tiff::GenericType<unsigned short>*)(*bitsPerSample)[0] >> 3;
+    const auto bytesPerSample =
+            (!bitsPerSample) ? 1 : *(tiff::GenericType<unsigned short>*)(*bitsPerSample)[0] >> 3;
 
     return static_cast<unsigned short>(bytesPerSample * getNumBands());
 }
@@ -237,9 +233,9 @@ sys::Uint32_T tiff::IFD::finalize(const sys::Uint32_T offset)
     // the size of an IFD entry multiplied by the number of entries, plus
     // 4 bytes to hold the offset to the next IFD, and 2 bytes to hold the
     // IFD entry count.
-    auto dataOffset = static_cast<sys::Uint32_T>(
-            offset + sizeof(short) + (mIFD.size() * tiff::IFDEntry::sizeOf()) +
-            sizeof(sys::Uint32_T));
+    auto dataOffset = static_cast<sys::Uint32_T>(offset + sizeof(short) +
+                                                 (mIFD.size() * tiff::IFDEntry::sizeOf()) +
+                                                 sizeof(sys::Uint32_T));
 
     for (IFDType::iterator i = mIFD.begin(); i != mIFD.end(); ++i)
     {

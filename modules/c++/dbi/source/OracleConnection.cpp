@@ -42,17 +42,11 @@ dbi::OracleConnection::OracleConnection()
 
     (void)OCIEnvInit((OCIEnv**)&mEnvHandle, OCI_DEFAULT, (size_t)0, (dvoid**)0);
 
-    (void)OCIHandleAlloc((dvoid*)mEnvHandle,
-                         (dvoid**)&mErrorHandle,
-                         OCI_HTYPE_ERROR,
-                         (size_t)0,
-                         (dvoid**)0);
+    (void)OCIHandleAlloc(
+            (dvoid*)mEnvHandle, (dvoid**)&mErrorHandle, OCI_HTYPE_ERROR, (size_t)0, (dvoid**)0);
 
-    (void)OCIHandleAlloc((dvoid*)mEnvHandle,
-                         (dvoid**)&mContextHandle,
-                         OCI_HTYPE_SVCCTX,
-                         (size_t)0,
-                         (dvoid**)0);
+    (void)OCIHandleAlloc(
+            (dvoid*)mEnvHandle, (dvoid**)&mContextHandle, OCI_HTYPE_SVCCTX, (size_t)0, (dvoid**)0);
 }
 
 dbi::OracleConnection::~OracleConnection()
@@ -111,11 +105,7 @@ dbi::pResultSet dbi::OracleConnection::query(const std::string& q)
     unsigned rowCount = 0;
     OCIStmt* sqlHandle;
     /* Allocate and prepare SQL statement */
-    OCIHandleAlloc((dvoid*)mEnvHandle,
-                   (dvoid**)&sqlHandle,
-                   OCI_HTYPE_STMT,
-                   (size_t)0,
-                   (dvoid**)0);
+    OCIHandleAlloc((dvoid*)mEnvHandle, (dvoid**)&sqlHandle, OCI_HTYPE_STMT, (size_t)0, (dvoid**)0);
     OCIStmtPrepare(sqlHandle,
                    mErrorHandle,
                    (const OraText*)q.c_str(),
@@ -128,10 +118,7 @@ dbi::pResultSet dbi::OracleConnection::query(const std::string& q)
     ub4 val = 1;
 
     std::string lowerCaseQuery = q;
-    transform(lowerCaseQuery.begin(),
-              lowerCaseQuery.end(),
-              lowerCaseQuery.begin(),
-              tolower);
+    transform(lowerCaseQuery.begin(), lowerCaseQuery.end(), lowerCaseQuery.begin(), tolower);
 
     if (lowerCaseQuery.find("select") == 0)
     {
@@ -141,11 +128,8 @@ dbi::pResultSet dbi::OracleConnection::query(const std::string& q)
         int two = countq.find(" from ");
         countq = countq.replace(one, two - one, "select count(*) ");
         OCIStmt* countHandle;
-        OCIHandleAlloc((dvoid*)mEnvHandle,
-                       (dvoid**)&countHandle,
-                       OCI_HTYPE_STMT,
-                       (size_t)0,
-                       (dvoid**)0);
+        OCIHandleAlloc(
+                (dvoid*)mEnvHandle, (dvoid**)&countHandle, OCI_HTYPE_STMT, (size_t)0, (dvoid**)0);
         OCIStmtPrepare(countHandle,
                        mErrorHandle,
                        (const OraText*)countq.c_str(),
@@ -185,8 +169,7 @@ dbi::pResultSet dbi::OracleConnection::query(const std::string& q)
                    (OCISnapshot*)nullptr,
                    OCI_DEFAULT);
 
-    return dbi::pResultSet(
-            new dbi::OracleResultSet(sqlHandle, mErrorHandle, rowCount));
+    return dbi::pResultSet(new dbi::OracleResultSet(sqlHandle, mErrorHandle, rowCount));
 }
 
 unsigned int dbi::OracleResultSet::getNumRows()
@@ -207,12 +190,8 @@ dbi::Row dbi::OracleResultSet::fetchRow()
 {
     dbi::Row row;
     ub4 count = 0;
-    sword result = OCIAttrGet(mSQLHandle,
-                              OCI_HTYPE_STMT,
-                              &count,
-                              nullptr,
-                              OCI_ATTR_PARAM_COUNT,
-                              mErrorHandle);
+    sword result = OCIAttrGet(
+            mSQLHandle, OCI_HTYPE_STMT, &count, nullptr, OCI_ATTR_PARAM_COUNT, mErrorHandle);
     Column* fields = new Column[count];
     if (result == OCI_SUCCESS)
     {
@@ -227,11 +206,8 @@ dbi::Row dbi::OracleResultSet::fetchRow()
             OCIParam* param_handle = nullptr;
             ub4 name_len = 0;
 
-            result = OCIParamGet(mSQLHandle,
-                                 OCI_HTYPE_STMT,
-                                 mErrorHandle,
-                                 (dvoid**)&param_handle,
-                                 i + 1);
+            result = OCIParamGet(
+                    mSQLHandle, OCI_HTYPE_STMT, mErrorHandle, (dvoid**)&param_handle, i + 1);
             if (result == OCI_SUCCESS)
             {
                 text* temp;
@@ -297,10 +273,8 @@ dbi::Row dbi::OracleResultSet::fetchRow()
                                         OCI_DEFAULT);
             }
         }
-        result = OCIStmtFetch(
-                mSQLHandle, mErrorHandle, 1, OCI_FETCH_NEXT, OCI_DEFAULT);
-        if (result == OCI_SUCCESS || result == OCI_NO_DATA ||
-            result == OCI_SUCCESS_WITH_INFO)
+        result = OCIStmtFetch(mSQLHandle, mErrorHandle, 1, OCI_FETCH_NEXT, OCI_DEFAULT);
+        if (result == OCI_SUCCESS || result == OCI_NO_DATA || result == OCI_SUCCESS_WITH_INFO)
         {
             for (int i = 0; i < (int)count; i++)
             {

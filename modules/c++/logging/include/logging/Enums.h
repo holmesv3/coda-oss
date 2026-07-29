@@ -95,8 +95,7 @@ struct LogLevel final
         else if (s == "SEVERE")
             value = LOG_CRITICAL;
         else
-            throw except::InvalidFormatException(
-                    Ctxt(str::Format("Invalid enum value: %s", s)));
+            throw except::InvalidFormatException(Ctxt(str::Format("Invalid enum value: %s", s)));
     }
 
     //! int constructor
@@ -123,8 +122,7 @@ struct LogLevel final
             value = LOG_CRITICAL;
             break;
         default:
-            throw except::InvalidFormatException(
-                    Ctxt(str::Format("Invalid enum value: %d", i)));
+            throw except::InvalidFormatException(Ctxt(str::Format("Invalid enum value: %d", i)));
         }
     }
 

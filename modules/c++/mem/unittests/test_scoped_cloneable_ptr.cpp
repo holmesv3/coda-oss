@@ -168,8 +168,7 @@ TEST_CASE(testDestructor)
     // 'val'
     int val(0);
     {
-        const mem::ScopedCloneablePtr<AssignOnDestruct> ptr(
-                new AssignOnDestruct(val, 334));
+        const mem::ScopedCloneablePtr<AssignOnDestruct> ptr(new AssignOnDestruct(val, 334));
         TEST_ASSERT_EQ(val, 0);
     }
 
@@ -207,8 +206,7 @@ TEST_CASE(testEqualityOperator)
     TEST_ASSERT_FALSE(ptr1 != ptr2);
 }
 
-TEST_MAIN(TEST_CHECK(testCopyConstructor);
-          TEST_CHECK(testSharedCopyConstructor);
+TEST_MAIN(TEST_CHECK(testCopyConstructor); TEST_CHECK(testSharedCopyConstructor);
           TEST_CHECK(testAssignmentOperator);
           TEST_CHECK(testSharedAssignmentOperator);
           TEST_CHECK(testDestructor);

@@ -65,8 +65,7 @@ int main(int argc, char** argv)
         sys::byte recvThis[128];
         memset(recvThis, 0, 128);
         toUrl->read(recvThis, 128);
-        cout << "Received response: \"" << recvThis << "\" Back from server"
-             << endl;
+        cout << "Received response: \"" << recvThis << "\" Back from server" << endl;
 
         clientBuilder.destroy(toUrl);
     }

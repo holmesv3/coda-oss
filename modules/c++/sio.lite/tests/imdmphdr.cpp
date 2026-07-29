@@ -45,9 +45,7 @@ std::string printPrintable(std::vector<sys::byte>& bytes)
 void printUserData(FileHeader* h)
 {
     sio::lite::UserDataDictionary& userData = h->getUserDataSection();
-    for (sio::lite::UserDataDictionary::Iterator it = userData.begin();
-         it != userData.end();
-         ++it)
+    for (sio::lite::UserDataDictionary::Iterator it = userData.begin(); it != userData.end(); ++it)
     {
         std::cout << ". " << it->first << ": ";
         std::cout << "[" << printPrintable(it->second) << "]" << std::endl;

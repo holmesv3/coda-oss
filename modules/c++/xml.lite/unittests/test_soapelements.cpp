@@ -50,8 +50,7 @@ struct SOAP final : public xml::lite::Document
     {
         const xml::lite::QName asQName(uri, qname);
         xml::lite::Element* elem = new SOAPBody(asQName);
-        elem->setCharacterData(
-                characterData);  // avoid unused parameter warning
+        elem->setCharacterData(characterData);  // avoid unused parameter warning
         elem->setCharacterData(test_text());
         return elem;
     }
@@ -60,8 +59,7 @@ struct SOAP final : public xml::lite::Document
 TEST_CASE(test_overrideCreateElement)
 {
     SOAP soap_test;
-    std::unique_ptr<xml::lite::Element> a(
-            soap_test.createElement("a", "b", "Not SOAP Test"));
+    std::unique_ptr<xml::lite::Element> a(soap_test.createElement("a", "b", "Not SOAP Test"));
     auto b = dynamic_cast<const SOAPBody*>(a.get());
     TEST_ASSERT_NOT_NULL(b);
     TEST_ASSERT_EQ(a->getCharacterData(), test_text());

@@ -38,8 +38,7 @@ int main(int argc, char** argv)
         FILE* file = fopen(fname.c_str(), "r+b");
         handle = fileno(file);
 
-        char* memLoc =
-                (char*)os.mapFile(handle, size, PROT_READ, MAP_SHARED, 0);
+        char* memLoc = (char*)os.mapFile(handle, size, PROT_READ, MAP_SHARED, 0);
 
         for (int i = 0; i < size; i++)
             std::cout << memLoc[i];

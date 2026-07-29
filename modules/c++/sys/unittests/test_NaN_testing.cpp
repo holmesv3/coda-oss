@@ -92,7 +92,6 @@ TEST_CASE(test_ssize)
     TEST_ASSERT_EQ(i, -1);
 }
 
-TEST_MAIN(TEST_CHECK(testNaNsAreNotEqual);
-          TEST_CHECK(testNaNIsNotAlmostEqualToNumber);
+TEST_MAIN(TEST_CHECK(testNaNsAreNotEqual); TEST_CHECK(testNaNIsNotAlmostEqualToNumber);
           TEST_CHECK(testIsNaN);
           TEST_CHECK(test_ssize);)

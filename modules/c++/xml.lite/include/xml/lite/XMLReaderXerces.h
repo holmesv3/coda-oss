@@ -100,9 +100,7 @@ public:
 
     void parse(io::InputStream& is, int size = io::InputStream::IS_END);
 
-    void parse(bool storeEncoding,
-               io::InputStream& is,
-               int size = io::InputStream::IS_END);
+    void parse(bool storeEncoding, io::InputStream& is, int size = io::InputStream::IS_END);
     void parse(io::InputStream& is,
                const void* pInitialEncoding,
                const void* pFallbackEncoding,

@@ -30,9 +30,8 @@ int main(int argc, char* argv[])
     try
     {
         if (argc < 4)
-            throw except::Exception(Ctxt(str::Format(
-                    "Usage %s <database> <user> <password> [host] [port]",
-                    argv[0])));
+            throw except::Exception(Ctxt(
+                    str::Format("Usage %s <database> <user> <password> [host] [port]", argv[0])));
 
         std::string database(argv[1]);
         std::string user(argv[2]);
@@ -54,8 +53,7 @@ int main(int argc, char* argv[])
         dbi::Row myRow;
 
         dbi::DatabaseClientFactory f;
-        dbi::DatabaseConnection* myConn =
-                f.create(database, user, password, host, port);
+        dbi::DatabaseConnection* myConn = f.create(database, user, password, host, port);
 
         // myConn->query("DROP TABLE MyTable");
         std::cout << "HELLO" << std::endl;
@@ -74,18 +72,15 @@ int main(int argc, char* argv[])
             std::cout << "Row " << i << std::endl;
             for (int j = 0; j < myRow.getNumFields(); j++)
             {
-                std::cout << "\tField " << j << " name is '"
-                          << myRow.getFieldName(j) << "'" << std::endl;
+                std::cout << "\tField " << j << " name is '" << myRow.getFieldName(j) << "'"
+                          << std::endl;
                 std::cout << "\tField " << j << " size is '"
-                          << myRow.getFieldSize(myRow.getFieldName(j)) << "'"
-                          << std::endl;
+                          << myRow.getFieldSize(myRow.getFieldName(j)) << "'" << std::endl;
                 std::cout << "\tField " << j << " type is '"
-                          << myRow.getFieldType(myRow.getFieldName(j)) << "'"
-                          << std::endl;
+                          << myRow.getFieldType(myRow.getFieldName(j)) << "'" << std::endl;
                 std::string name = myRow.getFieldName(j);
                 std::string disp = myRow[name].getData<std::string>();
-                std::cout << "\tField " << j << " data is '" << disp << "'"
-                          << std::endl;
+                std::cout << "\tField " << j << " data is '" << disp << "'" << std::endl;
             }
         }
 

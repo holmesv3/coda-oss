@@ -75,13 +75,11 @@ struct CODA_OSS_API OutputStream
      */
     void write(const std::string& str)
     {
-        write(coda_oss::span<const std::string::value_type>(str.data(),
-                                                            str.size()));
+        write(coda_oss::span<const std::string::value_type>(str.data(), str.size()));
     }
     void write(const coda_oss::u8string& str)
     {
-        write(coda_oss::span<const coda_oss::u8string::value_type>(str.data(),
-                                                                   str.size()));
+        write(coda_oss::span<const coda_oss::u8string::value_type>(str.data(), str.size()));
     }
 
     /*!

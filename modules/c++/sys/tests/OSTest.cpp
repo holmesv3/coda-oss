@@ -35,22 +35,18 @@ int main(int argc, char** argv)
     {
         sys::OS os;
 
-        std::string fileToFind = os.getCurrentWorkingDirectory() +
-                os.getDelimiter() + "blah.txt";
+        std::string fileToFind = os.getCurrentWorkingDirectory() + os.getDelimiter() + "blah.txt";
 
         // Some System info
         std::cout << "Some System Info" << std::endl;
-        std::cout << "=============================================="
-                  << std::endl;
+        std::cout << "==============================================" << std::endl;
         std::cout << "Host: " << os.getNodeName() << std::endl;
         std::cout << "User path: " << os["PATH"] << std::endl;
         std::cout << "Platform: " << os.getPlatformName() << std::endl;
         std::cout << "Num CPUs: " << os.getNumCPUs() << std::endl;
-        std::cout << "The delimiter on this platform: " << os.getDelimiter()
-                  << std::endl;
+        std::cout << "The delimiter on this platform: " << os.getDelimiter() << std::endl;
         std::cout << "The process id: " << os.getProcessId() << std::endl;
-        std::cout << "The current executable is: " << os.getCurrentExecutable()
-                  << std::endl;
+        std::cout << "The current executable is: " << os.getCurrentExecutable() << std::endl;
 
         size_t freeMemory = 0;
         size_t physMemory = 0;
@@ -70,8 +66,7 @@ int main(int argc, char** argv)
         if (os.exists(fileToFind))
         {
             std::cout << "Found file: " << fileToFind << std::endl;
-            std::cout << "File is of size: " << os.getSize(fileToFind)
-                      << std::endl;
+            std::cout << "File is of size: " << os.getSize(fileToFind) << std::endl;
         }
         else
         {
@@ -82,8 +77,7 @@ int main(int argc, char** argv)
         std::string cwd = os.getCurrentWorkingDirectory();
         if (os.isFile(cwd))
         {
-            std::cerr << "Shouldnt be here: " << cwd << " is not a file!!"
-                      << std::endl;
+            std::cerr << "Shouldnt be here: " << cwd << " is not a file!!" << std::endl;
         }
         else if (os.isDirectory(cwd))
         {
@@ -94,12 +88,12 @@ int main(int argc, char** argv)
         std::string tempFileName = os.getTempName();
         std::ofstream ofs(tempFileName.c_str());
         if (!ofs.is_open())
-            throw except::Exception(str::Format("Could not open file named: %s",
-                                                tempFileName.c_str()));
+            throw except::Exception(
+                    str::Format("Could not open file named: %s", tempFileName.c_str()));
         ofs << "Im writing some crap to this file!" << std::endl;
         ofs.close();
-        std::cout << "Created file: " << tempFileName
-                  << " with size: " << os.getSize(tempFileName) << std::endl;
+        std::cout << "Created file: " << tempFileName << " with size: " << os.getSize(tempFileName)
+                  << std::endl;
         os.remove(tempFileName);
         std::cout << "Killed file: " << tempFileName << std::endl;
 
@@ -139,8 +133,7 @@ int main(int argc, char** argv)
             x = 1 * 2 * 3;
         }
         std::cout << "Finish Loop 3" << std::endl;
-        std::cout << "Stop: " << std::setprecision(50) << sw.stop()
-                  << std::endl;
+        std::cout << "Stop: " << std::setprecision(50) << sw.stop() << std::endl;
         std::cout << "Time Now: " << time(nullptr) << std::endl;
         //	std::cout << "Clock: " << clock() << std::endl;
     }

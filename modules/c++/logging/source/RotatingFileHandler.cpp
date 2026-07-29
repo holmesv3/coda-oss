@@ -28,11 +28,10 @@
 
 using namespace logging;
 
-RotatingFileHandler::RotatingFileHandler(
-        const coda_oss::filesystem::path& fname_,
-        long maxBytes,
-        int backupCount,
-        LogLevel level) :
+RotatingFileHandler::RotatingFileHandler(const coda_oss::filesystem::path& fname_,
+                                         long maxBytes,
+                                         int backupCount,
+                                         LogLevel level) :
     StreamHandler(level)
 {
     const auto fname = fname_.string();
@@ -74,8 +73,7 @@ RotatingFileHandler::RotatingFileHandler(
 
     // create log file
     creationFlags = sys::File::CREATE | sys::File::TRUNCATE;
-    mStream.reset(new io::RotatingFileOutputStream(
-            fname, maxBytes, backupCount, creationFlags));
+    mStream.reset(new io::RotatingFileOutputStream(fname, maxBytes, backupCount, creationFlags));
 }
 
 RotatingFileHandler::~RotatingFileHandler()

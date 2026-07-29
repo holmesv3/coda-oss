@@ -31,8 +31,7 @@ class ConnectionThread : public mt::WorkerThread<NetConnection*>
 
 public:
     //! Each thread gets 1 unique request handler
-    ConnectionThread(mt::RequestQueue<NetConnection*>* connQueue,
-                     net::RequestHandler* handler) :
+    ConnectionThread(mt::RequestQueue<NetConnection*>* connQueue, net::RequestHandler* handler) :
         mt::WorkerThread<NetConnection*>(connQueue), mHandler(handler)
     {
     }
@@ -74,10 +73,8 @@ class ConnectionThreadPool : public mt::AbstractThreadPool<net::NetConnection*>
     RequestHandlerFactory* mFactory;
 
 public:
-    ConnectionThreadPool(unsigned short numThreads,
-                         net::RequestHandlerFactory* factory) :
-        mt::AbstractThreadPool<net::NetConnection*>(numThreads),
-        mFactory(factory)
+    ConnectionThreadPool(unsigned short numThreads, net::RequestHandlerFactory* factory) :
+        mt::AbstractThreadPool<net::NetConnection*>(numThreads), mFactory(factory)
     {
     }
     ~ConnectionThreadPool()
@@ -130,8 +127,7 @@ class ThreadPoolAllocStrategy : public AllocStrategy
     unsigned short mNumThreads;
 
 public:
-    ThreadPoolAllocStrategy(unsigned short numThreads) :
-        mPool(nullptr), mNumThreads(numThreads)
+    ThreadPoolAllocStrategy(unsigned short numThreads) : mPool(nullptr), mNumThreads(numThreads)
     {
     }
 

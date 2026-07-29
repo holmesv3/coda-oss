@@ -23,11 +23,9 @@
 #include "config/compiler_extensions.h"
 
 #ifndef _MSC_VER
-CODA_OSS_disable_warning(-Wold - style - cast)
-        CODA_OSS_disable_warning(-Wshadow)
-                CODA_OSS_disable_warning(-Wsuggest - override)
-                        CODA_OSS_disable_warning(-Wzero - as - null - pointer -
-                                                 constant)
+CODA_OSS_disable_warning(-Wold - style - cast) CODA_OSS_disable_warning(-Wshadow)
+        CODA_OSS_disable_warning(-Wsuggest - override)
+                CODA_OSS_disable_warning(-Wzero - as - null - pointer - constant)
 #endif
 #include <except/Exception.h>
 #include <numpyutils/numpyutils.h>
@@ -95,8 +93,7 @@ void verifyArray(PyObject* pyObject)
 {
     if (!PyArray_Check(pyObject))
     {
-        throw except::Exception(
-                Ctxt("Invalid data type (expected numpy array)"));
+        throw except::Exception(Ctxt("Invalid data type (expected numpy array)"));
     }
 }
 
@@ -120,8 +117,7 @@ const npy_intp* getDimensions(PyObject* pyArrayObject)
     int ndims = PyArray_NDIM(reinterpret_cast<PyArrayObject*>(pyArrayObject));
     if (ndims != 2)
     {
-        throw except::Exception(
-                Ctxt("Numpy array has dimensions different than 2"));
+        throw except::Exception(Ctxt("Numpy array has dimensions different than 2"));
     }
     return PyArray_DIMS(reinterpret_cast<PyArrayObject*>(pyArrayObject));
 }
@@ -136,19 +132,15 @@ void verifyObjectsAreOfSameDimensions(PyObject* lhs, PyObject* rhs)
 {
     if (getDimensionsRC(lhs) != getDimensionsRC(rhs))
     {
-        throw except::Exception(
-                Ctxt("Numpy arrays are of differing dimensions"));
+        throw except::Exception(Ctxt("Numpy arrays are of differing dimensions"));
     }
 }
 
-void createOrVerify(PyObject*& pyObject,
-                    int typeNum,
-                    const types::RowCol<size_t>& dims)
+void createOrVerify(PyObject*& pyObject, int typeNum, const types::RowCol<size_t>& dims)
 {
     if (pyObject == Py_None)  // none passed in-- so create new
     {
-        npy_intp odims[2] = {static_cast<npy_intp>(dims.row),
-                             static_cast<npy_intp>(dims.col)};
+        npy_intp odims[2] = {static_cast<npy_intp>(dims.row), static_cast<npy_intp>(dims.col)};
         pyObject = PyArray_SimpleNew(2, odims, typeNum);
         verifyNewPyObject(pyObject);
     }
@@ -159,16 +151,12 @@ void createOrVerify(PyObject*& pyObject,
         if (outdims[0] != static_cast<npy_intp>(dims.row) ||
             outdims[1] != static_cast<npy_intp>(dims.col))
         {
-            throw except::Exception(
-                    Ctxt("Desired array does not match required row, cols"));
+            throw except::Exception(Ctxt("Desired array does not match required row, cols"));
         }
     }
 }
 
-PyObject* toNumpyArray(size_t numRows,
-                       size_t numColumns,
-                       int typenum,
-                       const void* data)
+PyObject* toNumpyArray(size_t numRows, size_t numColumns, int typenum, const void* data)
 {
     const int nDims = (numRows == 1 ? 1 : 2);
     npy_intp dimensions[2];
@@ -189,20 +177,14 @@ PyObject* toNumpyArray(size_t numRows,
     // Since the function shouldn't be modifying the data itself, we're casting
     // away the const in order to get the intermediate array object.  We then
     // immediately copy and return, so nothing is actually getting modified
-    PyObject* wrappedArray = PyArray_SimpleNewFromData(nDims,
-                                                       dimensions,
-                                                       typenum,
-                                                       const_cast<void*>(data));
-    PyObject* copy =
-            PyArray_NewCopy(reinterpret_cast<PyArrayObject*>(wrappedArray),
-                            NPY_CORDER);
+    PyObject* wrappedArray =
+            PyArray_SimpleNewFromData(nDims, dimensions, typenum, const_cast<void*>(data));
+    PyObject* copy = PyArray_NewCopy(reinterpret_cast<PyArrayObject*>(wrappedArray), NPY_CORDER);
     verifyNewPyObject(copy);
     return copy;
 }
 
-PyObject* toNumpyArray(size_t numColumns,
-                       int typenum,
-                       const std::vector<void*>& data)
+PyObject* toNumpyArray(size_t numColumns, int typenum, const std::vector<void*>& data)
 {
     const size_t numRows = data.size();
     PyObject* list = PyList_New(numRows);
@@ -210,8 +192,7 @@ PyObject* toNumpyArray(size_t numColumns,
     for (size_t ii = 0; ii < numRows; ++ii)
     {
         npy_intp dimensions[] = {static_cast<npy_intp>(numColumns)};
-        PyObject* row =
-                PyArray_SimpleNewFromData(1, dimensions, typenum, data[ii]);
+        PyObject* row = PyArray_SimpleNewFromData(1, dimensions, typenum, data[ii]);
         verifyNewPyObject(row);
         PyList_SET_ITEM(list, ii, row);
     }
@@ -241,11 +222,8 @@ void prepareInputAndOutputArray(PyObject* pyInObject,
                                 int inputTypeNum,
                                 int outputTypeNum)
 {
-    prepareInputAndOutputArray(pyInObject,
-                               pyOutObject,
-                               inputTypeNum,
-                               outputTypeNum,
-                               getDimensionsRC(pyInObject));
+    prepareInputAndOutputArray(
+            pyInObject, pyOutObject, inputTypeNum, outputTypeNum, getDimensionsRC(pyInObject));
 }
 
 char* getDataBuffer(PyArrayObject* pyInObject)

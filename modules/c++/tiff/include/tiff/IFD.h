@@ -155,21 +155,18 @@ public:
     template <typename T>
     void addEntry(const std::string& name, const T& value)
     {
-        const tiff::IFDEntry* mapEntry =
-                tiff::KnownTagsRegistry::getInstance()[name];
+        const tiff::IFDEntry* mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
         // we can't add it if we don't know about it
         if (!mapEntry)
-            throw except::Exception(Ctxt(
-                    str::Format("Unable to add IFD Entry: unknown tag [%s]",
-                                name)));
+            throw except::Exception(
+                    Ctxt(str::Format("Unable to add IFD Entry: unknown tag [%s]", name)));
 
         const auto id = mapEntry->getTagID();
         const auto type = mapEntry->getType();
 
         mIFD[id] = new tiff::IFDEntry;
         *(mIFD[id]) = *mapEntry;
-        mIFD[id]->addValue(
-                tiff::TypeFactory::create((unsigned char*)&value, type));
+        mIFD[id]->addValue(tiff::TypeFactory::create((unsigned char*)&value, type));
     }
 
     /**
@@ -187,11 +184,9 @@ public:
     {
         tiff::IFDEntry* entry = (*this)[name.c_str()];
         if (!entry)
-            throw except::Exception(
-                    Ctxt("IFD entry must exist before adding values"));
+            throw except::Exception(Ctxt("IFD entry must exist before adding values"));
 
-        entry->addValue(tiff::TypeFactory::create((unsigned char*)&value,
-                                                  entry->getType()));
+        entry->addValue(tiff::TypeFactory::create((unsigned char*)&value, entry->getType()));
     }
 
     /**

@@ -68,8 +68,7 @@ public:
      *  \param creationFlags  see sys::File
      */
     FileOutputStreamOS(const path& outputFile,
-                       int creationFlags = sys::File::CREATE |
-                               sys::File::TRUNCATE);
+                       int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
 
     //! Destructor, closes the file stream.
     virtual ~FileOutputStreamOS()
@@ -95,8 +94,7 @@ public:
      *  \param creationFlags see sys::File
      */
     virtual void create(const path& str,
-                        int creationFlags = sys::File::CREATE |
-                                sys::File::TRUNCATE);
+                        int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
 
     //!  Close the file
     void close() override

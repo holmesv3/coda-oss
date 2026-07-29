@@ -129,8 +129,7 @@ std::complex<float> getMeanWComplex(sys::RealTimeStopWatch& wtch,
     duration = wtch.stop();
 
     // return the mean
-    return std::complex<float>(static_cast<float>(tmp.real()),
-                               static_cast<float>(tmp.imag()));
+    return std::complex<float>(static_cast<float>(tmp.real()), static_cast<float>(tmp.imag()));
 }
 
 /*
@@ -179,8 +178,7 @@ std::complex<float> getMeanWDouble(sys::RealTimeStopWatch& wtch,
     duration = wtch.stop();
 
     // return the mean
-    return std::complex<float>(static_cast<float>(meanI),
-                               static_cast<float>(meanQ));
+    return std::complex<float>(static_cast<float>(meanI), static_cast<float>(meanQ));
 }
 
 // Prints out the results in a table format
@@ -191,9 +189,8 @@ void print(std::ostream& out,
            double durOne,
            double durTwo)
 {
-    out << std::setw(15) << sze << std::setw(25) << meanOne << std::setw(25)
-        << meanTwo << std::setw(15) << durOne / 1000 << std::setw(25)
-        << durTwo / 1000 << '\n';
+    out << std::setw(15) << sze << std::setw(25) << meanOne << std::setw(25) << meanTwo
+        << std::setw(15) << durOne / 1000 << std::setw(25) << durTwo / 1000 << '\n';
 }
 
 /*
@@ -209,10 +206,7 @@ void print(std::ostream& out,
  *  \output
  *      out: an ostringstream that stores the output from the simulations
  */
-void loopingBenchmark(size_t size,
-                      size_t growthFactor,
-                      size_t numGrowths,
-                      std::ostringstream& out)
+void loopingBenchmark(size_t size, size_t growthFactor, size_t numGrowths, std::ostringstream& out)
 {
     // declare the vector
     std::vector<std::complex<float>> arr(size);
@@ -251,8 +245,7 @@ void loopingBenchmark(size_t size,
             std::complex<float> cmplxMean =
                     getMeanWComplex(cmplxWatch, arr, size, cmplxTime, numLoops);
             // find the mean using doubles
-            std::complex<float> dblMean =
-                    getMeanWDouble(dblWatch, arr, size, dblTime, numLoops);
+            std::complex<float> dblMean = getMeanWDouble(dblWatch, arr, size, dblTime, numLoops);
             // output the results
             print(out, size * numLoops, cmplxMean, dblMean, cmplxTime, dblTime);
         }
@@ -262,8 +255,7 @@ void loopingBenchmark(size_t size,
         // return if growth simulated would be too large to handle
         if (sizeof(std::complex<float>) * size * numLoops > 10E10)
         {
-            std::cout << "ending early to prevent growth spiraling"
-                      << std::endl;
+            std::cout << "ending early to prevent growth spiraling" << std::endl;
             return;
         }
     }
@@ -273,12 +265,10 @@ void loopingBenchmark(size_t size,
 size_t decideSize(size_t initSize, size_t growthFactor, size_t numGrowths)
 {
     // setup size calculation variables
-    const auto MAX_SIZE =
-            static_cast<size_t>(10E10 / (sizeof(std::complex<float>)));
-    auto largestPosGrowth =
-            static_cast<size_t>(initSize *
-                                std::pow(static_cast<double>(growthFactor),
-                                         static_cast<double>(numGrowths)));
+    const auto MAX_SIZE = static_cast<size_t>(10E10 / (sizeof(std::complex<float>)));
+    auto largestPosGrowth = static_cast<size_t>(
+            initSize *
+            std::pow(static_cast<double>(growthFactor), static_cast<double>(numGrowths)));
     size_t largestPosSize = std::min(largestPosGrowth, MAX_SIZE);
 
     // if growth is too high, find last growth less than MaxSize
@@ -348,11 +338,9 @@ void singlePassBenchmark(size_t size,
         for (size_t k = 0; k < NUM_TRIALS; ++k)
         {
             // find the mena using complex values
-            std::complex<float> cmplxMean =
-                    getMeanWComplex(cmplxWatch, arr, size, cmplxTime);
+            std::complex<float> cmplxMean = getMeanWComplex(cmplxWatch, arr, size, cmplxTime);
             // find the mean using doubles
-            std::complex<float> dblMean =
-                    getMeanWDouble(dblWatch, arr, size, dblTime);
+            std::complex<float> dblMean = getMeanWDouble(dblWatch, arr, size, dblTime);
             // output the results
             print(out, size, cmplxMean, dblMean, cmplxTime, dblTime);
         }
@@ -363,8 +351,7 @@ void singlePassBenchmark(size_t size,
         // return if growth gets too large
         if (sizeof(std::complex<float>) * size > 10E10)
         {
-            std::cout << "ending early to prevent growth spiraling"
-                      << std::endl;
+            std::cout << "ending early to prevent growth spiraling" << std::endl;
             return;
         }
     }
@@ -379,8 +366,7 @@ int main(int argc, char** argv)
                   << " <numberOfIterations> [Loop?]" << std::endl
                   << "a 1 in the Loop? spot means use looping benchmark"
                   << ".  The looping benchmark changes the behavior and"
-                  << " can change the results, but allows for less memory usage"
-                  << std::endl;
+                  << " can change the results, but allows for less memory usage" << std::endl;
         return 1;
     }
 

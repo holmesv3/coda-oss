@@ -94,42 +94,31 @@ struct CODA_OSS_API path final  // N.B. this is an INCOMPLETE and NON-STANDARD
         return *this;
     }
 
-    path& operator/=(
-            const path&);  // http://en.cppreference.com/w/cpp/filesystem/path/append
+    path& operator/=(const path&);  // http://en.cppreference.com/w/cpp/filesystem/path/append
     template <typename TSource>
     path& operator/=(
-            const TSource&
-                    source)  // http://en.cppreference.com/w/cpp/filesystem/path/append
+            const TSource& source)  // http://en.cppreference.com/w/cpp/filesystem/path/append
     {
         return (*this) /= path(to_native(source));
     }
-    void
-    clear() noexcept;  // http://en.cppreference.com/w/cpp/filesystem/path/clear
+    void clear() noexcept;  // http://en.cppreference.com/w/cpp/filesystem/path/clear
 
     // http://en.cppreference.com/w/cpp/filesystem/path/native
     const value_type* c_str() const noexcept;
     const string_type& native() const noexcept;
     operator string_type() const;
 
-    std::string string()
-            const;  // http://en.cppreference.com/w/cpp/filesystem/path/string
+    std::string string() const;  // http://en.cppreference.com/w/cpp/filesystem/path/string
 
-    path root_path()
-            const;  // https://en.cppreference.com/w/cpp/filesystem/path/root_path
-    path parent_path()
-            const;  // http://en.cppreference.com/w/cpp/filesystem/path/parent_path
-    path filename()
-            const;  // http://en.cppreference.com/w/cpp/filesystem/path/filename
+    path root_path() const;  // https://en.cppreference.com/w/cpp/filesystem/path/root_path
+    path parent_path() const;  // http://en.cppreference.com/w/cpp/filesystem/path/parent_path
+    path filename() const;  // http://en.cppreference.com/w/cpp/filesystem/path/filename
     path stem() const;  // http://en.cppreference.com/w/cpp/filesystem/path/stem
-    path extension()
-            const;  // https://en.cppreference.com/w/cpp/filesystem/path/extension
+    path extension() const;  // https://en.cppreference.com/w/cpp/filesystem/path/extension
 
-    bool empty() const
-            noexcept;  // http://en.cppreference.com/w/cpp/filesystem/path/empty
-    bool is_absolute()
-            const;  // http://en.cppreference.com/w/cpp/filesystem/path/is_absrel
-    bool is_relative()
-            const;  // http://en.cppreference.com/w/cpp/filesystem/path/is_absrel
+    bool empty() const noexcept;  // http://en.cppreference.com/w/cpp/filesystem/path/empty
+    bool is_absolute() const;  // http://en.cppreference.com/w/cpp/filesystem/path/is_absrel
+    bool is_relative() const;  // http://en.cppreference.com/w/cpp/filesystem/path/is_absrel
 
     CODA_OSS_API friend bool operator==(
             const path& lhs,
@@ -147,8 +136,7 @@ struct CODA_OSS_API path final  // N.B. this is an INCOMPLETE and NON-STANDARD
     }
     CODA_OSS_API friend std::ostream& operator<<(
             std::ostream& os,
-            const path&
-                    p)  // https://en.cppreference.com/w/cpp/filesystem/path/operator_ltltgtgt
+            const path& p)  // https://en.cppreference.com/w/cpp/filesystem/path/operator_ltltgtgt
     {
         return details::Ostream(os, p);
     }
@@ -158,33 +146,25 @@ private:
     static string_type to_native(const std::string& s);
 };
 
-CODA_OSS_API path operator/(
-        const path& lhs,
-        const path&
-                rhs);  // http://en.cppreference.com/w/cpp/filesystem/path/operator_slash
-
 CODA_OSS_API path
-absolute(const path&);  // http://en.cppreference.com/w/cpp/filesystem/absolute
+operator/(const path& lhs,
+          const path& rhs);  // http://en.cppreference.com/w/cpp/filesystem/path/operator_slash
+
+CODA_OSS_API path absolute(const path&);  // http://en.cppreference.com/w/cpp/filesystem/absolute
 CODA_OSS_API bool create_directory(
         const path&);  // https://en.cppreference.com/w/cpp/filesystem/create_directory
-CODA_OSS_API path
-current_path();  // https://en.cppreference.com/w/cpp/filesystem/current_path
-CODA_OSS_API bool remove(
-        const path& p);  // https://en.cppreference.com/w/cpp/filesystem/remove
+CODA_OSS_API path current_path();  // https://en.cppreference.com/w/cpp/filesystem/current_path
+CODA_OSS_API bool remove(const path& p);  // https://en.cppreference.com/w/cpp/filesystem/remove
 CODA_OSS_API path
 temp_directory_path();  // https://en.cppreference.com/w/cpp/filesystem/temp_directory_path
 
 CODA_OSS_API bool is_regular_file(
-        const path&
-                p);  // https://en.cppreference.com/w/cpp/filesystem/is_regular_file
+        const path& p);  // https://en.cppreference.com/w/cpp/filesystem/is_regular_file
 CODA_OSS_API bool is_directory(
-        const path&
-                p);  // https://en.cppreference.com/w/cpp/filesystem/is_directory
-CODA_OSS_API bool exists(
-        const path& p);  // https://en.cppreference.com/w/cpp/filesystem/exists
+        const path& p);  // https://en.cppreference.com/w/cpp/filesystem/is_directory
+CODA_OSS_API bool exists(const path& p);  // https://en.cppreference.com/w/cpp/filesystem/exists
 CODA_OSS_API std::uintmax_t file_size(
-        const path&
-                p);  // https://en.cppreference.com/w/cpp/filesystem/file_size
+        const path& p);  // https://en.cppreference.com/w/cpp/filesystem/file_size
 
 }
 }

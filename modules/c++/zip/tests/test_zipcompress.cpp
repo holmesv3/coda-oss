@@ -30,8 +30,7 @@ namespace
 {
 void usage(const std::string& progname)
 {
-    std::cerr << "Usage: " << progname
-              << " -i <file #1> <zipPath #1> <file#2> <zipPath #2> ..."
+    std::cerr << "Usage: " << progname << " -i <file #1> <zipPath #1> <file#2> <zipPath #2> ..."
               << " [-o Output pathname]";
 }
 }
@@ -53,8 +52,7 @@ int main(int argc, char** argv)
                 while (index < argc - 1)
                 {
                     if ((::strlen(argv[index]) > 0 && argv[index][0] == '-') ||
-                        (::strlen(argv[index + 1]) > 0 &&
-                         argv[index + 1][0] == '-'))
+                        (::strlen(argv[index + 1]) > 0 && argv[index + 1][0] == '-'))
                     {
                         break;
                     }
@@ -83,8 +81,7 @@ int main(int argc, char** argv)
     }
     catch (const except::Exception& ex)
     {
-        std::cerr << "Caught except::exception: " << ex.getMessage()
-                  << std::endl;
+        std::cerr << "Caught except::exception: " << ex.getMessage() << std::endl;
         return 1;
     }
     catch (const std::exception& ex)

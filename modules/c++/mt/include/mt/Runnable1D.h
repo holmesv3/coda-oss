@@ -18,9 +18,7 @@ class Runnable1D : public sys::Runnable
 {
 public:
     Runnable1D(size_t startElement, size_t numElements, const OpT& op) :
-        mStartElement(startElement),
-        mEndElement(startElement + numElements),
-        mOp(op)
+        mStartElement(startElement), mEndElement(startElement + numElements), mOp(op)
     {
     }
 
@@ -53,13 +51,9 @@ void run1D(size_t numElements, size_t numThreads, const OpT& op)
         size_t threadNum(0);
         size_t startElement(0);
         size_t numElementsThisThread(0);
-        while (planner.getThreadInfo(threadNum++,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum++, startElement, numElementsThisThread))
         {
-            threads.createThread(new Runnable1D<OpT>(startElement,
-                                                     numElementsThisThread,
-                                                     op));
+            threads.createThread(new Runnable1D<OpT>(startElement, numElementsThisThread, op));
         }
         threads.joinAll();
     }
@@ -75,8 +69,7 @@ void run1D(size_t numElements, size_t numThreads, const std::vector<OpT>& ops)
     if (ops.size() != numThreads)
     {
         std::ostringstream ostr;
-        ostr << "Got " << numThreads << " threads but " << ops.size()
-             << " functors";
+        ostr << "Got " << numThreads << " threads but " << ops.size() << " functors";
         throw except::Exception(Ctxt(ostr));
     }
 
@@ -92,13 +85,10 @@ void run1D(size_t numElements, size_t numThreads, const std::vector<OpT>& ops)
         size_t threadNum(0);
         size_t startElement(0);
         size_t numElementsThisThread(0);
-        while (planner.getThreadInfo(threadNum,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum, startElement, numElementsThisThread))
         {
-            threads.createThread(new Runnable1D<OpT>(startElement,
-                                                     numElementsThisThread,
-                                                     ops[threadNum++]));
+            threads.createThread(
+                    new Runnable1D<OpT>(startElement, numElementsThisThread, ops[threadNum++]));
         }
         threads.joinAll();
     }

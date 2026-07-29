@@ -24,13 +24,11 @@
 
 #include "io/FileOutputStream.h"
 
-io::RotatingFileOutputStream::RotatingFileOutputStream(
-        const std::string& filename,
-        unsigned long maxBytes,
-        size_t backupCount,
-        int creationFlags) :
-    io::CountingOutputStream(new io::FileOutputStream(filename, creationFlags),
-                             true),
+io::RotatingFileOutputStream::RotatingFileOutputStream(const std::string& filename,
+                                                       unsigned long maxBytes,
+                                                       size_t backupCount,
+                                                       int creationFlags) :
+    io::CountingOutputStream(new io::FileOutputStream(filename, creationFlags), true),
     mMaxBytes(maxBytes),
     mBackupCount(backupCount)
 {

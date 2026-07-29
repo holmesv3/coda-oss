@@ -141,7 +141,6 @@ TEST_CASE(TestPolyFixed2D)
     TEST_ASSERT(startVal == deserialized);
 }
 
-TEST_MAIN(TEST_CHECK(TestVectorN); TEST_CHECK(TestMatrixMxN);
-          TEST_CHECK(TestPolyOneD);
+TEST_MAIN(TEST_CHECK(TestVectorN); TEST_CHECK(TestMatrixMxN); TEST_CHECK(TestPolyOneD);
           TEST_CHECK(TestPolyTwoD);
           TEST_CHECK(TestPolyXYZ);)

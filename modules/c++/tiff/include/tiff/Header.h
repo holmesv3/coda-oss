@@ -88,8 +88,7 @@ public:
             mByteOrder[1] = byteOrder[1];
         }
 
-        mDifferentByteOrdering =
-                isBigEndian ? getByteOrder() != MM : getByteOrder() != II;
+        mDifferentByteOrdering = isBigEndian ? getByteOrder() != MM : getByteOrder() != II;
     }
 
     //! Destructor

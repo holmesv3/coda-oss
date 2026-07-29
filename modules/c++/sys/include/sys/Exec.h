@@ -67,8 +67,7 @@ public:
         if (::system(mCmd.c_str()) == -1)
         {
             sys::Err err;
-            throw except::IOException(
-                    Ctxt("Unable to run system command: " + err.toString()));
+            throw except::IOException(Ctxt("Unable to run system command: " + err.toString()));
         }
     }
 
@@ -101,8 +100,7 @@ struct ExecPipe : Exec
         if (mOutStream == nullptr)
         {
             sys::Err err;
-            throw except::IOException(
-                    Ctxt("Unable to open stream: " + err.toString()));
+            throw except::IOException(Ctxt("Unable to open stream: " + err.toString()));
         }
     }
 

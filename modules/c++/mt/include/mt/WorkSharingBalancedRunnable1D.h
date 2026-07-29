@@ -80,12 +80,11 @@ struct WorkSharingBalancedRunnable1D : public sys::Runnable
      *  thread
      *
      */
-    WorkSharingBalancedRunnable1D(
-            const types::Range& range,
-            sys::AtomicCounter& counter,
-            const SharedAtomicCounterVec& threadCounters,
-            const std::vector<size_t>& threadPoolEndElements,
-            const OpT& op) :
+    WorkSharingBalancedRunnable1D(const types::Range& range,
+                                  sys::AtomicCounter& counter,
+                                  const SharedAtomicCounterVec& threadCounters,
+                                  const std::vector<size_t>& threadPoolEndElements,
+                                  const OpT& op) :
         mStartElement(range.mStartElement),
         mEndElement(mStartElement + range.mNumElements),
         mCounter(counter),
@@ -94,13 +93,10 @@ struct WorkSharingBalancedRunnable1D : public sys::Runnable
         mOp(op)
     {
     }
-    WorkSharingBalancedRunnable1D(const WorkSharingBalancedRunnable1D&) =
-            delete;
-    WorkSharingBalancedRunnable1D& operator=(
-            const WorkSharingBalancedRunnable1D&) = delete;
+    WorkSharingBalancedRunnable1D(const WorkSharingBalancedRunnable1D&) = delete;
+    WorkSharingBalancedRunnable1D& operator=(const WorkSharingBalancedRunnable1D&) = delete;
     WorkSharingBalancedRunnable1D(WorkSharingBalancedRunnable1D&&) = default;
-    WorkSharingBalancedRunnable1D& operator=(WorkSharingBalancedRunnable1D&&) =
-            delete;
+    WorkSharingBalancedRunnable1D& operator=(WorkSharingBalancedRunnable1D&&) = delete;
 
     virtual void run() override
     {
@@ -122,8 +118,7 @@ private:
     {
         while (true)
         {
-            const auto element =
-                    gsl::narrow<size_t>(counter.getThenIncrement());
+            const auto element = gsl::narrow<size_t>(counter.getThenIncrement());
             if (element < endElement)
             {
                 mOp(element);
@@ -165,9 +160,7 @@ private:
  *  \param op Functor to use
  */
 template <typename OpT>
-void runWorkSharingBalanced1D(size_t numElements,
-                              size_t numThreads,
-                              const OpT& op)
+void runWorkSharingBalanced1D(size_t numElements, size_t numThreads, const OpT& op)
 {
     std::vector<size_t> threadPoolEndElements;
     SharedAtomicCounterVec threadPoolCounters;
@@ -179,11 +172,8 @@ void runWorkSharingBalanced1D(size_t numElements,
                 std::shared_ptr<sys::AtomicCounter>(new sys::AtomicCounter(0)));
 
         const types::Range range(0, numElements);
-        WorkSharingBalancedRunnable1D<OpT>(range,
-                                           *threadPoolCounters[0],
-                                           threadPoolCounters,
-                                           threadPoolEndElements,
-                                           op)
+        WorkSharingBalancedRunnable1D<OpT>(
+                range, *threadPoolCounters[0], threadPoolCounters, threadPoolEndElements, op)
                 .run();
     }
     else
@@ -193,31 +183,25 @@ void runWorkSharingBalanced1D(size_t numElements,
         size_t numElementsThisThread = 0;
         const ThreadPlanner planner(numElements, numThreads);
         std::vector<types::Range> threadPoolRange;
-        while (planner.getThreadInfo(threadNum++,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum++, startElement, numElementsThisThread))
         {
             const types::Range range(startElement, numElementsThisThread);
             threadPoolRange.push_back(range);
 
-            threadPoolCounters.push_back(
-                    std::shared_ptr<sys::AtomicCounter>(new sys::AtomicCounter(
-                            static_cast<sys::AtomicCounter::ValueType>(
-                                    startElement))));
+            threadPoolCounters.push_back(std::shared_ptr<sys::AtomicCounter>(new sys::AtomicCounter(
+                    static_cast<sys::AtomicCounter::ValueType>(startElement))));
 
-            threadPoolEndElements.push_back(startElement +
-                                            numElementsThisThread);
+            threadPoolEndElements.push_back(startElement + numElementsThisThread);
         }
 
         ThreadGroup threads;
         for (size_t ii = 0; ii < threadPoolRange.size(); ++ii)
         {
-            threads.createThread(new WorkSharingBalancedRunnable1D<OpT>(
-                    threadPoolRange[ii],
-                    *threadPoolCounters[ii],
-                    threadPoolCounters,
-                    threadPoolEndElements,
-                    op));
+            threads.createThread(new WorkSharingBalancedRunnable1D<OpT>(threadPoolRange[ii],
+                                                                        *threadPoolCounters[ii],
+                                                                        threadPoolCounters,
+                                                                        threadPoolEndElements,
+                                                                        op));
         }
         threads.joinAll();
     }
@@ -234,15 +218,12 @@ void runWorkSharingBalanced1D(size_t numElements,
  *  \param ops Vector of functors to use
  */
 template <typename OpT>
-void runWorkSharingBalanced1D(size_t numElements,
-                              size_t numThreads,
-                              const std::vector<OpT>& ops)
+void runWorkSharingBalanced1D(size_t numElements, size_t numThreads, const std::vector<OpT>& ops)
 {
     if (ops.size() != numThreads)
     {
         std::ostringstream ostr;
-        ostr << "Got " << numThreads << " threads but " << ops.size()
-             << " functors";
+        ostr << "Got " << numThreads << " threads but " << ops.size() << " functors";
         throw except::Exception(Ctxt(ostr));
     }
 
@@ -253,15 +234,11 @@ void runWorkSharingBalanced1D(size_t numElements,
         threadPoolEndElements.push_back(numElements);
 
         constexpr size_t zero = 0;
-        threadPoolCounters.push_back(
-                std::make_shared<sys::AtomicCounter>(zero));
+        threadPoolCounters.push_back(std::make_shared<sys::AtomicCounter>(zero));
 
         const types::Range range(0, numElements);
-        WorkSharingBalancedRunnable1D<OpT>(range,
-                                           *threadPoolCounters[0],
-                                           threadPoolCounters,
-                                           threadPoolEndElements,
-                                           ops[0])
+        WorkSharingBalancedRunnable1D<OpT>(
+                range, *threadPoolCounters[0], threadPoolCounters, threadPoolEndElements, ops[0])
                 .run();
     }
     else
@@ -271,9 +248,7 @@ void runWorkSharingBalanced1D(size_t numElements,
         size_t numElementsThisThread = 0;
         const ThreadPlanner planner(numElements, numThreads);
         std::vector<types::Range> threadPoolRange;
-        while (planner.getThreadInfo(threadNum++,
-                                     startElement,
-                                     numElementsThisThread))
+        while (planner.getThreadInfo(threadNum++, startElement, numElementsThisThread))
         {
             const types::Range range(startElement, numElementsThisThread);
             threadPoolRange.push_back(range);
@@ -281,19 +256,17 @@ void runWorkSharingBalanced1D(size_t numElements,
             auto counter = std::make_shared<sys::AtomicCounter>(
                     gsl::narrow<sys::AtomicCounter::ValueType>(startElement));
             threadPoolCounters.push_back(counter);
-            threadPoolEndElements.push_back(startElement +
-                                            numElementsThisThread);
+            threadPoolEndElements.push_back(startElement + numElementsThisThread);
         }
 
         ThreadGroup threads;
         for (size_t ii = 0; ii < threadPoolRange.size(); ++ii)
         {
-            threads.createThread(new WorkSharingBalancedRunnable1D<OpT>(
-                    threadPoolRange[ii],
-                    *threadPoolCounters[ii],
-                    threadPoolCounters,
-                    threadPoolEndElements,
-                    ops[ii]));
+            threads.createThread(new WorkSharingBalancedRunnable1D<OpT>(threadPoolRange[ii],
+                                                                        *threadPoolCounters[ii],
+                                                                        threadPoolCounters,
+                                                                        threadPoolEndElements,
+                                                                        ops[ii]));
         }
         threads.joinAll();
     }
@@ -311,9 +284,7 @@ void runWorkSharingBalanced1D(size_t numElements,
  *  \param op Functor to use
  */
 template <typename OpT>
-void runWorkSharingBalanced1DWithCopies(size_t numElements,
-                                        size_t numThreads,
-                                        const OpT& op)
+void runWorkSharingBalanced1DWithCopies(size_t numElements, size_t numThreads, const OpT& op)
 {
     const std::vector<OpT> ops(numThreads, op);
     runWorkSharingBalanced1D(numElements, numThreads, ops);

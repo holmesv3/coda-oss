@@ -51,17 +51,14 @@ void CurlHandle::setWriteBuffer(std::string& buffer)
     verify(curl_easy_setopt(mHandle, CURLOPT_WRITEFUNCTION, writeCallback),
            "Setting write function");
 
-    verify(curl_easy_setopt(mHandle, CURLOPT_WRITEDATA, &buffer),
-           "Setting write data");
+    verify(curl_easy_setopt(mHandle, CURLOPT_WRITEDATA, &buffer), "Setting write data");
 }
 
 void CurlHandle::disableHostVerification()
 {
-    verify(curl_easy_setopt(mHandle, CURLOPT_SSL_VERIFYHOST, 0),
-           "Disabling host verification");
+    verify(curl_easy_setopt(mHandle, CURLOPT_SSL_VERIFYHOST, 0), "Disabling host verification");
 
-    verify(curl_easy_setopt(mHandle, CURLOPT_SSL_VERIFYPEER, 0),
-           "Disabling host verification");
+    verify(curl_easy_setopt(mHandle, CURLOPT_SSL_VERIFYPEER, 0), "Disabling host verification");
 }
 
 void CurlHandle::setClientCert(const std::string& certPathname)
@@ -72,15 +69,12 @@ void CurlHandle::setClientCert(const std::string& certPathname)
 
 void CurlHandle::setProxy(const std::string& url)
 {
-    verify(curl_easy_setopt(mHandle, CURLOPT_PROXY, url.c_str()),
-           "Setting proxy");
+    verify(curl_easy_setopt(mHandle, CURLOPT_PROXY, url.c_str()), "Setting proxy");
 }
 
 void CurlHandle::setProxyPort(size_t port)
 {
-    verify(curl_easy_setopt(mHandle,
-                            CURLOPT_PROXYPORT,
-                            static_cast<long>(port)),
+    verify(curl_easy_setopt(mHandle, CURLOPT_PROXYPORT, static_cast<long>(port)),
            "Setting proxy port");
 }
 
@@ -93,8 +87,7 @@ void CurlHandle::verify(CURLcode code, const std::string& prefix)
 {
     if (code != CURLE_OK)
     {
-        throw except::Exception(
-                Ctxt(prefix + " failed: " + curl_easy_strerror(code)));
+        throw except::Exception(Ctxt(prefix + " failed: " + curl_easy_strerror(code)));
     }
 }
 
@@ -112,10 +105,7 @@ size_t CurlHandle::writeBetterCallback(char* data,
     return size * nmemb;
 }
 
-int CurlHandle::writeCallback(char* data,
-                              size_t size,
-                              size_t nmemb,
-                              std::string* writeData)
+int CurlHandle::writeCallback(char* data, size_t size, size_t nmemb, std::string* writeData)
 {
     return (int)CurlHandle::writeBetterCallback(data, size, nmemb, writeData);
 }

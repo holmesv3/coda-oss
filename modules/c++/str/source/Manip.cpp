@@ -150,8 +150,7 @@ size_t replace(std::string& str,
     if (index != std::string::npos)
     {
         // ASAN error: str.replace(index, search.length(), replace);
-        str = str.substr(0, index) + replace +
-                str.substr(index + search.length());
+        str = str.substr(0, index) + replace + str.substr(index + search.length());
         start = index;
     }
     else
@@ -162,9 +161,7 @@ size_t replace(std::string& str,
     return start;
 }
 
-void replaceAll(std::string& string,
-                const std::string& search,
-                const std::string& replace)
+void replaceAll(std::string& string, const std::string& search, const std::string& replace)
 {
     size_t start = 0;
     while (start < string.length())
@@ -265,9 +262,7 @@ bool containsOnly(const std::string& s, const std::string& validChars)
     return true;
 }
 
-std::vector<std::string> split(const std::string& s,
-                               const std::string& splitter,
-                               size_t maxSplit)
+std::vector<std::string> split(const std::string& s, const std::string& splitter, size_t maxSplit)
 {
     std::vector<std::string> vec;
     const auto str_l = s.length();
@@ -294,8 +289,7 @@ std::vector<std::string> split(const std::string& s,
 // Calling ::toupper() can be slow as the CRT might check for locales.
 // Since we only have 256 values, a lookup table is very fast and doesn't
 // use much memory.
-static const auto& make_lookup(std::array<uint8_t, UINT8_MAX + 1>& result,
-                               char (*to)(char))
+static const auto& make_lookup(std::array<uint8_t, UINT8_MAX + 1>& result, char (*to)(char))
 {
     // For each of 256 values, record the corresponding tolower/toupper value;
     // this makes converting very fast as no checking or arithmetic must be
@@ -309,8 +303,7 @@ static const auto& make_lookup(std::array<uint8_t, UINT8_MAX + 1>& result,
 }
 
 template <typename TChar>
-static void do_lookup(std::basic_string<TChar>& s,
-                      const std::array<uint8_t, UINT8_MAX + 1>& lookup)
+static void do_lookup(std::basic_string<TChar>& s, const std::array<uint8_t, UINT8_MAX + 1>& lookup)
 {
     for (auto& ch : s)
     {
@@ -459,14 +452,12 @@ void lower(str::W1252string& s)
 
 // These routines are SLOW ... yes, they can be made faster
 // but nobody needs that right now.
-inline auto utf8_convert(str::W1252string& w1252,
-                         void (*convert)(str::W1252string&))
+inline auto utf8_convert(str::W1252string& w1252, void (*convert)(str::W1252string&))
 {
     convert(w1252);  // upper() or lower() for Windows-1252
     return to_u8string(w1252);
 }
-inline void utf8_convert(std::string& strUtf8,
-                         void (*convert)(str::W1252string&))
+inline void utf8_convert(std::string& strUtf8, void (*convert)(str::W1252string&))
 {
     auto w1252 = to_w1252string(str::str<coda_oss::u8string>(strUtf8));
     const auto utf8 = utf8_convert(w1252, convert);
@@ -481,8 +472,7 @@ void utf8_lower(std::string& strUtf8)
     utf8_convert(strUtf8, lower);
 }
 
-inline void utf8_convert(coda_oss::u8string& s,
-                         void (*convert)(str::W1252string&))
+inline void utf8_convert(coda_oss::u8string& s, void (*convert)(str::W1252string&))
 {
     auto w1252 = to_w1252string(s);
     s = utf8_convert(w1252, convert);

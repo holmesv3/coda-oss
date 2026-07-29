@@ -67,12 +67,10 @@ void mt::TiedRequestHandler::run()
 }
 
 // Not set up for multiple producers
-void mt::GenerationThreadPool::addGroup(
-        const std::vector<sys::Runnable*>& toRun)
+void mt::GenerationThreadPool::addGroup(const std::vector<sys::Runnable*>& toRun)
 {
     if (mGenSize)
-        throw mt::ThreadPoolException(
-                Ctxt("The previous generation has not completed!"));
+        throw mt::ThreadPoolException(Ctxt("The previous generation has not completed!"));
 
     mGenSize = static_cast<int>(toRun.size());
     for (int i = 0; i < mGenSize; ++i)

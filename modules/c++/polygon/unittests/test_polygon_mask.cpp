@@ -82,8 +82,7 @@ TEST_CASE(testWithPoints)
     const types::RowCol<size_t> dims(1000, 800);
     const mem::ScopedArray<bool> maskArray(new bool[dims.area()]);
     std::fill_n(maskArray.get(), dims.area(), false);
-    polygon::drawPolygon(
-            points, dims.row, dims.col, true, maskArray.get(), false, offset);
+    polygon::drawPolygon(points, dims.row, dims.col, true, maskArray.get(), false, offset);
 
     // Infer a mask
     const polygon::PolygonMask mask(points, dims, offset);
@@ -112,8 +111,7 @@ TEST_CASE(testWithMask)
     const types::RowCol<size_t> dims(1000, 800);
     const mem::ScopedArray<bool> maskArray(new bool[dims.area()]);
     std::fill_n(maskArray.get(), dims.area(), false);
-    polygon::drawPolygon(
-            points, dims.row, dims.col, true, maskArray.get(), false, offset);
+    polygon::drawPolygon(points, dims.row, dims.col, true, maskArray.get(), false, offset);
 
     // Infer a mask
     const polygon::PolygonMask mask(maskArray.get(), dims);
@@ -268,8 +266,7 @@ TEST_CASE(testWithNarrowPassthrough)
     TEST_ASSERT_TRUE(mask.getRange(5).empty());
 }
 
-TEST_MAIN(TEST_CHECK(testMarkAllTrue); TEST_CHECK(testMarkAllFalse);
-          TEST_CHECK(testWithPoints);
+TEST_MAIN(TEST_CHECK(testMarkAllTrue); TEST_CHECK(testMarkAllFalse); TEST_CHECK(testWithPoints);
           TEST_CHECK(testWithMask);
           TEST_CHECK(testWithAllFullRanges);
           TEST_CHECK(testWithAllEmptyRanges);

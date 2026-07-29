@@ -54,6 +54,5 @@ TEST_CASE(testConstants)
     TEST_ASSERT_EQ(e, M_E);
 }
 
-TEST_MAIN(TEST_CHECK(testZero); TEST_CHECK(testPositive);
-          TEST_CHECK(testNegative);
+TEST_MAIN(TEST_CHECK(testZero); TEST_CHECK(testPositive); TEST_CHECK(testNegative);
           TEST_CHECK(testConstants);)

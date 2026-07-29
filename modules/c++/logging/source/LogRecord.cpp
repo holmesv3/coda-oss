@@ -28,15 +28,8 @@
 
 #include "sys/TimeStamp.h"
 
-logging::LogRecord::LogRecord(std::string name,
-                              std::string msg,
-                              logging::LogLevel level) :
-    mName(name),
-    mMsg(msg),
-    mLevel(level),
-    mFile(""),
-    mFunction(""),
-    mLineNum(-1)
+logging::LogRecord::LogRecord(std::string name, std::string msg, logging::LogLevel level) :
+    mName(name), mMsg(msg), mLevel(level), mFile(""), mFunction(""), mLineNum(-1)
 {
     mTimestamp = sys::TimeStamp(true).local();
 }

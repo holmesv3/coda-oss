@@ -44,9 +44,7 @@ class RunNothing final : public sys::Runnable
     }
 
 public:
-    RunNothing(size_t& c,
-               logging::ExceptionLogger* el,
-               bool getBacktrace_ = false) :
+    RunNothing(size_t& c, logging::ExceptionLogger* el, bool getBacktrace_ = false) :
         counter(c), exLog(el), getBacktrace(getBacktrace_)
     {
     }
@@ -62,11 +60,9 @@ public:
         }
 
         if (getBacktrace)
-            exLog->log(except::Exception("Bad run").backtrace(),
-                       logging::LogLevel::LOG_ERROR);
+            exLog->log(except::Exception("Bad run").backtrace(), logging::LogLevel::LOG_ERROR);
         else
-            exLog->log(except::Exception("Bad run"),
-                       logging::LogLevel::LOG_ERROR);
+            exLog->log(except::Exception("Bad run"), logging::LogLevel::LOG_ERROR);
     }
 };
 
@@ -129,8 +125,7 @@ TEST_CASE(testExceptionWithBacktrace)
     }
     catch (const except::Throwable& t)
     {
-        const auto backtraceSize =
-                static_cast<int64_t>(t.getBacktrace().size());
+        const auto backtraceSize = static_cast<int64_t>(t.getBacktrace().size());
         TEST_ASSERT_GREATER(backtraceSize, 0);
         s = t.toString(true /*includeBacktrace*/);
         what = t.what();
@@ -148,5 +143,4 @@ TEST_CASE(testExceptionWithBacktrace)
 #pragma warning(pop)
 #endif
 
-TEST_MAIN(TEST_CHECK(testExceptionLogger);
-          TEST_CHECK(testExceptionWithBacktrace);)
+TEST_MAIN(TEST_CHECK(testExceptionLogger); TEST_CHECK(testExceptionWithBacktrace);)

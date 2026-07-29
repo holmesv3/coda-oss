@@ -81,22 +81,18 @@ struct CODA_OSS_API Element  // SOAPElement derives :-(
     {
         setCharacterData(characterData);
     }
-    Element(const xml::lite::QName& qname,
-            const coda_oss::u8string& characterData) :
-        mName(qname)
+    Element(const xml::lite::QName& qname, const coda_oss::u8string& characterData) : mName(qname)
     {
         setCharacterData(characterData);
     }
 
 #ifndef SWIG  // SWIG doesn't like std::unique_ptr
-    static std::unique_ptr<Element> create(
-            const std::string& qname,
-            const std::string& uri = "",
-            const std::string& characterData = "");
-    static std::unique_ptr<Element> create(
-            const xml::lite::QName&, const std::string& characterData = "");
+    static std::unique_ptr<Element> create(const std::string& qname,
+                                           const std::string& uri = "",
+                                           const std::string& characterData = "");
     static std::unique_ptr<Element> create(const xml::lite::QName&,
-                                           const coda_oss::u8string&);
+                                           const std::string& characterData = "");
+    static std::unique_ptr<Element> create(const xml::lite::QName&, const coda_oss::u8string&);
 #endif  // SWIG
 
     //! Destructor
@@ -109,8 +105,7 @@ struct CODA_OSS_API Element  // SOAPElement derives :-(
     void destroyChildren();
 
 // use clone() to duplicate an Element
-#if !(defined(SWIG) || defined(SWIGPYTHON) || \
-      defined(HAVE_PYTHON_H))  // SWIG needs these
+#if !(defined(SWIG) || defined(SWIGPYTHON) || defined(HAVE_PYTHON_H))  // SWIG needs these
 // private: // encoded as part of the C++ name mangling by some compilers
 #endif
     Element(const Element&);
@@ -182,8 +177,7 @@ public:
     Element* getElementByTagNameNS(std::nothrow_t,
                                    const std::string& qname,
                                    bool recurse = false) const;
-    Element& getElementByTagNameNS(const std::string& qname,
-                                   bool recurse = false) const;
+    Element& getElementByTagNameNS(const std::string& qname, bool recurse = false) const;
 
     /*!
      *  Utility for people that dont like to pass by reference
@@ -225,8 +219,7 @@ public:
     Element* getElementByTagName(std::nothrow_t,
                                  const std::string& localName,
                                  bool recurse = false) const;
-    Element& getElementByTagName(const std::string& localName,
-                                 bool recurse = false) const;
+    Element& getElementByTagName(const std::string& localName, bool recurse = false) const;
 
     /*!
      *  Get the elements by tag name
@@ -252,9 +245,7 @@ public:
     Element* getElementByTagName(std::nothrow_t,
                                  const xml::lite::QName&,
                                  bool recurse = false) const;
-    Element* operator()(std::nothrow_t,
-                        const xml::lite::QName& name,
-                        bool recurse = false) const
+    Element* operator()(std::nothrow_t, const xml::lite::QName& name, bool recurse = false) const
     {
         return getElementByTagName(std::nothrow, name, recurse);
     }
@@ -265,10 +256,8 @@ public:
     {
         return getElementByTagName(t, QName(uri, localName), recurse);
     }
-    Element& getElementByTagName(const xml::lite::QName&,
-                                 bool recurse = false) const;
-    Element& operator()(const xml::lite::QName& name,
-                        bool recurse = false) const
+    Element& getElementByTagName(const xml::lite::QName&, bool recurse = false) const;
+    Element& operator()(const xml::lite::QName& name, bool recurse = false) const
     {
         return getElementByTagName(name, recurse);
     }
@@ -320,19 +309,17 @@ public:
      *  \todo Add format capability
      */
     void print(io::OutputStream& stream) const;
-    void prettyPrint(io::OutputStream& stream,
-                     const std::string& formatter = "    ") const;
+    void prettyPrint(io::OutputStream& stream, const std::string& formatter = "    ") const;
 
     // Outputs (presumablly to the console) using the **NATIVE** encoding.
     // For most XML processing, **THIS IS WRONG** as output should
     // always be UTF-8.  However, for displaying XML on the console in Windows,
     // the native (Windows-1252) encoding will work better as "special"
     // characters will be displayed.
-    void consoleOutput_(io::OutputStream& stream)
-            const;  // be sure OutputStream is the console, not a file
+    void consoleOutput_(
+            io::OutputStream& stream) const;  // be sure OutputStream is the console, not a file
     void prettyConsoleOutput_(
-            io::OutputStream&
-                    stream,  // be sure OutputStream is the console, not a file
+            io::OutputStream& stream,  // be sure OutputStream is the console, not a file
             const std::string& formatter = "    ") const;
 
     /*!
@@ -359,8 +346,7 @@ public:
      *  \return the charater data
      */
     std::string getCharacterData() const;
-    const coda_oss::u8string& getCharacterData(
-            coda_oss::u8string& result) const;
+    const coda_oss::u8string& getCharacterData(coda_oss::u8string& result) const;
     // explicit operator coda_oss::u8string() const
     //{
     //     coda_oss::u8string result;
@@ -523,13 +509,9 @@ protected:
     xml::lite::QName mName;
 
 private:
-    void changePrefix(Element* element,
-                      const std::string& prefix,
-                      const std::string& uri);
+    void changePrefix(Element* element, const std::string& prefix, const std::string& uri);
 
-    void changeURI(Element* element,
-                   const std::string& prefix,
-                   const std::string& uri);
+    void changeURI(Element* element, const std::string& prefix, const std::string& uri);
 
     void depthPrint(io::OutputStream& stream,
                     int depth,
@@ -542,9 +524,7 @@ private:
     coda_oss::u8string mCharacterData;
 };
 
-CODA_OSS_API Element& add(const xml::lite::QName&,
-                          const std::string& value,
-                          Element& parent);
+CODA_OSS_API Element& add(const xml::lite::QName&, const std::string& value, Element& parent);
 
 #ifndef SWIG
 // The (old) version of SWIG we're using doesn't like certain C++11 features.
@@ -562,8 +542,7 @@ inline auto castValue(const Element& element,
     const auto characterData = element.getCharacterData();
     if (characterData.empty())
     {
-        throw except::BadCastException(
-                Ctxt("call getCharacterData() to get an empty string"));
+        throw except::BadCastException(Ctxt("call getCharacterData() to get an empty string"));
     }
     return toType(characterData);
 }
@@ -617,9 +596,7 @@ inline Element& addNewElement(const xml::lite::QName& name,
     return xml::lite::add(name, toString(value), parent);
 }
 template <typename T>
-inline Element& addNewElement(const xml::lite::QName& name,
-                              const T& value,
-                              Element& parent)
+inline Element& addNewElement(const xml::lite::QName& name, const T& value, Element& parent)
 {
     return addNewElement(name, value, parent, details::toString<T>);
 }
@@ -657,34 +634,27 @@ inline Element* addNewOptionalElement(const xml::lite::QName& name,
 
 #endif  // SWIG
 
-CODA_OSS_API Element& setChild(
-        Element&,
-        std::unique_ptr<Element>&&);  // destroyChildren() + addChild()
+CODA_OSS_API Element& setChild(Element&,
+                               std::unique_ptr<Element>&&);  // destroyChildren() + addChild()
 
 CODA_OSS_API void operator+=(Element&,
                              std::unique_ptr<Element>&&);  // addChild()
 
 CODA_OSS_API Element& addChild(Element&, const std::string& qname);
 CODA_OSS_API void operator+=(Element&, const std::string& qname);  // addChild()
-CODA_OSS_API Element& addChild(
-        Element&, const xml::lite::QName&);  // there is also a QName in the
-                                             // xerces namespace
+CODA_OSS_API Element& addChild(Element&, const xml::lite::QName&);  // there is also a QName in the
+                                                                    // xerces namespace
 CODA_OSS_API void operator+=(Element&, const xml::lite::QName&);  // addChild()
 CODA_OSS_API Element& addChild(Element&,
                                const std::string& qname,
                                const coda_oss::u8string& characterData);
-Element& addChild(Element&,
-                  const std::string&,
+Element& addChild(Element&, const std::string&,
                   const std::string&) = delete;  // NO, order matters!
 CODA_OSS_API Element& addChild(Element&,
                                const xml::lite::QName&,
                                const coda_oss::u8string& characterData);
-CODA_OSS_API Element& addChild(Element&,
-                               const xml::lite::QName&,
-                               const std::string& characterData);
-CODA_OSS_API Element& addChild(Element&,
-                               const std::string& qname,
-                               const xml::lite::Uri&);
+CODA_OSS_API Element& addChild(Element&, const xml::lite::QName&, const std::string& characterData);
+CODA_OSS_API Element& addChild(Element&, const std::string& qname, const xml::lite::Uri&);
 CODA_OSS_API Element& addChild(Element&,
                                const std::string& qname,
                                const xml::lite::Uri&,
@@ -692,21 +662,16 @@ CODA_OSS_API Element& addChild(Element&,
 
 CODA_OSS_API coda_oss::u8string getCharacterData(const Element&);
 
-CODA_OSS_API xml::lite::AttributeNode& addAttribute(
-        Element&, const xml::lite::AttributeNode&);
-CODA_OSS_API void operator+=(
-        Element&, const xml::lite::AttributeNode&);  // addAttribute()
-CODA_OSS_API xml::lite::AttributeNode& addAttribute(Element&,
-                                                    const std::string& qname);
-CODA_OSS_API xml::lite::AttributeNode& addAttribute(Element&,
-                                                    const xml::lite::QName&);
+CODA_OSS_API xml::lite::AttributeNode& addAttribute(Element&, const xml::lite::AttributeNode&);
+CODA_OSS_API void operator+=(Element&, const xml::lite::AttributeNode&);  // addAttribute()
+CODA_OSS_API xml::lite::AttributeNode& addAttribute(Element&, const std::string& qname);
+CODA_OSS_API xml::lite::AttributeNode& addAttribute(Element&, const xml::lite::QName&);
 CODA_OSS_API xml::lite::AttributeNode& addAttribute(Element&,
                                                     const xml::lite::QName&,
                                                     const std::string& value);
 xml::lite::AttributeNode& addAttribute(Element&,
                                        const std::string&,
-                                       const std::string&) =
-        delete;  // NO, order matters!
+                                       const std::string&) = delete;  // NO, order matters!
 
 }
 }
