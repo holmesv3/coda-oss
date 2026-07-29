@@ -27,8 +27,9 @@
 
 #ifndef _WIN32
 
-#include <memory>
 #include <sched.h>
+
+#include <memory>
 #include <string>
 
 namespace sys

@@ -40,7 +40,7 @@ struct Constants final
         return static_cast<T>(RADIANS_TO_DEGREES);
     }
     static constexpr double DEGREES_TO_RADIANS = coda_oss::numbers::pi / 180.0;
-    template<typename T>
+    template <typename T>
     static constexpr T degrees_to_radians() noexcept
     {
         return static_cast<T>(DEGREES_TO_RADIANS);
@@ -48,9 +48,9 @@ struct Constants final
 
     static constexpr double NAUTICAL_MILES_TO_METERS = 1852.0;
     static constexpr double METERS_TO_NAUTICAL_MILES =
-                                    1.0 / NAUTICAL_MILES_TO_METERS;
+            1.0 / NAUTICAL_MILES_TO_METERS;
     static constexpr double NAUTICAL_MILES_TO_FEET =
-                                    NAUTICAL_MILES_TO_METERS * METERS_TO_FEET;
+            NAUTICAL_MILES_TO_METERS * METERS_TO_FEET;
 
     static constexpr double SPEED_OF_LIGHT_METERS_PER_SEC = 299792458.0;
     static constexpr double SPEED_OF_LIGHT_FEET_PER_SEC =

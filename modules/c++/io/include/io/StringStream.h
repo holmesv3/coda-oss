@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -27,7 +27,7 @@
 /*! \file StringStream.h
  *  \brief  A stream interface to the std::stringstream from C++ STL.
  *
- *  String streams are very useful.  They are even more useful with cafe 
+ *  String streams are very useful.  They are even more useful with cafe
  *  streaming capabilities.  The capabilities are added by making the class
  *  inherit from a stream -- a class that can pipe information back and
  *  forth to other streams.
@@ -35,19 +35,21 @@
 
 #include <sstream>
 
+#include "coda_oss/string.h"
 #include "gsl/gsl.h"
 #include "io/BidirectionalStream.h"
-#include "sys/Conf.h"
 #include "io/SeekableStreams.h"
-#include "coda_oss/string.h"
 #include "str/Encoding.h"
+#include "sys/Conf.h"
 
 namespace io
 {
-template<typename CharT>
+template <typename CharT>
 struct StringStreamT final : public SeekableBidirectionalStream
 {
-    StringStreamT(){} // "=default" causes error with old GCC
+    StringStreamT()
+    {
+    }  // "=default" causes error with old GCC
 
     StringStreamT(const StringStreamT&) = delete;
     StringStreamT& operator=(const StringStreamT&) = delete;
@@ -145,23 +147,24 @@ private:
         const auto maxSize = available();
         if (maxSize <= 0)
             return ::io::InputStream::IS_END;
-            
+
         auto len = gsl::narrow<sys::Off_T>(len_);
         if (maxSize < len)
             len = maxSize;
-            
+
         if (len <= 0)
             return 0;
-            
+
         auto buffer_ = static_cast<CharT*>(buffer);
         mData.read(buffer_, gsl::narrow<std::streamsize>(len));
-            
+
         // Could be problem if streams are broken alternately could
         // return gcount in else case above
         return gsl::narrow<sys::SSize_T>(len);
     }
 
-    stringstream mData{stringstream::in | stringstream::out | stringstream::binary};
+    stringstream mData{stringstream::in | stringstream::out |
+                       stringstream::binary};
 };
 
 using StringStream = StringStreamT<std::string::value_type>;
@@ -169,4 +172,4 @@ using U8StringStream = StringStreamT<coda_oss::u8string::value_type>;
 using W1252StringStream = StringStreamT<str::W1252string::value_type>;
 
 }
-#endif // CODA_OSS_io_StringStream_h_INCLUDED_
+#endif  // CODA_OSS_io_StringStream_h_INCLUDED_

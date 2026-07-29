@@ -33,16 +33,21 @@ class Line2D
 {
 public:
     typedef types::RowCol<double> Point;
-    enum Line2DType { NORMAL, HORIZONTAL, VERTICAL };
+    enum Line2DType
+    {
+        NORMAL,
+        HORIZONTAL,
+        VERTICAL
+    };
 
     Line2D(const Point& P1, const Point& P2);
     Line2D(const Point& P, double slope);
     double getSlope() const;
     double getYIntercept() const;
     double getXIntercept() const;
-    //Evaluate for y given x:
+    // Evaluate for y given x:
     double y(double x) const;
-    //Evaluate for x given y:
+    // Evaluate for x given y:
     double x(double y) const;
     // Determine intersection of two lines
     Point intersection(const Line2D& rhs) const;
@@ -55,7 +60,7 @@ public:
     Line2D perpendicularToLine(const Point& P) const;
     // Compute the distance from this line to a point
     double distanceToPoint(const Point& P) const;
-    //Return a point that is a distance d from the point P which is on the line
+    // Return a point that is a distance d from the point P which is on the line
     Point offsetFromPoint(const Point& P, double distance) const;
     //
     bool equals(const Line2D& other) const;
@@ -64,6 +69,7 @@ public:
     {
         return lhs.equals(rhs);
     }
+
 private:
     Line2DType mType;
     double mSlope;

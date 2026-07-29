@@ -20,27 +20,28 @@
  *
  */
 
-
 #ifndef __MT_CPU_AFFINITY_INITIALIZER_LINUX_H__
 #define __MT_CPU_AFFINITY_INITIALIZER_LINUX_H__
 
 #if !defined(__APPLE_CC__)
 #if defined(__linux) || defined(__linux__)
 
-#include <memory>
-#include <vector>
-
-#include <sys/ScopedCPUAffinityUnix.h>
+#include <mem/SharedPtr.h>
 #include <mt/AbstractCPUAffinityInitializer.h>
 #include <mt/CPUAffinityThreadInitializerLinux.h>
-#include <mem/SharedPtr.h>
+#include <sys/ScopedCPUAffinityUnix.h>
+
+#include <memory>
+#include <vector>
 
 namespace mt
 {
 struct AbstractNextCPUProviderLinux
 {
     virtual std::unique_ptr<const sys::ScopedCPUMaskUnix> nextCPU() = 0;
-    virtual ~AbstractNextCPUProviderLinux() {}
+    virtual ~AbstractNextCPUProviderLinux()
+    {
+    }
 };
 
 /*!
@@ -50,7 +51,6 @@ struct AbstractNextCPUProviderLinux
 class CPUAffinityInitializerLinux : public AbstractCPUAffinityInitializer
 {
 public:
-
     /*!
      * Constructor that uses the available CPUs (possibly restricted
      * via taskset) to set affinities
@@ -89,4 +89,3 @@ private:
 #endif
 #endif
 #endif
-

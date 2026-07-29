@@ -20,87 +20,85 @@
  *
  */
 
-#include <cmath>
 #include <import/except.h>
 #include <import/sys.h>
-#include <math/poly/Utils.h>
 #include <math/linear/VectorN.h>
+#include <math/poly/Utils.h>
+
+#include <cmath>
 
 namespace math
 {
 namespace poly
 {
 
-template<typename _T>
-_T
-OneD<_T>::operator () (double at) const
+template <typename _T>
+_T OneD<_T>::operator()(double at) const
 {
-   _T ret(0.0);
-   double atPwr = 1.0;
-   const auto sz = mCoef.size();
-   for (size_t i = 0 ; i < sz; i++)
-   {
-      ret += mCoef[i]*atPwr;
-      atPwr *= at;
-   }
-   return ret;
+    _T ret(0.0);
+    double atPwr = 1.0;
+    const auto sz = mCoef.size();
+    for (size_t i = 0; i < sz; i++)
+    {
+        ret += mCoef[i] * atPwr;
+        atPwr *= at;
+    }
+    return ret;
 }
 
-template<typename _T>
-_T
-OneD<_T>::integrate(double start, double end) const
+template <typename _T>
+_T OneD<_T>::integrate(double start, double end) const
 {
     double ret(0.0);
-   double endAtPwr = end;
-   double startAtPwr = start;
-   const auto sz = mCoef.size();
-   for (size_t i = 0; i < sz; i++)
-   {
-      const auto div = 1.0 / (static_cast<double>(i) + 1.0);
-      const double newCoef = mCoef[i] * div;
-      ret += newCoef * endAtPwr;
-      ret -= newCoef * startAtPwr;
-      endAtPwr *= end;
-      startAtPwr *= start;
-   }
-   return static_cast<_T>(ret);
+    double endAtPwr = end;
+    double startAtPwr = start;
+    const auto sz = mCoef.size();
+    for (size_t i = 0; i < sz; i++)
+    {
+        const auto div = 1.0 / (static_cast<double>(i) + 1.0);
+        const double newCoef = mCoef[i] * div;
+        ret += newCoef * endAtPwr;
+        ret -= newCoef * startAtPwr;
+        endAtPwr *= end;
+        startAtPwr *= start;
+    }
+    return static_cast<_T>(ret);
 }
 
-template<>
-inline
-math::linear::VectorN<3, double>
-OneD<math::linear::VectorN<3, double> >::integrate(double start, double end) const
+template <>
+inline math::linear::VectorN<3, double>
+OneD<math::linear::VectorN<3, double>>::integrate(double start,
+                                                  double end) const
 {
-   math::linear::VectorN<3, double> ret(0.0);
+    math::linear::VectorN<3, double> ret(0.0);
 
-   const size_t polyOrder = order();
-   OneD<double> poly0(polyOrder);
-   OneD<double> poly1(polyOrder);
-   OneD<double> poly2(polyOrder);
+    const size_t polyOrder = order();
+    OneD<double> poly0(polyOrder);
+    OneD<double> poly1(polyOrder);
+    OneD<double> poly2(polyOrder);
 
-   const auto sz = mCoef.size();
-   for (size_t term = 0; term < sz; term++)
-   {
-       poly0[term] = mCoef[term][0];
-       poly1[term] = mCoef[term][1];
-       poly2[term] = mCoef[term][2];
-   }
+    const auto sz = mCoef.size();
+    for (size_t term = 0; term < sz; term++)
+    {
+        poly0[term] = mCoef[term][0];
+        poly1[term] = mCoef[term][1];
+        poly2[term] = mCoef[term][2];
+    }
 
-   ret[0] = poly0.integrate(start, end);
-   ret[1] = poly1.integrate(start, end);
-   ret[2] = poly2.integrate(start, end);
+    ret[0] = poly0.integrate(start, end);
+    ret[1] = poly1.integrate(start, end);
+    ret[2] = poly2.integrate(start, end);
 
-   return ret;
+    return ret;
 }
 
-template<typename T>
-OneD<T>
-OneD<T>::derivative() const
+template <typename T>
+OneD<T> OneD<T>::derivative() const
 {
     OneD<T> ret(0);
     if (order() > 0)
     {
-        ret = OneD<T>(order()-1);
+        ret = OneD<T>(order() - 1);
         const auto sz = mCoef.size() - 1;
         for (size_t ii = 0; ii < sz; ii++)
         {
@@ -110,82 +108,78 @@ OneD<T>::derivative() const
     return ret;
 }
 
-template<>
-inline
-OneD< math::linear::VectorN<3, double> >
-OneD< math::linear::VectorN<3, double> >::derivative() const
+template <>
+inline OneD<math::linear::VectorN<3, double>>
+OneD<math::linear::VectorN<3, double>>::derivative() const
 {
-   OneD< math::linear::VectorN<3, double> > ret(0);
+    OneD<math::linear::VectorN<3, double>> ret(0);
 
-   const size_t polyOrder = order();
-   if (polyOrder > 0)
-   {
-       OneD<double> poly0(polyOrder);
-       OneD<double> poly1(polyOrder);
-       OneD<double> poly2(polyOrder);
+    const size_t polyOrder = order();
+    if (polyOrder > 0)
+    {
+        OneD<double> poly0(polyOrder);
+        OneD<double> poly1(polyOrder);
+        OneD<double> poly2(polyOrder);
 
-       {
-           const auto sz = mCoef.size();
-           for (size_t term = 0; term < sz; term++)
-           {
-               poly0[term] = mCoef[term][0];
-               poly1[term] = mCoef[term][1];
-               poly2[term] = mCoef[term][2];
-           }
-       }
+        {
+            const auto sz = mCoef.size();
+            for (size_t term = 0; term < sz; term++)
+            {
+                poly0[term] = mCoef[term][0];
+                poly1[term] = mCoef[term][1];
+                poly2[term] = mCoef[term][2];
+            }
+        }
 
-       poly0 = poly0.derivative();
-       poly1 = poly1.derivative();
-       poly2 = poly2.derivative();
+        poly0 = poly0.derivative();
+        poly1 = poly1.derivative();
+        poly2 = poly2.derivative();
 
-       ret = OneD<math::linear::VectorN<3, double> >(polyOrder - 1);
-       {
-           const auto sz = mCoef.size() - 1;
-           for (size_t term = 0; term < sz; term++)
-           {
-               ret[term][0] = poly0[term];
-               ret[term][1] = poly1[term];
-               ret[term][2] = poly2[term];
-           }
-       }
-   }
+        ret = OneD<math::linear::VectorN<3, double>>(polyOrder - 1);
+        {
+            const auto sz = mCoef.size() - 1;
+            for (size_t term = 0; term < sz; term++)
+            {
+                ret[term][0] = poly0[term];
+                ret[term][1] = poly1[term];
+                ret[term][2] = poly2[term];
+            }
+        }
+    }
 
-   return ret;
+    return ret;
 }
 
-template<typename _T>
-_T
-OneD<_T>::velocity(double at) const
+template <typename _T>
+_T OneD<_T>::velocity(double at) const
 {
     _T ret{};
-   double atPwr = 1.0;
-   const auto sz = mCoef.size();
-   for (size_t i = 1 ; i < sz; i++)
-   {
-      ret += static_cast<double>(i) * mCoef[i]*atPwr;
-      atPwr *= at;
-   }
-   return ret;
+    double atPwr = 1.0;
+    const auto sz = mCoef.size();
+    for (size_t i = 1; i < sz; i++)
+    {
+        ret += static_cast<double>(i) * mCoef[i] * atPwr;
+        atPwr *= at;
+    }
+    return ret;
 }
 
-template<typename _T>
-_T
-OneD<_T>::acceleration(double at) const
+template <typename _T>
+_T OneD<_T>::acceleration(double at) const
 {
     _T ret{};
-   double atPwr = 1.0;
-   const auto sz = mCoef.size();
-   for (size_t i = 2 ; i < sz; i++)
-   {
-      ret += static_cast<double>(i * (i - 1)) * mCoef[i]*atPwr;
-      atPwr *= at;
-   }
-   return ret;
+    double atPwr = 1.0;
+    const auto sz = mCoef.size();
+    for (size_t i = 2; i < sz; i++)
+    {
+        ret += static_cast<double>(i * (i - 1)) * mCoef[i] * atPwr;
+        atPwr *= at;
+    }
+    return ret;
 }
 
-template<typename _T>
-_T&
-OneD<_T>::operator [] (size_t i)
+template <typename _T>
+_T& OneD<_T>::operator[](size_t i)
 {
     if (i < mCoef.size())
     {
@@ -194,42 +188,39 @@ OneD<_T>::operator [] (size_t i)
     else
     {
         std::ostringstream str;
-        str << "index: " << i << " not within range [0..." << mCoef.size() << ")";
+        str << "index: " << i << " not within range [0..." << mCoef.size()
+            << ")";
         throw except::IndexOutOfRangeException(Ctxt(str));
     }
 }
 
-
-template<typename _T>
-_T
-OneD<_T>::operator [] (size_t i) const
+template <typename _T>
+_T OneD<_T>::operator[](size_t i) const
 {
-   if (i < mCoef.size())
-   {
-      return mCoef[i];
-   }
-   else
-   {
-      std::ostringstream str;
-      str << "idx(" << i << ") not within range [0..." << mCoef.size() << ")";
-      throw except::IndexOutOfRangeException(Ctxt(str));
-   }
+    if (i < mCoef.size())
+    {
+        return mCoef[i];
+    }
+    else
+    {
+        std::ostringstream str;
+        str << "idx(" << i << ") not within range [0..." << mCoef.size() << ")";
+        throw except::IndexOutOfRangeException(Ctxt(str));
+    }
 }
 
-template<typename _T>
-std::ostream&
-operator << (std::ostream& out, const OneD<_T>& p)
+template <typename _T>
+std::ostream& operator<<(std::ostream& out, const OneD<_T>& p)
 {
-   for (size_t i = 0 ; i < p.mCoef.size() ; i++)
-   {
-      out << p[i] << "*y^" << i << " ";
-   }
-   return out;
+    for (size_t i = 0; i < p.mCoef.size(); i++)
+    {
+        out << p[i] << "*y^" << i << " ";
+    }
+    return out;
 }
 
-template<typename _T>
-OneD<_T>&
-OneD<_T>::operator *= (double cv)
+template <typename _T>
+OneD<_T>& OneD<_T>::operator*=(double cv)
 {
     const auto sz = mCoef.size();
     for (size_t i = 0; i < sz; i++)
@@ -239,52 +230,47 @@ OneD<_T>::operator *= (double cv)
     return *this;
 }
 
-template<typename _T>
-OneD<_T>
-OneD<_T>::operator * (double cv) const
+template <typename _T>
+OneD<_T> OneD<_T>::operator*(double cv) const
 {
     OneD<_T> ret(*this);
     ret *= cv;
     return ret;
 }
 
-template<typename _T>
-OneD<_T>
-operator * (double cv, const OneD<_T>& p)
+template <typename _T>
+OneD<_T> operator*(double cv, const OneD<_T>& p)
 {
-    return p*cv;
+    return p * cv;
 }
 
-template<typename _T>
-OneD<_T>&
-OneD<_T>::operator *= (const OneD<_T>& p)
+template <typename _T>
+OneD<_T>& OneD<_T>::operator*=(const OneD<_T>& p)
 {
-   OneD<_T> tmp(order()+p.order());
-   const auto xsz = mCoef.size();
-   const auto ysz = p.mCoef.size();
-   for (size_t i = 0; i < xsz; i++)
-   {
-       for (size_t j = 0; j < ysz; j++)
-       {
-           tmp.mCoef[i + j] += mCoef[i] * p.mCoef[j];
-       }
-   }
-   *this = tmp;
-   return *this;
+    OneD<_T> tmp(order() + p.order());
+    const auto xsz = mCoef.size();
+    const auto ysz = p.mCoef.size();
+    for (size_t i = 0; i < xsz; i++)
+    {
+        for (size_t j = 0; j < ysz; j++)
+        {
+            tmp.mCoef[i + j] += mCoef[i] * p.mCoef[j];
+        }
+    }
+    *this = tmp;
+    return *this;
 }
 
-template<typename _T>
-OneD<_T>
-OneD<_T>::operator * (const OneD<_T>& p) const
+template <typename _T>
+OneD<_T> OneD<_T>::operator*(const OneD<_T>& p) const
 {
     OneD<_T> ret(*this);
     ret *= p;
     return ret;
 }
 
-template<typename _T>
-OneD<_T>&
-OneD<_T>::operator += (const OneD<_T>& p)
+template <typename _T>
+OneD<_T>& OneD<_T>::operator+=(const OneD<_T>& p)
 {
     OneD<_T> tmp(std::max<size_t>(order(), p.order()));
     {
@@ -301,24 +287,22 @@ OneD<_T>::operator += (const OneD<_T>& p)
             tmp.mCoef[i] += p.mCoef[i];
         }
     }
-   *this = tmp;
-   return *this;
+    *this = tmp;
+    return *this;
 }
 
-template<typename _T>
-OneD<_T>
-OneD<_T>::operator + (const OneD<_T>& p) const
+template <typename _T>
+OneD<_T> OneD<_T>::operator+(const OneD<_T>& p) const
 {
     OneD<_T> ret(*this);
     ret += p;
     return ret;
 }
 
-template<typename _T>
-OneD<_T>&
-OneD<_T>::operator -= (const OneD<_T>& p)
+template <typename _T>
+OneD<_T>& OneD<_T>::operator-=(const OneD<_T>& p)
 {
-   OneD<_T> tmp(std::max<size_t>(order(), p.order()));
+    OneD<_T> tmp(std::max<size_t>(order(), p.order()));
     {
         const auto sz = mCoef.size();
         for (size_t i = 0; i < sz; i++)
@@ -333,41 +317,38 @@ OneD<_T>::operator -= (const OneD<_T>& p)
             tmp.mCoef[i] -= p.mCoef[i];
         }
     }
-   *this = tmp;
-   return *this;
+    *this = tmp;
+    return *this;
 }
 
-template<typename _T>
-OneD<_T>
-OneD<_T>::operator - (const OneD<_T>& p) const
+template <typename _T>
+OneD<_T> OneD<_T>::operator-(const OneD<_T>& p) const
 {
-   OneD<_T> ret(*this);
-   ret -= p;
-   return ret;
+    OneD<_T> ret(*this);
+    ret -= p;
+    return ret;
 }
 
-template<typename _T>
-OneD<_T>&
-OneD<_T>::operator /= (double cv)
+template <typename _T>
+OneD<_T>& OneD<_T>::operator/=(double cv)
 {
-    double recipCV = 1.0/cv;
-    for (unsigned int i = 0, sz = mCoef.size() ; i < sz; i++)
+    double recipCV = 1.0 / cv;
+    for (unsigned int i = 0, sz = mCoef.size(); i < sz; i++)
     {
         mCoef[i] *= recipCV;
     }
     return *this;
 }
 
-template<typename _T>
-OneD<_T>
-OneD<_T>::operator / (double cv) const
+template <typename _T>
+OneD<_T> OneD<_T>::operator/(double cv) const
 {
     OneD<_T> ret(*this);
-    ret *= (1.0/cv);
+    ret *= (1.0 / cv);
     return ret;
 }
 
-template<typename _T>
+template <typename _T>
 OneD<_T> OneD<_T>::power(size_t toThe) const
 {
     // If its 0, we have to give back a 1*x^0 poly, since
@@ -385,7 +366,6 @@ OneD<_T> OneD<_T>::power(size_t toThe) const
     if (toThe == 1)
         return rv;
 
-
     // Otherwise, we have to raise it
     for (size_t i = 2; i <= toThe; i++)
     {
@@ -394,13 +374,13 @@ OneD<_T> OneD<_T>::power(size_t toThe) const
     return rv;
 }
 
-template<typename _T>
+template <typename _T>
 OneD<_T> OneD<_T>::scaleVariable(double scale) const
 {
-    return ::math::poly::scaleVariable<OneD<_T> >(*this, scale);
+    return ::math::poly::scaleVariable<OneD<_T>>(*this, scale);
 }
 
-template<typename _T>
+template <typename _T>
 OneD<_T> OneD<_T>::truncateTo(size_t order) const
 {
     order = std::min(this->order(), order);
@@ -413,7 +393,7 @@ OneD<_T> OneD<_T>::truncateTo(size_t order) const
     return newP;
 }
 
-template<typename _T>
+template <typename _T>
 OneD<_T> OneD<_T>::truncateToNonZeros(double zeroEpsilon) const
 {
     zeroEpsilon = std::abs(zeroEpsilon);
@@ -432,10 +412,10 @@ OneD<_T> OneD<_T>::truncateToNonZeros(double zeroEpsilon) const
     return truncateTo(newOrder);
 }
 
-template<>
-inline
-OneD<math::linear::VectorN<3, double> >
-OneD< math::linear::VectorN<3, double> >::truncateToNonZeros(double zeroEpsilon) const
+template <>
+inline OneD<math::linear::VectorN<3, double>>
+OneD<math::linear::VectorN<3, double>>::truncateToNonZeros(
+        double zeroEpsilon) const
 {
     zeroEpsilon = std::abs(zeroEpsilon);
     size_t newOrder(0);
@@ -455,9 +435,8 @@ OneD< math::linear::VectorN<3, double> >::truncateToNonZeros(double zeroEpsilon)
     return truncateTo(newOrder);
 }
 
-template<typename _T>
-OneD<_T> OneD<_T>::transformInput(const OneD<_T>& gx,
-                                  double zeroEpsilon) const
+template <typename _T>
+OneD<_T> OneD<_T>::transformInput(const OneD<_T>& gx, double zeroEpsilon) const
 {
     OneD<_T> newP(order());
 
@@ -469,7 +448,7 @@ OneD<_T> OneD<_T>::transformInput(const OneD<_T>& gx,
     return newP.truncateToNonZeros(zeroEpsilon);
 }
 
-template<typename _T>
+template <typename _T>
 void OneD<_T>::copyFrom(const OneD<_T>& p)
 {
     const auto numCopy = static_cast<ptrdiff_t>(std::min(size(), p.size()));
@@ -478,8 +457,8 @@ void OneD<_T>::copyFrom(const OneD<_T>& p)
     std::copy(begin, end, mCoef.begin());
 }
 
-template<typename _T>
-template<typename Vector_T>
+template <typename _T>
+template <typename Vector_T>
 bool OneD<_T>::equalImpl(const Vector_T& p) const
 {
     const auto sz = size();
@@ -528,6 +507,5 @@ bool OneD<_T>::equalImpl(const Vector_T& p) const
     return true;
 }
 
-} // poly
-} // math
-
+}  // poly
+}  // math

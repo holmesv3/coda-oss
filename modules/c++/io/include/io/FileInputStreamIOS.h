@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -25,22 +25,21 @@
 
 #if defined(USE_IO_STREAMS)
 
+#include <fstream>
 #include <ios>
 #include <iostream>
-#include <fstream>
 
 #include "except/Exception.h"
 #include "io/InputStream.h"
 #include "io/SeekableStreams.h"
 #include "sys/filesystem.h"
 
-
- /*!
+/*!
  *  \file FileInputStreamIOS.h
  *  \brief The InputStream representation of a file
- *  \todo  Redefine the readln function to use getline() 
+ *  \todo  Redefine the readln function to use getline()
  *  The file contains the representation of an input stream
- *  from a file.  It mimics the Java io package API, with added 
+ *  from a file.  It mimics the Java io package API, with added
  *  streaming capabilities
  */
 
@@ -60,7 +59,8 @@ class FileInputStreamIOS : public SeekableInputStream
 public:
     //!  Constructor
     FileInputStreamIOS()
-    {}
+    {
+    }
 
     /*!
      *  Alternate Constructor.  Takes an input file and a mode
@@ -78,18 +78,18 @@ public:
     FileInputStreamIOS(const char* inputFile,
                        std::ios::openmode mode = std::ios::in);
 
-
     virtual ~FileInputStreamIOS()
     {
-        if (isOpen() ) close();
+        if (isOpen())
+            close();
     }
     /*!
      * Returns the number of bytes that can be read
      * without blocking by the next caller of a method for this input
-     * 
+     *
      * \throw except::IOException
      * \return number of bytes which are readable
-     * 
+     *
      */
     virtual sys::Off_T available();
 
@@ -99,15 +99,12 @@ public:
      */
     virtual bool isOpen();
 
-
     /*!
      *  Open the file in the mode provided
      *  \param file The file to open
      *  \param mode The mode
      */
-    virtual void open(const char *file,
-                      std::ios::openmode mode = std::ios::in );
-
+    virtual void open(const char* file, std::ios::openmode mode = std::ios::in);
 
     /*!
      *  Go to the offset at the location specified.
@@ -145,11 +142,8 @@ protected:
      */
     virtual sys::SSize_T readImpl(void* buffer, size_t len);
 
-
     std::ifstream mFStream;
 };
-
-
 
 }
 #endif

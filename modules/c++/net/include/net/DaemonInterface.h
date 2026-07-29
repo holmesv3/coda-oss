@@ -17,10 +17,14 @@ class DaemonInterface
 {
 public:
     //!  Constructor
-    DaemonInterface() {}
+    DaemonInterface()
+    {
+    }
 
     //!  Destructor
-    virtual ~DaemonInterface() {}
+    virtual ~DaemonInterface()
+    {
+    }
 
     //! Start the daemon
     virtual void start() = 0;
@@ -37,7 +41,6 @@ public:
      *  \return Should processing continue?
      */
     virtual void daemonize(int& argc, char**& argv) = 0;
-
 
     //! Set pidfile (file for locking application to single occurance).
     virtual void setPidfile(const std::string& pidfile) = 0;

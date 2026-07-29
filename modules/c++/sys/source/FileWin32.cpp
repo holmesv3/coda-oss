@@ -22,17 +22,20 @@
 
 #ifdef _WIN32
 
-#include <limits>
 #include <cmath>
+#include <limits>
+
 #include "sys/File.h"
 
-_SYS_HANDLE_TYPE sys::File::createFile(const coda_oss::filesystem::path& str_, int accessFlags, int creationFlags) noexcept
+_SYS_HANDLE_TYPE sys::File::createFile(const coda_oss::filesystem::path& str_,
+                                       int accessFlags,
+                                       int creationFlags) noexcept
 {
     const auto str = str_.string();
 
     // If the truncate bit is on AND the file does exist,
     // we need to set the mode to TRUNCATE_EXISTING
-    if ((creationFlags & sys::File::TRUNCATE) && sys::OS().exists(str) )
+    if ((creationFlags & sys::File::TRUNCATE) && sys::OS().exists(str))
     {
         creationFlags = TRUNCATE_EXISTING;
     }
@@ -44,12 +47,12 @@ _SYS_HANDLE_TYPE sys::File::createFile(const coda_oss::filesystem::path& str_, i
     const auto dwDesiredAccess = static_cast<DWORD>(accessFlags);
     const auto dwCreationDisposition = static_cast<DWORD>(creationFlags);
     return CreateFile(str.c_str(),
-                         dwDesiredAccess,
-                         FILE_SHARE_READ,
-                         nullptr /*lpSecurityAttributes*/,
-                         dwCreationDisposition,
-                         FILE_ATTRIBUTE_NORMAL,
-                         static_cast<HANDLE>(nullptr) /*hTemplateFile*/);
+                      dwDesiredAccess,
+                      FILE_SHARE_READ,
+                      nullptr /*lpSecurityAttributes*/,
+                      dwCreationDisposition,
+                      FILE_ATTRIBUTE_NORMAL,
+                      static_cast<HANDLE>(nullptr) /*hTemplateFile*/);
 }
 void sys::File::create(const std::string& str,
                        int accessFlags,
@@ -58,7 +61,8 @@ void sys::File::create(const std::string& str,
     create(std::nothrow, str, accessFlags, creationFlags);
     if (mHandle == INVALID_HANDLE_VALUE)
     {
-        throw sys::SystemException(Ctxt(str::Format("Error opening file: [%s]", str)));
+        throw sys::SystemException(
+                Ctxt(str::Format("Error opening file: [%s]", str)));
     }
 }
 
@@ -73,8 +77,8 @@ void sys::File::readInto(void* buffer, size_t size)
     while (bytesRead < size)
     {
         // Determine how many bytes to read
-        const DWORD bytesToRead = static_cast<DWORD>(
-                std::min(MAX_READ_SIZE, bytesRemaining));
+        const DWORD bytesToRead =
+                static_cast<DWORD>(std::min(MAX_READ_SIZE, bytesRemaining));
 
         // Read from file
         DWORD bytesThisRead = 0;
@@ -152,8 +156,8 @@ void sys::File::writeFrom(const void* buffer, size_t size)
     while (bytesWritten < size)
     {
         // Determine how many bytes to write
-        const DWORD bytesToWrite = static_cast<DWORD>(
-            std::min(MAX_WRITE_SIZE, bytesRemaining));
+        const DWORD bytesToWrite =
+                static_cast<DWORD>(std::min(MAX_WRITE_SIZE, bytesRemaining));
 
         // Write the data
         DWORD bytesThisWrite = 0;
@@ -182,7 +186,9 @@ sys::Off_T sys::File::seekTo(sys::Off_T offset, int whence)
     if (SetFilePointerEx(mHandle, largeInt, &newFilePointer, dwMoveMethod) == 0)
     {
         const auto dwLastError = GetLastError();
-        throw sys::SystemException(Ctxt("SetFilePointer failed: GetLastError() = " + std::to_string(dwLastError)));
+        throw sys::SystemException(
+                Ctxt("SetFilePointer failed: GetLastError() = " +
+                     std::to_string(dwLastError)));
     }
 
     return static_cast<sys::Off_T>(newFilePointer.QuadPart);
@@ -199,18 +205,21 @@ sys::Off_T sys::File::length()
 sys::Off_T sys::File::lastModifiedTime()
 {
     FILETIME creationTime, lastAccessTime, lastWriteTime;
-    BOOL ret = GetFileTime(mHandle, &creationTime,
-            &lastAccessTime, &lastWriteTime);
+    BOOL ret = GetFileTime(mHandle,
+                           &creationTime,
+                           &lastAccessTime,
+                           &lastWriteTime);
     if (ret)
     {
         ULARGE_INTEGER uli;
         uli.LowPart = lastWriteTime.dwLowDateTime;
         uli.HighPart = lastWriteTime.dwHighDateTime;
-        ULONGLONG stInMillis(uli.QuadPart/10000);
+        ULONGLONG stInMillis(uli.QuadPart / 10000);
         return (sys::Off_T)stInMillis;
     }
-    throw sys::SystemException(Ctxt(
-                    str::Format("Error getting last modified time for path %s", mPath)));
+    throw sys::SystemException(
+            Ctxt(str::Format("Error getting last modified time for path %s",
+                             mPath)));
 }
 
 void sys::File::flush()

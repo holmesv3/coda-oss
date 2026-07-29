@@ -25,16 +25,15 @@
 #define CODA_OSS_sys_AbstractOS_h_INCLUDED_
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "config/Exports.h"
+#include "str/Tokenizer.h"
 #include "sys/Conf.h"
 #include "sys/FileFinder.h"
 #include "sys/SystemException.h"
-#include "str/Tokenizer.h"
 #include "sys/filesystem.h"
-
 
 /*!
  *  \file
@@ -53,58 +52,59 @@ namespace sys
  *
  *  We require at least SSE2 which is from 2000 ... 23 years ago.
  *  Also see https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
- *  "... For the x86-64 compiler, these extensions [ -msse2 ] are enabled by default."
-*   We're 64-bit only.
-* 
-* Well ... it turns out third parties want to compile this code in different
-* enviroments which we don't know about; SIMD support makes that
-* more difficult.
+ *  "... For the x86-64 compiler, these extensions [ -msse2 ] are enabled by
+ * default." We're 64-bit only.
+ *
+ * Well ... it turns out third parties want to compile this code in different
+ * enviroments which we don't know about; SIMD support makes that
+ * more difficult.
  */
 #ifdef CODA_OSS_DISABLE_SIMD
-    #ifdef CODA_OSS_ENABLE_SIMD
-        #error "CODA_OSS_ENABLE_SIMD already #define'd'"
-    #endif
-    #define CODA_OSS_ENABLE_SIMD 0
-#endif // CODA_OSS_DISABLE_SIMD
+#ifdef CODA_OSS_ENABLE_SIMD
+#error "CODA_OSS_ENABLE_SIMD already #define'd'"
+#endif
+#define CODA_OSS_ENABLE_SIMD 0
+#endif  // CODA_OSS_DISABLE_SIMD
 
 #ifndef CODA_OSS_ENABLE_SIMD
-    #if __AVX512F__ || __AVX2__
-        #define CODA_OSS_ENABLE_SIMD 1
-    #elif _MSC_VER && _M_X64 /*MSVC for SSE2*/ 
-        #define CODA_OSS_ENABLE_SIMD 1
-    #elif __GNUC__ && __SSE2__
-        #define CODA_OSS_ENABLE_SIMD 1
-    #else
-        #define CODA_OSS_ENABLE_SIMD 0
-    #endif
+#if __AVX512F__ || __AVX2__
+#define CODA_OSS_ENABLE_SIMD 1
+#elif _MSC_VER && _M_X64 /*MSVC for SSE2*/
+#define CODA_OSS_ENABLE_SIMD 1
+#elif __GNUC__ && __SSE2__
+#define CODA_OSS_ENABLE_SIMD 1
+#else
+#define CODA_OSS_ENABLE_SIMD 0
+#endif
 #endif
 
 enum class SIMDInstructionSet
 {
-    Disabled, // CODA_OSS_ENABLE_SIMD = 0
-    Unknown, // CODA_OSS_ENABLE_SIMD = 1, but can't determine
+    Disabled,  // CODA_OSS_ENABLE_SIMD = 0
+    Unknown,  // CODA_OSS_ENABLE_SIMD = 1, but can't determine
 
-    SSE2, //  https://en.wikipedia.org/wiki/SSE2
+    SSE2,  //  https://en.wikipedia.org/wiki/SSE2
     AVX2,  // https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
-    AVX512F, // https://en.wikipedia.org/wiki/AVX-512
+    AVX512F,  // https://en.wikipedia.org/wiki/AVX-512
 };
 
-constexpr auto getSIMDInstructionSet() { 
-    #if !CODA_OSS_ENABLE_SIMD
-        return SIMDInstructionSet::Disabled;
-    #else
-        // https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170
-        #if __AVX512F__
-            return SIMDInstructionSet::AVX512F;
-        #elif __AVX2__
-            return SIMDInstructionSet::AVX2;
-        #elif _M_X64 /*MSVC*/ || __SSE2__ /*GCC*/
-            return SIMDInstructionSet::SSE2;
-        #else
-            #error "Can't determine SIMDInstructionSet'"
-            return SIMDInstructionSet::Unknown;
-        #endif
-    #endif // CODA_OSS_ENABLE_SIMD
+constexpr auto getSIMDInstructionSet()
+{
+#if !CODA_OSS_ENABLE_SIMD
+    return SIMDInstructionSet::Disabled;
+#else
+// https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170
+#if __AVX512F__
+    return SIMDInstructionSet::AVX512F;
+#elif __AVX2__
+    return SIMDInstructionSet::AVX2;
+#elif _M_X64 /*MSVC*/ || __SSE2__ /*GCC*/
+    return SIMDInstructionSet::SSE2;
+#else
+#error "Can't determine SIMDInstructionSet'"
+    return SIMDInstructionSet::Unknown;
+#endif
+#endif  // CODA_OSS_ENABLE_SIMD
 }
 
 /*!
@@ -155,11 +155,10 @@ struct CODA_OSS_API AbstractOS
      *  \param extension      extensions should only be used for files
      *  \param pathList       The path list (colon delimited)
      */
-    std::vector<std::string>
-    search(const std::vector<std::string>& searchPaths,
-           const std::string& fragment = "",
-           const std::string& extension = "",
-           bool recursive = true) const;
+    std::vector<std::string> search(const std::vector<std::string>& searchPaths,
+                                    const std::string& fragment = "",
+                                    const std::string& extension = "",
+                                    bool recursive = true) const;
     std::vector<coda_oss::filesystem::path> search(
             const std::vector<coda_oss::filesystem::path>& searchPaths,
             const std::string& fragment = "",
@@ -260,7 +259,8 @@ struct CODA_OSS_API AbstractOS
     virtual std::string getEnv(const std::string&) const = 0;
 
     // Get a "speical" enviroment variable such as $0 or $PWD.
-    // See https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
+    // See
+    // https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
     // and https://wiki.bash-hackers.org/syntax/shellvars
     std::string getSpecialEnv(const std::string&) const;
 
@@ -270,20 +270,28 @@ struct CODA_OSS_API AbstractOS
     virtual bool isEnvSet(const std::string&) const = 0;
     bool isSpecialEnv(const std::string&) const;
 
-
     /*!
      *  Get an environment variable and updates value, but only if set.
      *  Returns true if environment variable is set, false otherwise
      */
-    bool getEnvIfSet(const std::string& envVar, std::string& value, bool includeSpecial=false) const;
+    bool getEnvIfSet(const std::string& envVar,
+                     std::string& value,
+                     bool includeSpecial = false) const;
 
-    // A variable like PATH is often several directories, return each one that exists.
+    // A variable like PATH is often several directories, return each one that
+    // exists.
     bool splitEnv(const std::string& envVar, std::vector<std::string>&) const;
-    bool splitEnv(const std::string& envVar, std::vector<std::string>&, coda_oss::filesystem::file_type) const;
+    bool splitEnv(const std::string& envVar,
+                  std::vector<std::string>&,
+                  coda_oss::filesystem::file_type) const;
 
     // Modify the specified env-var as indicated.
-    void prependEnv(const std::string& envVar, const std::vector<std::string>&, bool overwrite);
-    void appendEnv(const std::string& envVar, const std::vector<std::string>&, bool overwrite);
+    void prependEnv(const std::string& envVar,
+                    const std::vector<std::string>&,
+                    bool overwrite);
+    void appendEnv(const std::string& envVar,
+                   const std::vector<std::string>&,
+                   bool overwrite);
 
     /*!
      *  Set an environment variable
@@ -344,7 +352,6 @@ struct CODA_OSS_API AbstractOS
     virtual void getAvailableCPUs(std::vector<int>& physicalCPUs,
                                   std::vector<int>& htCPUs) const = 0;
 
-
     /*!
      * Figure out what SIMD instrunctions are available.  Keep in mind these
      * are RUN-TIME, not compile-time, checks.
@@ -365,7 +372,8 @@ struct CODA_OSS_API AbstractOS
     /*!
      *  Get the total RAM and available RAM on the system in megabytes
      */
-    virtual void getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const = 0;
+    virtual void getMemInfo(size_t& totalPhysMem,
+                            size_t& freePhysMem) const = 0;
 
     /*!
      *  Get the absolute path to the current executable
@@ -374,7 +382,7 @@ struct CODA_OSS_API AbstractOS
      *  \return absolute path to the current exectuable
      */
     virtual std::string getCurrentExecutable(
-            const std::string& argvPathname="") const;
+            const std::string& argvPathname = "") const;
     // Access to argv[0] might be far away from a getCurrentExecutable() call.
     static void setArgvPathname(const std::string& argvPathname);
 
@@ -403,7 +411,6 @@ public:
     virtual void close() = 0;
     virtual std::string findFirstFile(const std::string& dir) = 0;
     virtual std::string findNextFile() = 0;
-
 };
 
 }

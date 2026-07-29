@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,16 +14,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-#include <string>
 #include <import/except.h>
 #include <import/mem.h>
-#include "tiff/ImageWriter.h"
+
+#include <string>
+
 #include "tiff/FileWriter.h"
+#include "tiff/ImageWriter.h"
 
 tiff::FileWriter::~FileWriter() noexcept
 {
@@ -47,7 +49,8 @@ tiff::FileWriter::~FileWriter() noexcept
 void tiff::FileWriter::openFile(const std::string& fileName)
 {
     if (mOutput.isOpen())
-        throw except::Exception(Ctxt("Last file not closed; call close() first."));
+        throw except::Exception(
+                Ctxt("Last file not closed; call close() first."));
 
     if (fileName == "-")
         throw except::Exception(Ctxt("Cannot write TIFF to std::cout"));
@@ -72,7 +75,7 @@ void tiff::FileWriter::close()
     mImages.clear();
 }
 
-tiff::ImageWriter * tiff::FileWriter::operator[](const sys::Uint32_T index) const
+tiff::ImageWriter* tiff::FileWriter::operator[](const sys::Uint32_T index) const
 {
     if (index >= mImages.size())
         throw except::Exception(Ctxt("Invalid sub-image index"));
@@ -80,7 +83,7 @@ tiff::ImageWriter * tiff::FileWriter::operator[](const sys::Uint32_T index) cons
     return mImages[index];
 }
 
-void tiff::FileWriter::putData(const unsigned char *buffer,
+void tiff::FileWriter::putData(const unsigned char* buffer,
                                sys::Uint32_T numElementsToWrite,
                                sys::Uint32_T index)
 {
@@ -90,7 +93,7 @@ void tiff::FileWriter::putData(const unsigned char *buffer,
     mImages[index]->putData(buffer, numElementsToWrite);
 }
 
-tiff::ImageWriter *tiff::FileWriter::addImage()
+tiff::ImageWriter* tiff::FileWriter::addImage()
 {
     if (!mImages.empty())
         mIFDOffset = mImages.back()->getNextIFDOffset();
@@ -107,6 +110,6 @@ void tiff::FileWriter::writeHeader()
     mHeader.serialize(mOutput);
 
     // Have to rewind a few bytes to write out the actual IFD offset.
-    mIFDOffset = static_cast <sys::Uint32_T>(mOutput.tell());
+    mIFDOffset = static_cast<sys::Uint32_T>(mOutput.tell());
     mIFDOffset -= (int)sizeof(sys::Uint32_T);
 }

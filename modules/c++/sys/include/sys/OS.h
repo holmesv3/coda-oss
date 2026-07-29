@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,12 +14,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #pragma once
 #ifndef CODA_OSS_sys_OS_h_INCLUDED_
@@ -29,14 +28,14 @@
 #include "sys/Conf.h"
 
 #ifdef _WIN32
-#  include "sys/OSWin32.h"
+#include "sys/OSWin32.h"
 namespace sys
 {
 typedef OSWin32 OS;
 typedef DirectoryWin32 Directory;
 }
 #else
-#  include "sys/OSUnix.h"
+#include "sys/OSUnix.h"
 namespace sys
 {
 typedef OSUnix OS;
@@ -44,9 +43,10 @@ typedef DirectoryUnix Directory;
 }
 #endif
 
-// This can be useful for code that will compile on all platforms, but needs different
-// platform-specific behavior.  This avoids the use of more #ifdefs (no preprocessor)
-// and also squelches compiler-warnings about unused local functions.
+// This can be useful for code that will compile on all platforms, but needs
+// different platform-specific behavior.  This avoids the use of more #ifdefs
+// (no preprocessor) and also squelches compiler-warnings about unused local
+// functions.
 namespace sys
 {
 enum class PlatformType

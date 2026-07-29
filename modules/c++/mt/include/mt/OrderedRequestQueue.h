@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of mt-c++ 
+ * This file is part of mt-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2026, MDA Information Systems LLC
  * (C) Copyright 2025-26 ARKA Group, L.P. All rights reserved
  *
@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -25,17 +25,18 @@
 #define __MT_ORDERED_REQUEST_QUEUE_H__
 
 #include <set>
-#include "sys/Thread.h"
+
 #include "sys/ConditionVar.h"
-#include "sys/Mutex.h"
 #include "sys/Dbg.h"
+#include "sys/Mutex.h"
+#include "sys/Thread.h"
 
 namespace mt
 {
 template <typename T>
 class AbstractComparator
 {
- public:
+public:
     virtual bool operator()(const T& lhs, const T& rhs) const
     {
         return lhs < rhs;
@@ -48,19 +49,18 @@ class AbstractComparator
  *  \brief Thread-safe altenrative to request queue
  *
  *  std::set inserts an element into a thread lock request queue
- *  that orders its elements based off of the provided operator. 
- *  Dequeue blocks the thread until an element is avaliable. 
+ *  that orders its elements based off of the provided operator.
+ *  Dequeue blocks the thread until an element is avaliable.
  *
  */
 
-template<typename T, typename CmpFtor = AbstractComparator<T>>
+template <typename T, typename CmpFtor = AbstractComparator<T>>
 class OrderedRequestQueue
 {
 public:
     //! Default constructor
     OrderedRequestQueue() :
-        mAvailableSpace(&mQueueLock),
-        mAvailableItems(&mQueueLock)
+        mAvailableSpace(&mQueueLock), mAvailableItems(&mQueueLock)
     {
     }
 
@@ -81,7 +81,8 @@ public:
 
         mRequestQueue.insert(request);
 #ifdef THREAD_DEBUG
-        dbg_printf("Unlocking (enqueue), new size [%d]\n", mRequestQueue.size());
+        dbg_printf("Unlocking (enqueue), new size [%d]\n",
+                   mRequestQueue.size());
 #endif
         mQueueLock.unlock();
 
@@ -105,13 +106,15 @@ public:
         mRequestQueue.erase(first);
 
 #ifdef THREAD_DEBUG
-        dbg_printf("Unlocking (dequeue), new size [%d]\n", mRequestQueue.size());
+        dbg_printf("Unlocking (dequeue), new size [%d]\n",
+                   mRequestQueue.size());
 #endif
         mQueueLock.unlock();
         mAvailableSpace.signal();
     }
-    
-    //! Retrieves a copy of the n'th item from the front of the queue (0 = first item) without removing it
+
+    //! Retrieves a copy of the n'th item from the front of the queue (0 = first
+    //! item) without removing it
     T peek(size_t n = 0)
     {
         T request;
@@ -131,7 +134,8 @@ public:
         else
         {
             mQueueLock.unlock();
-            throw except::Exception(Ctxt("Request queue cannot peek beyond end of queue"));
+            throw except::Exception(
+                    Ctxt("Request queue cannot peek beyond end of queue"));
         }
         mQueueLock.unlock();
 #ifdef THREAD_DEBUG
@@ -161,7 +165,8 @@ public:
         else
         {
             mQueueLock.unlock();
-            throw except::Exception(Ctxt("Request queue cannot access beyond end of queue"));
+            throw except::Exception(
+                    Ctxt("Request queue cannot access beyond end of queue"));
         }
         mQueueLock.unlock();
         mAvailableSpace.signal();
@@ -199,7 +204,8 @@ public:
 
     //! Aggregates ProcFunctor of all of the elements of the queue
     template <typename ProcFunctor, typename AggregateType>
-    AggregateType aggregate(const ProcFunctor& aggregate, const AggregateType& initial)
+    AggregateType aggregate(const ProcFunctor& aggregate,
+                            const AggregateType& initial)
     {
         mQueueLock.lock();
         AggregateType cumulative = initial;
@@ -264,8 +270,8 @@ public:
 
 private:
     // Noncopyable
-    OrderedRequestQueue(const OrderedRequestQueue& );
-    const OrderedRequestQueue& operator=(const OrderedRequestQueue& );
+    OrderedRequestQueue(const OrderedRequestQueue&);
+    const OrderedRequestQueue& operator=(const OrderedRequestQueue&);
 
 private:
     //! The internal data structure
@@ -279,7 +285,8 @@ private:
 };
 
 template <typename OrderingFtor>
-using RunnableOrderedRequestQueue = OrderedRequestQueue<sys::Runnable*, OrderingFtor>;
+using RunnableOrderedRequestQueue =
+        OrderedRequestQueue<sys::Runnable*, OrderingFtor>;
 }
 
-#endif // __MT_REQUEST_QUEUE_H__
+#endif  // __MT_REQUEST_QUEUE_H__

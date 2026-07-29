@@ -1,13 +1,12 @@
-#include <algorithm>
-
 #include <math/Round.h>
 #include <mt/ThreadPlanner.h>
+
+#include <algorithm>
 
 namespace mt
 {
 ThreadPlanner::ThreadPlanner(size_t numElements, size_t numThreads) :
-    mNumElements(numElements),
-    mNumThreads(numThreads)
+    mNumElements(numElements), mNumThreads(numThreads)
 {
     // If we got lucky and the work divides up evenly, every thread simply
     // gets numElements / numThreads elements of work
@@ -22,7 +21,7 @@ bool ThreadPlanner::getThreadInfo(size_t threadNum,
                                   size_t& numElementsThisThread) const
 {
     startElement = threadNum * mNumElementsPerThread;
-    if(startElement > mNumElements)
+    if (startElement > mNumElements)
     {
         numElementsThisThread = 0;
     }

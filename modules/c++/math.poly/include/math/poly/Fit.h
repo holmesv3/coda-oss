@@ -1,12 +1,12 @@
 #ifndef __MATH_POLY_FIT_H__
 #define __MATH_POLY_FIT_H__
 
-#include <math/poly/OneD.h>
-#include <math/poly/TwoD.h>
+#include <except/Exception.h>
 #include <math/linear/Matrix2D.h>
 #include <math/linear/VectorN.h>
+#include <math/poly/OneD.h>
+#include <math/poly/TwoD.h>
 #include <sys/Conf.h>
-#include <except/Exception.h>
 
 #include <numeric>
 #include <sstream>
@@ -16,22 +16,21 @@ namespace math
 namespace poly
 {
 
-
-    template<typename T>
-    inline double compute_mean_value_(const T& x)
-    {
-        const auto begin = x.get();
-        const auto end = begin + x.size();
-        return std::accumulate(begin, end, 0.0) / static_cast<double>(x.size());
-    }
-    inline double compute_mean_value(const math::linear::Vector<double>& x)
-    {
-        return compute_mean_value_(x);
-    }
-    inline double compute_mean_value(const math::linear::Matrix2D<double>& x)
-    {
-        return compute_mean_value_(x);
-    }
+template <typename T>
+inline double compute_mean_value_(const T& x)
+{
+    const auto begin = x.get();
+    const auto end = begin + x.size();
+    return std::accumulate(begin, end, 0.0) / static_cast<double>(x.size());
+}
+inline double compute_mean_value(const math::linear::Vector<double>& x)
+{
+    return compute_mean_value_(x);
+}
+inline double compute_mean_value(const math::linear::Matrix2D<double>& x)
+{
+    return compute_mean_value_(x);
+}
 
 /*!
  *  Templated function to perform a linear least squares fit for the data.
@@ -43,7 +42,7 @@ namespace poly
  *  A is a system of polynomials, e.g.
  *
  *  f(x) = c0 + c1*x + c2*x^2 + c3*x^3 = y
- *  
+ *
  *  Each observed point in the data sets is computed
  *  for our A matrix.
  *
@@ -54,7 +53,7 @@ namespace poly
  *  | 1  2  4  8 || c2 |   |  1 |
  *  | 1 -2  4 -8 || c3 |   | 33 |
  *
- *  
+ *
  *  Linear least squares solution for system where
  *  ker(A) = {0} (IOW, there are free variables)
  *
@@ -65,10 +64,9 @@ namespace poly
  *  \param order The desired order of the polynomial fit
  *  \return A one dimensional polynomial that fits the curve
  */
- 
-template<typename Vector_T> OneD<double> fit(const Vector_T& x,
-                                             const Vector_T& y,
-                                             size_t order)
+
+template <typename Vector_T>
+OneD<double> fit(const Vector_T& x, const Vector_T& y, size_t order)
 {
     math::linear::Vector<double> vx(x);
     math::linear::Vector<double> vy(y);
@@ -78,13 +76,13 @@ template<typename Vector_T> OneD<double> fit(const Vector_T& x,
     if (sizeX <= order)
     {
         std::ostringstream excSS;
-        excSS << "Not enough points for a unique fit solution ("
-              << sizeX << " points for an order-" << order
+        excSS << "Not enough points for a unique fit solution (" << sizeX
+              << " points for an order-" << order
               << "fit)!  You should really have at least (order+1) = "
-              << (order+1) << " points for this to do what you expect.";
+              << (order + 1) << " points for this to do what you expect.";
         throw except::Exception(Ctxt(excSS));
     }
-    
+
     // Compute mean value
     const auto mean = compute_mean_value(vx);
 
@@ -93,7 +91,8 @@ template<typename Vector_T> OneD<double> fit(const Vector_T& x,
     auto xp = vx - offv;
 
     // Normalize the values in the vector using standard deviation
-    const double rxrms = 1.0 / std::sqrt(xp.normSq() / static_cast<double>(sizeX));
+    const double rxrms =
+            1.0 / std::sqrt(xp.normSq() / static_cast<double>(sizeX));
     xp.scale(rxrms);
 
     math::linear::Matrix2D<double> A(sizeX, order + 1);
@@ -109,7 +108,7 @@ template<typename Vector_T> OneD<double> fit(const Vector_T& x,
             A(i, j) = std::pow(v, static_cast<double>(j));
         }
     }
-    
+
     const auto At = A.transpose();
     const auto inv = inverse(At * A);
     const auto B = inv * At;
@@ -134,13 +133,14 @@ template<typename Vector_T> OneD<double> fit(const Vector_T& x,
     return poly.transformInput(shift);
 }
 
-
 /*!
  *  This method allows us to fit a set of observations using raw
  *  pointers
  */
-inline OneD<double> fit(size_t numObs, const double* x, const double* y, 
-            size_t order)
+inline OneD<double> fit(size_t numObs,
+                        const double* x,
+                        const double* y,
+                        size_t order)
 {
     const math::linear::Vector<double> xv(numObs, x);
     const math::linear::Vector<double> yv(numObs, y);
@@ -165,10 +165,10 @@ inline OneD<double> fit(size_t numObs, const double* x, const double* y,
  */
 
 inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
-                    const math::linear::Matrix2D<double>& y,
-                    const math::linear::Matrix2D<double>& z,
-                    size_t nx,
-                    size_t ny)
+                                    const math::linear::Matrix2D<double>& y,
+                                    const math::linear::Matrix2D<double>& z,
+                                    size_t nx,
+                                    size_t ny)
 {
     const auto m = x.rows();
     const auto n = x.cols();
@@ -197,28 +197,27 @@ inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
     xp.scale(rxrms);
     yp.scale(ryrms);
 
-    const auto acols = (nx+1) * (ny+1);
+    const auto acols = (nx + 1) * (ny + 1);
 
     if (x.size() < acols)
     {
         std::ostringstream excSS;
-        excSS << "Not enough points for a unique fit solution ("
-              <<  x.size() << " points for a " << acols << "-coefficient fit)!"
+        excSS << "Not enough points for a unique fit solution (" << x.size()
+              << " points for a " << acols << "-coefficient fit)!"
               << " You should really have at least (orderX+1)*(orderY+1) = "
               << acols << " points for this to do what you expect.";
         throw except::Exception(Ctxt(excSS));
     }
-    
 
     // R = M x N
     // C = NX+1 x NY+1
 
     // size(A) = R x P
     math::linear::Matrix2D<double> A(x.size(), acols);
-    
+
     for (size_t i = 0; i < m; i++)
     {
-        size_t xidx = i*n;
+        size_t xidx = i * n;
         for (size_t j = 0; j < n; j++, xidx++)
         {
             // We are doing an accumulation of pow()s to get this
@@ -233,10 +232,9 @@ inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
             {
                 size_t yidx = k * (ny + 1);
                 double yacc = 1;
-                
+
                 for (size_t l = 0; l <= ny; l++)
                 {
-
                     A(xidx, yidx) = xacc * yacc;
                     yacc *= yij;
                     ++yidx;
@@ -245,25 +243,25 @@ inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
             }
         }
     }
-    
+
     // size(tmp) = R x 1
     math::linear::Matrix2D<double> tmp(x.size(), 1);
 
     for (size_t i = 0; i < m; i++)
     {
-        size_t xidx = i*n;
+        size_t xidx = i * n;
         for (size_t j = 0; j < n; j++, xidx++)
         {
             tmp(xidx, 0) = z(i, j);
         }
     }
-    
-   const auto At = A.transpose();
+
+    const auto At = A.transpose();
 
     //       T
     // size(A  A) = (P x R) (R x P) = (P x P)
     // size(inv) = (P x P)
-   const auto inv = math::linear::inverse<double>(At * A);
+    const auto inv = math::linear::inverse<double>(At * A);
 
     // size(C) = ((P x P) (P x R))(R x 1)
     //         =   (P x R)(R x 1)
@@ -284,7 +282,7 @@ inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
         double yacc = 1;
         for (size_t j = 0; j <= ny; j++)
         {
-            coeffs[i][j] = C(p, 0)*(xacc * yacc);
+            coeffs[i][j] = C(p, 0) * (xacc * yacc);
             ++p;
             yacc *= ryrms;
         }
@@ -303,12 +301,12 @@ inline math::poly::TwoD<double> fit(const math::linear::Matrix2D<double>& x,
 }
 
 inline math::poly::TwoD<double> fit(size_t numRows,
-                    size_t numCols,
-                    const double* x,
-                    const double* y,
-                    const double* z,
-                    size_t nx,
-                    size_t ny)
+                                    size_t numCols,
+                                    const double* x,
+                                    const double* y,
+                                    const double* z,
+                                    size_t nx,
+                                    size_t ny)
 {
     const math::linear::Matrix2D<double> xm(numRows, numCols, x);
     const math::linear::Matrix2D<double> ym(numRows, numCols, y);
@@ -318,8 +316,8 @@ inline math::poly::TwoD<double> fit(size_t numRows,
 }
 
 /*!
- *  Perform three 1D fits using the same set of observed X values, and return a 1D polynomial with
- *  a Vector of 3 coefficients for each term.
+ *  Perform three 1D fits using the same set of observed X values, and return a
+ * 1D polynomial with a Vector of 3 coefficients for each term.
  *
  *  \param xObs Observed x values
  *  \param yObs0 First set of observed y values
@@ -327,20 +325,23 @@ inline math::poly::TwoD<double> fit(size_t numRows,
  *  \param yObs2 Third set of observed y values
  *  \param order The desired order of the polynomial fit
  *  \throw Exception if all input Vectors are not equally sized
- *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1, Bn2, Bn3)x^n
+ *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1,
+ * Bn2, Bn3)x^n
  */
 
-inline math::poly::OneD< math::linear::VectorN< 3, double > > fit(
-    const math::linear::Vector<double>& xObs,
-    const math::linear::Vector<double>& yObs0,
-    const math::linear::Vector<double>& yObs1,
-    const math::linear::Vector<double>& yObs2,
-    size_t order)
+inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
+        const math::linear::Vector<double>& xObs,
+        const math::linear::Vector<double>& yObs0,
+        const math::linear::Vector<double>& yObs1,
+        const math::linear::Vector<double>& yObs2,
+        size_t order)
 {
     const auto numObs = xObs.size();
-    if (yObs0.size() != numObs || yObs1.size() != numObs || yObs2.size() != numObs)
+    if (yObs0.size() != numObs || yObs1.size() != numObs ||
+        yObs2.size() != numObs)
     {
-        throw except::Exception(Ctxt("Must have the same number of observed y values as observed x values"));
+        throw except::Exception(Ctxt("Must have the same number of observed y "
+                                     "values as observed x values"));
     }
 
     const math::poly::OneD<double> fit0 = fit(xObs, yObs0, order);
@@ -360,11 +361,11 @@ inline math::poly::OneD< math::linear::VectorN< 3, double > > fit(
     //       'order'+1 coefficients and attempting to extract/modify them.
     //       So, we'll retain the original desired order of the polynomial
     //       and simply fill with zeros.
-    math::poly::OneD< math::linear::VectorN< 3, double > > polyVector3 =
-        math::poly::OneD< math::linear::VectorN< 3, double > >(order);
+    math::poly::OneD<math::linear::VectorN<3, double>> polyVector3 =
+            math::poly::OneD<math::linear::VectorN<3, double>>(order);
     for (size_t term = 0; term <= order; term++)
     {
-        math::linear::VectorN< 3, double >& coeffs = polyVector3[term];
+        math::linear::VectorN<3, double>& coeffs = polyVector3[term];
         coeffs[0] = (term <= fit0.order()) ? fit0[term] : 0.0;
         coeffs[1] = (term <= fit1.order()) ? fit1[term] : 0.0;
         coeffs[2] = (term <= fit2.order()) ? fit2[term] : 0.0;
@@ -374,54 +375,56 @@ inline math::poly::OneD< math::linear::VectorN< 3, double > > fit(
 }
 
 /*!
- *  Perform three 1D fits using the same set of observed X values, and return a 1D polynomial with
- *  a Vector of 3 coefficients for each term.
+ *  Perform three 1D fits using the same set of observed X values, and return a
+ * 1D polynomial with a Vector of 3 coefficients for each term.
  *
  *  \param xObsVector Observed x values
  *  \param yObsMatrix Matrix with each row as a set of observed y values
  *  \param order The desired order of the polynomial fit
  *  \throw Exception if the matrix doesn't have 3 sets of values, i.e. 3 rows
- *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1, Bn2, Bn3)x^n
+ *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1,
+ * Bn2, Bn3)x^n
  */
 
-inline math::poly::OneD< math::linear::VectorN< 3, double > > fit(
-    const math::linear::Vector<double>& xObsVector,
-    const math::linear::Matrix2D<double>& yObsMatrix,
-    size_t order)
+inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
+        const math::linear::Vector<double>& xObsVector,
+        const math::linear::Matrix2D<double>& yObsMatrix,
+        size_t order)
 {
     if (yObsMatrix.rows() != 3)
     {
-        throw except::Exception(Ctxt("Matrix of observed Y values must have 3 rows"));
+        throw except::Exception(
+                Ctxt("Matrix of observed Y values must have 3 rows"));
     }
 
     // Vector size error checking will be done by the base fit() function
     const size_t numObs = yObsMatrix.cols();
-    math::linear::Vector<double> yObsVector0 = math::linear::Vector<double>(numObs, yObsMatrix.row(0));
-    math::linear::Vector<double> yObsVector1 = math::linear::Vector<double>(numObs, yObsMatrix.row(1));
-    math::linear::Vector<double> yObsVector2 = math::linear::Vector<double>(numObs, yObsMatrix.row(2));
+    math::linear::Vector<double> yObsVector0 =
+            math::linear::Vector<double>(numObs, yObsMatrix.row(0));
+    math::linear::Vector<double> yObsVector1 =
+            math::linear::Vector<double>(numObs, yObsMatrix.row(1));
+    math::linear::Vector<double> yObsVector2 =
+            math::linear::Vector<double>(numObs, yObsMatrix.row(2));
 
-    math::poly::OneD< math::linear::VectorN< 3, double > > polyVector3 = fit(
-        xObsVector,
-        yObsVector0,
-        yObsVector1,
-        yObsVector2,
-        order);
+    math::poly::OneD<math::linear::VectorN<3, double>> polyVector3 =
+            fit(xObsVector, yObsVector0, yObsVector1, yObsVector2, order);
     return polyVector3;
 }
 
 /*!
- *  Perform three 1D fits using the same set of observed X values, and return a 1D polynomial with
- *  a Vector of 3 coefficients for each term.
+ *  Perform three 1D fits using the same set of observed X values, and return a
+ * 1D polynomial with a Vector of 3 coefficients for each term.
  *
  *  \param xObs Observed x values
  *  \param yObs0 First set of observed y values
  *  \param yObs1 Second set of observed y values
  *  \param yObs2 Third set of observed y values
  *  \param order The desired order of the polynomial fit
- *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1, Bn2, Bn3)x^n
+ *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1,
+ * Bn2, Bn3)x^n
  */
 
-inline math::poly::OneD< math::linear::VectorN< 3, double > > fit(
+inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
         const std::vector<double>& xObs,
         const std::vector<double>& yObs0,
         const std::vector<double>& yObs1,
@@ -429,12 +432,12 @@ inline math::poly::OneD< math::linear::VectorN< 3, double > > fit(
         size_t order)
 {
     // Vector size error checking will be done by the base fit() function
-    math::poly::OneD< math::linear::VectorN< 3, double > > polyVector3 = fit(
-        math::linear::Vector<double>(xObs),
-        math::linear::Vector<double>(yObs0),
-        math::linear::Vector<double>(yObs1),
-        math::linear::Vector<double>(yObs2),
-        order);
+    math::poly::OneD<math::linear::VectorN<3, double>> polyVector3 =
+            fit(math::linear::Vector<double>(xObs),
+                math::linear::Vector<double>(yObs0),
+                math::linear::Vector<double>(yObs1),
+                math::linear::Vector<double>(yObs2),
+                order);
     return polyVector3;
 }
 }

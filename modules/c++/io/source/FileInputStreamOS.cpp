@@ -74,7 +74,6 @@ sys::Off_T io::FileInputStreamOS::available()
     return until - where;
 }
 
-
 sys::SSize_T io::FileInputStreamOS::readImpl(void* buffer, size_t len)
 {
     sys::Off_T avail = available();

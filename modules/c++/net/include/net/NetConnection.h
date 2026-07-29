@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -26,11 +26,11 @@
 
 #include <memory>
 
-#include "net/Socket.h"
-#include "io/BidirectionalStream.h"
-#include "sys/SystemException.h"
 #include "except/Exception.h"
+#include "io/BidirectionalStream.h"
 #include "mem/SharedPtr.h"
+#include "net/Socket.h"
+#include "sys/SystemException.h"
 
 /*!
  *  \file NetConnection.h
@@ -47,7 +47,7 @@ namespace net
  *  \brief The class for reading and writing to a socket
  *
  *  This class takes uses an internal Net handle.
- *  We can write using the OutputStream, and read using 
+ *  We can write using the OutputStream, and read using
  *  the InputStream.  Usually, the developer will prefer to use
  *  the SerializableConnection class, to avoid dealing with the byte
  *  transfer layer.
@@ -59,11 +59,14 @@ public:
      *  Default constructor
      */
     NetConnection()
-    {}
+    {
+    }
 
     //! we own the ptr after this transaction
-    NetConnection(std::unique_ptr<net::Socket>&& socket) : mSocket(socket.release())
-    {}
+    NetConnection(std::unique_ptr<net::Socket>&& socket) :
+        mSocket(socket.release())
+    {
+    }
 
     /*!
      *  Copy constructor
@@ -96,7 +99,7 @@ public:
         {
             close();
         }
-        catch(...)
+        catch (...)
         {
         }
     }
@@ -104,7 +107,7 @@ public:
     /*!
      *  Method to open a connection.  Copies a handle to its internal
      *  matter.  Connects the handles to their readers and writers.
-     *  \param connection The handle to initialize 
+     *  \param connection The handle to initialize
      *  \throw SocketCreationFailedException
      */
     virtual void open(const NetConnection& connection)
@@ -159,4 +162,3 @@ protected:
 
 }
 #endif
-

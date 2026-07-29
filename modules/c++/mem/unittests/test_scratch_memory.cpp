@@ -20,19 +20,21 @@
  *
  */
 
-#include <mem/ScratchMemory.h>
-
 #include <mem/BufferView.h>
+#include <mem/ScratchMemory.h>
 #include <sys/Conf.h>
-#include <cstdlib>
+
 #include <algorithm>
-#include <vector>
+#include <cstdlib>
 #include <set>
+#include <vector>
+
 #include "TestCase.h"
 
 TEST_CASE(testReleaseSingleEndBuffer)
 {
-    //A single release of the last element. Tests with different scratch templates.
+    // A single release of the last element. Tests with different scratch
+    // templates.
     mem::ScratchMemory scratch;
 
     scratch.put<sys::ubyte>("buf0", 11, 1, 13);
@@ -55,7 +57,8 @@ TEST_CASE(testReleaseSingleEndBuffer)
 
     scratch.put<char>("buf4", 4, 3, 13);
     size_t numBytes4 = 3 * (4 + 13 - 1);
-    TEST_ASSERT_EQ(scratch.getNumBytes(), numBytes0 + numBytes2 + numBytes3 + numBytes4);
+    TEST_ASSERT_EQ(scratch.getNumBytes(),
+                   numBytes0 + numBytes2 + numBytes3 + numBytes4);
 
     scratch.setup();
     sys::ubyte* pBuf0 = scratch.get<sys::ubyte>("buf0");
@@ -68,8 +71,8 @@ TEST_CASE(testReleaseSingleEndBuffer)
 
 TEST_CASE(testReleaseMultipleEndBuffers)
 {
-    //Tests multiple releases of the current last element
-    //Also tests releases two concurrent segments
+    // Tests multiple releases of the current last element
+    // Also tests releases two concurrent segments
     mem::ScratchMemory scratch;
 
     scratch.put<sys::ubyte>("buf0", 3, 1, 2);
@@ -125,7 +128,7 @@ TEST_CASE(testReleaseMultipleEndBuffers)
 
 TEST_CASE(testReleaseNonEndBuffers)
 {
-    //Test putting then releasing then putting again and releasing again
+    // Test putting then releasing then putting again and releasing again
     mem::ScratchMemory scratch;
 
     scratch.put<sys::ubyte>("buf0", 2, 1, 2);
@@ -162,7 +165,7 @@ TEST_CASE(testReleaseNonEndBuffers)
 
 TEST_CASE(testReleaseInteriorBuffers)
 {
-    //Tests released with filled in buffers for analysis
+    // Tests released with filled in buffers for analysis
     mem::ScratchMemory scratch;
 
     scratch.put<unsigned char>("a", 2, 1, 2);
@@ -179,12 +182,18 @@ TEST_CASE(testReleaseInteriorBuffers)
 
     scratch.setup();
 
-    mem::BufferView<unsigned char> bufViewA = scratch.getBufferView<sys::ubyte>("a");
-    mem::BufferView<unsigned char> bufViewB = scratch.getBufferView<sys::ubyte>("b");
-    mem::BufferView<unsigned char> bufViewC = scratch.getBufferView<sys::ubyte>("c");
-    mem::BufferView<unsigned char> bufViewD = scratch.getBufferView<sys::ubyte>("d");
-    mem::BufferView<unsigned char> bufViewE = scratch.getBufferView<sys::ubyte>("e");
-    mem::BufferView<unsigned char> bufViewF = scratch.getBufferView<sys::ubyte>("f");
+    mem::BufferView<unsigned char> bufViewA =
+            scratch.getBufferView<sys::ubyte>("a");
+    mem::BufferView<unsigned char> bufViewB =
+            scratch.getBufferView<sys::ubyte>("b");
+    mem::BufferView<unsigned char> bufViewC =
+            scratch.getBufferView<sys::ubyte>("c");
+    mem::BufferView<unsigned char> bufViewD =
+            scratch.getBufferView<sys::ubyte>("d");
+    mem::BufferView<unsigned char> bufViewE =
+            scratch.getBufferView<sys::ubyte>("e");
+    mem::BufferView<unsigned char> bufViewF =
+            scratch.getBufferView<sys::ubyte>("f");
 
     for (size_t i = 0; i < bufViewA.size; ++i)
     {
@@ -319,7 +328,8 @@ TEST_CASE(testReleaseConcurrentKeys)
 
             if (currentOp.op == "put")
             {
-                mem::BufferView<unsigned char> bufView = scratch.getBufferView<sys::ubyte>(key);
+                mem::BufferView<unsigned char> bufView =
+                        scratch.getBufferView<sys::ubyte>(key);
                 for (size_t i = 0; i < bufView.size; ++i)
                 {
                     bufView.data[i] = currentOp.name;
@@ -329,9 +339,12 @@ TEST_CASE(testReleaseConcurrentKeys)
             if (currentOp.op == "release")
             {
                 keysToCheck.erase(key);
-                for (std::set<std::string>::iterator it = keysToCheck.begin(); it != keysToCheck.end(); ++it)
+                for (std::set<std::string>::iterator it = keysToCheck.begin();
+                     it != keysToCheck.end();
+                     ++it)
                 {
-                    mem::BufferView<unsigned char> bufView = scratch.getBufferView<sys::ubyte>(*it);
+                    mem::BufferView<unsigned char> bufView =
+                            scratch.getBufferView<sys::ubyte>(*it);
                     for (size_t i = 0; i < bufView.size; ++i)
                     {
                         TEST_ASSERT_EQ(bufView.data[i], (*it)[0]);
@@ -410,7 +423,8 @@ TEST_CASE(testReleaseConnectedKeys)
 
         if (currentOp.op == "put")
         {
-            mem::BufferView<unsigned char> bufView = scratch.getBufferView<sys::ubyte>(key);
+            mem::BufferView<unsigned char> bufView =
+                    scratch.getBufferView<sys::ubyte>(key);
             for (size_t i = 0; i < bufView.size; ++i)
             {
                 bufView.data[i] = currentOp.name;
@@ -420,9 +434,12 @@ TEST_CASE(testReleaseConnectedKeys)
         if (currentOp.op == "release")
         {
             keysToCheck.erase(key);
-            for (std::set<std::string>::iterator it = keysToCheck.begin(); it != keysToCheck.end(); ++it)
+            for (std::set<std::string>::iterator it = keysToCheck.begin();
+                 it != keysToCheck.end();
+                 ++it)
             {
-                mem::BufferView<unsigned char> bufView = scratch.getBufferView<sys::ubyte>(*it);
+                mem::BufferView<unsigned char> bufView =
+                        scratch.getBufferView<sys::ubyte>(*it);
                 for (size_t i = 0; i < bufView.size; ++i)
                 {
                     TEST_ASSERT_EQ(bufView.data[i], (*it)[0]);
@@ -447,7 +464,9 @@ TEST_CASE(testGenerateBuffersForRelease)
             size_t numElements = (rand() % 20) + 5;
             size_t numBuffers = (rand() % 5) + 1;
 
-            scratch.put<sys::ubyte>(std::string(1, ii), numElements, numBuffers);
+            scratch.put<sys::ubyte>(std::string(1, ii),
+                                    numElements,
+                                    numBuffers);
 
             Operation putOp;
             putOp.op = "put";
@@ -460,7 +479,8 @@ TEST_CASE(testGenerateBuffersForRelease)
             if ((releaseIfFour == 4) && (operations.size() > 3))
             {
                 unsigned int keyToReleaseIndex = (rand() % notReleased.size());
-                scratch.release(std::string(1, notReleased.at(keyToReleaseIndex)));
+                scratch.release(
+                        std::string(1, notReleased.at(keyToReleaseIndex)));
 
                 Operation releaseOp;
                 releaseOp.op = "release";
@@ -482,9 +502,12 @@ TEST_CASE(testGenerateBuffersForRelease)
             std::string key = std::string(1, currentOp.name);
 
             if (currentOp.op == "put" &&
-                    std::find(notReleased.begin(), notReleased.end(), currentOp.name) != notReleased.end())
+                std::find(notReleased.begin(),
+                          notReleased.end(),
+                          currentOp.name) != notReleased.end())
             {
-                mem::BufferView<unsigned char> bufView = scratch.getBufferView<sys::ubyte>(key);
+                mem::BufferView<unsigned char> bufView =
+                        scratch.getBufferView<sys::ubyte>(key);
                 for (size_t i = 0; i < bufView.size; ++i)
                 {
                     bufView.data[i] = currentOp.name;
@@ -494,9 +517,12 @@ TEST_CASE(testGenerateBuffersForRelease)
             if (currentOp.op == "release")
             {
                 keysToCheck.erase(key);
-                for (std::set<std::string>::iterator it = keysToCheck.begin(); it != keysToCheck.end(); ++it)
+                for (std::set<std::string>::iterator it = keysToCheck.begin();
+                     it != keysToCheck.end();
+                     ++it)
                 {
-                    mem::BufferView<unsigned char> bufView = scratch.getBufferView<sys::ubyte>(*it);
+                    mem::BufferView<unsigned char> bufView =
+                            scratch.getBufferView<sys::ubyte>(*it);
                     for (size_t i = 0; i < bufView.size; ++i)
                     {
                         TEST_ASSERT_EQ(bufView.data[i], (*it)[0]);
@@ -523,7 +549,8 @@ TEST_CASE(testScratchMemory)
     size_t numBytes2 = 3 * (29 + 31 - 1);
     size_t numBytes3 = 8 * sizeof(double) + sys::SSE_INSTRUCTION_ALIGNMENT - 1;
     TEST_ASSERT_EQ(scratch.getNumBytes(),
-                   static_cast<size_t>(numBytes0 + numBytes1 + numBytes2 + numBytes3));
+                   static_cast<size_t>(numBytes0 + numBytes1 + numBytes2 +
+                                       numBytes3));
 
     // trying to get scratch before setting up should throw
     TEST_EXCEPTION(scratch.get<sys::ubyte>("buf0"));
@@ -586,21 +613,29 @@ TEST_CASE(testScratchMemory)
 
         // trying to get buffer index out of range should throw
         TEST_EXCEPTION(scratch.get<sys::ubyte>("buf0", 1));
-        TEST_EXCEPTION(scratch.get<sys::ubyte>("buf0", static_cast<size_t>(-1)));
+        TEST_EXCEPTION(
+                scratch.get<sys::ubyte>("buf0", static_cast<size_t>(-1)));
         TEST_EXCEPTION(scratch.get<sys::ubyte>("buf2", 3));
 
         // verify alignment
-        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf0) % 13, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf1) % 23, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf2_0) % 31, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf2_1) % 31, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf2_2) % 31, static_cast<size_t>(0));
-        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf3) % sys::SSE_INSTRUCTION_ALIGNMENT, static_cast<size_t>(0));
+        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf0) % 13,
+                       static_cast<size_t>(0));
+        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf1) % 23,
+                       static_cast<size_t>(0));
+        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf2_0) % 31,
+                       static_cast<size_t>(0));
+        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf2_1) % 31,
+                       static_cast<size_t>(0));
+        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf2_2) % 31,
+                       static_cast<size_t>(0));
+        TEST_ASSERT_EQ(reinterpret_cast<size_t>(pBuf3) %
+                               sys::SSE_INSTRUCTION_ALIGNMENT,
+                       static_cast<size_t>(0));
 
         // verify no overlap between buffers
         TEST_ASSERT_TRUE(pBuf1 - pBuf0 >= static_cast<ptrdiff_t>(11));
         TEST_ASSERT_TRUE(pBuf2_0 - pBuf1 >=
-                static_cast<ptrdiff_t>(17 * sizeof(int)));
+                         static_cast<ptrdiff_t>(17 * sizeof(int)));
         TEST_ASSERT_TRUE(pBuf2_1 - pBuf2_0 >= static_cast<ptrdiff_t>(29));
         TEST_ASSERT_TRUE(pBuf2_2 - pBuf2_1 >= static_cast<ptrdiff_t>(29));
         TEST_ASSERT_TRUE(pBuf3 - pBuf2_2 >= static_cast<ptrdiff_t>(29));
@@ -621,13 +656,10 @@ TEST_CASE(testScratchMemory)
     TEST_EXCEPTION(scratch.setup(invalidBuffer));
 }
 
-TEST_MAIN(
-    TEST_CHECK(testScratchMemory);
-    TEST_CHECK(testReleaseSingleEndBuffer);
-    TEST_CHECK(testReleaseMultipleEndBuffers);
-    TEST_CHECK(testReleaseNonEndBuffers);
-    TEST_CHECK(testReleaseInteriorBuffers);
-    TEST_CHECK(testReleaseConcurrentKeys);
-    TEST_CHECK(testReleaseConnectedKeys);
-    TEST_CHECK(testGenerateBuffersForRelease);
-    )
+TEST_MAIN(TEST_CHECK(testScratchMemory); TEST_CHECK(testReleaseSingleEndBuffer);
+          TEST_CHECK(testReleaseMultipleEndBuffers);
+          TEST_CHECK(testReleaseNonEndBuffers);
+          TEST_CHECK(testReleaseInteriorBuffers);
+          TEST_CHECK(testReleaseConcurrentKeys);
+          TEST_CHECK(testReleaseConnectedKeys);
+          TEST_CHECK(testGenerateBuffersForRelease);)

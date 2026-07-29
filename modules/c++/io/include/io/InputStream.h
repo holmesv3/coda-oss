@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,10 +24,9 @@
 #define __IO_INPUT_STREAM_H__
 
 #include "coda_oss/span.h"
-
 #include "config/Exports.h"
-#include "sys/Dbg.h"
 #include "io/OutputStream.h"
+#include "sys/Dbg.h"
 
 /*!
  *  \file InputStream.h
@@ -58,7 +57,9 @@ struct CODA_OSS_API InputStream
 {
     enum
     {
-        IS_EOF = -1, IS_END = -1, DEFAULT_CHUNK_SIZE = 1024
+        IS_EOF = -1,
+        IS_END = -1,
+        DEFAULT_CHUNK_SIZE = 1024
     };
 
     InputStream() = default;
@@ -85,10 +86,8 @@ struct CODA_OSS_API InputStream
      * \return  The number of bytes read, or -1 if EOF.  If 'verifyFullRead'
      * is true, this will always return 'len' bytes if it didn't throw.
      */
-    sys::SSize_T read(void* buffer,
-                      size_t len,
-                      bool verifyFullRead = false);
-    template<typename T>
+    sys::SSize_T read(void* buffer, size_t len, bool verifyFullRead = false);
+    template <typename T>
     sys::SSize_T read(coda_oss::span<T> buffer, bool verifyFullRead = false)
     {
         return read(buffer.data(), buffer.size_bytes(), verifyFullRead);
@@ -100,11 +99,11 @@ struct CODA_OSS_API InputStream
      * \param cStr String to read data into
      * \param strLenPlusNullByte The max length we will read
      */
-    virtual sys::SSize_T readln(sys::byte *cStr,
+    virtual sys::SSize_T readln(sys::byte* cStr,
                                 const sys::Size_T strLenPlusNullByte);
 
     /*!
-     * The streaming occurs as follows: If the numBytes is IS_END, 
+     * The streaming occurs as follows: If the numBytes is IS_END,
      * we want to pipe all bytes to the output handler
      * Otherwise, we'll take what we've got
      * We want to return the number of bytes total.

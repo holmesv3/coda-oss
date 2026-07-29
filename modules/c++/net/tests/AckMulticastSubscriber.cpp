@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,28 +14,29 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <import/net.h>
-#include <import/sys.h>
 #include <import/io.h>
 #include <import/mem.h>
-#include "net/SingleThreadedAllocStrategy.h"
+#include <import/net.h>
+#include <import/sys.h>
+
 #include "net/NetConnectionServer.h"
+#include "net/SingleThreadedAllocStrategy.h"
 
 using namespace net;
 using namespace sys;
 using namespace io;
 using namespace except;
 
-template<typename T> class RetransmitTarget : public net::RequestHandler
+template <typename T>
+class RetransmitTarget : public net::RequestHandler
 {
 public:
-
     RetransmitTarget()
     {
     }
@@ -46,21 +47,25 @@ public:
     void operator()(net::NetConnection* conn)
     {
         T packet;
-        conn->read((char*) &packet, sizeof(packet));
+        conn->read((char*)&packet, sizeof(packet));
         std::cout << "Recieved packet" << " on retransmit" << std::endl;
     }
 };
 
-template<typename T> class AckMulticastSubscriber
+template <typename T>
+class AckMulticastSubscriber
 {
     std::unique_ptr<Socket> mAckChannel;
     std::unique_ptr<Socket> mMulticastSubscriber;
+
 public:
-    AckMulticastSubscriber(const std::string& mcastGroup, int mcastLocalPort,
-            const std::string& replyTo, int replyToPort)
+    AckMulticastSubscriber(const std::string& mcastGroup,
+                           int mcastLocalPort,
+                           const std::string& replyTo,
+                           int replyToPort)
     {
-        mMulticastSubscriber = createMulticastSubscriber(mcastGroup,
-                                                         mcastLocalPort);
+        mMulticastSubscriber =
+                createMulticastSubscriber(mcastGroup, mcastLocalPort);
         mAckChannel = createSocketForAck(replyTo, replyToPort);
     }
 
@@ -68,7 +73,8 @@ public:
     {
     }
 
-    std::unique_ptr<Socket> createMulticastSubscriber(const std::string& group, int port)
+    std::unique_ptr<Socket> createMulticastSubscriber(const std::string& group,
+                                                      int port)
     {
         SocketAddress here(port);
         std::unique_ptr<Socket> socket(new Socket(UDP_PROTO));
@@ -86,7 +92,8 @@ public:
         return socket;
     }
 
-    std::unique_ptr<Socket> createSocketForAck(const std::string& senderHost, int senderPort)
+    std::unique_ptr<Socket> createSocketForAck(const std::string& senderHost,
+                                               int senderPort)
     {
         SocketAddress toSender(senderHost, senderPort);
         std::unique_ptr<Socket> s = UDPClientSocketFactory().create(toSender);
@@ -97,12 +104,13 @@ public:
     void waitForNotification(T& packet)
     {
         SocketAddress whereFrom;
-        mMulticastSubscriber->recvFrom(whereFrom, (char*) &packet,
-                                      sizeof(packet));
+        mMulticastSubscriber->recvFrom(whereFrom,
+                                       (char*)&packet,
+                                       sizeof(packet));
     }
     void confirmDelivery(int sequenceNumber)
     {
-        mAckChannel->send((const char*) &sequenceNumber, sizeof(int));
+        mAckChannel->send((const char*)&sequenceNumber, sizeof(int));
     }
 };
 
@@ -115,9 +123,9 @@ struct MyPacket
 class RetransmitThread : public sys::Thread
 {
     int mRetransmitPort;
+
 public:
-    RetransmitThread(int retransmitPort) :
-        mRetransmitPort(retransmitPort)
+    RetransmitThread(int retransmitPort) : mRetransmitPort(retransmitPort)
     {
     }
 
@@ -125,16 +133,14 @@ public:
     {
         net::NetConnectionServer server;
         net::DefaultAllocStrategy* strategy = new net::DefaultAllocStrategy();
-        strategy->setRequestHandlerFactory(new DefaultRequestHandlerFactory<
-                RetransmitTarget<MyPacket>>());
+        strategy->setRequestHandlerFactory(
+                new DefaultRequestHandlerFactory<RetransmitTarget<MyPacket>>());
 
         strategy->initialize();
         server.setAllocStrategy(strategy);
         server.create(mRetransmitPort);
         server.handleClients();
-
     }
-
 };
 
 int main(int argc, char** argv)
@@ -142,8 +148,8 @@ int main(int argc, char** argv)
     try
     {
         if (argc != 6)
-            die_printf(
-                       "Usage: %s <multicast-group> <mulicast-recv-port> <reply-to> <at-port> <retransmit-port>\n",
+            die_printf("Usage: %s <multicast-group> <mulicast-recv-port> "
+                       "<reply-to> <at-port> <retransmit-port>\n",
                        argv[0]);
         std::string mcastGroup = argv[1];
         int mcastRecvPort = atoi(argv[2]);
@@ -157,8 +163,10 @@ int main(int argc, char** argv)
 
         pthread_detach(thr->getNative());
 
-        AckMulticastSubscriber<MyPacket>mcastSubs(mcastGroup, mcastRecvPort,
-                                                  replyTo, replyAt);
+        AckMulticastSubscriber<MyPacket> mcastSubs(mcastGroup,
+                                                   mcastRecvPort,
+                                                   replyTo,
+                                                   replyAt);
 
         MyPacket packet;
         mcastSubs.waitForNotification(packet);
@@ -166,11 +174,9 @@ int main(int argc, char** argv)
         std::cout << "Recv'd message: " << packet.what << std::endl;
         mcastSubs.confirmDelivery(packet.number);
         std::cout << "Confirmed packet #: " << packet.number << std::endl;
-
     }
     catch (Exception& ex)
     {
         std::cout << ex.toString() << std::endl;
     }
-
 }

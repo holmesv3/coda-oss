@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,8 +23,8 @@
 #ifndef __TIFF_HEADER_H__
 #define __TIFF_HEADER_H__
 
-#include <import/io.h>
 #include <config/Exports.h>
+#include <import/io.h>
 
 #include "tiff/Common.h"
 
@@ -39,7 +39,11 @@ namespace tiff
 class CODA_OSS_API Header : public io::Serializable
 {
 public:
-    enum ByteOrder { MM, II };
+    enum ByteOrder
+    {
+        MM,
+        II
+    };
 
     /**
      *****************************************************************
@@ -49,26 +53,28 @@ public:
      * @param id
      *   the TIFF identifier, always "42"
      * @param byteOrder
-     *   the byte order of the file "MM" for Big Endian, "II" 
+     *   the byte order of the file "MM" for Big Endian, "II"
      *   for Little Endian
      * @param ifdOffset
      *   the offset to the first IFD
      *****************************************************************/
-    Header(const unsigned short id = 42, const char byteOrder[2] = "  ",
-            const sys::Uint32_T ifdOffset = 8) :
+    Header(const unsigned short id = 42,
+           const char byteOrder[2] = "  ",
+           const sys::Uint32_T ifdOffset = 8) :
         mId(id), mIFDOffset(ifdOffset)
     {
         const bool isBigEndian = sys::isBigEndianSystem();
         // The code below previously used strncpy(), but compilers are now
         // quite aggressive about checking for potential problems.  We're only
-        // dealing with two characters, so it's easy enough to do something else.
+        // dealing with two characters, so it's easy enough to do something
+        // else.
         if (byteOrder[0] == ' ' && byteOrder[1] == ' ')
         {
-            //set it based on the system
-            // strncpy(mByteOrder, isBigEndian ? "MM" : "II", 2);
+            // set it based on the system
+            //  strncpy(mByteOrder, isBigEndian ? "MM" : "II", 2);
             if (isBigEndian)
             {
-                mByteOrder[0] = mByteOrder[1] = 'M'; // "MM"
+                mByteOrder[0] = mByteOrder[1] = 'M';  // "MM"
             }
             else
             {
@@ -82,8 +88,8 @@ public:
             mByteOrder[1] = byteOrder[1];
         }
 
-        mDifferentByteOrdering = isBigEndian ? \
-                getByteOrder() != MM : getByteOrder() != II;
+        mDifferentByteOrdering =
+                isBigEndian ? getByteOrder() != MM : getByteOrder() != II;
     }
 
     //! Destructor
@@ -138,14 +144,13 @@ public:
 
         return II;
     }
-    
+
     bool isDifferentByteOrdering()
     {
         return mDifferentByteOrdering;
     }
-    
-private:
 
+private:
     //! The byte order
     char mByteOrder[2];
 
@@ -154,11 +159,10 @@ private:
 
     //! The IFD offset
     sys::Uint32_T mIFDOffset;
-    
+
     bool mDifferentByteOrdering;
-    
 };
 
-} // End namespace.
+}  // End namespace.
 
-#endif // __TIFF_HEADER_H__
+#endif  // __TIFF_HEADER_H__

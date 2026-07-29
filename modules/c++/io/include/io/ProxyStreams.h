@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -25,16 +25,15 @@
 
 #include "config/Exports.h"
 #include "io/InputStream.h"
-#include "io/OutputStream.h"
 #include "io/NullStreams.h"
+#include "io/OutputStream.h"
 #include "mem/SharedPtr.h"
 
 namespace io
 {
 struct CODA_OSS_API ProxyInputStream : public InputStream
 {
-    ProxyInputStream(InputStream *proxy, bool ownPtr = false) :
-        mOwnPtr(ownPtr)
+    ProxyInputStream(InputStream* proxy, bool ownPtr = false) : mOwnPtr(ownPtr)
     {
         mProxy.reset(proxy);
     }
@@ -52,7 +51,7 @@ struct CODA_OSS_API ProxyInputStream : public InputStream
         return mProxy->available();
     }
 
-    virtual void setProxy(InputStream *proxy, bool ownPtr = false)
+    virtual void setProxy(InputStream* proxy, bool ownPtr = false)
     {
         if (!mOwnPtr)
             mProxy.release();
@@ -76,7 +75,7 @@ protected:
 struct CODA_OSS_API ProxyOutputStream : public OutputStream
 {
     ProxyOutputStream() = default;
-    ProxyOutputStream(OutputStream *proxy, bool ownPtr = false) :
+    ProxyOutputStream(OutputStream* proxy, bool ownPtr = false) :
         mOwnPtr(ownPtr)
     {
         mProxy.reset(proxy);
@@ -108,7 +107,7 @@ struct CODA_OSS_API ProxyOutputStream : public OutputStream
         mProxy->close();
     }
 
-    virtual void setProxy(OutputStream *proxy, bool ownPtr = false)
+    virtual void setProxy(OutputStream* proxy, bool ownPtr = false)
     {
         if (!mOwnPtr)
             mProxy.release();
@@ -127,7 +126,7 @@ protected:
 struct CODA_OSS_API ToggleOutputStream : public io::ProxyOutputStream
 {
     ToggleOutputStream() = default;
-    ToggleOutputStream(io::OutputStream *output, bool ownPtr = false) :
+    ToggleOutputStream(io::OutputStream* output, bool ownPtr = false) :
         io::ProxyOutputStream(nullptr), mPtr(output), mOwnPtr(ownPtr)
     {
     }

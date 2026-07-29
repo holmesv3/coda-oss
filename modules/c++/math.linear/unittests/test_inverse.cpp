@@ -21,6 +21,7 @@
  */
 
 #include <math/linear/Matrix2D.h>
+
 #include "TestCase.h"
 
 TEST_CASE(testLeftRealProperties)
@@ -71,7 +72,7 @@ TEST_CASE(testRightRealProperties)
     TEST_ASSERT_EQ(inverse, inverse * matrix * inverse);
     TEST_ASSERT_EQ(matrix, math::linear::leftInverse(inverse));
 
-     math::linear::Matrix2D<double> xx(1, 2);
+    math::linear::Matrix2D<double> xx(1, 2);
     xx(0, 0) = 1;
     xx(0, 1) = 5;
 
@@ -80,8 +81,5 @@ TEST_CASE(testRightRealProperties)
     TEST_ASSERT_EQ(yy * inverse, xx);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testLeftRealProperties);
-    TEST_CHECK(testRightRealProperties);
-    )
-
+TEST_MAIN(TEST_CHECK(testLeftRealProperties);
+          TEST_CHECK(testRightRealProperties);)

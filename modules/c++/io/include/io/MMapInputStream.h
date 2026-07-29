@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,9 +24,9 @@
 #define __IO_MMAP_INPUT_STREAM_H__
 
 #include <cstdio>
-#include "sys/OS.h"
-#include "io/SeekableStreams.h"
 
+#include "io/SeekableStreams.h"
+#include "sys/OS.h"
 
 namespace io
 {
@@ -35,13 +35,12 @@ class MMapInputStream : public SeekableInputStream
 {
 public:
     MMapInputStream() : mFile(nullptr), mLength(0), mData(nullptr), mMark(0)
-    {}
-    MMapInputStream(const std::string& inputFile,
-                    char* flags = "r+b") :
-            mFile(nullptr), mLength(0), mData(nullptr), mMark(0)
+    {
+    }
+    MMapInputStream(const std::string& inputFile, char* flags = "r+b") :
+        mFile(nullptr), mLength(0), mData(nullptr), mMark(0)
     {
         open(inputFile, flags);
-
     }
 
     virtual ~MMapInputStream()
@@ -81,7 +80,6 @@ protected:
     size_t mLength;
     sys::byte* mData;
     size_t mMark;
-
 };
 
 }

@@ -21,13 +21,12 @@
  */
 #include <import/except.h>
 #include <import/io.h>
-#include <import/str.h>
 #include <import/sio/lite.h>
+#include <import/str.h>
 
 using namespace sio::lite;
 using namespace io;
 using namespace except;
-
 
 std::string printPrintable(std::vector<sys::byte>& bytes)
 {
@@ -43,15 +42,15 @@ std::string printPrintable(std::vector<sys::byte>& bytes)
     return printable.str();
 }
 
-
 void printUserData(FileHeader* h)
 {
     sio::lite::UserDataDictionary& userData = h->getUserDataSection();
     for (sio::lite::UserDataDictionary::Iterator it = userData.begin();
-        it != userData.end(); ++it)
+         it != userData.end();
+         ++it)
     {
         std::cout << ". " << it->first << ": ";
-        std::cout << "[" << printPrintable( it->second ) << "]" << std::endl;
+        std::cout << "[" << printPrintable(it->second) << "]" << std::endl;
     }
 }
 
@@ -81,4 +80,3 @@ int main(int argc, char** argv)
         std::cout << "Trace:" << std::endl << e.getTrace() << std::endl;
     }
 }
-

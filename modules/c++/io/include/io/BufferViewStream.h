@@ -23,14 +23,13 @@
 #ifndef CODA_OSS_io_BufferViewStream_h_INCLUDED_
 #define CODA_OSS_io_BufferViewStream_h_INCLUDED_
 
-#include <string.h>
-
-#include <mem/BufferView.h>
-#include <sys/Conf.h>
 #include <except/Error.h>
 #include <except/Exception.h>
-#include <io/SeekableStreams.h>
 #include <gsl/gsl.h>
+#include <io/SeekableStreams.h>
+#include <mem/BufferView.h>
+#include <string.h>
+#include <sys/Conf.h>
 
 /*!
  *  \file
@@ -45,7 +44,8 @@ namespace io
  *      SeekableInputStream, SeekableOutputStream
  */
 template <typename T>
-struct BufferViewStream: public SeekableInputStream, public SeekableOutputStream
+struct BufferViewStream : public SeekableInputStream,
+                          public SeekableOutputStream
 {
     /*!
      * Default constructor
@@ -80,12 +80,13 @@ struct BufferViewStream: public SeekableInputStream, public SeekableOutputStream
      */
     virtual sys::Off_T available() override
     {
-        return gsl::narrow<sys::Off_T>((mBufferView.size - mPosition) * sizeof(T));
+        return gsl::narrow<sys::Off_T>((mBufferView.size - mPosition) *
+                                       sizeof(T));
     }
 
-    using OutputStream::write;
-    using InputStream::streamTo;
     using InputStream::read;
+    using InputStream::streamTo;
+    using OutputStream::write;
 
     /*
      * Writes the bytes in data to the stream.
@@ -122,10 +123,10 @@ struct BufferViewStream: public SeekableInputStream, public SeekableOutputStream
     }
 
     /*!
-    * Overload for writing from a typed buffer
-    * \param buffer Buffer to write from
-    * \param numElements How many -elements- (not bytes) to write
-    */
+     * Overload for writing from a typed buffer
+     * \param buffer Buffer to write from
+     * \param numElements How many -elements- (not bytes) to write
+     */
     void write(const T* buffer, size_t numElements)
     {
         write(reinterpret_cast<const void*>(buffer), numElements * sizeof(T));
@@ -141,7 +142,6 @@ protected:
      */
     virtual sys::SSize_T readImpl(void* buffer, size_t len) override;
 
-
 private:
     const mem::BufferView<T> mBufferView;
     sys::Off_T mPosition = 0;
@@ -155,23 +155,23 @@ sys::Off_T BufferViewStream<T>::seek(sys::Off_T offset, Whence whence)
     sys::Off_T newPos = mPosition;
     switch (whence)
     {
-        case START:
-            newPos = offset;
-            break;
-        case END:
-            if (offset > gsl::narrow<sys::Off_T>(mBufferView.size))
-            {
-                newPos = 0;
-            }
-            else
-            {
-                newPos = gsl::narrow<sys::Off_T>(mBufferView.size - offset);
-            }
-            break;
-        case CURRENT:
-        default:
-            newPos += offset;
-            break;
+    case START:
+        newPos = offset;
+        break;
+    case END:
+        if (offset > gsl::narrow<sys::Off_T>(mBufferView.size))
+        {
+            newPos = 0;
+        }
+        else
+        {
+            newPos = gsl::narrow<sys::Off_T>(mBufferView.size - offset);
+        }
+        break;
+    case CURRENT:
+    default:
+        newPos += offset;
+        break;
     }
 
     if (newPos > gsl::narrow<sys::Off_T>(mBufferView.size) || newPos < 0)

@@ -1,32 +1,33 @@
 /* =========================================================================
  * This file is part of mem-c++
  * =========================================================================
- *    
+ *
  * (C) Copyright 2004 - 2018, MDA Information Systems LLC
- *      
+ *
  * mem-c++ is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- *           
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
- *                
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
- *                    
+ *
  */
 
-#include <mem/ScratchMemory.h>
-#include <mem/BufferView.h>
 #include <cli/ArgumentParser.h>
+#include <mem/BufferView.h>
+#include <mem/ScratchMemory.h>
 #include <str/Convert.h>
-#include <vector>
+
 #include <fstream>
 #include <string>
+#include <vector>
 
 namespace
 {
@@ -35,9 +36,7 @@ struct Operation
     Operation(const std::string& op_,
               const std::string& name_,
               const size_t bytes_) :
-        op(op_),
-        name(name_),
-        bytes(bytes_)
+        op(op_), name(name_), bytes(bytes_)
     {
     }
 
@@ -66,7 +65,7 @@ public:
     Visualizer(const std::vector<Operation>& prevOperations,
                size_t iteration,
                std::ofstream& htmlFile,
-               std::ofstream& cssFile):
+               std::ofstream& cssFile) :
         mPrevOperations(prevOperations),
         mIteration(iteration),
         mHTMLFile(htmlFile),
@@ -82,7 +81,8 @@ public:
     }
 
     /*!
-     * Find the lowest start address, which dictates the first block, and set mStartPtr.
+     * Find the lowest start address, which dictates the first block, and set
+     * mStartPtr.
      *
      * \param operations A vector of all operations
      */
@@ -125,36 +125,40 @@ public:
         mCSSFile << "border-width: 1px;\n";
         mCSSFile << "}\n";
 
-        mHTMLFile << "<div id=\"" << op.name << "\">&nbsp;" << op.name[0] << "</div>\n";
+        mHTMLFile << "<div id=\"" << op.name << "\">&nbsp;" << op.name[0]
+                  << "</div>\n";
     }
 
     /*!
-     * When building a new visualizer, all operations that have already been done
-     * in previous iterations must be recreated.
+     * When building a new visualizer, all operations that have already been
+     * done in previous iterations must be recreated.
      *
      * \param[out] currentOperations Operations for this iteration
      * \param[out] scratch Scratch memory object
      */
-    void handlePrevOps(std::vector<Operation>& currentOperations, mem::ScratchMemory& scratch)
+    void handlePrevOps(std::vector<Operation>& currentOperations,
+                       mem::ScratchMemory& scratch)
     {
         for (size_t ii = 0; ii < mPrevOperations.size(); ++ii)
         {
-            const std::string segmentName = std::string(1, mPrevOperations.at(ii).name[0]) +
+            const std::string segmentName =
+                    std::string(1, mPrevOperations.at(ii).name[0]) +
                     str::toString(mIteration);
 
             if (mPrevOperations.at(ii).op == "put")
             {
-                scratch.put<sys::ubyte>(segmentName, mPrevOperations.at(ii).bytes, 1, 1);
-                currentOperations.push_back(Operation("put",
-                                                      segmentName,
-                                                      mPrevOperations.at(ii).bytes));
+                scratch.put<sys::ubyte>(segmentName,
+                                        mPrevOperations.at(ii).bytes,
+                                        1,
+                                        1);
+                currentOperations.push_back(Operation(
+                        "put", segmentName, mPrevOperations.at(ii).bytes));
             }
             else if (mPrevOperations.at(ii).op == "release")
             {
                 scratch.release(segmentName);
-                currentOperations.push_back(Operation("release",
-                                                      segmentName,
-                                                      mPrevOperations.at(ii).bytes));
+                currentOperations.push_back(Operation(
+                        "release", segmentName, mPrevOperations.at(ii).bytes));
             }
         }
     }
@@ -178,22 +182,27 @@ public:
         const size_t numElements = (rand() % 150) + 20;
         unsigned int releaseIfThree = (rand() % 3) + 1;
 
-        if ((releaseIfThree == 3) && (currentOperations.size() > 1) && !notReleasedKeys.empty())
+        if ((releaseIfThree == 3) && (currentOperations.size() > 1) &&
+            !notReleasedKeys.empty())
         {
             unsigned int keyToReleaseIndex = (rand() % notReleasedKeys.size());
-            const std::string segmentName = std::string(1, notReleasedKeys.at(keyToReleaseIndex)) +
+            const std::string segmentName =
+                    std::string(1, notReleasedKeys.at(keyToReleaseIndex)) +
                     str::toString(mIteration);
 
             scratch.release(segmentName);
             notReleasedKeys.erase(notReleasedKeys.begin() + keyToReleaseIndex);
 
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
         }
         else
         {
-            const std::string segmentName = std::string(1, bufferName) + str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName) + str::toString(mIteration);
             scratch.put<sys::ubyte>(segmentName, numElements, 1, 1);
-            currentOperations.push_back(Operation("put", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("put", segmentName, numElements));
             notReleasedKeys.push_back(bufferName);
 
             ++bufferName;
@@ -201,12 +210,14 @@ public:
     }
 
     /*!
-     * Runs a version of the unittest in which concurrent keys are released in a very specific order
+     * Runs a version of the unittest in which concurrent keys are released in a
+     * very specific order
      *
      * \param[in,out] currentOperations Operations for this iteration
      * \param[in,out] bufferName The name/key of the new segment
      * \param[in,out] notReleasedKeys The keys that have not been released
-     * \param[in,out] testIter Used to keep track of which step of the unittest to do
+     * \param[in,out] testIter Used to keep track of which step of the unittest
+     * to do
      * \param[out] usedBufferSpace How much memory has already been used up
      * \param[out] scratch Scratch memory object
      */
@@ -221,88 +232,98 @@ public:
         // Put operations
         if (testIter == 0 || testIter == 1 || testIter == 2 || testIter == 5)
         {
-            const std::string segmentName = std::string(1, bufferName) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName) + str::toString(mIteration);
             scratch.put<sys::ubyte>(segmentName, numElements, 1, 1);
-            currentOperations.push_back(Operation("put", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("put", segmentName, numElements));
             ++testIter;
             ++bufferName;
         }
         else if (testIter == 3)
         {
-            const std::string segmentName = std::string(1, bufferName - 2) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName - 2) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 4)
         {
-            const std::string segmentName = std::string(1, bufferName - 1) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName - 1) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 6)
         {
-            const std::string segmentName = std::string(1, bufferName - 4) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName - 4) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
             testIter = 0;
         }
     }
 
     /*!
-     * Runs a version of the unittest in which connected keys are released in a very specific order
+     * Runs a version of the unittest in which connected keys are released in a
+     * very specific order
      *
      * \param[in,out] currentOperations Operations for this iteration
      * \param[in,out] bufferName The name/key of the new segment
      * \param[in,out] notReleasedKeys The keys that have not been released
-     * \param[in,out] testIter Used to keep track of which step of the unittest to do
+     * \param[in,out] testIter Used to keep track of which step of the unittest
+     * to do
      * \param[out] usedBufferSpace How much memory has already been used up
      * \param[out] scratch Scratch memory object
      */
     void connectedBlockTest(std::vector<Operation>& currentOperations,
-                             unsigned char& bufferName,
-                             size_t& testIter,
-                             mem::ScratchMemory& scratch)
+                            unsigned char& bufferName,
+                            size_t& testIter,
+                            mem::ScratchMemory& scratch)
     {
         handlePrevOps(currentOperations, scratch);
         size_t numElements = (rand() % 150) + 20;
 
         if (testIter == 0 || testIter == 1 || testIter == 3 || testIter == 5)
         {
-            const std::string segmentName = std::string(1, bufferName) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName) + str::toString(mIteration);
             scratch.put<sys::ubyte>(segmentName, numElements, 1, 1);
-            currentOperations.push_back(Operation("put", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("put", segmentName, numElements));
             ++testIter;
             ++bufferName;
         }
         else if (testIter == 2)
         {
-            const std::string segmentName = std::string(1, bufferName - 1) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName - 1) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 4)
         {
-            const std::string segmentName = std::string(1, bufferName - 3) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName - 3) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
             ++testIter;
         }
         else if (testIter == 6)
         {
-            const std::string segmentName = std::string(1, bufferName - 2) +
-                    str::toString(mIteration);
+            const std::string segmentName =
+                    std::string(1, bufferName - 2) + str::toString(mIteration);
             scratch.release(segmentName);
-            currentOperations.push_back(Operation("release", segmentName, numElements));
+            currentOperations.push_back(
+                    Operation("release", segmentName, numElements));
             testIter = 0;
         }
     }
@@ -323,8 +344,13 @@ int main(int argc, char** argv)
 {
     cli::ArgumentParser parser;
 
-    parser.setDescription("Software to visualize scratch memory test cases in HTML/CSS");
-    parser.addArgument("--test", "Select which test case to run", cli::STORE, "test")->setDefault("random");
+    parser.setDescription(
+            "Software to visualize scratch memory test cases in HTML/CSS");
+    parser.addArgument("--test",
+                       "Select which test case to run",
+                       cli::STORE,
+                       "test")
+            ->setDefault("random");
 
     const cli::Results* options(parser.parse(argc, argv));
     const std::string testType(options->get<std::string>("test"));
@@ -336,11 +362,12 @@ int main(int argc, char** argv)
     std::ofstream cssFile;
     cssFile.open("style.css");
 
-    //Headers
+    // Headers
     htmlFile << "<!DOCTYPE HTML>\n";
     htmlFile << "<html>\n";
     htmlFile << "<head>\n";
-    htmlFile << "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
+    htmlFile << "<link rel=\"stylesheet\" type=\"text/css\" "
+                "href=\"style.css\">\n";
     htmlFile << "</head>\n";
     htmlFile << "<body>\n";
 
@@ -358,7 +385,8 @@ int main(int argc, char** argv)
         Visualizer visualize(prevOperations, jj, htmlFile, cssFile);
 
         if (testType == "random")
-        {   visualize.randomTest(currentOperations,
+        {
+            visualize.randomTest(currentOperations,
                                  bufferName,
                                  notReleasedKeys,
                                  scratch);
@@ -379,13 +407,14 @@ int main(int argc, char** argv)
         }
         else
         {
-            std::cout << "--test must be \"random\", \"concurrent\", or \"connected\"\n";
+            std::cout << "--test must be \"random\", \"concurrent\", or "
+                         "\"connected\"\n";
             return 1;
         }
 
         scratch.setup();
 
-        //This draws the line. Draw one per scratch instance
+        // This draws the line. Draw one per scratch instance
         htmlFile << "<hr><br>\n";
         cssFile << "hr { \n";
         cssFile << "height: 1px;\n";
@@ -394,24 +423,23 @@ int main(int argc, char** argv)
         cssFile << "position: absolute;\n";
         cssFile << "}\n";
 
-        //Goes through each buffer in order
+        // Goes through each buffer in order
         for (size_t ii = 0; ii < currentOperations.size(); ++ii)
         {
-            currentOperations.at(ii).buffer =
-                    scratch.getBufferView<sys::ubyte>(currentOperations.at(ii).name);
+            currentOperations.at(ii).buffer = scratch.getBufferView<sys::ubyte>(
+                    currentOperations.at(ii).name);
         }
 
         visualize.setStartPtr(currentOperations);
 
         for (size_t ii = 0; ii < currentOperations.size(); ++ii)
         {
-                visualize.createBox(currentOperations.at(ii), ii);
+            visualize.createBox(currentOperations.at(ii), ii);
         }
 
         htmlFile << "<br><br><br>\n";
         prevOperations = currentOperations;
     }
-
 
     htmlFile << "</body>\n";
     htmlFile << "</html>\n";
@@ -422,9 +450,11 @@ int main(int argc, char** argv)
     try
     {
         int result = system("firefox scratch_release.html");
-        if (result > 0) { /*fix compiler warning*/ }
+        if (result > 0)
+        { /*fix compiler warning*/
+        }
     }
-    catch(const except::Exception&)
+    catch (const except::Exception&)
     {
         std::cout << "Failed to open html file in firefox\n";
     }

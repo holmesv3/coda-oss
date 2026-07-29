@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -27,7 +27,6 @@
 #include "except/Exception.h"
 #include "sys/OS.h"
 #include "sys/Path.h"
-
 
 namespace sys
 {
@@ -44,7 +43,6 @@ struct DirectoryEntry
         mCurrent = mDir.findFirstFile(path.getPath());
         mFirst.reset(this);
         mLast.reset(nullptr);
-
     }
 
     /* Dont worry about this for now
@@ -60,8 +58,7 @@ struct DirectoryEntry
     }
     */
 
-    DirectoryEntry(const std::string& dirName) : 
-        mDirName(dirName)
+    DirectoryEntry(const std::string& dirName) : mDirName(dirName)
     {
         mCurrent = mDir.findFirstFile(dirName);
         mFirst.reset(this);
@@ -85,8 +82,8 @@ struct DirectoryEntry
     {
         Iterator() = default;
         explicit Iterator(DirectoryEntry* dirEntry) : mEntry(dirEntry)
-        {}
-
+        {
+        }
 
         void reset(DirectoryEntry* dirEntry)
         {
@@ -95,7 +92,7 @@ struct DirectoryEntry
         Iterator& operator++()
         {
             mEntry->next();
-            if (mEntry->mCurrent.empty()) 
+            if (mEntry->mCurrent.empty())
                 mEntry = nullptr;
             return *this;
         }
@@ -103,7 +100,7 @@ struct DirectoryEntry
         {
             if (mEntry->mCurrent.empty())
                 throw except::NullPointerReference(Ctxt(
-                    "DirectoryEntry::Iterator NULL entry not allowed"));
+                        "DirectoryEntry::Iterator NULL entry not allowed"));
             return std::string(mEntry->mCurrent);
         }
         DirectoryEntry* get() const
@@ -129,7 +126,6 @@ struct DirectoryEntry
         return mLast;
     }
 
-
 private:
     Iterator mFirst;
     Iterator mLast;
@@ -137,11 +133,7 @@ private:
     std::string mDirName;
     Directory mDir;
     //   DirectoryEntry mDirLast;
-
-
 };
-
-
 
 }
 

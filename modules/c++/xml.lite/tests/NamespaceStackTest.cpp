@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,14 +14,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <iostream>
 #include <import/xml/lite.h>
+
+#include <iostream>
 using namespace xml::lite;
 
 using namespace std;
@@ -42,7 +43,6 @@ int main()
     xmlNs.newMapping("z", "local");
 
     // Level two /////////////////////////////////
-
 
     // This exists, but it has been mapped over
     std::string uri_x2 = xmlNs.getMapping("x");

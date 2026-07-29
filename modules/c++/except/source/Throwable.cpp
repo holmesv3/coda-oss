@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of except-c++ 
+ * This file is part of except-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * except-c++ is free software; you can redistribute it and/or modify
@@ -14,15 +14,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <assert.h>
-
 #include "except/Throwable.h"
+
+#include <assert.h>
 
 #include "except/Backtrace.h"
 
@@ -35,7 +35,11 @@ void except::Throwable::doGetBacktrace()
 }
 
 template <typename TThrowable>
-except::Throwable::Throwable(const Context* pContext, const TThrowable* pThrowable, const std::string* pMessage, bool callGetBacktrace, std::nullptr_t)
+except::Throwable::Throwable(const Context* pContext,
+                             const TThrowable* pThrowable,
+                             const std::string* pMessage,
+                             bool callGetBacktrace,
+                             std::nullptr_t)
 {
     if (pThrowable != nullptr)
     {
@@ -53,16 +57,17 @@ except::Throwable::Throwable(const Context* pContext, const TThrowable* pThrowab
         // Assign c's message as our internal one
         mMessage = pContext->getMessage();
     }
-    
+
     if (pMessage != nullptr)
     {
         assert(pContext == nullptr);
         mMessage = *pMessage;
     }
 
-    // This will record a back-trace from where the Throwable object was instantiated.
-    // That's not necessarily where the "throw" will occur, but it's often the case; Throwable
-    // instances ususally aren't passed around.  That is, hardly anybody does:
+    // This will record a back-trace from where the Throwable object was
+    // instantiated. That's not necessarily where the "throw" will occur, but
+    // it's often the case; Throwable instances ususally aren't passed around.
+    // That is, hardly anybody does:
     //    Exception e; // Throwable instance
     //    might_throw(e);
     // rather, the idiom is usually
@@ -72,16 +77,23 @@ except::Throwable::Throwable(const Context* pContext, const TThrowable* pThrowab
         doGetBacktrace();
     }
 }
-except::Throwable::Throwable(const Context* pContext, const Throwable* pThrowable, const std::string* pMessage, bool callGetBacktrace)
-: Throwable(pContext, pThrowable, pMessage, callGetBacktrace, nullptr)
+except::Throwable::Throwable(const Context* pContext,
+                             const Throwable* pThrowable,
+                             const std::string* pMessage,
+                             bool callGetBacktrace) :
+    Throwable(pContext, pThrowable, pMessage, callGetBacktrace, nullptr)
 {
 }
-except::Throwable::Throwable(const Context* pContext, const ThrowableEx* pThrowable, const std::string* pMessage, bool callGetBacktrace)
-: Throwable(pContext, pThrowable, pMessage, callGetBacktrace, nullptr)
+except::Throwable::Throwable(const Context* pContext,
+                             const ThrowableEx* pThrowable,
+                             const std::string* pMessage,
+                             bool callGetBacktrace) :
+    Throwable(pContext, pThrowable, pMessage, callGetBacktrace, nullptr)
 {
 }
 
-except::Throwable::Throwable(const std::string& message) : Throwable(nullptr, static_cast<const Throwable*>(nullptr), &message)
+except::Throwable::Throwable(const std::string& message) :
+    Throwable(nullptr, static_cast<const Throwable*>(nullptr), &message)
 {
 }
 
@@ -89,12 +101,15 @@ except::Throwable::Throwable(except::Context c) : Throwable(&c)
 {
 }
 
-except::Throwable::Throwable(const except::Throwable& t, except::Context c) : Throwable(&c, &t)
+except::Throwable::Throwable(const except::Throwable& t, except::Context c) :
+    Throwable(&c, &t)
 {
 }
-except::Throwable::Throwable(const except::ThrowableEx& t, except::Context c) : Throwable(&c, &t)
+except::Throwable::Throwable(const except::ThrowableEx& t, except::Context c) :
+    Throwable(&c, &t)
 {
 }
-except::Throwable::Throwable(const except::ThrowableEx& t) : Throwable(nullptr, &t)
+except::Throwable::Throwable(const except::ThrowableEx& t) :
+    Throwable(nullptr, &t)
 {
 }

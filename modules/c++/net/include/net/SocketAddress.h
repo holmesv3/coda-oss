@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -26,11 +26,10 @@
 #include "net/Sockets.h"
 
 #ifdef _WIN32
-#   include <winsock2.h>
+#include <winsock2.h>
 #else
-#   include <arpa/inet.h>
+#include <arpa/inet.h>
 #endif
-
 
 namespace net
 {
@@ -45,6 +44,7 @@ namespace net
 class SocketAddress
 {
     SockAddrIn_T mAddress;
+
 public:
     // Constructor.  Clear the underlying sockaddr_in
     SocketAddress();
@@ -57,8 +57,8 @@ public:
     SocketAddress(const std::string& host, int port);
 
     /*!
-     *  Construct the socket address of a port.  This is 
-     *  intended mostly for servers, and since the host is 
+     *  Construct the socket address of a port.  This is
+     *  intended mostly for servers, and since the host is
      *  not given, the INADDR_ANY value is supplied to the
      *  underlying sockaddr_in.
      *
@@ -71,7 +71,7 @@ public:
 
     /*!
      *  Set the port #.
-     *  \param port The port 
+     *  \param port The port
      */
     void setPort(int port);
 
@@ -87,9 +87,7 @@ public:
     {
         return mAddress;
     }
-
 };
 }
-
 
 #endif

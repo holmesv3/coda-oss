@@ -23,13 +23,12 @@
 #include <net/CurlHandle.h>
 
 #ifdef NET_CURL_SUPPORT
-#include <sys/Conf.h>
 #include <except/Exception.h>
+#include <sys/Conf.h>
 
 namespace net
 {
-CurlHandle::CurlHandle() :
-    mHandle(curl_easy_init())
+CurlHandle::CurlHandle() : mHandle(curl_easy_init())
 {
     if (mHandle == nullptr)
     {
@@ -44,44 +43,45 @@ CurlHandle::~CurlHandle()
 
 void CurlHandle::setURL(const std::string& url)
 {
-    verify(curl_easy_setopt(mHandle, CURLOPT_URL, url.c_str()),
-            "Setting URL");
+    verify(curl_easy_setopt(mHandle, CURLOPT_URL, url.c_str()), "Setting URL");
 }
 
 void CurlHandle::setWriteBuffer(std::string& buffer)
 {
     verify(curl_easy_setopt(mHandle, CURLOPT_WRITEFUNCTION, writeCallback),
-            "Setting write function");
+           "Setting write function");
 
     verify(curl_easy_setopt(mHandle, CURLOPT_WRITEDATA, &buffer),
-            "Setting write data");
+           "Setting write data");
 }
 
 void CurlHandle::disableHostVerification()
 {
     verify(curl_easy_setopt(mHandle, CURLOPT_SSL_VERIFYHOST, 0),
-            "Disabling host verification");
+           "Disabling host verification");
 
     verify(curl_easy_setopt(mHandle, CURLOPT_SSL_VERIFYPEER, 0),
-            "Disabling host verification");
+           "Disabling host verification");
 }
 
 void CurlHandle::setClientCert(const std::string& certPathname)
 {
     verify(curl_easy_setopt(mHandle, CURLOPT_SSLCERT, certPathname.c_str()),
-            "Setting client cert pathname");
+           "Setting client cert pathname");
 }
 
 void CurlHandle::setProxy(const std::string& url)
 {
     verify(curl_easy_setopt(mHandle, CURLOPT_PROXY, url.c_str()),
-            "Setting proxy");
+           "Setting proxy");
 }
 
 void CurlHandle::setProxyPort(size_t port)
 {
-    verify(curl_easy_setopt(mHandle, CURLOPT_PROXYPORT, static_cast<long>(port)),
-            "Setting proxy port");
+    verify(curl_easy_setopt(mHandle,
+                            CURLOPT_PROXYPORT,
+                            static_cast<long>(port)),
+           "Setting proxy port");
 }
 
 void CurlHandle::perform()
@@ -93,8 +93,8 @@ void CurlHandle::verify(CURLcode code, const std::string& prefix)
 {
     if (code != CURLE_OK)
     {
-        throw except::Exception(Ctxt(prefix + " failed: " +
-                curl_easy_strerror(code)));
+        throw except::Exception(
+                Ctxt(prefix + " failed: " + curl_easy_strerror(code)));
     }
 }
 
@@ -117,7 +117,7 @@ int CurlHandle::writeCallback(char* data,
                               size_t nmemb,
                               std::string* writeData)
 {
-    return (int) CurlHandle::writeBetterCallback(data, size, nmemb, writeData);
+    return (int)CurlHandle::writeBetterCallback(data, size, nmemb, writeData);
 }
 }
 

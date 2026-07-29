@@ -22,15 +22,15 @@
 #ifndef __MT_BALANCED_RUNNABLE_1D_H__
 #define __MT_BALANCED_RUNNABLE_1D_H__
 
-#include <vector>
-#include <sstream>
-
+#include <except/Exception.h>
+#include <mt/ThreadGroup.h>
+#include <mt/ThreadPlanner.h>
+#include <sys/AtomicCounter.h>
 #include <sys/Conf.h>
 #include <sys/Runnable.h>
-#include <sys/AtomicCounter.h>
-#include <except/Exception.h>
-#include <mt/ThreadPlanner.h>
-#include <mt/ThreadGroup.h>
+
+#include <sstream>
+#include <vector>
 
 namespace mt
 {
@@ -53,7 +53,6 @@ template <typename OpT>
 class BalancedRunnable1D : public sys::Runnable
 {
 public:
-
     /*!
      *  Constructor
      *
@@ -68,9 +67,7 @@ public:
     BalancedRunnable1D(size_t numElements,
                        sys::AtomicCounter& atomicCounter,
                        const OpT& op) :
-        mNumElements(numElements),
-        mCounter(atomicCounter),
-        mOp(op)
+        mNumElements(numElements), mCounter(atomicCounter), mOp(op)
     {
     }
 
@@ -117,9 +114,7 @@ private:
  *  \param op Functor to use
  */
 template <typename OpT>
-void runBalanced1D(size_t numElements,
-                   size_t numThreads,
-                   const OpT& op)
+void runBalanced1D(size_t numElements, size_t numThreads, const OpT& op)
 {
     sys::AtomicCounter counter(0);
     if (numThreads <= 1)
@@ -131,8 +126,8 @@ void runBalanced1D(size_t numElements,
         ThreadGroup threads;
         for (size_t ii = 0; ii < numThreads; ++ii)
         {
-            threads.createThread(new BalancedRunnable1D<OpT>(
-                     numElements, counter, op));
+            threads.createThread(
+                    new BalancedRunnable1D<OpT>(numElements, counter, op));
         }
         threads.joinAll();
     }
@@ -171,8 +166,8 @@ void runBalanced1D(size_t numElements,
         ThreadGroup threads;
         for (size_t ii = 0; ii < numThreads; ++ii)
         {
-            threads.createThread(new BalancedRunnable1D<OpT>(
-                    numElements, counter, ops[ii]));
+            threads.createThread(
+                    new BalancedRunnable1D<OpT>(numElements, counter, ops[ii]));
         }
 
         threads.joinAll();

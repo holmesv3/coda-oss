@@ -33,22 +33,29 @@
 #include "gsl/Gsl_.h"  // our own "fake" GSL
 
 #if CODA_OSS_use_real_gsl_
-     CODA_OSS_disable_warning_push
-	#if _MSC_VER
-    #pragma warning(disable: 4619) // #pragma warning : there is no warning number '..'
-	#pragma warning(disable: 4626) // '...' : assignment operator was implicitly defined as deleted
-	#pragma warning(disable: 5027) // '...' : move assignment operator was implicitly defined as deleted
-	#pragma warning(disable: 26487) // Don 't return a pointer '...' that may be invalid (lifetime.4).
-	#pragma warning(disable: 4814) // '...': in C++14 '...' will not imply '...'; consider explicitly specifying '...'
-	#pragma warning(disable: 26823) // Dereferencing a possibly null pointer '...' (lifetime.1).
-	#endif
+CODA_OSS_disable_warning_push
+#if _MSC_VER
+#pragma warning(disable \
+                : 4619)  // #pragma warning : there is no warning number '..'
+#pragma warning(disable : 4626)  // '...' : assignment operator was implicitly
+                                 // defined as deleted
+#pragma warning(disable : 5027)  // '...' : move assignment operator was
+                                 // implicitly defined as deleted
+#pragma warning(disable : 26487)  // Don 't return a pointer '...' that may be
+                                  // invalid (lifetime.4).
+#pragma warning(disable : 4814)  // '...': in C++14 '...' will not imply '...';
+                                 // consider explicitly specifying '...'
+#pragma warning( \
+        disable  \
+        : 26823)  // Dereferencing a possibly null pointer '...' (lifetime.1).
+#endif
 
-	#include "gsl/gsl"
-	#include "gsl/byte"
-	#include "gsl/span"
-	#include "gsl/narrow"
+#include "gsl/byte"
+#include "gsl/gsl"
+#include "gsl/narrow"
+#include "gsl/span"
 
-	CODA_OSS_disable_warning_pop
+        CODA_OSS_disable_warning_pop
 
 #endif
 

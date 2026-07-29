@@ -23,13 +23,13 @@
 #include <atomic>
 
 #if !defined(__APPLE_CC__) && (defined(__linux) || defined(__linux__))
-#include <iostream>
-
-#include <import/sys.h>
-#include <import/mt.h>
-#include <import/mem.h>
 #include <cli/ArgumentParser.h>
+#include <import/mem.h>
+#include <import/mt.h>
+#include <import/sys.h>
 #include <sys/ScopedCPUAffinityUnix.h>
+
+#include <iostream>
 using namespace sys;
 using namespace mt;
 
@@ -38,24 +38,21 @@ namespace
 class MyRunTask : public Runnable
 {
 public:
-
     MyRunTask(size_t threadNum, sys::AtomicCounter& counter) :
-        mThread(threadNum),
-        mThreadCounter(counter)
+        mThread(threadNum), mThreadCounter(counter)
     {
     }
 
     virtual void run() override
     {
         // Print diagnostics from inside the thread
-        while(true)
+        while (true)
         {
             if (mThread == mThreadCounter.get())
             {
                 mt::CriticalSection<sys::Mutex> obtainLock(&mMutex);
-                std::cout << "Thread " << mThread
-                          << " " << sys::ScopedCPUAffinityUnix().toString()
-                          << "\n";
+                std::cout << "Thread " << mThread << " "
+                          << sys::ScopedCPUAffinityUnix().toString() << "\n";
                 mThreadCounter.increment();
                 break;
             }
@@ -113,12 +110,14 @@ int main(int argc, char** argv)
                            "Number of threads to use",
                            cli::STORE,
                            "threads",
-                           "INT")->setDefault(numCPUsAvailable);
+                           "INT")
+                ->setDefault(numCPUsAvailable);
 
         parser.addArgument("--pin",
                            "Enable CPU pinning",
                            cli::STORE_TRUE,
-                           "pinToCPU")->setDefault(false);
+                           "pinToCPU")
+                ->setDefault(false);
         const std::unique_ptr<cli::Results> options(parser.parse(argc, argv));
 
         const bool pinToCPU = options->get<bool>("pinToCPU");
@@ -135,8 +134,8 @@ int main(int argc, char** argv)
 
         if (numThreads > numCPUsAvailable && pinToCPU)
         {
-            throw except::Exception(
-                Ctxt("Requested more threads than CPUs with pinning enabled"));
+            throw except::Exception(Ctxt(
+                    "Requested more threads than CPUs with pinning enabled"));
         }
 
         //-----------------------------------------------------
@@ -150,7 +149,9 @@ int main(int argc, char** argv)
         size_t numElementsThisThread = 0;
         sys::AtomicCounter threadCounter;
 
-        while(planner.getThreadInfo(threadNum, startElement, numElementsThisThread))
+        while (planner.getThreadInfo(threadNum,
+                                     startElement,
+                                     numElementsThisThread))
         {
             threads.createThread(new MyRunTask(threadNum, threadCounter));
             ++threadNum;
@@ -176,11 +177,10 @@ int main(int argc, char** argv)
 #else
 
 #include <iostream>
-int main (int, char**)
+int main(int, char**)
 {
     std::cout << "Usable only on *nix systems" << std::endl;
     return 0;
 }
 
 #endif
-

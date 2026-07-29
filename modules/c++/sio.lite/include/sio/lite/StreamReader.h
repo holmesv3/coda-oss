@@ -24,6 +24,7 @@
 #define __SIO_LITE_STREAM_READER_H__
 
 #include <io/InputStream.h>
+
 #include "config/Exports.h"
 #include "sio/lite/FileHeader.h"
 
@@ -48,13 +49,13 @@ namespace lite
  *  file on any platform (either little or big-endian).  However, it
  *  relies on the end user to do the actual byte swapping (with the
  *  sys::byteSwap() functions).  This is very easy to do, and as such
- *  doesnt add much value to sio.lite, so the decision was made to 
+ *  doesnt add much value to sio.lite, so the decision was made to
  *  force this behavior externally.  Here are some common examples:
  *
-    \code 
+    \code
 
     StreamReader reader(stream);
-    
+
     FileHeader* fhdr = reader->getHeader();
     int nl = fhdr->getNumLines();
     int ne = fhdr->getNumElements();
@@ -62,10 +63,10 @@ namespace lite
     int et = fhdr->getElementType();
 
     // Read a double element from the user data
-    std::vector<sys::byte>& ud = fhdr->getUserData("userDefinedDouble");       
+    std::vector<sys::byte>& ud = fhdr->getUserData("userDefinedDouble");
 
     // Cast address from sys::byte* -> double*, and deref:
-    double d = fhdr->isDifferentByteOrdering() ? 
+    double d = fhdr->isDifferentByteOrdering() ?
         sys::byteSwap<double>(*(double*)&ud[0]) : *(double*)&ud[0];
 
     // Read in an amplitude single precision float image
@@ -93,8 +94,10 @@ class CODA_OSS_API StreamReader : public io::InputStream
 {
 public:
     /** Constructor */
-    StreamReader() : 
-        inputStream(nullptr), header(nullptr), headerLength(0), own(false) {}
+    StreamReader() :
+        inputStream(nullptr), header(nullptr), headerLength(0), own(false)
+    {
+    }
 
     /** Destructor */
     virtual ~StreamReader()
@@ -103,21 +106,20 @@ public:
         killStream();
     }
 
-    /*! 
+    /*!
      *  Construct from stream, note that adopt defaults to false,
      *  which is probably not what you want unless you are passing
      *  an address.  This is for legacy compatibility.
      */
-    StreamReader(io::InputStream* is, bool adopt = false) : 
+    StreamReader(io::InputStream* is, bool adopt = false) :
         inputStream(is), header(nullptr), headerLength(0), own(adopt)
     {
         // No longer calling setInputStream directly -- its virtual now
         parseHeader(true);
     }
 
-
     /**
-     *  Reset the input stream to read from. 
+     *  Reset the input stream to read from.
      *  This has different behavior depending on the subclass, since
      *  a FileReader will want to close() its stream, whereas this
      *  class can make no such guarantees.
@@ -128,19 +130,30 @@ public:
     virtual void setInputStream(io::InputStream* is, bool adopt = false);
 
     //!  New method to allow you to get the raw stream
-    io::InputStream* getInputStream() { return inputStream; }
+    io::InputStream* getInputStream()
+    {
+        return inputStream;
+    }
 
-    sio::lite::FileHeader* getHeader() { return header; }
-    const FileHeader* getHeader() const { return header; }
+    sio::lite::FileHeader* getHeader()
+    {
+        return header;
+    }
+    const FileHeader* getHeader() const
+    {
+        return header;
+    }
 
-    /*! 
+    /*!
      *  This method is deprecated, as read is now done during
      *  setInputStream().  This means that readHeader is now
      *  identical to getHeader().
      *
      */
-    sio::lite::FileHeader* readHeader() { return header; }
-
+    sio::lite::FileHeader* readHeader()
+    {
+        return header;
+    }
 
     sys::Off_T available() override
     {
@@ -177,7 +190,6 @@ protected:
      *  @return The next integer in the stream.
      */
     int getNextInteger();
-
 
     /**
      *  Type 2 headers have user data.  This method
@@ -221,7 +233,7 @@ protected:
      *  This method is virtual because the FileReader subclass needs
      *  to close the handle possibly
      */
-    
+
     virtual void killStream();
 
     /**
@@ -238,15 +250,12 @@ protected:
      */
     void parseHeader(bool calledFromConstructor = false);
 
-
     io::InputStream* inputStream;
-    FileHeader*  header;
+    FileHeader* header;
     long headerLength;
     bool own;
 };
 
-
 }
 }
 #endif
-

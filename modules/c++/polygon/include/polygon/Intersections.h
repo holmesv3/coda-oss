@@ -22,12 +22,12 @@
 #ifndef __POLYGON_INTERSECTIONS_H__
 #define __POLYGON_INTERSECTIONS_H__
 
-#include <vector>
+#include <gsl/gsl.h>
+#include <types/RowCol.h>
+
 #include <algorithm>
 #include <cmath>
-
-#include <types/RowCol.h>
-#include <gsl/gsl.h>
+#include <vector>
 
 namespace polygon
 {
@@ -79,7 +79,7 @@ struct Intersections final
      * positive col value shifts the polygon left (equiv. the frame shifts
      * right).  Defaults to no offset.
      */
-    Intersections(const std::vector<types::RowCol<PointT> >& points,
+    Intersections(const std::vector<types::RowCol<PointT>>& points,
                   const types::RowCol<size_t>& dims,
                   types::RowCol<sys::SSize_T> offset =
                           types::RowCol<sys::SSize_T>(0, 0)) :
@@ -138,7 +138,7 @@ struct Intersections final
             intersection.first = static_cast<size_t>(std::ceil(first));
             intersection.last = static_cast<size_t>(std::floor(last));
 
-            if(intersection.last > intersection.first)
+            if (intersection.last > intersection.first)
             {
                 intersections.push_back(intersection);
             }
@@ -166,12 +166,11 @@ private:
         }
     }
 
-    void computeIntersections(
-            const std::vector<types::RowCol<PointT> >& points,
-            const types::RowCol<size_t>& dims,
-            types::RowCol<sys::SSize_T> offset)
+    void computeIntersections(const std::vector<types::RowCol<PointT>>& points,
+                              const types::RowCol<size_t>& dims,
+                              types::RowCol<sys::SSize_T> offset)
     {
-        std::vector<types::RowCol<PointT> > shiftedPoints(points);
+        std::vector<types::RowCol<PointT>> shiftedPoints(points);
         for (auto&& shiftedPoint : shiftedPoints)
         {
             // Get the polygon points with respect to the offset
@@ -215,11 +214,11 @@ private:
             orderPoints(r0, c0, r1, c1);
 
             // Find first and last scan line that we cross
-            sys::SSize_T sl0 = static_cast<sys::SSize_T>(std::ceil(
-                    static_cast<double>(r0)));
+            sys::SSize_T sl0 = static_cast<sys::SSize_T>(
+                    std::ceil(static_cast<double>(r0)));
 
-            sys::SSize_T sl1 = static_cast<sys::SSize_T>(std::floor(
-                    static_cast<double>(r1)));
+            sys::SSize_T sl1 = static_cast<sys::SSize_T>(
+                    std::floor(static_cast<double>(r1)));
 
             // Skip rows where the edge intersects scan line outside of image
             // Have to do this carefully though... we can't just restrict both
@@ -272,7 +271,7 @@ private:
             }
         }
     }
-    
+
     // `const` member data means copy/move must be implemented
     Intersections(const Intersections&) = delete;
     Intersections& operator=(const Intersections&) = delete;
@@ -281,7 +280,7 @@ private:
 
 private:
     const types::RowCol<size_t> mDims;
-    std::vector<std::vector<PointT> > mIntersections;
+    std::vector<std::vector<PointT>> mIntersections;
 };
 }
 

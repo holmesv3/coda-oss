@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,11 +23,11 @@
 #ifndef __TIFF_FILE_READER_H__
 #define __TIFF_FILE_READER_H__
 
+#include <config/Exports.h>
+#include <import/io.h>
+
 #include <string>
 #include <vector>
-
-#include <import/io.h>
-#include <config/Exports.h>
 
 #include "tiff/Header.h"
 #include "tiff/ImageReader.h"
@@ -88,24 +88,24 @@ struct CODA_OSS_API FileReader
      * @return
      *   an ImageReader pointer to the specified image
      *****************************************************************/
-    tiff::ImageReader *operator[](const sys::Uint32_T index) const;
+    tiff::ImageReader* operator[](const sys::Uint32_T index) const;
 
     /**
      *****************************************************************
-     * Prints the the file's header, and every image's IFD to the 
+     * Prints the the file's header, and every image's IFD to the
      * specified output stream.
      *
      * @param output
      *   the stream to print the file information to
      *****************************************************************/
-    void print(io::OutputStream &output) const;
+    void print(io::OutputStream& output) const;
 
     /**
      *****************************************************************
      * Gets the specified number of elements from the TIFF image and
      * stores them into the specified buffer.  The buffer must be
      * allocated outside because it is not allocated in this function.
-     * 
+     *
      * @param buffer
      *   the buffer to populate with image data
      * @param numElementsToRead
@@ -113,24 +113,23 @@ struct CODA_OSS_API FileReader
      * @param subSourceIndex
      *   the index of the image within the file to read from
      *****************************************************************/
-    void getData(unsigned char *buffer, const sys::Uint32_T numElementsToRead,
-            const sys::Uint32_T subSourceIndex = 0);
+    void getData(unsigned char* buffer,
+                 const sys::Uint32_T numElementsToRead,
+                 const sys::Uint32_T subSourceIndex = 0);
 
     /**
      *****************************************************************
-     * Returns the number of images in the TIFF file. 
+     * Returns the number of images in the TIFF file.
      *
      * @return
      *   the number of images in the TIFF file
      *****************************************************************/
     sys::Uint32_T getImageCount() const
     {
-        return static_cast <sys::Uint32_T>(mImages.size());
+        return static_cast<sys::Uint32_T>(mImages.size());
     }
 
-    
 private:
-
     //! The input stream to use to read the TIFF file
     io::FileInputStream mInput;
 
@@ -138,13 +137,12 @@ private:
     tiff::Header mHeader;
 
     //! The images within the TIFF file
-    std::vector<tiff::ImageReader *> mImages;
+    std::vector<tiff::ImageReader*> mImages;
 
     //! Whether to reverse bytes while reading.
     bool mReverseBytes = false;
-    
 };
 
-} // End namespace.
+}  // End namespace.
 
-#endif // __TIFF_FILE_READER_H__
+#endif  // __TIFF_FILE_READER_H__

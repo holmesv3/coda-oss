@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,15 +14,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <import/sys.h>
-#include <import/io.h>
 #include <import/except.h>
+#include <import/io.h>
+#include <import/sys.h>
 
 using namespace sys;
 using namespace io;
@@ -41,21 +41,17 @@ public:
 
         in.close();
         out.close();
-
     }
 };
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     try
     {
-
         if (argc != 3)
             throw except::Error(
-                                Ctxt(
-                                     str::Format(
-                                          "Usage: %s <input file> <output file>",
-                                          argv[0])));
+                    Ctxt(str::Format("Usage: %s <input file> <output file>",
+                                     argv[0])));
 
         Copy::run(argv[1], argv[2]);
     }
@@ -63,5 +59,4 @@ int main(int argc, char **argv)
     {
         cout << e.toString() << endl;
     }
-
 }

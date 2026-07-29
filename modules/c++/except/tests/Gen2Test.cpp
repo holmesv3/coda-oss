@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of except-c++ 
+ * This file is part of except-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * except-c++ is free software; you can redistribute it and/or modify
@@ -14,26 +14,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <iostream>
 #include <stdlib.h>
+
+#include <iostream>
+
 #include "import/except.h"
 
 #define Ctxt(MESSAGE) Context(__FILE__, __LINE__, "Func", "Time", MESSAGE)
 
-using std::endl; using std::cout;
+using std::cout;
+using std::endl;
 using namespace except;
 
 DECLARE_EXCEPTION(DivideByZero);
 typedef DivideByZeroException DivideByZero;
 
 double Divide(double x, double y);
-
 
 double callDivide(double x, double y)
 {

@@ -27,8 +27,8 @@
 #include <vector>
 
 #include "config/Exports.h"
-#include "sys/Conf.h"
 #include "io/InputStream.h"
+#include "sys/Conf.h"
 
 namespace io
 {

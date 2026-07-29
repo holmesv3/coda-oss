@@ -20,13 +20,13 @@
  *
  */
 
-#pragma once 
+#pragma once
 #ifndef CODA_OSS_except_Context_h_INCLUDED_
 #define CODA_OSS_except_Context_h_INCLUDED_
 
-#include <string>
 #include <ostream>
 #include <sstream>
+#include <string>
 
 #include "config/Exports.h"
 #include "config/disable_compiler_warnings.h"
@@ -56,22 +56,38 @@ struct CODA_OSS_API Context final
      * \param file The file where the exception occurred
      * \param line The line number where the exception occurred
      */
-    Context(const char* file /*__FILE__*/, int line /*__LINE__*/,
+    Context(const char* file /*__FILE__*/,
+            int line /*__LINE__*/,
             const std::string& func,
             const std::string& time,
-            const std::string& message = "" /*for existing SWIG bindings*/)
-      : mMessage(message), mTime(time), mFunc(func), mFile(file), mLine(line) { }
-    Context(const char* file /*__FILE__*/, int line /*__LINE__*/,
+            const std::string& message = "" /*for existing SWIG bindings*/) :
+        mMessage(message), mTime(time), mFunc(func), mFile(file), mLine(line)
+    {
+    }
+    Context(const char* file /*__FILE__*/,
+            int line /*__LINE__*/,
             const std::string& func,
             const std::string& time,
-            const std::ostringstream& message) : Context(file, line, func, time, message.str()) { }
+            const std::ostringstream& message) :
+        Context(file, line, func, time, message.str())
+    {
+    }
     Context(const std::string& message,
-        const char* file /*__FILE__*/, int line /*__LINE__*/,
-        const std::string& func = "",
-        const std::string& time = "") : Context(file, line, func, time, message) {  }
-    explicit Context(const std::string& file, int line, // old API, needed by SWIG
-            const std::string& func, const std::string& time, const std::string& message) :
-        mMessage(message), mTime(time), mFunc(func), mFile(file), mLine(line) { }
+            const char* file /*__FILE__*/,
+            int line /*__LINE__*/,
+            const std::string& func = "",
+            const std::string& time = "") :
+        Context(file, line, func, time, message)
+    {
+    }
+    explicit Context(const std::string& file,
+                     int line,  // old API, needed by SWIG
+                     const std::string& func,
+                     const std::string& time,
+                     const std::string& message) :
+        mMessage(message), mTime(time), mFunc(func), mFile(file), mLine(line)
+    {
+    }
 
     ~Context() = default;
     Context(const Context&) = default;
@@ -89,9 +105,9 @@ struct CODA_OSS_API Context final
     }
 
     /*!
-    * Get the system time
-    * \return The system time
-    */
+     * Get the system time
+     * \return The system time
+     */
     const std::string& getTime() const noexcept
     {
         return mTime;

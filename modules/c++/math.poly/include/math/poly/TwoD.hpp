@@ -20,22 +20,21 @@
  *
  */
 
-#include <cmath>
-#include <limits>
-
 #include <import/except.h>
 #include <import/sys.h>
 #include <math/poly/OneD.h>
 #include <math/poly/Utils.h>
+
+#include <cmath>
+#include <limits>
 
 namespace math
 {
 namespace poly
 {
 
-template<typename _T>
-_T
-TwoD<_T>::operator () (double atX, double atY) const
+template <typename _T>
+_T TwoD<_T>::operator()(double atX, double atY) const
 {
     _T ret(0.0);
     double atXPwr = 1.0;
@@ -48,10 +47,11 @@ TwoD<_T>::operator () (double atX, double atY) const
     return ret;
 }
 
-template<typename _T>
-_T
-TwoD<_T>::integrate(double xStart, double xEnd,
-                    double yStart, double yEnd) const
+template <typename _T>
+_T TwoD<_T>::integrate(double xStart,
+                       double xEnd,
+                       double yStart,
+                       double yEnd) const
 {
     _T ret(0.0);
     double endAtPwr = xEnd;
@@ -70,15 +70,14 @@ TwoD<_T>::integrate(double xStart, double xEnd,
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::derivativeY() const
+template <typename _T>
+TwoD<_T> TwoD<_T>::derivativeY() const
 {
     TwoD<_T> ret(0, 0);
     if ((orderY() > 0))
     {
-        ret = TwoD<_T>(orderX(), orderY()-1);
-        for (size_t i = 0 ; i < mCoef.size() ; i++)
+        ret = TwoD<_T>(orderX(), orderY() - 1);
+        for (size_t i = 0; i < mCoef.size(); i++)
         {
             ret.mCoef[i] = mCoef[i].derivative();
         }
@@ -86,25 +85,23 @@ TwoD<_T>::derivativeY() const
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::derivativeX() const
+template <typename _T>
+TwoD<_T> TwoD<_T>::derivativeX() const
 {
     TwoD<_T> ret(0, 0);
     if ((orderX() > 0))
     {
-        ret = TwoD<_T>(orderX()-1, orderY());
-        for (size_t i = 0, sz = mCoef.size()-1; i < sz; i++)
+        ret = TwoD<_T>(orderX() - 1, orderY());
+        for (size_t i = 0, sz = mCoef.size() - 1; i < sz; i++)
         {
-            ret.mCoef[i] = mCoef[i + 1] * (_T)(i+1);
+            ret.mCoef[i] = mCoef[i + 1] * (_T)(i + 1);
         }
     }
     return ret;
 }
 
-template<typename _T>
-OneD<_T>
-TwoD<_T>::atY(double y) const
+template <typename _T>
+OneD<_T> TwoD<_T>::atY(double y) const
 {
     OneD<_T> ret(0);
     if (!empty())
@@ -120,9 +117,8 @@ TwoD<_T>::atY(double y) const
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::power(size_t toThe) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::power(size_t toThe) const
 {
     // If its 0, we have to give back a 1*x^0*y^0 poly, since
     // we want a 2D poly out
@@ -139,7 +135,6 @@ TwoD<_T>::power(size_t toThe) const
     if (toThe == 1)
         return rv;
 
-
     // Otherwise, we have to raise it
     for (size_t i = 2; i <= toThe; i++)
     {
@@ -148,10 +143,8 @@ TwoD<_T>::power(size_t toThe) const
     return rv;
 }
 
-
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::flipXY() const
+template <typename _T>
+TwoD<_T> TwoD<_T>::flipXY() const
 {
     if (empty())
     {
@@ -168,17 +161,15 @@ TwoD<_T>::flipXY() const
     return prime;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::derivativeXY() const
+template <typename _T>
+TwoD<_T> TwoD<_T>::derivativeXY() const
 {
     TwoD<_T> ret = derivativeY().derivativeX();
     return ret;
 }
 
-template<typename _T>
-OneD<_T>
-TwoD<_T>::operator [] (size_t i) const
+template <typename _T>
+OneD<_T> TwoD<_T>::operator[](size_t i) const
 {
     OneD<_T> ret(0);
     if (i < mCoef.size())
@@ -188,31 +179,31 @@ TwoD<_T>::operator [] (size_t i) const
     else
     {
         std::ostringstream str;
-        str << "index:" << i << " not within range [0..." << mCoef.size() << ")";
+        str << "index:" << i << " not within range [0..." << mCoef.size()
+            << ")";
         throw except::IndexOutOfRangeException(Ctxt(str));
     }
     return ret;
 }
 
-template<typename _T>
-_T*
-TwoD<_T>::operator [] (size_t i)
+template <typename _T>
+_T* TwoD<_T>::operator[](size_t i)
 {
     if (i < mCoef.size())
     {
-        return(&(mCoef[i][0]));
+        return (&(mCoef[i][0]));
     }
     else
     {
         std::ostringstream str;
-        str << "index: " << i << " not within range [0..." << mCoef.size() << ")";
+        str << "index: " << i << " not within range [0..." << mCoef.size()
+            << ")";
         throw except::IndexOutOfRangeException(Ctxt(str));
     }
 }
 
-template<typename _T>
-TwoD<_T>&
-TwoD<_T>::operator *= (double cv)
+template <typename _T>
+TwoD<_T>& TwoD<_T>::operator*=(double cv)
 {
     const auto sz = mCoef.size();
     for (size_t i = 0; i < sz; i++)
@@ -222,25 +213,22 @@ TwoD<_T>::operator *= (double cv)
     return *this;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::operator * (double cv) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::operator*(double cv) const
 {
     TwoD<_T> ret(*this);
     ret *= cv;
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>
-operator * (double cv, const TwoD<_T>& p)
+template <typename _T>
+TwoD<_T> operator*(double cv, const TwoD<_T>& p)
 {
     return p * cv;
 }
 
-template<typename _T>
-TwoD<_T>&
-TwoD<_T>::operator *= (const TwoD<_T>& p)
+template <typename _T>
+TwoD<_T>& TwoD<_T>::operator*=(const TwoD<_T>& p)
 {
     TwoD<_T> tmp(orderX() + p.orderX(), orderY() + p.orderY());
     const auto xsz = mCoef.size();
@@ -256,18 +244,16 @@ TwoD<_T>::operator *= (const TwoD<_T>& p)
     return *this;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::operator * (const TwoD<_T>& p) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::operator*(const TwoD<_T>& p) const
 {
     TwoD<_T> ret(*this);
     ret *= p;
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>&
-TwoD<_T>::operator += (const TwoD<_T>& p)
+template <typename _T>
+TwoD<_T>& TwoD<_T>::operator+=(const TwoD<_T>& p)
 {
     TwoD<_T> tmp(std::max<size_t>(orderX(), p.orderX()),
                  std::max<size_t>(orderY(), p.orderY()));
@@ -294,20 +280,18 @@ TwoD<_T>::operator += (const TwoD<_T>& p)
     return *this;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::operator + (const TwoD<_T>& p) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::operator+(const TwoD<_T>& p) const
 {
     TwoD<_T> ret(*this);
     ret += p;
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>&
-TwoD<_T>::operator -= (const TwoD<_T>& p)
+template <typename _T>
+TwoD<_T>& TwoD<_T>::operator-=(const TwoD<_T>& p)
 {
-    TwoD<_T> tmp(std::max<size_t>(orderX() ,p.orderX()),
+    TwoD<_T> tmp(std::max<size_t>(orderX(), p.orderX()),
                  std::max<size_t>(orderY(), p.orderY()));
 
     {
@@ -333,50 +317,45 @@ TwoD<_T>::operator -= (const TwoD<_T>& p)
     return *this;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::operator-(const TwoD<_T>& p) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::operator-(const TwoD<_T>& p) const
 {
     TwoD<_T> ret(*this);
     ret -= p;
     return ret;
 }
 
-template<typename _T>
-TwoD<_T>&
-TwoD<_T>::operator/=(double cv)
+template <typename _T>
+TwoD<_T>& TwoD<_T>::operator/=(double cv)
 {
-    double recipCV = 1.0/cv;
-    for (size_t i = 0, sz = mCoef.size() ; i < sz; i++)
+    double recipCV = 1.0 / cv;
+    for (size_t i = 0, sz = mCoef.size(); i < sz; i++)
     {
         mCoef[i] *= recipCV;
     }
     return *this;
 }
 
-template<typename _T>
-TwoD<_T>
-TwoD<_T>::operator/(double cv) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::operator/(double cv) const
 {
     TwoD<_T> ret(*this);
-    ret *= (1.0/cv);
+    ret *= (1.0 / cv);
     return ret;
 }
 
-template<typename _T>
-std::ostream&
-operator << (std::ostream& out, const TwoD<_T>& p)
+template <typename _T>
+std::ostream& operator<<(std::ostream& out, const TwoD<_T>& p)
 {
-    for (size_t i = 0 ; i < p.mCoef.size() ; i++)
+    for (size_t i = 0; i < p.mCoef.size(); i++)
     {
-        out <<  "x^" << i << "*(" << p[i] << ")" << std::endl;
+        out << "x^" << i << "*(" << p[i] << ")" << std::endl;
     }
     return out;
 }
 
-template<typename _T>
-bool
-TwoD<_T>::operator == (const TwoD<_T>& p) const
+template <typename _T>
+bool TwoD<_T>::operator==(const TwoD<_T>& p) const
 {
     const auto sz = mCoef.size();
     const auto psz = p.mCoef.size();
@@ -386,7 +365,7 @@ TwoD<_T>::operator == (const TwoD<_T>& p) const
     if (minSize == 0 && (sz != psz))
         return false;
 
-    for (size_t i = 0 ; i < minSize ; i++)
+    for (size_t i = 0; i < minSize; i++)
     {
         if (mCoef[i] != p.mCoef[i])
             return false;
@@ -397,7 +376,7 @@ TwoD<_T>::operator == (const TwoD<_T>& p) const
     {
         OneD<_T> dflt(orderY());
 
-        for (size_t ii = minSize ; ii < sz; ++ii)
+        for (size_t ii = minSize; ii < sz; ++ii)
         {
             if (mCoef[ii] != dflt)
             {
@@ -409,7 +388,7 @@ TwoD<_T>::operator == (const TwoD<_T>& p) const
     {
         OneD<_T> dflt(p.orderY());
 
-        for (size_t ii = minSize ; ii < psz ; ++ii)
+        for (size_t ii = minSize; ii < psz; ++ii)
         {
             if (p.mCoef[ii] != dflt)
             {
@@ -421,26 +400,25 @@ TwoD<_T>::operator == (const TwoD<_T>& p) const
     return true;
 }
 
-template<typename _T>
-bool
-TwoD<_T>::operator != (const TwoD<_T>& p) const
+template <typename _T>
+bool TwoD<_T>::operator!=(const TwoD<_T>& p) const
 {
     return !(*this == p);
 }
 
-template<typename _T>
+template <typename _T>
 TwoD<_T> TwoD<_T>::scaleVariable(double scale) const
 {
     return scaleVariable(scale, scale);
 }
 
-template<typename _T>
+template <typename _T>
 TwoD<_T> TwoD<_T>::scaleVariable(double scaleX, double scaleY) const
 {
-    return ::math::poly::scaleVariable<TwoD<_T> >(*this, scaleX, scaleY);
+    return ::math::poly::scaleVariable<TwoD<_T>>(*this, scaleX, scaleY);
 }
 
-template<typename _T>
+template <typename _T>
 TwoD<_T> TwoD<_T>::truncateTo(size_t orderX, size_t orderY) const
 {
     orderX = std::min(this->orderX(), orderX);
@@ -458,7 +436,7 @@ TwoD<_T> TwoD<_T>::truncateTo(size_t orderX, size_t orderY) const
     return newP;
 }
 
-template<typename _T>
+template <typename _T>
 TwoD<_T> TwoD<_T>::truncateToNonZeros(double zeroEpsilon) const
 {
     zeroEpsilon = std::abs(zeroEpsilon);
@@ -499,11 +477,10 @@ TwoD<_T> TwoD<_T>::truncateToNonZeros(double zeroEpsilon) const
     return truncateTo(newOrderX, newOrderY);
 }
 
-template<typename _T>
-TwoD<_T> TwoD<_T>::transformInput(
-        const math::poly::TwoD<_T>& gx,
-        const math::poly::TwoD<_T>& gy,
-        double zeroEpsilon) const
+template <typename _T>
+TwoD<_T> TwoD<_T>::transformInput(const math::poly::TwoD<_T>& gx,
+                                  const math::poly::TwoD<_T>& gy,
+                                  double zeroEpsilon) const
 {
     math::poly::TwoD<_T> newP(orderX(), orderY());
 
@@ -518,7 +495,7 @@ TwoD<_T> TwoD<_T>::transformInput(
     return newP.truncateToNonZeros(zeroEpsilon);
 }
 
-template<typename _T>
+template <typename _T>
 TwoD<_T> TwoD<_T>::transformInput(const math::poly::TwoD<_T>& gx,
                                   double zeroEpsilon) const
 {
@@ -531,7 +508,7 @@ TwoD<_T> TwoD<_T>::transformInput(const math::poly::TwoD<_T>& gx,
     return transformInput(gx, gy, zeroEpsilon);
 }
 
-template<typename _T>
+template <typename _T>
 bool TwoD<_T>::isScalar() const
 {
     for (size_t ii = 0; ii <= orderX(); ++ii)
@@ -548,5 +525,5 @@ bool TwoD<_T>::isScalar() const
     return true;
 }
 
-} // poly
-} // math
+}  // poly
+}  // math

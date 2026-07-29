@@ -56,10 +56,11 @@ class CODA_OSS_API FileOutputStreamOS : public SeekableOutputStream
 {
 protected:
     sys::File mFile;
+
 public:
     FileOutputStreamOS() = default;
 
-    using path = coda_oss::filesystem::path; // still used in SWIG bindings
+    using path = coda_oss::filesystem::path;  // still used in SWIG bindings
 
     /*!
      *  Alternate Constructor.  Takes an output file and a mode
@@ -67,12 +68,13 @@ public:
      *  \param creationFlags  see sys::File
      */
     FileOutputStreamOS(const path& outputFile,
-                       int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
+                       int creationFlags = sys::File::CREATE |
+                               sys::File::TRUNCATE);
 
     //! Destructor, closes the file stream.
     virtual ~FileOutputStreamOS()
     {
-        if ( isOpen() )
+        if (isOpen())
         {
             close();
         }
@@ -93,7 +95,8 @@ public:
      *  \param creationFlags see sys::File
      */
     virtual void create(const path& str,
-                        int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
+                        int creationFlags = sys::File::CREATE |
+                                sys::File::TRUNCATE);
 
     //!  Close the file
     void close() override
@@ -122,4 +125,4 @@ public:
 }
 
 #endif
-#endif // CODA_OSS_io_FileOutputStreamOS_h_INCLUDED_
+#endif  // CODA_OSS_io_FileOutputStreamOS_h_INCLUDED_

@@ -24,21 +24,22 @@
 #define CODA_OSS_cli_ArgumentParser_h_INCLUDED_
 #pragma once
 
-#include <memory>
 #include <iostream>
-#include <vector>
+#include <memory>
 #include <string>
+#include <vector>
 
-#include "config/Exports.h"
 #include "cli/Argument.h"
 #include "cli/Results.h"
+#include "config/Exports.h"
 
 namespace cli
 {
 
 enum
 {
-    EXIT_USAGE = 1, EXIT_VERSION = 2
+    EXIT_USAGE = 1,
+    EXIT_VERSION = 2
 };
 
 class CODA_OSS_API ArgumentParser
@@ -52,12 +53,13 @@ public:
      * Shortcut for adding an argument. Returns the newly created argument.
      */
     std::shared_ptr<Argument> addArgument(const std::string& nameOrFlags,
-                                         const std::string& help = "",
-                                         cli::Action action = cli::STORE,
-                                         const std::string& destination = "",
-                                         const std::string& metavar = "",
-                                         int minArgs = -1, int maxArgs = -1,
-                                         bool required = false);
+                                          const std::string& help = "",
+                                          cli::Action action = cli::STORE,
+                                          const std::string& destination = "",
+                                          const std::string& metavar = "",
+                                          int minArgs = -1,
+                                          int maxArgs = -1,
+                                          bool required = false);
 
     /**
      * Text to display before the argument help
@@ -95,12 +97,12 @@ public:
     ArgumentParser& setIgnoreUnknownArgumentsFlag(bool uaFlag);
 
     /**
-     * Set the output stream name if ignoring unknown arguments (default is 
+     * Set the output stream name if ignoring unknown arguments (default is
      * cerr).  Note:  This will only be used if the flag for ignoring
      * unknown arguments is true.
      */
     ArgumentParser& setIgnoreUnknownArgumentsOutputStream(
-             std::ostream* iuaOutstream);
+            std::ostream* iuaOutstream);
 
     /**
      * Prints the help and optionally exits.
@@ -110,7 +112,8 @@ public:
     /**
      * Prints the usage and optionally exits.
      */
-    void printUsage(std::ostream& out = std::cerr, bool andExit = false,
+    void printUsage(std::ostream& out = std::cerr,
+                    bool andExit = false,
                     const std::string& message = "") const;
 
     /**
@@ -126,11 +129,14 @@ public:
         return parse(argc, const_cast<const char**>(argv));
     }
 
-   /**
-    * Copies argc into a std::vector<std::string> that can be passed directly
-    * to parse().  setProgram(argv[0]) is called if setProgram() hasn't already been called.
-    */
-    static std::vector<std::string> make_args(int argc, const char** argv, std::string& program);
+    /**
+     * Copies argc into a std::vector<std::string> that can be passed directly
+     * to parse().  setProgram(argv[0]) is called if setProgram() hasn't already
+     * been called.
+     */
+    static std::vector<std::string> make_args(int argc,
+                                              const char** argv,
+                                              std::string& program);
     std::vector<std::string> make_args(int argc, const char** argv);
 
     /**
@@ -138,7 +144,8 @@ public:
      * will need to specify it explicitly using setProgramName().
      */
     Results* parse(const std::vector<std::string>& args);
-    std::unique_ptr<Results> parse(const std::string& program, const std::vector<std::string>& args);
+    std::unique_ptr<Results> parse(const std::string& program,
+                                   const std::vector<std::string>& args);
 
 protected:
     friend class Argument;
@@ -158,8 +165,7 @@ protected:
 
     struct FlagInfo
     {
-        FlagInfo() :
-            maxFlagsWidth(0)
+        FlagInfo() : maxFlagsWidth(0)
         {
         }
 

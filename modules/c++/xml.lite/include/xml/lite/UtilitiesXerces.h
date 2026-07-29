@@ -24,69 +24,63 @@
 #ifndef CODA_OSS_xml_lite_UtilitiesXerces_h_INCLUDED_
 #define CODA_OSS_xml_lite_UtilitiesXerces_h_INCLUDED_
 
-#include <stdint.h>
-
-#include <string>
-#include <mutex>
-#include <type_traits>
-#include <memory>
-
-#include "config/compiler_extensions.h"
-#include "config/Exports.h"
-
-#include <sys/Mutex.h>
-#include <mt/CriticalSection.h>
 #include <except/Error.h>
-#include <io/StringStream.h>
-#include <io/OutputStream.h>
 #include <io/InputStream.h>
-
+#include <io/OutputStream.h>
+#include <io/StringStream.h>
+#include <mt/CriticalSection.h>
+#include <stdint.h>
+#include <sys/Mutex.h>
 #include <xml/lite/xml_lite_config.h>
+
+#include <memory>
+#include <mutex>
+#include <string>
+#include <type_traits>
+
+#include "config/Exports.h"
+#include "config/compiler_extensions.h"
 #if defined(USE_XERCES)
 #include "xerces_.h"
-
-#include "xml/lite/XMLException.h"
-#include "xml/lite/ContentHandler.h"
 #include "xml/lite/Attributes.h"
+#include "xml/lite/ContentHandler.h"
 #include "xml/lite/NamespaceStack.h"
+#include "xml/lite/XMLException.h"
 #include "xml/lite/XMLReaderInterface.h"
 
 #if defined(XERCES_VERSION_MAJOR)
-#   if XERCES_VERSION_MAJOR == 2
-        typedef unsigned int XercesSize_T;
-#   else
-        typedef XMLSize_t XercesSize_T;
-#   endif
+#if XERCES_VERSION_MAJOR == 2
+typedef unsigned int XercesSize_T;
 #else
-    typedef XMLSize_t XercesSize_T;
+typedef XMLSize_t XercesSize_T;
+#endif
+#else
+typedef XMLSize_t XercesSize_T;
 #endif
 
-
-//XERCES_CPP_NAMESPACE_END
+// XERCES_CPP_NAMESPACE_END
 #if defined(XERCES_CPP_NAMESPACE_USE)
 XERCES_CPP_NAMESPACE_USE
 #endif
 typedef ContentHandler XercesContentHandlerInterface_T;
-typedef Attributes     XercesAttributesInterface_T;
-typedef ErrorHandler   XercesErrorHandlerInterface_T;
-
+typedef Attributes XercesAttributesInterface_T;
+typedef ErrorHandler XercesErrorHandlerInterface_T;
 
 namespace xml
 {
 namespace lite
 {
 
-
 typedef xml::lite::ContentHandler LiteContentHandler_T;
-typedef xml::lite::Attributes     LiteAttributes_T;
-typedef xml::lite::AttributeNode  LiteAttributesNode_T;
+typedef xml::lite::Attributes LiteAttributes_T;
+typedef xml::lite::AttributeNode LiteAttributesNode_T;
 
 /*!
  *  Interface to Xerces-C XMLCh*.  This is an RAII converter
  *  between xerces-c 16bit chars to 8bit chars.
  *
  *  This class works off of the assumption that Xerces-c passes
- *  around pointers as const or non-const depending on the 
+ *  around pointers as const or non-const depending on the
  *  ownership limitations of the memory and reacts accordingly.
  *  This object always accepts the memory internally, but for
  *  non-const it takes ownership, and for const memory (assumed
@@ -96,7 +90,6 @@ typedef xml::lite::AttributeNode  LiteAttributesNode_T;
 class XercesLocalString
 {
 public:
-
     /*!
      *  Constructor from XMLCh*
      *  Takes ownership of the memory and will clean it up
@@ -111,7 +104,6 @@ public:
      */
     XercesLocalString(const XMLCh* xmlStr);
 
-
     /*!
      *  Constructor from const char*
      *  \param str   A const char*
@@ -123,7 +115,6 @@ public:
      *  \param str   A std::string*
      */
     XercesLocalString(const std::string& str);
-
 
     /*!
      *  Copy Constructor
@@ -139,14 +130,14 @@ public:
         {
             destroyXMLCh(&mLocal);
         }
-        catch(...)
+        catch (...)
         {
         }
     }
 
     /*!
      *  Gives back a const XMLCh*
-     *    
+     *
      *  returning it as const is important so other classes
      *  know its owned by this object
      *
@@ -156,7 +147,7 @@ public:
     {
         return mLocal;
     }
-    
+
     /*!
      *  Assign from an XMLCh*
      *  Takes ownership of the memory and will clean it up
@@ -204,7 +195,7 @@ public:
     {
         if (a != nullptr && *a != nullptr)
         {
-            try 
+            try
             {
                 XMLString::release(a);
                 *a = nullptr;
@@ -212,7 +203,7 @@ public:
             catch (...)
             {
                 throw except::Exception(Ctxt(
-                    "XercesLocalString unsuccessful in destroying memory"));
+                        "XercesLocalString unsuccessful in destroying memory"));
             }
         }
     }
@@ -221,7 +212,7 @@ public:
     {
         if (a != nullptr && *a != nullptr)
         {
-            try 
+            try
             {
                 XMLString::release(a);
                 *a = nullptr;
@@ -229,17 +220,15 @@ public:
             catch (...)
             {
                 throw except::Exception(Ctxt(
-                    "XercesLocalString unsuccessful in destroying memory"));
+                        "XercesLocalString unsuccessful in destroying memory"));
             }
         }
     }
 
 private:
-
     //! The local string
     XMLCh* mLocal;
 };
-
 
 /*!
  *  \class XercesContentHandler
@@ -276,19 +265,23 @@ struct XercesContentHandler : public XercesContentHandlerInterface_T
     }
 
     ~XercesContentHandler()
-    {}
+    {
+    }
 
     XercesContentHandler(const XercesContentHandler&) = delete;
     XercesContentHandler& operator=(const XercesContentHandler&) = delete;
 
     virtual void ignorableWhitespace(const XMLCh* const /*chars*/,
                                      const XercesSize_T /*length*/) override
-    {}
-    virtual void  processingInstruction(const XMLCh* const /*target*/,
-                                        const XMLCh* const /*data*/) override
-    {}
-    virtual void  setDocumentLocator(const Locator* const /*locator*/) override
-    {}
+    {
+    }
+    virtual void processingInstruction(const XMLCh* const /*target*/,
+                                       const XMLCh* const /*data*/) override
+    {
+    }
+    virtual void setDocumentLocator(const Locator* const /*locator*/) override
+    {
+    }
 
     /*!
      *  The great thing about standards compliance is that it
@@ -316,8 +309,9 @@ struct XercesContentHandler : public XercesContentHandlerInterface_T
                             const XMLCh* const localName,
                             const XMLCh* const qname) override;
 
-    virtual void skippedEntity (const XMLCh* const /*name*/) override
-    {}
+    virtual void skippedEntity(const XMLCh* const /*name*/) override
+    {
+    }
 
     //! Fire off the start document notification
     virtual void startDocument() override;
@@ -331,18 +325,19 @@ struct XercesContentHandler : public XercesContentHandlerInterface_T
      *  \param qname The fully qualified name
      *  \param attrs The attributes in Xerces form
      */
-    virtual void startElement(const XMLCh* const uri,
-                              const XMLCh* const localName,
-                              const XMLCh* const qname,
-                              const XercesAttributesInterface_T &attrs) override;
+    virtual void startElement(
+            const XMLCh* const uri,
+            const XMLCh* const localName,
+            const XMLCh* const qname,
+            const XercesAttributesInterface_T& attrs) override;
 
     /*!
      *  Begin prefix mapping.  Transfer string types
      *  \param prefix The prefix to start mapping
      *  \param uri The corresponding uri
      */
-    virtual void startPrefixMapping (const XMLCh* const /*prefix*/,
-                                     const XMLCh* const /*uri*/) override
+    virtual void startPrefixMapping(const XMLCh* const /*prefix*/,
+                                    const XMLCh* const /*uri*/) override
     {
     }
 
@@ -350,37 +345,32 @@ struct XercesContentHandler : public XercesContentHandlerInterface_T
      *  End prefix mapping.  Transfer string types
      *  \param prefix The prefix to stop mapping
      */
-    virtual void endPrefixMapping (const XMLCh* const /*prefix*/) override
+    virtual void endPrefixMapping(const XMLCh* const /*prefix*/) override
     {
     }
 
-    virtual void
-    setXMLLiteContentHandler(xml::lite::ContentHandler* handler)
+    virtual void setXMLLiteContentHandler(xml::lite::ContentHandler* handler)
     {
         mLiteHandler = handler;
     }
 
-    virtual xml::lite::ContentHandler*
-    retrieveXMLLiteContentHandler()
+    virtual xml::lite::ContentHandler* retrieveXMLLiteContentHandler()
     {
         return mLiteHandler;
     }
 
 protected:
     xml::lite::ContentHandler* mLiteHandler;
-
-}
-;
-
+};
 
 /*!
-*  /class XercesErrorHandler
-*
-*  The error handler in xml::lite does is essentially non-existant
-*  (and unneccessary, due to the existance of the notification single).
-*  Our error handler implementation, then, simply calls the raise,
-*  and warning macros in the factory.
-*/
+ *  /class XercesErrorHandler
+ *
+ *  The error handler in xml::lite does is essentially non-existant
+ *  (and unneccessary, due to the existance of the notification single).
+ *  Our error handler implementation, then, simply calls the raise,
+ *  and warning macros in the factory.
+ */
 struct XercesErrorHandler final : public XercesErrorHandlerInterface_T
 {
     XercesErrorHandler() = default;
@@ -394,14 +384,16 @@ struct XercesErrorHandler final : public XercesErrorHandlerInterface_T
      *  __warning__(message);
      *  \param exception  The exception
      */
-    void warning(const SAXParseException &exception) override;
+    void warning(const SAXParseException& exception) override;
 
     void error(const SAXParseException& exception) override;
 
     void fatalError(const SAXParseException& exception) override;
 
     // Useless??
-    void resetErrors() override {}
+    void resetErrors() override
+    {
+    }
 };
 
 /*!
@@ -419,7 +411,7 @@ struct CODA_OSS_API XercesContext final
     XercesContext& operator=(XercesContext&&) = delete;
 
     void destroy();
-    
+
 private:
     struct Impl;
     static std::shared_ptr<Impl> getInstance();

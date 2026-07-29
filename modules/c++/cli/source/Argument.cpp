@@ -21,22 +21,24 @@
  */
 #include "cli/Argument.h"
 
-#include <iterator>
-
 #include <import/sys.h>
+
+#include <iterator>
 
 #include "cli/ArgumentParser.h"
 
-cli::Argument::Argument(const std::string& nameOrFlags, cli::ArgumentParser* parser):
+cli::Argument::Argument(const std::string& nameOrFlags,
+                        cli::ArgumentParser* parser) :
     mParser(parser)
 {
-    std::vector < std::string > vars = str::split(nameOrFlags, " ");
+    std::vector<std::string> vars = str::split(nameOrFlags, " ");
     if (vars.size() == 1 && !str::startsWith(vars[0], "-"))
         mName = vars[0];
     else
     {
-        for (std::vector<std::string>::iterator it = vars.begin(); it
-                != vars.end(); ++it)
+        for (std::vector<std::string>::iterator it = vars.begin();
+             it != vars.end();
+             ++it)
         {
             addFlag(*it);
         }
@@ -67,8 +69,8 @@ std::string cli::Argument::validateFlag(const std::string& flag) const
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
     std::string firstChar(flag.substr(0, 1));
     std::string rest = flag.substr(1);
-    if ((!str::isAlphanumeric(firstChar) && firstChar[0] != '_')
-            || (!str::containsOnly(rest, idChars)))
+    if ((!str::isAlphanumeric(firstChar) && firstChar[0] != '_') ||
+        (!str::containsOnly(rest, idChars)))
         throw except::Exception(Ctxt("invalid flag"));
     return flag;
 }
@@ -76,8 +78,8 @@ std::string cli::Argument::validateFlag(const std::string& flag) const
 cli::Argument* cli::Argument::setAction(cli::Action action)
 {
     mAction = action;
-    if (action == cli::STORE_TRUE || action == cli::STORE_FALSE || action
-            == cli::STORE_CONST || action == cli::VERSION)
+    if (action == cli::STORE_TRUE || action == cli::STORE_FALSE ||
+        action == cli::STORE_CONST || action == cli::VERSION)
     {
         // the flag, const or version are stored as the single argument
         setMinArgs(1);
@@ -102,7 +104,7 @@ cli::Argument* cli::Argument::setDefault(Value* val, bool own)
     return this;
 }
 cli::Argument* cli::Argument::setChoices(
-    const std::vector<std::string>& choices)
+        const std::vector<std::string>& choices)
 {
     mChoices.clear();
     mChoices = choices;

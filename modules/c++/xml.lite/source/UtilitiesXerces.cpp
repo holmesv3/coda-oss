@@ -28,8 +28,7 @@ namespace xml
 {
 namespace lite
 {
-XercesLocalString::XercesLocalString(XMLCh* xmlStr) :
-    mLocal(xmlStr)
+XercesLocalString::XercesLocalString(XMLCh* xmlStr) : mLocal(xmlStr)
 {
 }
 
@@ -117,34 +116,30 @@ void XercesContentHandler::endElement(const XMLCh* const uri,
     XercesLocalString xlocalName(localName);
     XercesLocalString xqname(qname);
 
-    mLiteHandler->endElement(xuri.str(),
-                             xlocalName.str(),
-                             xqname.str());
+    mLiteHandler->endElement(xuri.str(), xlocalName.str(), xqname.str());
 }
 
 void XercesContentHandler::startElement(
         const XMLCh* const uri,
         const XMLCh* const localName,
         const XMLCh* const qname,
-        const XercesAttributesInterface_T &attrs)
+        const XercesAttributesInterface_T& attrs)
 {
     // We have to copy the whole array
     LiteAttributes_T attributes;
     for (unsigned int i = 0; i < attrs.getLength(); i++)
     {
         LiteAttributesNode_T attributeNode;
-        attributeNode.setQName(
-            XercesLocalString(attrs.getQName(i)).str()
-        );
+        attributeNode.setQName(XercesLocalString(attrs.getQName(i)).str());
 
-        assert(attributeNode.getLocalName() == 
+        assert(attributeNode.getLocalName() ==
                XercesLocalString(attrs.getLocalName(i)).str());
 
         attributeNode.setUri(XercesLocalString(attrs.getURI(i)).str());
 
         attributeNode.setValue(XercesLocalString(attrs.getValue(i)).str());
 
-        //don't add duplicate attributes
+        // don't add duplicate attributes
         if (attributes.getIndex(attributeNode.getUri(),
                                 attributeNode.getLocalName()) == -1)
             attributes.add(attributeNode);
@@ -159,27 +154,24 @@ void XercesContentHandler::startElement(
                                attributes);
 }
 
-void XercesErrorHandler::
-warning(const SAXParseException& /*exception*/)
+void XercesErrorHandler::warning(const SAXParseException& /*exception*/)
 {
 }
 
-void XercesErrorHandler::
-error(const SAXParseException &exception)
+void XercesErrorHandler::error(const SAXParseException& exception)
 {
     XercesLocalString m(exception.getMessage());
     throw XMLParseException(m.str(),
-                                       static_cast<int>(exception.getLineNumber()),
-                                       static_cast<int>(exception.getColumnNumber()));
+                            static_cast<int>(exception.getLineNumber()),
+                            static_cast<int>(exception.getColumnNumber()));
 }
 
-void XercesErrorHandler::
-fatalError(const SAXParseException &exception)
+void XercesErrorHandler::fatalError(const SAXParseException& exception)
 {
     XercesLocalString m(exception.getMessage());
     XMLParseException xex(m.str(),
-                                     static_cast<int>(exception.getLineNumber()),
-                                     static_cast<int>(exception.getColumnNumber()));
+                          static_cast<int>(exception.getLineNumber()),
+                          static_cast<int>(exception.getColumnNumber()));
 
     throw except::Error(Ctxt(xex.getMessage()));
 }
@@ -193,64 +185,66 @@ struct XercesContext::Impl final
     static std::mutex mMutex;
     bool mIsDestroyed = false;
 
-Impl()
-{
-    //! XMLPlatformUtils::Initialize is not thread safe!
-    try
+    Impl()
     {
-        std::lock_guard<std::mutex> cs(mMutex);
-        XMLPlatformUtils::Initialize();
-    }
-    catch (const ::XMLException& toCatch)
-    {
-        XercesLocalString local(toCatch.getMessage());
-        except::Error e(Ctxt(local.str() + " (Initialization error)"));
-        throw e;
-    }
-}
-
-~Impl()
-{
-    try
-    {
-        destroy();
-    }
-    catch (...)
-    {
-    }
-}
-
-void destroy()
-{
-    // wrapping it here saves the mutex lock
-    if (!mIsDestroyed)
-    {
-        //! XMLPlatformUtils::Terminate is not thread safe!
+        //! XMLPlatformUtils::Initialize is not thread safe!
         try
         {
             std::lock_guard<std::mutex> cs(mMutex);
-            XMLPlatformUtils::Terminate();
-            mIsDestroyed = true;
+            XMLPlatformUtils::Initialize();
         }
         catch (const ::XMLException& toCatch)
         {
-            mIsDestroyed = false;
             XercesLocalString local(toCatch.getMessage());
-            except::Error e(Ctxt(local.str() + " (Termination error)"));
+            except::Error e(Ctxt(local.str() + " (Initialization error)"));
             throw e;
         }
     }
-}
+
+    ~Impl()
+    {
+        try
+        {
+            destroy();
+        }
+        catch (...)
+        {
+        }
+    }
+
+    void destroy()
+    {
+        // wrapping it here saves the mutex lock
+        if (!mIsDestroyed)
+        {
+            //! XMLPlatformUtils::Terminate is not thread safe!
+            try
+            {
+                std::lock_guard<std::mutex> cs(mMutex);
+                XMLPlatformUtils::Terminate();
+                mIsDestroyed = true;
+            }
+            catch (const ::XMLException& toCatch)
+            {
+                mIsDestroyed = false;
+                XercesLocalString local(toCatch.getMessage());
+                except::Error e(Ctxt(local.str() + " (Termination error)"));
+                throw e;
+            }
+        }
+    }
 };
 std::mutex XercesContext::Impl::mMutex;
 
 std::shared_ptr<XercesContext::Impl> XercesContext::getInstance()
 {
-    // The one and only instance; call  XMLPlatformUtils::Initialize() and XMLPlatformUtils::Terminate() just once.
-    static auto  impl = std::make_shared<XercesContext::Impl>();
-    return impl; // increment reference count
+    // The one and only instance; call  XMLPlatformUtils::Initialize() and
+    // XMLPlatformUtils::Terminate() just once.
+    static auto impl = std::make_shared<XercesContext::Impl>();
+    return impl;  // increment reference count
 }
-XercesContext::XercesContext() : mpImpl(getInstance()) // increment reference count
+XercesContext::XercesContext() :
+    mpImpl(getInstance())  // increment reference count
 {
 }
 XercesContext::~XercesContext()
@@ -262,7 +256,7 @@ void XercesContext::destroy()
     mpImpl.reset();
 }
 
-} // lite
-} // xml
+}  // lite
+}  // xml
 
 #endif

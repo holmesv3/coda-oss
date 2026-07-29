@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,21 +23,18 @@
 #ifndef __IO_NULL_STREAMS_H__
 #define __IO_NULL_STREAMS_H__
 
-#include <algorithm>
-
 #include <import/gsl.h>
-
 #include <io/InputStream.h>
 #include <io/OutputStream.h>
 #include <io/SeekableStreams.h>
+
+#include <algorithm>
 
 namespace io
 {
 struct NullInputStream : public InputStream
 {
-    NullInputStream(sys::SSize_T size) :
-        mSize(size),
-        mAvailable(size)
+    NullInputStream(sys::SSize_T size) : mSize(size), mAvailable(size)
     {
     }
 
@@ -46,7 +43,7 @@ struct NullInputStream : public InputStream
         return mAvailable;
     }
 
-    virtual sys::SSize_T readln(sys::byte *cStr,
+    virtual sys::SSize_T readln(sys::byte* cStr,
                                 const sys::Size_T strLenPlusNullByte) override
     {
         return read(cStr, strLenPlusNullByte);
@@ -55,8 +52,9 @@ struct NullInputStream : public InputStream
     virtual sys::SSize_T streamTo(OutputStream& soi,
                                   sys::SSize_T numBytes = IS_END) override
     {
-        const sys::SSize_T toProcess = (numBytes == IS_END) ? numBytes : (mAvailable
-                >= numBytes ? numBytes : mAvailable);
+        const sys::SSize_T toProcess = (numBytes == IS_END)
+                ? numBytes
+                : (mAvailable >= numBytes ? numBytes : mAvailable);
         mAvailable -= toProcess;
         for (sys::SSize_T i = 0; i < toProcess; ++i)
             soi.write(processByte());
@@ -73,14 +71,15 @@ protected:
     }
     virtual void processBytes(void* buffer, sys::Size_T len) const
     {
-        //override for different behavior
+        // override for different behavior
         memset(buffer, 0, len);
     }
 
     virtual sys::SSize_T readImpl(void* buffer, size_t len) override
     {
-        const auto numToRead =
-                mAvailable >= gsl::narrow<sys::SSize_T>(len) ? len : gsl::narrow<size_t>(mAvailable);
+        const auto numToRead = mAvailable >= gsl::narrow<sys::SSize_T>(len)
+                ? len
+                : gsl::narrow<size_t>(mAvailable);
 
         mAvailable -= numToRead;
 
@@ -96,19 +95,19 @@ struct NullOutputStream : public OutputStream
 {
     NullOutputStream() = default;
 
-    void write(sys::byte )
+    void write(sys::byte)
     {
     }
 
-    void write(const std::string& )
+    void write(const std::string&)
     {
     }
 
-    void writeln(const std::string& )
+    void writeln(const std::string&)
     {
     }
 
-    virtual void write(const void* , size_t ) override
+    virtual void write(const void*, size_t) override
     {
     }
 

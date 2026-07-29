@@ -25,8 +25,8 @@
 #pragma once
 
 #include <cstddef>
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "mem/SharedPtr.h"
 
@@ -78,7 +78,7 @@ struct VectorOfPointers
     }
 
     template <typename OtherT>
-        void push_back(OtherT* value)
+    void push_back(OtherT* value)
     {
         std::unique_ptr<OtherT> scopedValue(value);
         push_back(std::move(scopedValue));
@@ -94,10 +94,22 @@ struct VectorOfPointers
     typedef typename std::vector<T*>::iterator iterator;
     typedef typename std::vector<T*>::const_iterator const_iterator;
 
-    iterator begin() { return mValues.begin(); }
-    const_iterator begin() const { return mValues.begin(); }
-    iterator end() { return mValues.end(); }
-    const_iterator end() const { return mValues.end(); }
+    iterator begin()
+    {
+        return mValues.begin();
+    }
+    const_iterator begin() const
+    {
+        return mValues.begin();
+    }
+    iterator end()
+    {
+        return mValues.end();
+    }
+    const_iterator end() const
+    {
+        return mValues.end();
+    }
 
     iterator erase(iterator pos)
     {
@@ -125,7 +137,7 @@ private:
 };
 
 template <typename T>
-    struct VectorOfSharedPointers
+struct VectorOfSharedPointers
 {
     VectorOfSharedPointers() = default;
     ~VectorOfSharedPointers() = default;
@@ -134,15 +146,25 @@ template <typename T>
     VectorOfSharedPointers& operator=(const VectorOfSharedPointers&) = default;
     VectorOfSharedPointers& operator=(VectorOfSharedPointers&&) = default;
 
-    VectorOfSharedPointers(const std::vector<std::shared_ptr<T>>& values) : mValues(values) { }
-    VectorOfSharedPointers& operator=(const std::vector<std::shared_ptr<T>>& values)
+    VectorOfSharedPointers(const std::vector<std::shared_ptr<T>>& values) :
+        mValues(values)
+    {
+    }
+    VectorOfSharedPointers& operator=(
+            const std::vector<std::shared_ptr<T>>& values)
     {
         mValues = values;
         return *this;
     }
 
-    operator std::vector<std::shared_ptr<T>>&() { return mValues; }
-    operator const std::vector<std::shared_ptr<T>>&() const { return mValues; }
+    operator std::vector<std::shared_ptr<T>>&()
+    {
+        return mValues;
+    }
+    operator const std::vector<std::shared_ptr<T>>&() const
+    {
+        return mValues;
+    }
 
     void clear()
     {
@@ -179,7 +201,7 @@ template <typename T>
     }
 
     template <typename OtherT>
-        void push_back(OtherT* value)
+    void push_back(OtherT* value)
     {
         std::unique_ptr<OtherT> scopedValue(value);
         push_back(std::move(scopedValue));
@@ -193,18 +215,31 @@ template <typename T>
     }
 
     template <typename OtherT>
-        void push_back(std::shared_ptr<OtherT> value)
+    void push_back(std::shared_ptr<OtherT> value)
     {
         mValues.push_back(value);
     }
 
     typedef typename std::vector<std::shared_ptr<T>>::iterator iterator;
-    typedef typename std::vector<std::shared_ptr<T> >::const_iterator const_iterator;
+    typedef typename std::vector<std::shared_ptr<T>>::const_iterator
+            const_iterator;
 
-    iterator begin() { return mValues.begin(); }
-    const_iterator begin() const { return mValues.begin(); }
-    iterator end() { return mValues.end(); }
-    const_iterator end() const { return mValues.end(); }
+    iterator begin()
+    {
+        return mValues.begin();
+    }
+    const_iterator begin() const
+    {
+        return mValues.begin();
+    }
+    iterator end()
+    {
+        return mValues.end();
+    }
+    const_iterator end() const
+    {
+        return mValues.end();
+    }
 
     iterator erase(iterator pos)
     {

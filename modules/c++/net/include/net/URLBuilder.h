@@ -32,7 +32,6 @@ namespace net
 class URLBuilder
 {
 public:
-
     URLBuilder(const std::string url = "") : mURL(url)
     {
     }

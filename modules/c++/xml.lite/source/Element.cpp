@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,43 +14,49 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 #include "xml/lite/Element.h"
 
 #include <assert.h>
+#include <import/mem.h>
+#include <import/str.h>
+#include <str/Encoding.h>
+#include <sys/OS.h>
 
+#include <std/string>
 #include <stdexcept>
 #include <tuple>
-#include <std/string>
 
-#include <import/str.h>
-#include <import/mem.h>
-#include <sys/OS.h>
-#include <str/Encoding.h>
 #include "xml/lite/Attributes.h"
 
-std::unique_ptr<xml::lite::Element> xml::lite::Element::create(const std::string& qname, const std::string& uri, const std::string& characterData)
+std::unique_ptr<xml::lite::Element> xml::lite::Element::create(
+        const std::string& qname,
+        const std::string& uri,
+        const std::string& characterData)
 {
     return std::make_unique<Element>(qname, uri, characterData);
 }
-std::unique_ptr<xml::lite::Element> xml::lite::Element::create(const QName& qname, const std::string& characterData)
+std::unique_ptr<xml::lite::Element> xml::lite::Element::create(
+        const QName& qname, const std::string& characterData)
 {
     return create(qname.getName(), qname.getUri().value, characterData);
 }
-std::unique_ptr<xml::lite::Element> xml::lite::Element::create(const QName& qname, const coda_oss::u8string& characterData)
+std::unique_ptr<xml::lite::Element> xml::lite::Element::create(
+        const QName& qname, const coda_oss::u8string& characterData)
 {
-    return std::make_unique<Element>(qname,  characterData);
+    return std::make_unique<Element>(qname, characterData);
 }
 
 xml::lite::Element::Element(const xml::lite::Element& node)
 {
     *this = node;
 }
-xml::lite::Element& xml::lite::Element::operator=(const xml::lite::Element& node)
+xml::lite::Element& xml::lite::Element::operator=(
+        const xml::lite::Element& node)
 {
     if (this != &node)
     {
@@ -70,11 +76,11 @@ void xml::lite::Element::clone(const xml::lite::Element& node)
     clearChildren();
     mParent = nullptr;
 
-    std::vector<xml::lite::Element *>::const_iterator iter;
+    std::vector<xml::lite::Element*>::const_iterator iter;
     iter = node.getChildren().begin();
     for (; iter != node.getChildren().end(); ++iter)
     {
-        xml::lite::Element *child = new xml::lite::Element();
+        xml::lite::Element* child = new xml::lite::Element();
         child->clone(**iter);
         this->addChild(child);
     }
@@ -87,8 +93,8 @@ bool xml::lite::Element::hasElement(const QName& qname) const
 
     for (unsigned int i = 0; i < mChildren.size(); i++)
     {
-        if (mChildren[i]->getUri() == uri&& mChildren[i]->getLocalName()
-                == localName)
+        if (mChildren[i]->getUri() == uri &&
+            mChildren[i]->getLocalName() == localName)
             return true;
     }
     return false;
@@ -96,7 +102,6 @@ bool xml::lite::Element::hasElement(const QName& qname) const
 
 bool xml::lite::Element::hasElement(const std::string& localName) const
 {
-
     for (unsigned int i = 0; i < mChildren.size(); i++)
     {
         if (mChildren[i]->getLocalName() == localName)
@@ -105,7 +110,9 @@ bool xml::lite::Element::hasElement(const std::string& localName) const
     return false;
 }
 
-void xml::lite::Element::getElementsByTagName(const QName& n, std::vector<Element*>& elements, bool recurse) const
+void xml::lite::Element::getElementsByTagName(const QName& n,
+                                              std::vector<Element*>& elements,
+                                              bool recurse) const
 {
     const auto uri = n.getUri().value;
     const auto localName = n.getName();
@@ -113,16 +120,20 @@ void xml::lite::Element::getElementsByTagName(const QName& n, std::vector<Elemen
     elements.reserve(mChildren.size());
     for (unsigned int i = 0; i < mChildren.size(); i++)
     {
-        if (mChildren[i]->getUri() == uri && mChildren[i]->getLocalName()
-                == localName)
+        if (mChildren[i]->getUri() == uri &&
+            mChildren[i]->getLocalName() == localName)
             elements.push_back(mChildren[i]);
         if (recurse)
-            mChildren[i]->getElementsByTagName(uri, localName, elements, recurse);
+            mChildren[i]->getElementsByTagName(uri,
+                                               localName,
+                                               elements,
+                                               recurse);
     }
 }
 
 template <typename TGetElements>
-std::tuple<xml::lite::Element*, std::string> getElement(TGetElements getElements)
+std::tuple<xml::lite::Element*, std::string> getElement(
+        TGetElements getElements)
 {
     auto elements = getElements();
     if (elements.size() == 1)
@@ -132,11 +143,12 @@ std::tuple<xml::lite::Element*, std::string> getElement(TGetElements getElements
     return std::make_tuple(nullptr, std::to_string(elements.size()));
 }
 template <typename TGetElements, typename TMakeContext>
-xml::lite::Element& getElement(TGetElements getElements, TMakeContext makeContext)
+xml::lite::Element& getElement(TGetElements getElements,
+                               TMakeContext makeContext)
 {
     auto result = getElement(getElements);
     auto pElement = std::get<0>(result);
-    if (pElement  == nullptr)
+    if (pElement == nullptr)
     {
         const auto ctxt = makeContext(std::get<1>(result));
         throw xml::lite::XMLException(ctxt);
@@ -144,24 +156,30 @@ xml::lite::Element& getElement(TGetElements getElements, TMakeContext makeContex
     return *pElement;
 }
 
-xml::lite::Element* xml::lite::Element::getElementByTagName(std::nothrow_t, const QName& n, bool recurse) const
+xml::lite::Element* xml::lite::Element::getElementByTagName(std::nothrow_t,
+                                                            const QName& n,
+                                                            bool recurse) const
 {
     auto getElements = [&]() { return getElementsByTagName(n, recurse); };
     return std::get<0>(getElement(getElements));
 }
-xml::lite::Element& xml::lite::Element::getElementByTagName(const QName& n, bool recurse) const
+xml::lite::Element& xml::lite::Element::getElementByTagName(const QName& n,
+                                                            bool recurse) const
 {
     auto getElements = [&]() { return getElementsByTagName(n, recurse); };
-    auto makeContext = [&](const std::string& sz) {
+    auto makeContext = [&](const std::string& sz)
+    {
         const auto uri = n.getUri().value;
         const auto localName = n.getName();
-       return Ctxt("Expected exactly one '" + localName + "' (uri=" + uri + "); but got " + sz); };
+        return Ctxt("Expected exactly one '" + localName + "' (uri=" + uri +
+                    "); but got " + sz);
+    };
     return getElement(getElements, makeContext);
 }
 
 void xml::lite::Element::getElementsByTagName(const std::string& localName,
                                               std::vector<Element*>& elements,
-                                              bool recurse) const 
+                                              bool recurse) const
 {
     elements.reserve(mChildren.size());
     for (unsigned int i = 0; i < mChildren.size(); i++)
@@ -173,21 +191,22 @@ void xml::lite::Element::getElementsByTagName(const std::string& localName,
     }
 }
 
-xml::lite::Element* xml::lite::Element::getElementByTagName(std::nothrow_t,
-    const std::string& localName, bool recurse) const
+xml::lite::Element* xml::lite::Element::getElementByTagName(
+        std::nothrow_t, const std::string& localName, bool recurse) const
 {
-    auto getElements = [&]() { return getElementsByTagName(localName, recurse); };
+    auto getElements = [&]()
+    { return getElementsByTagName(localName, recurse); };
     return std::get<0>(getElement(getElements));
 }
 xml::lite::Element& xml::lite::Element::getElementByTagName(
-    const std::string& localName, bool recurse) const
+        const std::string& localName, bool recurse) const
 {
-    auto getElements = [&]() { return getElementsByTagName(localName, recurse); };
-    auto makeContext = [&](const std::string& sz) {
-       return Ctxt("Expected exactly one '" + localName + "'; but got " + sz); };
+    auto getElements = [&]()
+    { return getElementsByTagName(localName, recurse); };
+    auto makeContext = [&](const std::string& sz)
+    { return Ctxt("Expected exactly one '" + localName + "'; but got " + sz); };
     return getElement(getElements, makeContext);
 }
-
 
 void xml::lite::Element::getElementsByTagNameNS(const std::string& qname,
                                                 std::vector<Element*>& elements,
@@ -203,21 +222,20 @@ void xml::lite::Element::getElementsByTagNameNS(const std::string& qname,
     }
 }
 
-xml::lite::Element* xml::lite::Element::getElementByTagNameNS(std::nothrow_t,
-    const std::string& qname, bool recurse) const
+xml::lite::Element* xml::lite::Element::getElementByTagNameNS(
+        std::nothrow_t, const std::string& qname, bool recurse) const
 {
     auto getElements = [&]() { return getElementsByTagNameNS(qname, recurse); };
     return std::get<0>(getElement(getElements));
 }
 xml::lite::Element& xml::lite::Element::getElementByTagNameNS(
-    const std::string& qname, bool recurse) const
+        const std::string& qname, bool recurse) const
 {
     auto getElements = [&]() { return getElementsByTagNameNS(qname, recurse); };
-    auto makeContext = [&](const std::string& sz) {
-        return Ctxt("Expected exactly one '" + qname + "'; but got " + sz); };
+    auto makeContext = [&](const std::string& sz)
+    { return Ctxt("Expected exactly one '" + qname + "'; but got " + sz); };
     return getElement(getElements, makeContext);
 }
-
 
 void xml::lite::Element::destroyChildren()
 {
@@ -225,7 +243,7 @@ void xml::lite::Element::destroyChildren()
     while (mChildren.size())
     {
         // Get the last thing out
-        xml::lite::Element * childAtBack = mChildren.back();
+        xml::lite::Element* childAtBack = mChildren.back();
         // Pop it off
         mChildren.pop_back();
         // Delete it
@@ -249,19 +267,19 @@ void xml::lite::Element::consoleOutput_(io::OutputStream& stream) const
 {
     depthPrint(stream, 0, "", true /*isConsoleOutput*/);
 }
-void xml::lite::Element::prettyConsoleOutput_(io::OutputStream& stream,
-                                     const std::string& formatter) const
+void xml::lite::Element::prettyConsoleOutput_(
+        io::OutputStream& stream, const std::string& formatter) const
 {
     depthPrint(stream, 0, formatter, true /*isConsoleOutput*/);
     stream.writeln("");
 }
 
-
 std::string xml::lite::Element::getCharacterData() const
 {
     return str::to_native(mCharacterData);
 }
-const coda_oss::u8string& xml::lite::Element::getCharacterData(coda_oss::u8string& result) const
+const coda_oss::u8string& xml::lite::Element::getCharacterData(
+        coda_oss::u8string& result) const
 {
     result = mCharacterData;
     return result;
@@ -272,25 +290,31 @@ coda_oss::u8string xml::lite::getCharacterData(const Element& e)
     return e.getCharacterData(retval);
 }
 
-static void writeCharacterData_utf8(io::OutputStream& stream, const std::u8string& characterData)
+static void writeCharacterData_utf8(io::OutputStream& stream,
+                                    const std::u8string& characterData)
 {
     stream.write(characterData);  // call UTF-8 overload
 }
-static void writeCharacterData_native(io::OutputStream& stream, const std::u8string& characterData)
+static void writeCharacterData_native(io::OutputStream& stream,
+                                      const std::u8string& characterData)
 {
     stream.write(str::to_native(characterData));
 }
 
 static void depthPrint_(const xml::lite::Element& element,
-    io::OutputStream& stream, int depth, const std::string& formatter,
-    void(*writeCharacterData)(io::OutputStream&, const std::u8string&))
+                        io::OutputStream& stream,
+                        int depth,
+                        const std::string& formatter,
+                        void (*writeCharacterData)(io::OutputStream&,
+                                                   const std::u8string&))
 {
-    // XML must be stored in UTF-8 (or UTF-16/32), in particular, not Windows-1252. 
+    // XML must be stored in UTF-8 (or UTF-16/32), in particular, not
+    // Windows-1252.
     //
-    // Except for a special exception for writing to the console: UTF-8 won't display well on Windows
-    // and Windows-1252 won't display nicely on Linux.  Of course, "console output" is a bit
-    // iffy since both Windows and Linux support redirection ... so the user could still generate
-    // a bad XML file.
+    // Except for a special exception for writing to the console: UTF-8 won't
+    // display well on Windows and Windows-1252 won't display nicely on Linux.
+    // Of course, "console output" is a bit iffy since both Windows and Linux
+    // support redirection ... so the user could still generate a bad XML file.
 
     std::string prefix = "";
     for (int i = 0; i < depth; ++i)
@@ -317,19 +341,20 @@ static void depthPrint_(const xml::lite::Element& element,
     auto&& children = element.getChildren();
     if (characterData.empty() && children.empty())
     {
-        //simple type - just end it here
+        // simple type - just end it here
         stream.write(acc + "/" + rBrack);
     }
     else
     {
-        stream.write(acc + rBrack);            
+        stream.write(acc + rBrack);
         writeCharacterData(stream, characterData);
 
-        for (auto&& child: children)
+        for (auto&& child : children)
         {
             if (!formatter.empty())
                 stream.write("\n");
-            depthPrint_(*child, stream, depth + 1, formatter, writeCharacterData);
+            depthPrint_(
+                    *child, stream, depth + 1, formatter, writeCharacterData);
         }
 
         if (!children.empty() && !formatter.empty())
@@ -341,20 +366,26 @@ static void depthPrint_(const xml::lite::Element& element,
         stream.write(lBrack + name + rBrack);
     }
 }
-void xml::lite::Element::depthPrint(io::OutputStream& stream, int depth, const std::string& formatter, bool isConsoleOutput) const
+void xml::lite::Element::depthPrint(io::OutputStream& stream,
+                                    int depth,
+                                    const std::string& formatter,
+                                    bool isConsoleOutput) const
 {
-    const auto f = isConsoleOutput ? writeCharacterData_native // write to the console using the platform native encoding
-        : writeCharacterData_utf8;
+    const auto f = isConsoleOutput
+            ? writeCharacterData_native  // write to the console using the
+                                         // platform native encoding
+            : writeCharacterData_utf8;
     depthPrint_(*this, stream, depth, formatter, f);
 }
 
-void xml::lite::Element::addChild(xml::lite::Element * node)
+void xml::lite::Element::addChild(xml::lite::Element* node)
 {
     mChildren.push_back(node);
     node->setParent(this);
 }
 
-xml::lite::Element& xml::lite::Element::addChild(std::unique_ptr<xml::lite::Element>&& node)
+xml::lite::Element& xml::lite::Element::addChild(
+        std::unique_ptr<xml::lite::Element>&& node)
 {
     auto retval = node.get();
     addChild(node.release());
@@ -362,7 +393,8 @@ xml::lite::Element& xml::lite::Element::addChild(std::unique_ptr<xml::lite::Elem
 }
 
 void xml::lite::Element::changePrefix(Element* element,
-    const std::string& prefix, const std::string& uri)
+                                      const std::string& prefix,
+                                      const std::string& uri)
 {
     if (element->mName.getAssociatedUri() == uri)
     {
@@ -392,10 +424,11 @@ void xml::lite::Element::changePrefix(Element* element,
 
 #if _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4702)  // unreachable code
+#pragma warning(disable : 4702)  // unreachable code
 #endif
 void xml::lite::Element::changeURI(Element* element,
-    const std::string& prefix, const std::string& uri)
+                                   const std::string& prefix,
+                                   const std::string& uri)
 {
     if (element->mName.getPrefix() == prefix)
     {
@@ -426,8 +459,7 @@ void xml::lite::Element::changeURI(Element* element,
 #pragma warning(pop)
 #endif
 
-void xml::lite::Element::setNamespacePrefix(
-    std::string prefix, const Uri& uri_)
+void xml::lite::Element::setNamespacePrefix(std::string prefix, const Uri& uri_)
 {
     str::trim(prefix);
     auto uri = uri_.value;
@@ -442,8 +474,7 @@ void xml::lite::Element::setNamespacePrefix(
     attr[p] = uri;
 }
 
-void xml::lite::Element::setNamespaceURI(
-    std::string prefix,  const Uri& uri_)
+void xml::lite::Element::setNamespaceURI(std::string prefix, const Uri& uri_)
 {
     str::trim(prefix);
     auto uri = uri_.value;
@@ -464,7 +495,8 @@ void xml::lite::Element::setCharacterData(const std::string& characters)
 {
     mCharacterData = str::u8FromNative(characters);
 }
-xml::lite::Element& xml::lite::Element::operator=(const std::string& characterData)
+xml::lite::Element& xml::lite::Element::operator=(
+        const std::string& characterData)
 {
     setCharacterData(characterData);
     return *this;
@@ -483,25 +515,35 @@ xml::lite::Element& xml::lite::add(const QName& qname,
     return parent.addChild(std::move(elem));
 }
 
-void xml::lite::operator+=(Element& e, std::unique_ptr<xml::lite::Element>&& child)
+void xml::lite::operator+=(Element& e,
+                           std::unique_ptr<xml::lite::Element>&& child)
 {
     std::ignore = e.addChild(std::move(child));
 }
 
-xml::lite::Element& xml::lite::addChild(Element& e, const std::string& qname, const Uri& uri, const coda_oss::u8string& characterData)
+xml::lite::Element& xml::lite::addChild(Element& e,
+                                        const std::string& qname,
+                                        const Uri& uri,
+                                        const coda_oss::u8string& characterData)
 {
     return e.addChild(Element::create(QName(qname, uri), characterData));
 }
-xml::lite::Element& xml::lite::addChild(Element& e, const std::string& qname, const Uri& uri)
+xml::lite::Element& xml::lite::addChild(Element& e,
+                                        const std::string& qname,
+                                        const Uri& uri)
 {
     return e.addChild(Element::create(QName(qname, uri)));
 }
 
-xml::lite::Element& xml::lite::addChild(Element& e, const QName& qname, const coda_oss::u8string& characterData)
+xml::lite::Element& xml::lite::addChild(Element& e,
+                                        const QName& qname,
+                                        const coda_oss::u8string& characterData)
 {
     return e.addChild(Element::create(qname, characterData));
 }
-xml::lite::Element& xml::lite::addChild(Element& e, const QName& qname, const std::string& characterData)
+xml::lite::Element& xml::lite::addChild(Element& e,
+                                        const QName& qname,
+                                        const std::string& characterData)
 {
     return addChild(e, qname, str::u8FromNative(characterData));
 }
@@ -514,7 +556,9 @@ void xml::lite::operator+=(Element& e, const QName& qname)
     std::ignore = addChild(e, qname);
 }
 
-xml::lite::Element& xml::lite::addChild(Element& e, const std::string& qname, const coda_oss::u8string& characterData)
+xml::lite::Element& xml::lite::addChild(Element& e,
+                                        const std::string& qname,
+                                        const coda_oss::u8string& characterData)
 {
     return addChild(e, QName(qname), characterData);
 }
@@ -527,18 +571,21 @@ void xml::lite::operator+=(Element& e, const std::string& qname)
     std::ignore = addChild(e, qname);
 }
 
-xml::lite::Element& xml::lite::setChild(Element& e, std::unique_ptr<Element>&& child)
+xml::lite::Element& xml::lite::setChild(Element& e,
+                                        std::unique_ptr<Element>&& child)
 {
     e.destroyChildren();
     return e.addChild(std::move(child));
 }
-xml::lite::Element& xml::lite::Element::operator=(std::unique_ptr<Element>&& child)
+xml::lite::Element& xml::lite::Element::operator=(
+        std::unique_ptr<Element>&& child)
 {
     std::ignore = setChild(*this, std::move(child));
     return *this;
 }
 
-xml::lite::AttributeNode& xml::lite::addAttribute(Element& e, const AttributeNode& a)
+xml::lite::AttributeNode& xml::lite::addAttribute(Element& e,
+                                                  const AttributeNode& a)
 {
     return e.getAttributes().add(a);
 }
@@ -546,7 +593,9 @@ void xml::lite::operator+=(Element& e, const AttributeNode& a)
 {
     std::ignore = addAttribute(e, a);
 }
-xml::lite::AttributeNode& xml::lite::addAttribute(Element& e, const QName& name, const std::string& value)
+xml::lite::AttributeNode& xml::lite::addAttribute(Element& e,
+                                                  const QName& name,
+                                                  const std::string& value)
 {
     return addAttribute(e, AttributeNode(name, value));
 }
@@ -554,7 +603,8 @@ xml::lite::AttributeNode& xml::lite::addAttribute(Element& e, const QName& name)
 {
     return addAttribute(e, AttributeNode(name));
 }
-xml::lite::AttributeNode& xml::lite::addAttribute(Element& e, const std::string& name)
+xml::lite::AttributeNode& xml::lite::addAttribute(Element& e,
+                                                  const std::string& name)
 {
     return addAttribute(e, QName(name));
 }

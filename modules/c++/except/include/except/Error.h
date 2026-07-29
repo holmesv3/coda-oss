@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of except-c++ 
+ * This file is part of except-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * except-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -37,22 +37,39 @@
 /*!
  * Useful macro for defining Exception classes
  */
-#define DECLARE_EXTENDED_ERROR_(_Name, Error_, _Base) \
-  struct _Name##Error_ : public _Base \
-  { \
-      _Name##Error_() = default; virtual ~_Name##Error_() = default; \
-      _Name##Error_(const except::Context& c) : _Base(c){} \
-      _Name##Error_(const std::string& msg) : _Base(msg){} \
-      _Name##Error_(const except::Throwable& t, const except::Context& c) : _Base(t, c){} \
-      _Name##Error_(const except::ThrowableEx& t, const except::Context& c) : _Base(t, c){} \
-      std::string getType() const noexcept override { return #_Name; } \
-  }
-#define DECLARE_EXTENDED_ERROR(_Name, _Base) DECLARE_EXTENDED_ERROR_(_Name, Error, _Base)
-#define DECLARE_EXTENDED_ERROREX(_Name, _Base) DECLARE_EXTENDED_ERROR_(_Name, ErrorEx, _Base)
+#define DECLARE_EXTENDED_ERROR_(_Name, Error_, _Base)                         \
+    struct _Name##Error_ : public _Base                                       \
+    {                                                                         \
+        _Name##Error_() = default;                                            \
+        virtual ~_Name##Error_() = default;                                   \
+        _Name##Error_(const except::Context& c) : _Base(c)                    \
+        {                                                                     \
+        }                                                                     \
+        _Name##Error_(const std::string& msg) : _Base(msg)                    \
+        {                                                                     \
+        }                                                                     \
+        _Name##Error_(const except::Throwable& t, const except::Context& c) : \
+            _Base(t, c)                                                       \
+        {                                                                     \
+        }                                                                     \
+        _Name##Error_(const except::ThrowableEx& t,                           \
+                      const except::Context& c) :                             \
+            _Base(t, c)                                                       \
+        {                                                                     \
+        }                                                                     \
+        std::string getType() const noexcept override                         \
+        {                                                                     \
+            return #_Name;                                                    \
+        }                                                                     \
+    }
+#define DECLARE_EXTENDED_ERROR(_Name, _Base) \
+    DECLARE_EXTENDED_ERROR_(_Name, Error, _Base)
+#define DECLARE_EXTENDED_ERROREX(_Name, _Base) \
+    DECLARE_EXTENDED_ERROR_(_Name, ErrorEx, _Base)
 
 // Need to keep this around for existing code
-#define DECLARE_ERROR(_Name) \
-    DECLARE_EXTENDED_ERROR(_Name, except::Error);		\
+#define DECLARE_ERROR(_Name)                      \
+    DECLARE_EXTENDED_ERROR(_Name, except::Error); \
     DECLARE_EXTENDED_ERROREX(_Name, except::ErrorEx)
 
 namespace except
@@ -75,8 +92,7 @@ struct Error : public Throwable
      * Constructor. Takes a Context
      * \param c The Context
      */
-    Error(const Context& c) :
-        Throwable(c)
+    Error(const Context& c) : Throwable(c)
     {
     }
 
@@ -84,8 +100,7 @@ struct Error : public Throwable
      * Constructor.  Takes a message
      * \param message The message
      */
-    Error(const std::string& message) :
-        Throwable(message)
+    Error(const std::string& message) : Throwable(message)
     {
     }
 
@@ -94,23 +109,25 @@ struct Error : public Throwable
      * \param t The Throwable
      * \param c The Context
      */
-    Error(const Throwable& t, const Context& c) :
-        Throwable(t, c)
+    Error(const Throwable& t, const Context& c) : Throwable(t, c)
     {
     }
     Error(const ThrowableEx& t, const Context& c) : Throwable(t, c)
     {
     }
 
-    std::string getType() const override 
+    std::string getType() const override
     {
         return "Error";
     }
 };
 
-// Use this in new code: name is FooErrror (not FooErrorEx), base is except::ErrorEx (not except::Error).
-#define CODA_OSS_DECLARE_EXTENDED_ERROR(name_, base_) DECLARE_EXTENDED_ERROR_(name_, Error, base_)
-#define CODA_OSS_DECLARE_ERROR(name_) CODA_OSS_DECLARE_EXTENDED_ERROR(name_, except::ErrorEx)
+// Use this in new code: name is FooErrror (not FooErrorEx), base is
+// except::ErrorEx (not except::Error).
+#define CODA_OSS_DECLARE_EXTENDED_ERROR(name_, base_) \
+    DECLARE_EXTENDED_ERROR_(name_, Error, base_)
+#define CODA_OSS_DECLARE_ERROR(name_) \
+    CODA_OSS_DECLARE_EXTENDED_ERROR(name_, except::ErrorEx)
 
 struct ErrorEx : public ThrowableEx
 {
@@ -150,7 +167,7 @@ struct ErrorEx : public ThrowableEx
         return "ErrorEx";
     }
 };
-using Error11 = ErrorEx; // keep old name around for other projects
+using Error11 = ErrorEx;  // keep old name around for other projects
 
 /*!
  * \class InvalidDerivedTypeError

@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __SYS_MUTEX_POSIX_H__
 #define __SYS_MUTEX_POSIX_H__
 
@@ -28,10 +27,9 @@
 
 #if CODA_OSS_POSIX_SOURCE
 
-#include "sys/MutexInterface.h"
 #include <pthread.h>
 
-
+#include "sys/MutexInterface.h"
 
 namespace sys
 {

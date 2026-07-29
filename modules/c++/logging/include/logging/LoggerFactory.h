@@ -1,7 +1,7 @@
 /* =========================================================================
  * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * logging-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -28,12 +28,13 @@
 #ifndef CODA_OSS_logging_LoggerFactory_h_INCLUDED_
 #define CODA_OSS_logging_LoggerFactory_h_INCLUDED_
 
+#include <mem/SharedPtr.h>
+#include <mt/Singleton.h>
+
 #include <map>
 #include <memory>
 #include <mutex>
 
-#include <mt/Singleton.h>
-#include <mem/SharedPtr.h>
 #include "logging/DefaultLogger.h"
 
 namespace logging
@@ -49,8 +50,9 @@ namespace logging
 class LoggerManager
 {
 private:
-    std::map<std::string, std::shared_ptr<Logger> > mLoggerMap; //! map for storing Loggers
-    std::mutex mMutex; //! mutex used for locking the map
+    std::map<std::string, std::shared_ptr<Logger>>
+            mLoggerMap;  //! map for storing Loggers
+    std::mutex mMutex;  //! mutex used for locking the map
 
 public:
     LoggerManager() = default;
@@ -65,11 +67,12 @@ public:
      * default values in the sytem. If the name is not supplied, the root logger
      * is used by default.
      */
-     std::shared_ptr<Logger> getLoggerSharedPtr(const std::string& name = "root");
+    std::shared_ptr<Logger> getLoggerSharedPtr(
+            const std::string& name = "root");
 
     /*!
      * Returns the Logger with the specified name. If a logger with the
-     * given name does not exist, a new Logger is created, loaded with the 
+     * given name does not exist, a new Logger is created, loaded with the
      * default values in the sytem. If the name is not supplied, the root logger
      * is used by default.
      */
@@ -86,10 +89,9 @@ public:
  */
 typedef mt::Singleton<LoggerManager, true> LoggerFactory;
 
-
-//below are some shortcuts at the namespace level
-//this allows you to call logging::warn("foo") from anywhere
-//and it will use the root logger that is managed by the factory singleton
+// below are some shortcuts at the namespace level
+// this allows you to call logging::warn("foo") from anywhere
+// and it will use the root logger that is managed by the factory singleton
 
 //! Logs a message at the DEBUG LogLevel to the 'root' logger
 void debug(const std::string& msg);
@@ -125,12 +127,13 @@ void error(except::Throwable& t);
 void critical(except::Throwable& t);
 
 //! Sets the LogLevel for the default 'root' logger
-//TODO deprecate this
+// TODO deprecate this
 void setLogLevel(LogLevel level);
 
 //! get a Logger of the given name
 Logger* getLogger(const std::string& name = "root");
- std::shared_ptr<logging::Logger> getLoggerSharedPtr(const std::string& name = "root");
+std::shared_ptr<logging::Logger> getLoggerSharedPtr(
+        const std::string& name = "root");
 
 }
 #endif  // CODA_OSS_logging_LoggerFactory_h_INCLUDED_

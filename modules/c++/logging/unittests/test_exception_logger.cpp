@@ -20,16 +20,16 @@
  *
  */
 
-#include <vector>
-#include <memory>
-#include <std/span>
-
-#include "TestCase.h"
-
-#include <sys/Mutex.h>
+#include <logging/ExceptionLogger.h>
 #include <mem/SharedPtr.h>
 #include <mt/GenerationThreadPool.h>
-#include <logging/ExceptionLogger.h>
+#include <sys/Mutex.h>
+
+#include <memory>
+#include <std/span>
+#include <vector>
+
+#include "TestCase.h"
 
 class RunNothing final : public sys::Runnable
 {
@@ -44,22 +44,29 @@ class RunNothing final : public sys::Runnable
     }
 
 public:
-    RunNothing(size_t& c, logging::ExceptionLogger* el, bool getBacktrace_=false) : counter(c), exLog(el), getBacktrace(getBacktrace_) {}
+    RunNothing(size_t& c,
+               logging::ExceptionLogger* el,
+               bool getBacktrace_ = false) :
+        counter(c), exLog(el), getBacktrace(getBacktrace_)
+    {
+    }
 
     virtual void run() override
     {
-        if(exLog->hasLogged())
+        if (exLog->hasLogged())
             return;
-       
+
         {
             mt::CriticalSection<sys::Mutex> crit(counterLock());
             counter++;
         }
 
         if (getBacktrace)
-            exLog->log(except::Exception("Bad run").backtrace(), logging::LogLevel::LOG_ERROR);
+            exLog->log(except::Exception("Bad run").backtrace(),
+                       logging::LogLevel::LOG_ERROR);
         else
-            exLog->log(except::Exception("Bad run"), logging::LogLevel::LOG_ERROR);
+            exLog->log(except::Exception("Bad run"),
+                       logging::LogLevel::LOG_ERROR);
     }
 };
 
@@ -71,9 +78,9 @@ TEST_CASE(testExceptionLogger)
 
     size_t counter(0);
     uint16_t numThreads(2);
- 
+
     std::vector<sys::Runnable*> runs;
-   
+
     mt::GenerationThreadPool pool(numThreads);
     pool.start();
 
@@ -114,7 +121,7 @@ TEST_CASE(testExceptionWithBacktrace)
     TEST_ASSERT_EQ(getBacktrace_pos, std::string::npos);
     getBacktrace_pos = what.find(getBacktrace);
     TEST_ASSERT_NOT_EQ(getBacktrace_pos, std::string::npos);
-    
+
     try
     {
         throw except::Exception("Bad run").backtrace();
@@ -122,7 +129,8 @@ TEST_CASE(testExceptionWithBacktrace)
     }
     catch (const except::Throwable& t)
     {
-        const auto backtraceSize = static_cast<int64_t>(t.getBacktrace().size());
+        const auto backtraceSize =
+                static_cast<int64_t>(t.getBacktrace().size());
         TEST_ASSERT_GREATER(backtraceSize, 0);
         s = t.toString(true /*includeBacktrace*/);
         what = t.what();
@@ -140,7 +148,5 @@ TEST_CASE(testExceptionWithBacktrace)
 #pragma warning(pop)
 #endif
 
-TEST_MAIN(
-    TEST_CHECK(testExceptionLogger);
-    TEST_CHECK(testExceptionWithBacktrace);
-)
+TEST_MAIN(TEST_CHECK(testExceptionLogger);
+          TEST_CHECK(testExceptionWithBacktrace);)

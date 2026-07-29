@@ -3,9 +3,11 @@
 
 #ifndef _WIN32
 
-#include "net/DaemonInterface.h"
 #include <import/sys.h>
+
 #include <string>
+
+#include "net/DaemonInterface.h"
 
 namespace net
 {
@@ -32,18 +34,23 @@ public:
     //! Parse and execute command line option (start/stop/restart)
     void daemonize(int& argc, char**& argv) override;
 
-
     //! Set pidfile (file for locking application to single occurance).
     void setPidfile(const std::string& pidfile) override;
 
     //! Get pidfile.
-    std::string getPidfile() const override { return mPidfile; }
+    std::string getPidfile() const override
+    {
+        return mPidfile;
+    }
 
     //! Set tracefile (file to redirect stdout and stderr).
     void setTracefile(const std::string& tracefile) override;
 
     //! Get tracefile.
-    std::string getTracefile() const override { return mTracefile; }
+    std::string getTracefile() const override
+    {
+        return mTracefile;
+    }
 
 protected:
     std::string mPidfile;

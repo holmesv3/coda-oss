@@ -20,12 +20,12 @@
  *
  */
 
-#include <algorithm>
-#include <sstream>
-
-#include <io/StreamSplitter.h>
 #include <except/Exception.h>
 #include <io/InputStream.h>
+#include <io/StreamSplitter.h>
+
+#include <algorithm>
+#include <sstream>
 
 namespace io
 {
@@ -78,14 +78,13 @@ bool StreamSplitter::getNext(std::string& substring)
         handleStreamRead();
 
         // search for delimiter in buffer
-        for (sys::SSize_T ii = mBufferValidBegin;
-             ii < mBufferValidEnd - static_cast<sys::SSize_T>(mDelimiter.size() - 1);
+        for (sys::SSize_T ii = mBufferValidBegin; ii <
+             mBufferValidEnd - static_cast<sys::SSize_T>(mDelimiter.size() - 1);
              ++ii)
         {
-            if (0 == mDelimiter.compare(0,
-                                        mDelimiter.size(),
-                                        mBuffer + ii,
-                                        mDelimiter.size()))
+            if (0 ==
+                mDelimiter.compare(
+                        0, mDelimiter.size(), mBuffer + ii, mDelimiter.size()))
             {
                 // delimiter found starting at buffer position ii
                 // append the buffer contents preceding that point to output
@@ -99,10 +98,9 @@ bool StreamSplitter::getNext(std::string& substring)
 
         // no delimiter found in buffer
         // append the current buffer contents to output
-        const sys::SSize_T segmentEnd = mStreamEmpty ?
-                mBufferValidEnd
-                :
-                mBufferValidEnd - static_cast<sys::SSize_T>(mDelimiter.size() - 1);
+        const sys::SSize_T segmentEnd = mStreamEmpty ? mBufferValidEnd
+                                                     : mBufferValidEnd -
+                        static_cast<sys::SSize_T>(mDelimiter.size() - 1);
         transferBufferSegmentToSubstring(substring, substringSize, segmentEnd);
 
         // if no bytes remain in stream or buffer, we are done

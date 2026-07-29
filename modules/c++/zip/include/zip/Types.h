@@ -1,7 +1,7 @@
 /* =========================================================================
  * This file is part of zip-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * zip-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,10 +24,11 @@
 #ifndef CODA_OSS_zip_Types_h_INCLUDED_
 #define CODA_OSS_zip_Types_h_INCLUDED_
 
+#include <zlib.h>
+
 #include "io/InputStream.h"
 #include "io/OutputStream.h"
-#include <zlib.h>
-//#define DEF_MEM_LEVEL 8
+// #define DEF_MEM_LEVEL 8
 
 namespace zip
 {

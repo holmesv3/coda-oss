@@ -1,7 +1,7 @@
 /* =========================================================================
  * This file is part of zip-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * zip-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,7 +24,6 @@
 #define __ZIP_ZIP_FILE_H__
 
 #include "gsl/gsl.h"
-
 #include "zip/ZipEntry.h"
 
 /*!
@@ -52,7 +51,6 @@ namespace zip
 
 class ZipFile
 {
-
     //!  This is the container for ZipEntry objects
     std::vector<ZipEntry*> mEntries;
 
@@ -87,10 +85,9 @@ class ZipFile
     void readCentralDirValues(sys::ubyte* buf, sys::SSize_T len);
 
     //!  Copy to a string
-    //void copyString(const sys::ubyte* buf, sys::SSize_T len);
+    // void copyString(const sys::ubyte* buf, sys::SSize_T len);
 
 public:
-
     //!  Provide iterator access to the ZipEntry objects
     typedef std::vector<ZipEntry*>::const_iterator Iterator;
 
@@ -99,13 +96,12 @@ public:
      *  This stream should be already initialized, since we
      *  are planning on reading from it immediately
      */
-    ZipFile(io::InputStream* inputStream) :
-        mCompressed(nullptr)
+    ZipFile(io::InputStream* inputStream) : mCompressed(nullptr)
     {
         mSwapBytes = sys::isBigEndianSystem();
         mCompressedLength = inputStream->available();
         mCompressed = new sys::ubyte[mCompressedLength];
-        inputStream->read((sys::byte*) mCompressed, mCompressedLength);
+        inputStream->read((sys::byte*)mCompressed, mCompressedLength);
 
         readCentralDir();
     }
@@ -150,7 +146,6 @@ public:
     {
         return gsl::narrow<unsigned long>(mEntries.size());
     }
-
 };
 
 /*!

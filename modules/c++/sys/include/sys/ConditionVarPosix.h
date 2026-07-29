@@ -20,21 +20,21 @@
  *
  */
 
-
 #ifndef CODA_OSS_sys_ConditionVarPosix_h_INCLUDED_
 #define CODA_OSS_sys_ConditionVarPosix_h_INCLUDED_
 #pragma once
 
+#include <sys/Conf.h>
+
 #include <new>
 
-#include <sys/Conf.h>
 #include "sys/ConditionVarInterface.h"
 
 #if CODA_OSS_POSIX_SOURCE
 
-#include "sys/MutexPosix.h"
-
 #include <pthread.h>
+
+#include "sys/MutexPosix.h"
 
 namespace sys
 {
@@ -123,7 +123,7 @@ public:
 private:
     // This is set if we own the mutex, to make sure it gets deleted.
     std::unique_ptr<MutexPosix> mMutexOwned;
-    MutexPosix *mMutex;
+    MutexPosix* mMutex;
     pthread_cond_t mNative;
 };
 }

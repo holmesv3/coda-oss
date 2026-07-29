@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,15 +14,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-
-#include <import/sys.h>
 #include <import/except.h>
+#include <import/sys.h>
 using namespace sys;
 using namespace except;
 
@@ -33,8 +32,12 @@ using namespace std;
 class LazyChild : public Process
 {
 public:
-    LazyChild() {}
-    ~LazyChild() {}
+    LazyChild()
+    {
+    }
+    ~LazyChild()
+    {
+    }
     void run()
     {
         cout << "In Child" << endl;
@@ -46,17 +49,21 @@ public:
 class ListChild : public Process
 {
 public:
-    ListChild(char **argv) : mArgv(argv) {}
-    ~ListChild() {}
+    ListChild(char** argv) : mArgv(argv)
+    {
+    }
+    ~ListChild()
+    {
+    }
     void run()
     {
         cout << "In Child with argv:" << mArgv[0] << endl;
         execv("/usr/bin/ls", mArgv);
     }
-    char **mArgv;
+    char** mArgv;
 };
 
-int main(int argc, char**argv)
+int main(int argc, char** argv)
 {
     ListChild process1(argv);
     process1.start();

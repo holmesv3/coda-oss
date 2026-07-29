@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,12 +14,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #include "sys/DirectoryEntry.h"
 
@@ -30,14 +29,13 @@ bool operator==(const sys::DirectoryEntry::Iterator& lhs,
     const sys::DirectoryEntry* rhsD = rhs.get();
     if (!lhsD || !rhsD)
     {
-        if (lhsD == rhsD) return true;
+        if (lhsD == rhsD)
+            return true;
         return false;
     }
     else
-        return ( (lhsD->getName() == rhsD->getName() ) &&
-                 (lhsD->getCurrent() == rhsD->getCurrent())
-               );
-
+        return ((lhsD->getName() == rhsD->getName()) &&
+                (lhsD->getCurrent() == rhsD->getCurrent()));
 }
 bool operator!=(const sys::DirectoryEntry::Iterator& lhs,
                 const sys::DirectoryEntry::Iterator& rhs)
@@ -46,11 +44,11 @@ bool operator!=(const sys::DirectoryEntry::Iterator& lhs,
     const sys::DirectoryEntry* rhsD = rhs.get();
     if (!lhsD || !rhsD)
     {
-        if (lhsD != rhsD) return true;
+        if (lhsD != rhsD)
+            return true;
         return false;
     }
     else
-        return ( (lhsD->getName() != rhsD->getName() ) ||
-                 (lhsD->getCurrent() != rhsD->getCurrent())
-               );
+        return ((lhsD->getName() != rhsD->getName()) ||
+                (lhsD->getCurrent() != rhsD->getCurrent()));
 }

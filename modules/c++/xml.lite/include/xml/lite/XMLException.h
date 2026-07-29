@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -82,7 +82,9 @@ struct XMLParseException final : public XMLException
      *  \param row As reported by the parser
      *  \param column As reported by the parser
      */
-    explicit XMLParseException(const char *message, int row = 0, int column = 0) :
+    explicit XMLParseException(const char* message,
+                               int row = 0,
+                               int column = 0) :
         XMLException(message)
     {
         form(row, column);
@@ -95,8 +97,10 @@ struct XMLParseException final : public XMLException
      *  \param column As reported by the parser
      *  \param errNum An error number given by the parser
      */
-    explicit XMLParseException(const std::string & message, int row = 0, int column = 0,
-            int errNum = 0) :
+    explicit XMLParseException(const std::string& message,
+                               int row = 0,
+                               int column = 0,
+                               int errNum = 0) :
         XMLException(message)
     {
         form(row, column, errNum);
@@ -109,8 +113,10 @@ struct XMLParseException final : public XMLException
      *  \param column As reported by the parser
      *  \param errNum An error number given by the parser
      */
-    XMLParseException(const except::Context& c, int row = 0, int column = 0,
-            int errNum = 0) :
+    XMLParseException(const except::Context& c,
+                      int row = 0,
+                      int column = 0,
+                      int errNum = 0) :
         XMLException(c)
     {
         form(row, column, errNum);
@@ -124,8 +130,11 @@ struct XMLParseException final : public XMLException
      *  \param column As reported by the parser
      *  \param errNum An error number given by the parser
      */
-    XMLParseException(const except::Throwable& t, const except::Context& c,
-            int row = 0, int column = 0, int errNum = 0) :
+    XMLParseException(const except::Throwable& t,
+                      const except::Context& c,
+                      int row = 0,
+                      int column = 0,
+                      int errNum = 0) :
         XMLException(t, c)
     {
         form(row, column, errNum);
@@ -135,7 +144,6 @@ struct XMLParseException final : public XMLException
     virtual ~XMLParseException() = default;
 
 private:
-
     /*!
      *  Creates the actual message
      *  \param row As reported by the constructor
@@ -145,12 +153,12 @@ private:
     void form(int row, int column, int errNum = 0)
     {
         std::ostringstream oss;
-	    
-	if (errNum > 0)
-	{
-	    oss << "Error #" << errNum << ":";
-	}
-	
+
+        if (errNum > 0)
+        {
+            oss << "Error #" << errNum << ":";
+        }
+
         oss << " (" << row << ',' << column << "): " << mMessage;
         mMessage = oss.str();
     }

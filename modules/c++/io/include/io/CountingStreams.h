@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -30,11 +30,12 @@ namespace io
 {
 
 /**
- * An OutputStream that keeps track of the number of bytes written to the stream.
+ * An OutputStream that keeps track of the number of bytes written to the
+ * stream.
  */
 struct CODA_OSS_API CountingOutputStream : public ProxyOutputStream
 {
-    CountingOutputStream(OutputStream *proxy, bool ownPtr = false) :
+    CountingOutputStream(OutputStream* proxy, bool ownPtr = false) :
         ProxyOutputStream(proxy, ownPtr), mByteCount(0)
     {
     }

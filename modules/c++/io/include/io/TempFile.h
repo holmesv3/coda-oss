@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __IO_TEMPFILE_H__
 #define __IO_TEMPFILE_H__
 
@@ -42,7 +41,7 @@ struct CODA_OSS_API TempFile final
      *
      * \param dirname The directory in which to create the file
      */
-    TempFile(const std::string& dirname=".");
+    TempFile(const std::string& dirname = ".");
     ~TempFile();
     /*!
      * Get pathname of temporary file.

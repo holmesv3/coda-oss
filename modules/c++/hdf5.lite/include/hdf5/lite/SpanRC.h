@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of hdf5.lite-c++ 
+ * This file is part of hdf5.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2022, Maxar Technologies, Inc.
  *
  * hdf5.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,13 +14,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#pragma once 
+#pragma once
 #ifndef CODA_OSS_hdf5_lite_SpanRC_h_INCLUDED_
 #define CODA_OSS_hdf5_lite_SpanRC_h_INCLUDED_
 
@@ -31,10 +31,10 @@ namespace hdf5
 namespace lite
 {
 
-template<typename T>
+template <typename T>
 using SpanRC = coda_oss::mdspan<T, coda_oss::dextents<size_t, 2>>;
 
 }
 }
 
-#endif // CODA_OSS_hdf5_lite_SpanRC_h_INCLUDED_
+#endif  // CODA_OSS_hdf5_lite_SpanRC_h_INCLUDED_

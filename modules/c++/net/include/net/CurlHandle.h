@@ -27,6 +27,7 @@
 
 #ifdef NET_CURL_SUPPORT
 #include <curl/curl.h>
+
 #include <string>
 
 namespace net
@@ -107,23 +108,20 @@ public:
     void perform();
 
 private:
-    CurlHandle(const CurlHandle& );
-    CurlHandle& operator=(const CurlHandle& );
+    CurlHandle(const CurlHandle&);
+    CurlHandle& operator=(const CurlHandle&);
 
-    static
-    void verify(CURLcode code, const std::string& prefix);
+    static void verify(CURLcode code, const std::string& prefix);
 
-    static
-    int writeCallback(char* data,
-                         size_t size,
-                         size_t nmemb,
-                         std::string* writerData);
+    static int writeCallback(char* data,
+                             size_t size,
+                             size_t nmemb,
+                             std::string* writerData);
 
-    static
-    size_t writeBetterCallback(char* data,
-                               size_t size,
-                               size_t nmemb,
-                               std::string* writerData);
+    static size_t writeBetterCallback(char* data,
+                                      size_t size,
+                                      size_t nmemb,
+                                      std::string* writerData);
     CURL* const mHandle;
 };
 }

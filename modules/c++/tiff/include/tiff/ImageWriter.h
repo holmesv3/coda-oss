@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,12 +23,12 @@
 #ifndef __TIFF_IMAGE_WRITER_H__
 #define __TIFF_IMAGE_WRITER_H__
 
-#include <import/io.h>
 #include <config/Exports.h>
+#include <import/io.h>
 
 #include "tiff/Common.h"
-#include "tiff/IFDEntry.h"
 #include "tiff/IFD.h"
+#include "tiff/IFDEntry.h"
 
 namespace tiff
 {
@@ -48,12 +48,16 @@ public:
     static const unsigned short CHUNK_SIZE;
 
     //! The format of the image, either STRIPPED or TILED.
-    enum ImageFormat  { STRIPPED, TILED };
+    enum ImageFormat
+    {
+        STRIPPED,
+        TILED
+    };
 
     /**
      *****************************************************************
      * Constructor.  Initializes the object with a pointer to the
-     * output stream, and a file offset that indicates where the 
+     * output stream, and a file offset that indicates where the
      * beginning of the image is in the file (since TIFF can have
      * more than one image in a file).
      *
@@ -62,8 +66,8 @@ public:
      * @param ifdOffset
      *   the offset to the beginning of the IFD for this image
      *****************************************************************/
-    ImageWriter(io::FileOutputStream *output, const sys::Uint32_T ifdOffset) :
-                mOutput(output), mIFDOffset(ifdOffset)
+    ImageWriter(io::FileOutputStream* output, const sys::Uint32_T ifdOffset) :
+        mOutput(output), mIFDOffset(ifdOffset)
     {
     }
 
@@ -79,8 +83,7 @@ public:
      * @param numElementsToWrite
      *   the number of elements (not bytes) to write to the stream
      *****************************************************************/
-    void putData(const unsigned char *buffer,
-                 sys::Uint32_T numElementsToWrite);
+    void putData(const unsigned char* buffer, sys::Uint32_T numElementsToWrite);
 
     /**
      *****************************************************************
@@ -90,7 +93,7 @@ public:
      * @return
      *   a pointer to this image's IFD
      *****************************************************************/
-    tiff::IFD *getIFD()
+    tiff::IFD* getIFD()
     {
         return &mIFD;
     }
@@ -100,7 +103,7 @@ public:
 
     /**
      *****************************************************************
-     * Returns the position to write the next IFD offset to.  When 
+     * Returns the position to write the next IFD offset to.  When
      * the IFD for this image is written out, the next IFD offset is
      * default to 0 (indicating there is no next image in the file).
      * If there is to be more than one image in the file, you have to
@@ -134,7 +137,7 @@ public:
 
     /**
      *****************************************************************
-     * Sets the image format to either TILED or STRIPPED.  The 
+     * Sets the image format to either TILED or STRIPPED.  The
      * default is STRIPPED.
      *
      * @param format
@@ -157,13 +160,12 @@ public:
         return mFormat;
     }
 
-
     /**
      *****************************************************************
      * Makes sure that all necessary TIFF tags (IFD entries) are
      * defined in the IFD before allowing the image to be written.
-     * For some tags, there are reasonable defaults that this 
-     * function will set, others must be set by the user and this 
+     * For some tags, there are reasonable defaults that this
+     * function will set, others must be set by the user and this
      * function will throw an exception indicating the missing tag.
      *****************************************************************/
     void validate();
@@ -171,14 +173,14 @@ public:
 private:
     /**
      *****************************************************************
-     * Adds IFD entries to the IFD that indicate that the image 
+     * Adds IFD entries to the IFD that indicate that the image
      * should be written in a stripped format.
      *****************************************************************/
     void initStrips();
 
     /**
      *****************************************************************
-     * Adds IFD entries to the IFD that indicate that the image 
+     * Adds IFD entries to the IFD that indicate that the image
      * should be written in a tiled format.
      *****************************************************************/
     void initTiles();
@@ -192,7 +194,7 @@ private:
      * @param numElementsToWrite
      *   the number of elements (not bytes) to write to the file
      *****************************************************************/
-    void putStripData(const unsigned char *buffer,
+    void putStripData(const unsigned char* buffer,
                       sys::Uint32_T numElementsToWrite);
 
     /**
@@ -204,7 +206,7 @@ private:
      * @param numElementsToWrite
      *   the number of elements (not bytes) to write to the file
      *****************************************************************/
-    void putTileData(const unsigned char *buffer,
+    void putTileData(const unsigned char* buffer,
                      sys::Uint32_T numElementsToWrite);
 
     //! The TIFF IFD for this image
@@ -214,19 +216,19 @@ private:
     tiff::IFDEntry* mStripByteCounts = nullptr;
 
     //! A pointer to the TileOffsets entry, prevents frequent IFD access
-    tiff::IFDEntry *mTileOffsets = nullptr;
+    tiff::IFDEntry* mTileOffsets = nullptr;
 
     //! A pointer to the TileWidth entry, prevents frequent IFD access
-    tiff::IFDEntry *mTileWidth = nullptr;
+    tiff::IFDEntry* mTileWidth = nullptr;
 
     //! A pointer to the TileLength entry, prevents frequent IFD access
-    tiff::IFDEntry *mTileLength = nullptr;
+    tiff::IFDEntry* mTileLength = nullptr;
 
     //! A pointer to the TileByteCounts entry, prevents frequent IFD access
-    tiff::IFDEntry *mTileByteCounts = nullptr;
+    tiff::IFDEntry* mTileByteCounts = nullptr;
 
     //! A pointer to the output stream
-    io::FileOutputStream *mOutput = nullptr;
+    io::FileOutputStream* mOutput = nullptr;
 
     //! The position to write the next IFD to
     sys::Uint32_T mIFDOffset;
@@ -247,6 +249,6 @@ private:
     ImageFormat mFormat = STRIPPED;
 };
 
-} // End namespace.
+}  // End namespace.
 
-#endif // __TIFF_IMAGE_WRITER_H__
+#endif  // __TIFF_IMAGE_WRITER_H__

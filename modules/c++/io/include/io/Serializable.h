@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,7 +24,6 @@
 #define __IO_SERIALIZABLE_H__
 
 #include "config/Exports.h"
-
 #include "io/InputStream.h"
 #include "io/OutputStream.h"
 
@@ -51,7 +50,9 @@ namespace io
 struct CODA_OSS_API Serializable
 {
     Serializable() = default;
-    virtual ~Serializable() noexcept(false) {}
+    virtual ~Serializable() noexcept(false)
+    {
+    }
 
     /*!
      * Transfer this object into a byte stream
@@ -63,7 +64,6 @@ struct CODA_OSS_API Serializable
      * \param is  Stream to read object from
      */
     virtual void deserialize(io::InputStream& is) = 0;
-
 };
 }
 

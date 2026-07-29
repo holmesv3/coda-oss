@@ -19,9 +19,9 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
-#include <vector>
-
 #include <import/sys.h>
+
+#include <vector>
 
 namespace
 {
@@ -48,12 +48,11 @@ int main(int /*argc*/, char** /*argv*/)
     {
         sys::OS os;
 
-        std::cout << "Present number of CPUs: "
-                  << os.getNumCPUs() << std::endl;
+        std::cout << "Present number of CPUs: " << os.getNumCPUs() << std::endl;
         std::cout << "Present number of physical CPUs: "
                   << os.getNumPhysicalCPUs() << std::endl;
-        std::cout << "Available number of CPUs: "
-                  << os.getNumCPUsAvailable() << std::endl;
+        std::cout << "Available number of CPUs: " << os.getNumCPUsAvailable()
+                  << std::endl;
         std::cout << "Available number of physical CPUs: "
                   << os.getNumPhysicalCPUsAvailable() << std::endl;
 
@@ -62,7 +61,6 @@ int main(int /*argc*/, char** /*argv*/)
         os.getAvailableCPUs(physicalCPUs, htCPUs);
         printCPUs("Available physical CPUs", physicalCPUs);
         printCPUs("Available HT CPUs", htCPUs);
-
     }
     catch (const except::Throwable& t)
     {

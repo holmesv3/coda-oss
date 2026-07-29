@@ -20,15 +20,15 @@
  *
  */
 
-#include <tuple>
-#include <std/string>
-#include <std/filesystem>
-
-#include "io/StringStream.h"
 #include <TestCase.h>
 
-#include "xml/lite/MinidomParser.h"
+#include <std/filesystem>
+#include <std/string>
+#include <tuple>
+
+#include "io/StringStream.h"
 #include "xml/lite/Element.h"
+#include "xml/lite/MinidomParser.h"
 #include "xml/lite/QName.h"
 
 static std::string print(const xml::lite::Element& element)
@@ -45,25 +45,27 @@ TEST_CASE(testXmlCreateRoot)
     xml::lite::MinidomParser xmlParser;
     auto& document = getDocument(xmlParser);
 
-    auto documents_ = document.createElement(xml::lite::QName(""_u, "abc"), "abc");
+    auto documents_ =
+            document.createElement(xml::lite::QName(""_u, "abc"), "abc");
     auto& documents = *documents_;
     auto actual = print(documents);
     TEST_ASSERT_EQ("<abc>abc</abc>", actual);
 
-    documents = "test"; // setCharacterData()
-    documents = xml::lite::QName(""_u, "documents"); // setChild()
+    documents = "test";  // setCharacterData()
+    documents = xml::lite::QName(""_u, "documents");  // setChild()
     actual = print(documents);
     TEST_ASSERT_EQ("<documents>test</documents>", actual);
 }
 
 TEST_CASE(testXmlCreateNested)
-{  
-    using namespace xml::lite::literals; // _q and _u for QName and Uri
+{
+    using namespace xml::lite::literals;  // _q and _u for QName and Uri
 
     xml::lite::MinidomParser xmlParser;
     auto& document = getDocument(xmlParser);
 
-    auto documents_ = document.createElement(xml::lite::QName(""_u, "documents"), "");
+    auto documents_ =
+            document.createElement(xml::lite::QName(""_u, "documents"), "");
     auto& documents = *documents_;
     std::ignore = addChild(documents, "html");
     auto actual = print(documents);
@@ -72,26 +74,27 @@ TEST_CASE(testXmlCreateNested)
 
     documents += xml::lite::AttributeNode("count"_q, "1");  // addAttribute()
     auto& html = setChild(documents, xml::lite::Element::create("html"));
-    std::ignore =  addChild(html, "title"_q, "Title");
+    std::ignore = addChild(html, "title"_q, "Title");
     html += xml::lite::Element::create("title"_q, "Title");
     auto& body = addChild(html, "body");
     auto& p = addChild(body, "p");
     p = "paragraph";
     std::ignore = addAttribute(p, "a"_q, "abc");
-    body += "br"; // addChild()
+    body += "br";  // addChild()
 
     actual = print(documents);
-    const auto expected1 = // can't use a "raw" string because a string comparision is done, not a "XML comparision"
-        "<documents count=\"1\">"
+    const auto expected1 =  // can't use a "raw" string because a string
+                            // comparision is done, not a "XML comparision"
+            "<documents count=\"1\">"
             "<html>"
-                "<title>Title</title>"
-                "<title>Title</title>"
-                "<body>"
-                    "<p a=\"abc\">paragraph</p>"
-                    "<br/>"
-                "</body>"
+            "<title>Title</title>"
+            "<title>Title</title>"
+            "<body>"
+            "<p a=\"abc\">paragraph</p>"
+            "<br/>"
+            "</body>"
             "</html>"
-        "</documents>";
+            "</documents>";
     TEST_ASSERT_EQ(expected1, actual);
 }
 
@@ -102,7 +105,8 @@ TEST_CASE(testXmlCreateEmpty)
     xml::lite::MinidomParser xmlParser;
     auto& document = getDocument(xmlParser);
 
-    auto documents_ = document.createElement(xml::lite::QName(""_u, "empty"), "");
+    auto documents_ =
+            document.createElement(xml::lite::QName(""_u, "empty"), "");
     auto& documents = *documents_;
     auto actual = print(documents);
     TEST_ASSERT_EQ("<empty/>", actual);
@@ -116,10 +120,12 @@ TEST_CASE(testXmlCreateWhitespace)
     auto& document = getDocument(xmlParser);
 
     const auto text = str::u8FromNative("     ");
-    auto documents_ = document.createElement(xml::lite::QName(""_u, "text"), text);
+    auto documents_ =
+            document.createElement(xml::lite::QName(""_u, "text"), text);
     auto& documents = *documents_;
     auto strXml = str::u8FromNative(print(documents));
-    const auto expected = str::u8FromNative("<text>") + text + str::u8FromNative("</text>");
+    const auto expected =
+            str::u8FromNative("<text>") + text + str::u8FromNative("</text>");
     TEST_ASSERT(strXml == expected);
 
     {
@@ -141,7 +147,7 @@ TEST_CASE(testXmlCreateWhitespace)
         const auto& root = getRootElement(getDocument(xmlParser));
         std::u8string actual;
         root.getCharacterData(actual);
-        TEST_ASSERT(actual == text); // preserveCharacterData == true
+        TEST_ASSERT(actual == text);  // preserveCharacterData == true
     }
 }
 

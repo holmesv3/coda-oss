@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of std-c++ 
+ * This file is part of std-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  * (C) Copyright 2023, Maxar Technologies, Inc.
  *
@@ -15,12 +15,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #pragma once
 #ifndef CODA_OSS_import_std_h_INCLUDED_
@@ -31,81 +30,88 @@
 
 CODA_OSS_disable_warning_system_header_push
 #if _MSC_VER
-#pragma warning(disable: 4619) // #pragma warning: there is no warning number '...'
+#pragma warning(disable \
+                : 4619)  // #pragma warning: there is no warning number '...'
 
-#pragma warning(disable: 5027) // '...': move assignment operator was implicitly defined as deleted
-#pragma warning(disable: 5026) // '...': move constructor was implicitly defined as deleted
-#pragma warning(disable: 4626) // '...': assignment operator was implicitly defined as deleted
-#pragma warning(disable: 4625) // '...': copy constructor was implicitly defined as deleted
-#pragma warning(disable: 4355) // '...': used in base member initializer list
-#pragma warning(disable: 5220) // '...': a non-static data member with a volatile qualified type no longer implies that compiler generated copy/move constructors and copy/move assignment operators are not trivial
-#pragma warning(disable: 5204) // '...': class has virtual functions, but its trivial destructor is not virtual; instances of objects derived from this class may not be destructed correctly
-#pragma warning(disable: 5264)  // '...': '...' variable is not used
-#endif // _MSC_VER
+#pragma warning(disable : 5027)  // '...': move assignment operator was
+                                 // implicitly defined as deleted
+#pragma warning( \
+        disable  \
+        : 5026)  // '...': move constructor was implicitly defined as deleted
+#pragma warning(disable : 4626)  // '...': assignment operator was implicitly
+                                 // defined as deleted
+#pragma warning( \
+        disable  \
+        : 4625)  // '...': copy constructor was implicitly defined as deleted
+#pragma warning(disable : 4355)  // '...': used in base member initializer list
+#pragma warning(disable \
+                : 5220)  // '...': a non-static data member with a volatile
+                         // qualified type no longer implies that compiler
+                         // generated copy/move constructors and copy/move
+                         // assignment operators are not trivial
+#pragma warning( \
+        disable  \
+        : 5204)  // '...': class has virtual functions, but its trivial
+                 // destructor is not virtual; instances of objects derived from
+                 // this class may not be destructed correctly
+#pragma warning(disable : 5264)  // '...': '...' variable is not used
+#endif  // _MSC_VER
 
-#include <cerrno>
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
-#include <cinttypes>
-#include <cfloat>
-#include <climits>
-#include <cassert>
-#include <ctime>
-
-#include <limits>
-#include <memory>
-#include <new>
-
-#include <complex>
-#include <utility>
-#include <tuple>
-#include <typeinfo>
-#include <type_traits>
-#include <exception>
-#include <stdexcept>
-#include <locale>
-
-#include <mutex>
-#include <atomic>
-#include <thread>
-#include <future>
-
-#include <ios>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <sstream>
-#include <fstream>
-#include <streambuf>
-
-#include <array>
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <list>
-#include <deque>
-#include <stack>
-
-#include <numeric>
-#include <functional>
 #include <algorithm>
+#include <array>
+#include <atomic>
+#include <cassert>
+#include <cerrno>
+#include <cfloat>
+#include <cinttypes>
+#include <climits>
+#include <cmath>
+#include <complex>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <deque>
+#include <exception>
+#include <fstream>
+#include <functional>
+#include <future>
+#include <iomanip>
+#include <ios>
+#include <iostream>
 #include <iterator>
+#include <limits>
+#include <list>
+#include <locale>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <new>
+#include <numeric>
+#include <ostream>
 #include <random>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+#include <streambuf>
+#include <string>
+#include <thread>
+#include <tuple>
+#include <type_traits>
+#include <typeinfo>
+#include <utility>
+#include <vector>
 
-//#include <coda_oss/filesystem.h>
+// #include <coda_oss/filesystem.h>
 #include <coda_oss/bit.h>
 #include <coda_oss/cstddef.h>
+#include <coda_oss/mdspan.h>
 #include <coda_oss/numbers.h>
 #include <coda_oss/optional.h>
 #include <coda_oss/span.h>
 #include <coda_oss/string.h>
 #include <coda_oss/type_traits.h>
-#include <coda_oss/mdspan.h>
 
-CODA_OSS_disable_warning_pop
+        CODA_OSS_disable_warning_pop
 
-#endif // CODA_OSS_import_std_h_INCLUDED_
-
-
+#endif  // CODA_OSS_import_std_h_INCLUDED_

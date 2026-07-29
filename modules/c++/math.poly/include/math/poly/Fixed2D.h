@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of math.poly-c++ 
+ * This file is part of math.poly-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * math.poly-c++ is free software; you can redistribute it and/or modify
@@ -14,19 +14,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
 #ifndef __MATH_POLY_FIXED_2D_H__
 #define __MATH_POLY_FIXED_2D_H__
 
-#include <array>
 #include <math/poly/Fixed1D.h>
 #include <math/poly/TwoD.h>
 #include <math/poly/Utils.h>
+
+#include <array>
 
 namespace math
 {
@@ -38,17 +39,20 @@ namespace poly
  *  size for order.  As in the Fixed1D case, the order in each dim is one
  *  less than the size of the coefficients.
  */
-template<size_t _OrderX, size_t _OrderY, typename _T=double> class Fixed2D
+template <size_t _OrderX, size_t _OrderY, typename _T = double>
+class Fixed2D
 {
 protected:
-    std::array<Fixed1D<_OrderY, _T>, _OrderX+1> mCoef;
+    std::array<Fixed1D<_OrderY, _T>, _OrderX + 1> mCoef;
+
 public:
-    Fixed2D() {}
-
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-        Fixed2D(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& coeff)
+    Fixed2D()
     {
+    }
 
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& coeff)
+    {
         size_t sizeC = std::min<unsigned int>(_OtherOrderX, _OrderX);
         for (size_t i = 0; i <= sizeC; i++)
         {
@@ -58,7 +62,6 @@ public:
 
     Fixed2D(const TwoD<_T>& coeff)
     {
-
         size_t sizeC = std::min<size_t>(coeff.orderX(), _OrderX);
         for (size_t i = 0; i <= sizeC; i++)
         {
@@ -73,7 +76,6 @@ public:
 
     Fixed2D<_OrderX, _OrderY, _T>& operator=(const TwoD<_T>& coeff)
     {
-
         size_t sizeC = std::min<size_t>(coeff.orderX(), _OrderX);
         for (size_t i = 0; i <= sizeC; i++)
         {
@@ -82,11 +84,10 @@ public:
         return *this;
     }
 
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-        Fixed2D<_OrderX, _OrderY, _T>&
-             operator=(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& coeff)
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX, _OrderY, _T>& operator=(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& coeff)
     {
-
         size_t sizeC = std::min<size_t>(_OtherOrderX, _OrderX);
         for (size_t i = 0; i <= sizeC; i++)
         {
@@ -95,17 +96,29 @@ public:
         return *this;
     }
 
-    constexpr size_t orderX() const { return _OrderX; }
-    constexpr size_t orderY() const { return _OrderY; }
-    constexpr size_t sizeX() const { return _OrderX + 1; }
-    constexpr size_t sizeY() const { return _OrderY + 1; }
+    constexpr size_t orderX() const
+    {
+        return _OrderX;
+    }
+    constexpr size_t orderY() const
+    {
+        return _OrderY;
+    }
+    constexpr size_t sizeX() const
+    {
+        return _OrderX + 1;
+    }
+    constexpr size_t sizeY() const
+    {
+        return _OrderY + 1;
+    }
 
-    inline const std::array<Fixed1D<_OrderY, _T>, _OrderX+1>& coeffs() const
+    inline const std::array<Fixed1D<_OrderY, _T>, _OrderX + 1>& coeffs() const
     {
         return mCoef;
     }
 
-    inline std::array<Fixed1D<_OrderY, _T>, _OrderX+1>& coeffs()
+    inline std::array<Fixed1D<_OrderY, _T>, _OrderX + 1>& coeffs()
     {
         return mCoef;
     }
@@ -117,9 +130,8 @@ public:
 
         for (size_t i = 0; i <= _OrderX; i++)
         {
-            rv += mCoef[i](atY)*atXPower;
+            rv += mCoef[i](atY) * atXPower;
             atXPower *= atX;
-
         }
         return rv;
     }
@@ -132,13 +144,12 @@ public:
         double newCoef;
         for (size_t i = 0; i <= _OrderX; i++)
         {
-            div = 1.0/(i+1);
+            div = 1.0 / (i + 1);
             newCoef = mCoef[i].integrate(startY, endY) * div;
             rv += newCoef * endAtPower;
             rv -= newCoef * startAtPower;
             endAtPower *= endX;
             startAtPower *= startX;
-
         }
         return rv;
     }
@@ -158,11 +169,11 @@ public:
     }
 
     // Will not work with order 0!
-    Fixed2D<_OrderX, _OrderY-1, _T> derivativeY() const
+    Fixed2D<_OrderX, _OrderY - 1, _T> derivativeY() const
     {
         if (!_OrderY)
             throw except::Exception(Ctxt("Must have order 1 in Y"));
-        Fixed2D<_OrderX, _OrderY-1, _T> dy;
+        Fixed2D<_OrderX, _OrderY - 1, _T> dy;
 
         for (size_t i = 0; i <= _OrderX; i++)
         {
@@ -170,22 +181,21 @@ public:
         }
         return dy;
     }
-    Fixed2D<_OrderX-1, _OrderY, _T> derivativeX() const
+    Fixed2D<_OrderX - 1, _OrderY, _T> derivativeX() const
     {
         if (!_OrderX)
             throw except::Exception(Ctxt("Must have order 1 in Y"));
-        Fixed2D<_OrderX-1, _OrderY, _T> dx;
-        for (size_t i = 0; i <= _OrderX-1; i++)
+        Fixed2D<_OrderX - 1, _OrderY, _T> dx;
+        for (size_t i = 0; i <= _OrderX - 1; i++)
         {
-            dx[i] = mCoef[i+1] * (_T)(i+1);
+            dx[i] = mCoef[i + 1] * (_T)(i + 1);
         }
         return dx;
-
     }
 
-    Fixed2D<_OrderX-1, _OrderY-1, _T> derivativeXY() const
+    Fixed2D<_OrderX - 1, _OrderY - 1, _T> derivativeXY() const
     {
-        Fixed2D<_OrderX-1, _OrderY-1> rv = derivativeY().derivativeX();
+        Fixed2D<_OrderX - 1, _OrderY - 1> rv = derivativeY().derivativeX();
         return rv;
     }
     Fixed1D<_OrderX, _T> atY(double y) const
@@ -201,7 +211,6 @@ public:
             polyY[i] = mCoef[i](y);
         }
         return polyY;
-
     }
     inline Fixed1D<_OrderY, _T> operator[](size_t i) const
     {
@@ -213,7 +222,7 @@ public:
         return mCoef[i];
     }
 
-    Fixed2D<_OrderX, _OrderY, _T> operator * (double cv) const
+    Fixed2D<_OrderX, _OrderY, _T> operator*(double cv) const
     {
         Fixed2D<_OrderX, _OrderY> copy(*this);
 
@@ -222,18 +231,18 @@ public:
             copy[i] *= cv;
         }
         return copy;
-
     }
     /*!
      *  As in the one D case, we make sure that only the multiply does
      *  the real work.  Here we just cut down the order (truncate) to
      *  whatever order we already have
      */
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX, _OrderY, _T>& operator *= (const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX, _OrderY, _T>& operator*=(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
     {
-        Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY> newPoly
-            = *this * p;
+        Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY> newPoly =
+                *this * p;
         *this = newPoly;
     }
 
@@ -243,12 +252,12 @@ public:
      *  we can use either self-assignment or the overloaded copy operator.
      *
      */
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-        Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY, _T>
-        operator * (const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p) const
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY, _T> operator*(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p) const
     {
-        Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY, _T> copy(*this);
-        Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY, _T> newPoly;
+        Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY, _T> copy(*this);
+        Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY, _T> newPoly;
 
         for (size_t i = 0; i <= _OrderX; i++)
         {
@@ -256,51 +265,46 @@ public:
             {
                 // This produces a new polynomial which uses the
                 // copy constructor
-                newPoly[i+j] += copy[i] * p[j];
+                newPoly[i + j] += copy[i] * p[j];
             }
-
         }
         return newPoly;
-
     }
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX, _OrderY, _T>& operator += (const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX, _OrderY, _T>& operator+=(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
     {
         *this = *this + p;
     }
 
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-    Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY, _T>
-        operator+(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p) const
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY, _T> operator+(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p) const
 
     {
-        Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY, _T> copy(*this);
+        Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY, _T> copy(*this);
 
         for (size_t i = 0; i <= _OtherOrderX; i++)
         {
             copy[i] += p[i];
         }
         return copy;
-
     }
 
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-        Fixed2D<_OrderX, _OrderY, _T>& operator-=(const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX, _OrderY, _T>& operator-=(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
     {
-
         *this = *this + (p * -1);
         return *this;
-
     }
-    template<size_t _OtherOrderX, size_t _OtherOrderY>
-        Fixed2D<_OrderX+_OtherOrderX, _OrderY+_OtherOrderY, _T>
-        operator - (const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p) const
+    template <size_t _OtherOrderX, size_t _OtherOrderY>
+    Fixed2D<_OrderX + _OtherOrderX, _OrderY + _OtherOrderY, _T> operator-(
+            const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p) const
     {
         return *this + (p * -1);
-
-
     }
-    Fixed2D<_OrderX, _OrderY, _T>& operator /= (double cv)
+    Fixed2D<_OrderX, _OrderY, _T>& operator/=(double cv)
     {
         for (size_t i = 0; i <= _OrderX; i++)
         {
@@ -309,7 +313,7 @@ public:
         return *this;
     }
 
-    Fixed2D<_OrderX, _OrderY, _T> operator / (double cv) const
+    Fixed2D<_OrderX, _OrderY, _T> operator/(double cv) const
     {
         Fixed2D<_OrderX, _OrderY> copy(*this);
 
@@ -320,12 +324,12 @@ public:
         return copy;
     }
 
-    bool operator == (const Fixed2D<_OrderX, _OrderY, _T>& other) const 
+    bool operator==(const Fixed2D<_OrderX, _OrderY, _T>& other) const
     {
         return (mCoef == other.coeffs());
     }
 
-    bool operator != (const Fixed2D<_OrderX, _OrderY, _T>& other) const 
+    bool operator!=(const Fixed2D<_OrderX, _OrderY, _T>& other) const
     {
         return !(*this == other);
     }
@@ -357,10 +361,10 @@ public:
      *
      * \return Scaled polynomial of the same order as the original polynomial
      */
-    Fixed2D<_OrderX, _OrderY, _T> scaleVariable(
-            double scaleX, double scaleY) const
+    Fixed2D<_OrderX, _OrderY, _T> scaleVariable(double scaleX,
+                                                double scaleY) const
     {
-        return ::math::poly::scaleVariable<Fixed2D<_OrderX, _OrderY, _T> >(
+        return ::math::poly::scaleVariable<Fixed2D<_OrderX, _OrderY, _T>>(
                 *this, scaleX, scaleY);
     }
 
@@ -396,9 +400,9 @@ public:
 */
 };
 
-template<size_t _OrderX, size_t _OrderY, typename _T>
-Fixed2D<_OrderX, _OrderY, _T>
-    operator * (double cv, const Fixed2D<_OrderX, _OrderY, _T>& p)
+template <size_t _OrderX, size_t _OrderY, typename _T>
+Fixed2D<_OrderX, _OrderY, _T> operator*(double cv,
+                                        const Fixed2D<_OrderX, _OrderY, _T>& p)
 {
     Fixed2D<_OrderX, _OrderY> copy(p);
 
@@ -409,13 +413,13 @@ Fixed2D<_OrderX, _OrderY, _T>
     return copy;
 }
 
-template<size_t _OtherOrderX, size_t _OtherOrderY, typename _T>
-std::ostream&
-operator << (std::ostream& out, const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
+template <size_t _OtherOrderX, size_t _OtherOrderY, typename _T>
+std::ostream& operator<<(std::ostream& out,
+                         const Fixed2D<_OtherOrderX, _OtherOrderY, _T>& p)
 {
-    for (size_t i = 0 ; i <= _OtherOrderX ; i++)
+    for (size_t i = 0; i <= _OtherOrderX; i++)
     {
-      out << "x^" << i << "*(" << p[i] << ")" << std::endl;
+        out << "x^" << i << "*(" << p[i] << ")" << std::endl;
     }
     return out;
 }

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -56,9 +56,9 @@ namespace net
  * and HTML connections, we think of internet connections that handle HTTP
  * documents, SOAP documents, HTML documents, and even tarball data.
  *
- * This also allows us to treat an HTTP message wrapping an object as a 
+ * This also allows us to treat an HTTP message wrapping an object as a
  * different entity than the object itself, and to serialize to files as well
- * as just sockets. 
+ * as just sockets.
  */
 class SerializableConnection
 {
@@ -95,7 +95,7 @@ public:
 
     /*!
      *  This is a read method for serialization.
-     *  We want to simply read objects from the net, and 
+     *  We want to simply read objects from the net, and
      *  we want them to know how to unpack themselves.
      *  \param objectToRetrieve  This object will retrieve
      *  itself from the internet
@@ -152,9 +152,7 @@ public:
 
 private:
     NetConnection mConnection;
-
 };
 }
 
 #endif
-

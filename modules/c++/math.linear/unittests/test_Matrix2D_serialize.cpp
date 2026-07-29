@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of math.linear-c++ 
+ * This file is part of math.linear-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * math.linear-c++ is free software; you can redistribute it and/or modify
@@ -14,16 +14,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <stdlib.h>
-
 #include <math/linear/Matrix2D.h>
 #include <serialize/Serialize.h>
+#include <stdlib.h>
+
 #include "TestCase.h"
 
 namespace
@@ -56,7 +56,8 @@ TEST_CASE(testMatrix2DDoubleSerializeSquare)
     {
         for (size_t jj = 0; jj < in.cols(); ++jj)
         {
-            TEST_ASSERT_ALMOST_EQ_EPS(in[ii][jj], out[ii][jj],
+            TEST_ASSERT_ALMOST_EQ_EPS(in[ii][jj],
+                                      out[ii][jj],
                                       std::numeric_limits<double>::epsilon());
         }
     }
@@ -89,7 +90,8 @@ TEST_CASE(testMatrix2DDoubleSerializeRect)
     {
         for (size_t jj = 0; jj < in.cols(); ++jj)
         {
-            TEST_ASSERT_ALMOST_EQ_EPS(in[ii][jj], out[ii][jj],
+            TEST_ASSERT_ALMOST_EQ_EPS(in[ii][jj],
+                                      out[ii][jj],
                                       std::numeric_limits<double>::epsilon());
         }
     }
@@ -126,7 +128,6 @@ TEST_CASE(testMatrix2DIntSerializeSquare)
         }
     }
 }
-
 
 TEST_CASE(testMatrix2DIntSerializeRect)
 {

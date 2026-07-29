@@ -22,6 +22,7 @@
 #include <import/except.h>
 #include <import/io.h>
 #include <import/sio/lite.h>
+
 #include <complex>
 
 using namespace sio::lite;
@@ -47,30 +48,34 @@ int main(int argc, char** argv)
         //  Create a reader
         FileReader r(&input);
         FileHeader* header = r.readHeader();
-        
+
         int len = header->getNumElements() * header->getNumLines();
         int elemSize = header->getElementSize();
-        sys::byte* buf = new sys::byte[len*elemSize];
-        r.read(buf, len*elemSize);
-        
+        sys::byte* buf = new sys::byte[len * elemSize];
+        r.read(buf, len * elemSize);
+
         std::cout << "Different byte order? "
-            << (header->isDifferentByteOrdering() ? "yes" : "no") << std::endl;
-        std::cout << "Input Header length: " << header->getLength() << std::endl;
+                  << (header->isDifferentByteOrdering() ? "yes" : "no")
+                  << std::endl;
+        std::cout << "Input Header length: " << header->getLength()
+                  << std::endl;
         std::cout << "Input Data length: " << (len * elemSize) << std::endl;
-        
-        std::string outputFile = ((argc == 3) ? (argv[2]) : (std::string(argv[1]) + ".out"));
+
+        std::string outputFile =
+                ((argc == 3) ? (argv[2]) : (std::string(argv[1]) + ".out"));
         FileWriter writer(outputFile);
         writer.write(header, buf, 1);
-        delete [] buf;
-        
-        //read the new one!
+        delete[] buf;
+
+        // read the new one!
         FileInputStream input2(outputFile);
         r.setInputStream(&input2);
         header = r.readHeader();
-        
+
         len = header->getNumElements() * header->getNumLines();
         elemSize = header->getElementSize();
-        std::cout << "Output Header length: " << header->getLength() << std::endl;
+        std::cout << "Output Header length: " << header->getLength()
+                  << std::endl;
         std::cout << "Output Data length: " << (len * elemSize) << std::endl;
     }
     catch (Exception& e)
@@ -80,5 +85,3 @@ int main(int argc, char** argv)
     }
     return 0;
 }
-
-

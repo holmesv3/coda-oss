@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  * (C) Copyright 2025-26 ARKA Group, L.P. All rights reserved
  *
@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -26,6 +26,7 @@
 ///////////////////////////////////////////////////////////
 
 #include "logging/Logger.h"
+
 #include <deque>
 
 logging::Logger::~Logger()
@@ -41,11 +42,13 @@ void logging::Logger::log(logging::LogLevel level, const std::string& msg)
 
 void logging::Logger::log(LogLevel level, const except::Context& ctxt)
 {
-   const logging::LogRecord rec(mName, ctxt.getMessage(),
-                                                     level, ctxt.getFile(),
-                                                     ctxt.getFunction(),
-                                                     ctxt.getLine(),
-                                                     ctxt.getTime());
+    const logging::LogRecord rec(mName,
+                                 ctxt.getMessage(),
+                                 level,
+                                 ctxt.getFile(),
+                                 ctxt.getFunction(),
+                                 ctxt.getLine(),
+                                 ctxt.getTime());
     handle(rec);
 }
 
@@ -180,8 +183,8 @@ void logging::Logger::handle(const logging::LogRecord* record)
     {
         for (const auto& p : mHandlers)
         {
-            //std::cout << (int)(*p)->getLevel() << std::endl;
-            //only handle if it is above/equal to threshold
+            // std::cout << (int)(*p)->getLevel() << std::endl;
+            // only handle if it is above/equal to threshold
             if (p.first->getLevel() <= record->getLevel())
                 p.first->handle(record);
         }
@@ -190,10 +193,11 @@ void logging::Logger::handle(const logging::LogRecord* record)
 
 void logging::Logger::addHandler(logging::Handler* handler, bool own)
 {
-    //only add the handler if it isn't added already
+    // only add the handler if it isn't added already
     bool found = false;
-    for (Handlers_T::iterator p = mHandlers.begin(); p != mHandlers.end()
-            && !found; ++p)
+    for (Handlers_T::iterator p = mHandlers.begin();
+         p != mHandlers.end() && !found;
+         ++p)
     {
         if (p->first == handler)
         {
@@ -211,7 +215,7 @@ void logging::Logger::addHandler(std::unique_ptr<logging::Handler>&& handler)
 
 void logging::Logger::removeHandler(logging::Handler* handler)
 {
-    //find and remove, if it exists
+    // find and remove, if it exists
     for (Handlers_T::iterator p = mHandlers.begin(); p != mHandlers.end(); ++p)
     {
         if (p->first == handler)
@@ -226,7 +230,7 @@ void logging::Logger::setLevel(LogLevel level)
 {
     for (const auto& p : mHandlers)
     {
-        //set the level
+        // set the level
         p.first->setLevel(level);
     }
 }
@@ -252,4 +256,3 @@ logging::LogLevel logging::Logger::getLevel()
 
     return level;
 }
-

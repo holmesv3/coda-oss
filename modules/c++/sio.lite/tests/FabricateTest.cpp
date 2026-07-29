@@ -27,10 +27,10 @@ using namespace sio::lite;
 using namespace io;
 using namespace except;
 
-
 int main(int argc, char** argv)
 {
-    //TODO in the future, take in other inputs, such as rows, cols, size, type, etc.
+    // TODO in the future, take in other inputs, such as rows, cols, size, type,
+    // etc.
     if (argc != 2)
         die_printf("Usage: %s <sio-output>\n", argv[0]);
 
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
         float base = 6.73457834987f;
 
-        //fill with trash data
+        // fill with trash data
         for (int i = 0; i < numBands; ++i)
             for (size_t j = 0; j < bufSize; ++j)
                 rawData[i][j] = base + j;
@@ -58,12 +58,12 @@ int main(int argc, char** argv)
         FileWriter writer(outputFile);
         FileHeader hdr(height, width, elemSize, type);
 
-        //add some test data to the header
+        // add some test data to the header
         std::vector<sys::byte> udEntry;
         std::string uData = "ABCABCABCABC";
         for (size_t i = 0; i < uData.size(); i++)
             udEntry.push_back((sys::byte)uData[i]);
-        
+
         hdr.addUserData("junk", udEntry);
         hdr.addUserData("name", "Tom Zellman");
         hdr.addUserData("int_12345", 12345);

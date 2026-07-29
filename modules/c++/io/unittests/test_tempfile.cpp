@@ -20,10 +20,11 @@
  *
  */
 
+#include <io/TempFile.h>
+#include <sys/OS.h>
+
 #include <fstream>
 
-#include <sys/OS.h>
-#include <io/TempFile.h>
 #include "TestCase.h"
 
 TEST_CASE(testTempFileCreation)
@@ -49,9 +50,4 @@ TEST_CASE(testFileDestroyed)
     TEST_ASSERT(!os.exists(pathname));
 }
 
-TEST_MAIN(
-    TEST_CHECK(testTempFileCreation);
-    TEST_CHECK(testFileDestroyed);
-    )
-
-
+TEST_MAIN(TEST_CHECK(testTempFileCreation); TEST_CHECK(testFileDestroyed);)

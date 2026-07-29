@@ -20,24 +20,29 @@
  *
  */
 
-#include "TestCase.h"
-
-#include <array>
-#include <vector>
-#include <std/bit> // std::endian
-#include <std/cstddef>
-#include <std/span>
-#include <type_traits>
-
 #include <sys/Conf.h>
 #include <sys/Span.h>
 
+#include <array>
+#include <std/bit>  // std::endian
+#include <std/cstddef>
+#include <std/span>
+#include <type_traits>
+#include <vector>
+
+#include "TestCase.h"
+
 TEST_CASE(testEndianness)
 {
-    /*const*/ auto native = std::endian::native; // "const" causes "conditional expression is constant."
+    /*const*/ auto native = std::endian::native;  // "const" causes "conditional
+                                                  // expression is constant."
 
-    if (native == std::endian::big) { }
-    else if (native == std::endian::little) { }
+    if (native == std::endian::big)
+    {
+    }
+    else if (native == std::endian::little)
+    {
+    }
     else
     {
         TEST_FAIL_MSG("Mixed-endian not supported!");
@@ -51,7 +56,7 @@ TEST_CASE(testEndianness)
     }
     else
     {
-        TEST_ASSERT(!isBigEndianSystem);    
+        TEST_ASSERT(!isBigEndianSystem);
     }
     if (native == std::endian::little)
     {
@@ -62,18 +67,17 @@ TEST_CASE(testEndianness)
         TEST_ASSERT(isBigEndianSystem);
     }
 
-
     if (isBigEndianSystem)
     {
         TEST_ASSERT(native == std::endian::big);
     }
     else
     {
-        TEST_ASSERT(native == std::endian::little);    
+        TEST_ASSERT(native == std::endian::little);
     }
 }
 
-template<typename T>
+template <typename T>
 static std::vector<T> make_origValues(size_t NUM_PIXELS)
 {
     ::srand(334);
@@ -91,7 +95,7 @@ static std::vector<T> make_origValues(size_t NUM_PIXELS)
 TEST_CASE(testByteSwapV)
 {
     constexpr size_t NUM_PIXELS = 10000;
-    const auto origValues = make_origValues <uint64_t>(NUM_PIXELS);
+    const auto origValues = make_origValues<uint64_t>(NUM_PIXELS);
 
     // Byte swap the old-fashioned way
     auto values1(origValues);
@@ -99,7 +103,10 @@ TEST_CASE(testByteSwapV)
 
     // Byte swap into output buffer
     std::vector<uint64_t> swappedValues2(origValues.size());
-    sys::byteSwap(origValues.data(), sizeof(uint64_t), NUM_PIXELS, swappedValues2.data());
+    sys::byteSwap(origValues.data(),
+                  sizeof(uint64_t),
+                  NUM_PIXELS,
+                  swappedValues2.data());
 
     // Everything should match
     for (size_t ii = 0; ii < NUM_PIXELS; ++ii)
@@ -129,20 +136,22 @@ TEST_CASE(testByteSwapCxV)
     for (size_t ii = 0; ii < NUM_PIXELS; ++ii)
     {
         using int_type = uint64_t;
-        static_assert(sizeof(int_type) == sizeof(value_type), "Unknown sizeof(std::complex<float>)");
+        static_assert(sizeof(int_type) == sizeof(value_type),
+                      "Unknown sizeof(std::complex<float>)");
 
         // If these values are byte-swapped, they could be bogus.
         const void* const pValue1_ = &(values1[ii]);
         const void* const pSwappedValue2_ = &(swappedValues2[ii]);
-        
+
         auto const pValue1 = static_cast<const int_type*>(pValue1_);
-        auto const pSwappedValue2 = static_cast<const int_type*>(pSwappedValue2_);
+        auto const pSwappedValue2 =
+                static_cast<const int_type*>(pSwappedValue2_);
 
         TEST_ASSERT_EQ(*pValue1, *pSwappedValue2);
     }
 }
 
-template<typename T>
+template <typename T>
 inline std::span<const T> as_span(const std::vector<std::byte>& bytes)
 {
     const void* const pBytes_ = bytes.data();
@@ -177,7 +186,8 @@ TEST_CASE(testByteSwap)
 }
 
 // 0xnn is an `int` which can't be used to initialize std::byte w/o a cast
-#define CODA_OSS_define_byte(v) constexpr static std::byte v = static_cast<std::byte>(0 ## v)
+#define CODA_OSS_define_byte(v) \
+    constexpr static std::byte v = static_cast<std::byte>(0##v)
 CODA_OSS_define_byte(x00);
 CODA_OSS_define_byte(x11);
 CODA_OSS_define_byte(x22);
@@ -198,12 +208,30 @@ CODA_OSS_define_byte(xFF);
 
 static constexpr std::byte two_bytes[]{x00, xFF};
 static constexpr std::byte four_bytes[]{x00, x11, xEE, xFF};
-static constexpr std::byte eight_bytes[]{x00, x11, x22, x33, xCC, xDD, xEE, xFF};
-static constexpr std::byte sixteen_bytes[]{x00, x11, x22, x33, x44, x55, x66, x77, x88, x99, xAA, xBB, xCC, xDD, xEE, xFF};
+static constexpr std::byte eight_bytes[]{
+        x00, x11, x22, x33, xCC, xDD, xEE, xFF};
+static constexpr std::byte sixteen_bytes[]{x00,
+                                           x11,
+                                           x22,
+                                           x33,
+                                           x44,
+                                           x55,
+                                           x66,
+                                           x77,
+                                           x88,
+                                           x99,
+                                           xAA,
+                                           xBB,
+                                           xCC,
+                                           xDD,
+                                           xEE,
+                                           xFF};
 
-template<typename TByteSpanLike1, typename TByteSpanLike2>
-static void test_assert_eq_swapped(const std::string& testName, size_t sz,
-    const TByteSpanLike1& pValueBytes, const TByteSpanLike2& pResultBytes)
+template <typename TByteSpanLike1, typename TByteSpanLike2>
+static void test_assert_eq_swapped(const std::string& testName,
+                                   size_t sz,
+                                   const TByteSpanLike1& pValueBytes,
+                                   const TByteSpanLike2& pResultBytes)
 {
     for (size_t i = 0, j = sz; i < sz && j > 0; i++, j--)
     {
@@ -211,7 +239,7 @@ static void test_assert_eq_swapped(const std::string& testName, size_t sz,
     }
 }
 
-template<typename TUInt>
+template <typename TUInt>
 static void testByteSwapValues_(const std::string& testName, const void* pBytes)
 {
     auto pUInt = static_cast<const TUInt*>(pBytes);
@@ -229,12 +257,15 @@ static void testByteSwapValues_(const std::string& testName, const void* pBytes)
     // swap as an "array" of one value
     sys::byteSwap(pUInt, sizeof(TUInt), 1, &swap);
     TEST_ASSERT_NOT_EQ(*pUInt, swap);
-    sys::byteSwap(&swap, sizeof(TUInt), 1); // swap back
+    sys::byteSwap(&swap, sizeof(TUInt), 1);  // swap back
     TEST_ASSERT_EQ(*pUInt, swap);
 
     const auto resultBytes = sys::byteSwapValue(*pUInt);
     TEST_ASSERT_EQ(resultBytes.size(), sizeof(TUInt));
-    test_assert_eq_swapped(testName, sizeof(TUInt), resultBytes.data(), pValueBytes);
+    test_assert_eq_swapped(testName,
+                           sizeof(TUInt),
+                           resultBytes.data(),
+                           pValueBytes);
 }
 TEST_CASE(testByteSwapValues)
 {
@@ -246,12 +277,13 @@ TEST_CASE(testByteSwapValues)
 TEST_CASE(testByteSwapCxValue)
 {
     using value_type = std::complex<float>;
-    const value_type cx{3.14f, -31.4f}; // using raw bytes can lean to `nan`s
+    const value_type cx{3.14f, -31.4f};  // using raw bytes can lean to `nan`s
     auto const pValue = &cx;
 
     auto swap = sys::byteSwap(*pValue);
-    TEST_ASSERT_NOT_EQ(*pValue, swap); // technically a bit goofy as the bits may not represent `T`s
-            
+    TEST_ASSERT_NOT_EQ(*pValue, swap);  // technically a bit goofy as the bits
+                                        // may not represent `T`s
+
     swap = sys::byteSwap(swap);  // swap back
     TEST_ASSERT_EQ(*pValue, swap);
 }
@@ -260,10 +292,10 @@ TEST_CASE(testByteSwap12)
 {
     // test a goofy element size
     constexpr std::byte twelve_bytes[]{
-        x00, x11, x22, x33, x44, x55,
-        x99, xAA, xBB, xDD, xEE, xFF};
+            x00, x11, x22, x33, x44, x55, x99, xAA, xBB, xDD, xEE, xFF};
     const auto pValueBytes = sys::as_bytes(twelve_bytes);
-    constexpr auto extent_twelve_bytes = std::extent<decltype(twelve_bytes)>::value;
+    constexpr auto extent_twelve_bytes =
+            std::extent<decltype(twelve_bytes)>::value;
 
     std::vector<std::byte> swappedValues(extent_twelve_bytes);
     auto pResultBytes = sys::make_span(swappedValues);
@@ -274,16 +306,24 @@ TEST_CASE(testByteSwap12)
     test_assert_eq_swapped(testName, elemSize, pResultBytes, pValueBytes);
 
     // swap as a SINGLE 12-byte value
-    const auto result = sys::details::swapBytes<extent_twelve_bytes>(pValueBytes, pResultBytes);
+    const auto result =
+            sys::details::swapBytes<extent_twelve_bytes>(pValueBytes,
+                                                         pResultBytes);
     test_assert_eq_swapped(testName, elemSize, result, pValueBytes);
 
-    elemSize = 6; // note that an ODD size doesn't work correctly
+    elemSize = 6;  // note that an ODD size doesn't work correctly
     numElements = swappedValues.size() / elemSize;
     sys::byteSwap(twelve_bytes, elemSize, numElements, swappedValues.data());
-    test_assert_eq_swapped(testName, elemSize, &(pResultBytes[0]), &(pValueBytes[0]));
-    test_assert_eq_swapped(testName, elemSize, &(pResultBytes[6]), &(pValueBytes[6]));
+    test_assert_eq_swapped(testName,
+                           elemSize,
+                           &(pResultBytes[0]),
+                           &(pValueBytes[0]));
+    test_assert_eq_swapped(testName,
+                           elemSize,
+                           &(pResultBytes[6]),
+                           &(pValueBytes[6]));
 
-    sys::byteSwap(swappedValues.data(), elemSize, numElements); // swap back
+    sys::byteSwap(swappedValues.data(), elemSize, numElements);  // swap back
     for (size_t i = 0; i < swappedValues.size(); i++)
     {
         TEST_ASSERT(pResultBytes[i] == pValueBytes[i]);
@@ -308,13 +348,10 @@ TEST_CASE(testSixByteSwap)
     TEST_ASSERT_EQ(i, result);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testEndianness);
-    TEST_CHECK(testByteSwapV);
-    TEST_CHECK(testByteSwapCxV);
-    TEST_CHECK(testByteSwap);
-    TEST_CHECK(testByteSwapValues);
-    TEST_CHECK(testByteSwapCxValue);
-    TEST_CHECK(testByteSwap12);
-    TEST_CHECK(testSixByteSwap);
-    )
+TEST_MAIN(TEST_CHECK(testEndianness); TEST_CHECK(testByteSwapV);
+          TEST_CHECK(testByteSwapCxV);
+          TEST_CHECK(testByteSwap);
+          TEST_CHECK(testByteSwapValues);
+          TEST_CHECK(testByteSwapCxValue);
+          TEST_CHECK(testByteSwap12);
+          TEST_CHECK(testSixByteSwap);)

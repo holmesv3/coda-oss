@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,16 +24,15 @@
 #ifndef CODA_OSS_xml_lite_ContentHandler_h_INCLUDED_
 #define CODA_OSS_xml_lite_ContentHandler_h_INCLUDED_
 
-#include <stdint.h>
-#include <stddef.h>
-
-#include <string>
-#include <stdexcept>
-
 #include <config/Exports.h>
+#include <stddef.h>
+#include <stdint.h>
 
-#include "xml/lite/QName.h" // Uri
+#include <stdexcept>
+#include <string>
+
 #include "xml/lite/Attributes.h"
+#include "xml/lite/QName.h"  // Uri
 
 /*!
  *  \file  ContentHandler.h
@@ -53,20 +52,20 @@ namespace lite
  *  \class ContentHandler
  *  \brief The handler for SAX 2.0
  *  \todo  Implement start/endPrefixMapping
- * 
- *  A SAX reader requires a processing unit known as the 
+ *
+ *  A SAX reader requires a processing unit known as the
  *  "content handler."  Contained herein is the implementation for
  *  a simple one.  Unlike the SAX specification, we dont separate the
  *  ContentHandler (which is an interface in SAX) from the
- *  DefaultContentHandler.  This lowers package complexity, 
- *  and leaves us with a practical base from which to inherit.  
- *  Any functionality that we dont add is not pure virtual, but is 
+ *  DefaultContentHandler.  This lowers package complexity,
+ *  and leaves us with a practical base from which to inherit.
+ *  Any functionality that we dont add is not pure virtual, but is
  *  an empty function call.
  *
- *  This saves the trouble of having to redefine every interface 
+ *  This saves the trouble of having to redefine every interface
  *  method, allowing the developer to focus only on the routines
  *  which he or she is interested in defining.
- *  It also leaves us with less virtual classes hanging around, 
+ *  It also leaves us with less virtual classes hanging around,
  *  which should increase performance and efficiency.
  */
 
@@ -75,7 +74,9 @@ class CODA_OSS_API ContentHandler
 protected:
     //! Constructor
     ContentHandler() = default;
-    virtual ~ContentHandler() noexcept(false) {}
+    virtual ~ContentHandler() noexcept(false)
+    {
+    }
 
 public:
     //! Receive notification of the beginning of a document.
@@ -93,8 +94,10 @@ public:
      *  \param data  The character data
      *  \param length The length of the new data
      */
-    virtual void characters(const char *data, int length) = 0;
-    virtual bool vcharacters(const void/*XMLCh*/*, size_t /*length*/)  = 0; // avoid XMLCh, it's specific to Xerces
+    virtual void characters(const char* data, int length) = 0;
+    virtual bool vcharacters(
+            const void /*XMLCh*/*,
+            size_t /*length*/) = 0;  // avoid XMLCh, it's specific to Xerces
 
     /*!
      *  Receive notification of the beginning of an element.
@@ -103,25 +106,25 @@ public:
      *  \param qname the qualified name
      *  \param attributes  The attributes for this element
      */
-    virtual void startElement(const std::string & uri,
-                              const std::string & localName,
-                              const std::string & qname,
-                              const Attributes & attributes) = 0;
+    virtual void startElement(const std::string& uri,
+                              const std::string& localName,
+                              const std::string& qname,
+                              const Attributes& attributes) = 0;
     /*!
      *  Receive notification of the end of an element.
      *  \param uri  The associated uri
      *  \param localName The local name of the element
      *  \param qname the qualified name
      */
-    virtual void endElement(const std::string & uri,
-                            const std::string & localName,
-                            const std::string & qname) = 0;
+    virtual void endElement(const std::string& uri,
+                            const std::string& localName,
+                            const std::string& qname) = 0;
 
     /*!
      *  This isnt in SAX 2.0, but I think it might be useful
      *  \param c The comment
      */
-    virtual void comment(const std::string &)
+    virtual void comment(const std::string&)
     {
     }
 };

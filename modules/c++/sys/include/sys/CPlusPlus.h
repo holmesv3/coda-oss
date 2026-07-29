@@ -33,4 +33,4 @@
 // You can bring these into your code by #include'ng the file from "std"; e.g.,
 //    #include <std/span> // std::span
 
-#endif // CODA_OSS_sys_CPlusPlus_h_INCLUDED_
+#endif  // CODA_OSS_sys_CPlusPlus_h_INCLUDED_

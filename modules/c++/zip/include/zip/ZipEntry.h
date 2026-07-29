@@ -1,7 +1,7 @@
 /* =========================================================================
  * This file is part of zip-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * zip-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -38,7 +38,8 @@ class ZipEntry
 {
     enum CompressionMethod
     {
-        COMP_STORED = 0, COMP_DEFLATED = 8
+        COMP_STORED = 0,
+        COMP_DEFLATED = 8
     };
 
     sys::ubyte* mCompressedData;
@@ -57,28 +58,40 @@ class ZipEntry
     sys::Uint16_T mInternalAttrs;
     sys::Uint32_T mExternalAttrs;
 
-    static void inflate(sys::ubyte* out, sys::Size_T outLen, sys::ubyte* in,
-            sys::Size_T inLen);
+    static void inflate(sys::ubyte* out,
+                        sys::Size_T outLen,
+                        sys::ubyte* in,
+                        sys::Size_T inLen);
 
 public:
-
-    ZipEntry(sys::ubyte* compressedData, sys::Size_T compressedSize,
-            sys::Size_T uncompressedSize, std::string fileName,
-            std::string fileComment, sys::Uint16_T versionMadeBy,
-            sys::Uint16_T versionToExtract,
-            sys::Uint16_T generalPurposeBitFlag,
-            sys::Uint16_T compressionMethod, sys::Uint16_T lastModifiedTime,
-            sys::Uint16_T lastModifiedDate, sys::Uint32_T crc32,
-            sys::Uint16_T internalAttrs, sys::Uint32_T externalAttrs) :
-        mCompressedData(compressedData), mCompressedSize(compressedSize),
-                mUncompressedSize(uncompressedSize), mFileName(fileName),
-                mFileComment(fileComment), mVersionMadeBy(versionMadeBy),
-                mVersionToExtract(versionToExtract), mGeneralPurposeBitFlag(
-                        generalPurposeBitFlag), mCompressionMethod(
-                        compressionMethod),
-                mLastModifiedTime(lastModifiedTime), mLastModifiedDate(
-                        lastModifiedDate), mCRC32(crc32), mInternalAttrs(
-                        internalAttrs), mExternalAttrs(externalAttrs)
+    ZipEntry(sys::ubyte* compressedData,
+             sys::Size_T compressedSize,
+             sys::Size_T uncompressedSize,
+             std::string fileName,
+             std::string fileComment,
+             sys::Uint16_T versionMadeBy,
+             sys::Uint16_T versionToExtract,
+             sys::Uint16_T generalPurposeBitFlag,
+             sys::Uint16_T compressionMethod,
+             sys::Uint16_T lastModifiedTime,
+             sys::Uint16_T lastModifiedDate,
+             sys::Uint32_T crc32,
+             sys::Uint16_T internalAttrs,
+             sys::Uint32_T externalAttrs) :
+        mCompressedData(compressedData),
+        mCompressedSize(compressedSize),
+        mUncompressedSize(uncompressedSize),
+        mFileName(fileName),
+        mFileComment(fileComment),
+        mVersionMadeBy(versionMadeBy),
+        mVersionToExtract(versionToExtract),
+        mGeneralPurposeBitFlag(generalPurposeBitFlag),
+        mCompressionMethod(compressionMethod),
+        mLastModifiedTime(lastModifiedTime),
+        mLastModifiedDate(lastModifiedDate),
+        mCRC32(crc32),
+        mInternalAttrs(internalAttrs),
+        mExternalAttrs(externalAttrs)
     {
     }
 

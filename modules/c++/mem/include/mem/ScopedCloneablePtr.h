@@ -51,4 +51,4 @@ template <typename T>
 using ScopedCloneablePtr = ScopedPtr<T, std::true_type /*CopyIsClone*/>;
 }
 
-#endif // CODA_OSS_mem_ScopedCloneablePtr_h_INCLUDED_
+#endif  // CODA_OSS_mem_ScopedCloneablePtr_h_INCLUDED_

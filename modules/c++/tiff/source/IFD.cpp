@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,28 +14,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-
 #include "tiff/IFD.h"
+
+#include <import/except.h>
+#include <import/io.h>
+
+#include <sstream>
+#include <string>
+
 #include "tiff/Common.h"
 #include "tiff/GenericType.h"
 #include "tiff/IFDEntry.h"
 #include "tiff/KnownTags.h"
 
-#include <string>
-#include <sstream>
-#include <import/io.h>
-#include <import/except.h>
-
-tiff::IFDEntry *tiff::IFD::operator[](const char *name)
+tiff::IFDEntry* tiff::IFD::operator[](const char* name)
 {
-    tiff::IFDEntry *mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
-    if (!mapEntry) return nullptr;
+    tiff::IFDEntry* mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
+    if (!mapEntry)
+        return nullptr;
     return (*this)[mapEntry->getTagID()];
 }
 const tiff::IFDEntry* tiff::IFD::operator[](const char* name) const
@@ -46,7 +48,7 @@ const tiff::IFDEntry* tiff::IFD::operator[](const char* name) const
     return (*this)[mapEntry->getTagID()];
 }
 
-tiff::IFDEntry *tiff::IFD::operator[](unsigned short tag)
+tiff::IFDEntry* tiff::IFD::operator[](unsigned short tag)
 {
     // Ensures that the key exists.  Without this check, the defined
     // behavior for the [] operator is to create an entry if it does
@@ -70,15 +72,15 @@ bool tiff::IFD::exists(unsigned short tag) const
     return mIFD.find(tag) != mIFD.end();
 }
 
-bool tiff::IFD::exists(const char *name) const
+bool tiff::IFD::exists(const char* name) const
 {
-    tiff::IFDEntry *mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
+    tiff::IFDEntry* mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
     if (!mapEntry)
         return false;
     return exists(mapEntry->getTagID());
 }
 
-void tiff::IFD::addEntry(const tiff::IFDEntry *entry)
+void tiff::IFD::addEntry(const tiff::IFDEntry* entry)
 {
     unsigned short id = entry->getTagID();
     mIFD[id] = new tiff::IFDEntry;
@@ -87,10 +89,12 @@ void tiff::IFD::addEntry(const tiff::IFDEntry *entry)
 
 void tiff::IFD::addEntry(const std::string& name)
 {
-    tiff::IFDEntry *mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
+    tiff::IFDEntry* mapEntry = tiff::KnownTagsRegistry::getInstance()[name];
     // we can't add it b/c we don't know about this tag
     if (!mapEntry)
-        throw except::Exception(Ctxt(str::Format("Unable to add IFD Entry: unknown tag [%s]", name)));
+        throw except::Exception(
+                Ctxt(str::Format("Unable to add IFD Entry: unknown tag [%s]",
+                                 name)));
 
     unsigned short id = mapEntry->getTagID();
 
@@ -106,13 +110,13 @@ void tiff::IFD::deserialize(io::InputStream& input)
 void tiff::IFD::deserialize(io::InputStream& input, const bool reverseBytes)
 {
     unsigned short ifdEntryCount;
-    input.read((sys::byte *)&ifdEntryCount, sizeof(ifdEntryCount));
+    input.read((sys::byte*)&ifdEntryCount, sizeof(ifdEntryCount));
     if (reverseBytes)
         ifdEntryCount = sys::byteSwap(ifdEntryCount);
 
     for (unsigned short i = 0; i < ifdEntryCount; i++)
     {
-        tiff::IFDEntry *entry = new tiff::IFDEntry();
+        tiff::IFDEntry* entry = new tiff::IFDEntry();
         entry->deserialize(input, reverseBytes);
         mIFD[entry->getTagID()] = entry;
     }
@@ -120,24 +124,25 @@ void tiff::IFD::deserialize(io::InputStream& input, const bool reverseBytes)
 
 void tiff::IFD::serialize(io::OutputStream& output)
 {
-    io::Seekable *seekable =
-            dynamic_cast<io::Seekable *>(&output);
+    io::Seekable* seekable = dynamic_cast<io::Seekable*>(&output);
     if (seekable == nullptr)
-        throw except::Exception(Ctxt("Can only serialize IFD to seekable stream"));
+        throw except::Exception(
+                Ctxt("Can only serialize IFD to seekable stream"));
 
     // Makes sure all data offsets are defined for each entry.
     // Keep the offset just past the end of the IFD.  This offset
     // is where the next potential image could be written.
-    const auto endOffset = finalize(static_cast<sys::Uint32_T>(seekable->tell()));
+    const auto endOffset =
+            finalize(static_cast<sys::Uint32_T>(seekable->tell()));
 
     // Write out IFD entry count.
     const auto ifdEntryCount = static_cast<uint16_t>(mIFD.size());
-    output.write((sys::byte *)&ifdEntryCount, sizeof(ifdEntryCount));
+    output.write((sys::byte*)&ifdEntryCount, sizeof(ifdEntryCount));
 
     // Write out each IFD entry.
     for (IFDType::const_iterator i = mIFD.begin(); i != mIFD.end(); ++i)
     {
-        tiff::IFDEntry *entry = i->second;
+        tiff::IFDEntry* entry = i->second;
         entry->serialize(output);
     }
 
@@ -147,7 +152,7 @@ void tiff::IFD::serialize(io::OutputStream& output)
 
     // Write out the default next IFD location.
     sys::Uint32_T nextOffset = 0;
-    output.write((sys::byte *)&nextOffset, sizeof(sys::Uint32_T));
+    output.write((sys::byte*)&nextOffset, sizeof(sys::Uint32_T));
 
     // Seek the end of the IFD, the next image can begin here.
     seekable->seek(endOffset, io::Seekable::START);
@@ -175,9 +180,9 @@ sys::Uint32_T tiff::IFD::getImageWidth() const
         return 0;
 
     if (imageWidth->getType() == tiff::Const::Type::LONG)
-        return *(tiff::GenericType<sys::Uint32_T> *)(*imageWidth)[0];
+        return *(tiff::GenericType<sys::Uint32_T>*)(*imageWidth)[0];
 
-    return *(tiff::GenericType<unsigned short> *)(*imageWidth)[0];
+    return *(tiff::GenericType<unsigned short>*)(*imageWidth)[0];
 }
 
 sys::Uint32_T tiff::IFD::getImageLength() const
@@ -187,9 +192,9 @@ sys::Uint32_T tiff::IFD::getImageLength() const
         return 0;
 
     if (imageLength->getType() == tiff::Const::Type::LONG)
-        return *(tiff::GenericType<sys::Uint32_T> *)(*imageLength)[0];
+        return *(tiff::GenericType<sys::Uint32_T>*)(*imageLength)[0];
 
-    return *(tiff::GenericType<unsigned short> *)(*imageLength)[0];
+    return *(tiff::GenericType<unsigned short>*)(*imageLength)[0];
 }
 
 sys::Uint32_T tiff::IFD::getImageSize() const
@@ -204,23 +209,24 @@ sys::Uint32_T tiff::IFD::getImageSize() const
 unsigned short tiff::IFD::getNumBands() const
 {
     unsigned short numBands = 1;
-    
+
     auto samplesPerPixel = (*this)[tiff::KnownTags::SAMPLES_PER_PIXEL];
     auto bitsPerSample = (*this)[tiff::KnownTags::BITS_PER_SAMPLE];
-    
+
     if (samplesPerPixel)
-        numBands = *(::tiff::GenericType<unsigned short> *)(*samplesPerPixel)[0];
+        numBands = *(::tiff::GenericType<unsigned short>*)(*samplesPerPixel)[0];
     else if (bitsPerSample)
         numBands = static_cast<unsigned short>(bitsPerSample->getCount());
-    
+
     return numBands;
 }
 
 unsigned short tiff::IFD::getElementSize() const
 {
     auto bitsPerSample = (*this)[tiff::KnownTags::BITS_PER_SAMPLE];
-    const auto bytesPerSample = (!bitsPerSample) ? 1
-            : *(tiff::GenericType<unsigned short> *)(*bitsPerSample)[0] >> 3;
+    const auto bytesPerSample = (!bitsPerSample)
+            ? 1
+            : *(tiff::GenericType<unsigned short>*)(*bitsPerSample)[0] >> 3;
 
     return static_cast<unsigned short>(bytesPerSample * getNumBands());
 }
@@ -231,8 +237,9 @@ sys::Uint32_T tiff::IFD::finalize(const sys::Uint32_T offset)
     // the size of an IFD entry multiplied by the number of entries, plus
     // 4 bytes to hold the offset to the next IFD, and 2 bytes to hold the
     // IFD entry count.
-    auto dataOffset = static_cast<sys::Uint32_T>(offset + sizeof(short) + (mIFD.size()
-            * tiff::IFDEntry::sizeOf()) + sizeof(sys::Uint32_T));
+    auto dataOffset = static_cast<sys::Uint32_T>(
+            offset + sizeof(short) + (mIFD.size() * tiff::IFDEntry::sizeOf()) +
+            sizeof(sys::Uint32_T));
 
     for (IFDType::iterator i = mIFD.begin(); i != mIFD.end(); ++i)
     {

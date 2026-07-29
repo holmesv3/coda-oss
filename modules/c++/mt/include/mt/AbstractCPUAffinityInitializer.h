@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __MT_ABSTRACT_CPU_AFFINITY_INITIALIZER_H__
 #define __MT_ABSTRACT_CPU_AFFINITY_INITIALIZER_H__
 
@@ -38,7 +37,9 @@ namespace mt
 class AbstractCPUAffinityInitializer
 {
 public:
-    virtual ~AbstractCPUAffinityInitializer() {}
+    virtual ~AbstractCPUAffinityInitializer()
+    {
+    }
 
     /*!
      * \returns a new thread initializer. In general, this should return
@@ -57,7 +58,8 @@ private:
     // Using name hiding, we can define newThreadInitializer() implementations
     // that wrap newThreadInitializerImpl() in the appropriate derived
     // class return type. This should be done in all derived classes.
-    virtual AbstractCPUAffinityThreadInitializer* newThreadInitializerImpl() = 0;
+    virtual AbstractCPUAffinityThreadInitializer*
+    newThreadInitializerImpl() = 0;
 };
 }
 

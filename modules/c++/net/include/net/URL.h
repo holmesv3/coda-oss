@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,9 +23,10 @@
 #ifndef __NET_URL_H__
 #define __NET_URL_H__
 
-#include <string>
-#include <map>
 #include <list>
+#include <map>
+#include <string>
+
 #include "net/NetExceptions.h"
 #include "net/NetUtils.h"
 
@@ -39,7 +40,6 @@
 namespace net
 {
 
-
 class URLParams
 {
 public:
@@ -51,8 +51,14 @@ public:
     bool contains(std::string key) const;
     ParamValues& get(std::string key);
     const ParamValues& get(std::string key) const;
-    Params& get() { return mParams; }
-    const Params& get() const { return mParams; }
+    Params& get()
+    {
+        return mParams;
+    }
+    const Params& get() const
+    {
+        return mParams;
+    }
     std::string getFirst(std::string key) const;
     void add(std::string key, std::string value = "");
     void remove(std::string key);
@@ -63,11 +69,9 @@ protected:
     Params mParams;
 };
 
-
 class URL
 {
 public:
-
     URL(std::string url = "");
 
     /*!
@@ -91,8 +95,14 @@ public:
     std::string getQuery() const;
     std::string getServer() const;
     std::string getDocument() const;
-    URLParams& getParams() { return mParams; }
-    const URLParams& getParams() const { return mParams; }
+    URLParams& getParams()
+    {
+        return mParams;
+    }
+    const URLParams& getParams() const
+    {
+        return mParams;
+    }
     std::string toString() const;
     void setPort(int port);
     bool hasStandardPort() const;
@@ -111,15 +121,13 @@ protected:
     std::string mPath;
     URLParams mParams;
     std::string mFragment;
-
 };
 
 inline std::ostream& operator<<(std::ostream& os, const URL& url)
 {
-   os << url.toString();
-   return os;
+    os << url.toString();
+    return os;
 }
 
 }
 #endif
-

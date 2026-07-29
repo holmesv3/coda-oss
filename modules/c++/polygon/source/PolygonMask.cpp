@@ -19,23 +19,20 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
-#include <sstream>
-#include <limits>
-
-#include <sys/Conf.h>
 #include <except/Exception.h>
 #include <math/ConvexHull.h>
-
 #include <polygon/Intersections.h>
-
 #include <polygon/PolygonMask.h>
+#include <sys/Conf.h>
+
+#include <limits>
+#include <sstream>
 
 namespace polygon
 {
 PolygonMask::PolygonMask(MarkModesEnum markMode,
                          const types::RowCol<size_t>& dims) :
-    mMarkMode(markMode),
-    mDims(dims)
+    mMarkMode(markMode), mDims(dims)
 {
     if (mMarkMode != MARK_ALL_TRUE && mMarkMode != MARK_ALL_FALSE)
     {
@@ -43,8 +40,7 @@ PolygonMask::PolygonMask(MarkModesEnum markMode,
     }
 }
 
-PolygonMask::PolygonMask(const bool* mask,
-                         const types::RowCol<size_t>& dims) :
+PolygonMask::PolygonMask(const bool* mask, const types::RowCol<size_t>& dims) :
     mMarkMode(MARK_USING_POINTS),
     mRanges(new types::Range[dims.row]),
     mDims(dims)
@@ -74,7 +70,7 @@ PolygonMask::PolygonMask(const bool* mask,
         {
             // Find the last valid col in this row, searching right to left
             size_t last(start);
-            for (size_t col = dims.col - 1; ; --col)
+            for (size_t col = dims.col - 1;; --col)
             {
                 if (mask[rowIdx + col])
                 {
@@ -90,11 +86,10 @@ PolygonMask::PolygonMask(const bool* mask,
     checkForAllTrueOrFalseRanges();
 }
 
-PolygonMask::PolygonMask(const std::vector<types::RowCol<double> >& points,
+PolygonMask::PolygonMask(const std::vector<types::RowCol<double>>& points,
                          const types::RowCol<size_t>& dims,
                          types::RowCol<sys::SSize_T> offset) :
-    mMarkMode(MARK_USING_POINTS),
-    mDims(dims)
+    mMarkMode(MARK_USING_POINTS), mDims(dims)
 {
     // Determine intersections
     if (points.empty())
@@ -106,12 +101,13 @@ PolygonMask::PolygonMask(const std::vector<types::RowCol<double> >& points,
         // Need to get the convex hull of the input points,
         // because the code currently cannot handle more
         // than two intersections (left and right) per row.
-        std::vector<types::RowCol<double> > rawPoints = points;
-        std::vector<types::RowCol<double> > convexHullPoints;
+        std::vector<types::RowCol<double>> rawPoints = points;
+        std::vector<types::RowCol<double>> convexHullPoints;
         math::ConvexHull<double> convexHull(rawPoints, convexHullPoints);
-            
-        const Intersections<double>
-                intersections(convexHullPoints, mDims, offset);
+
+        const Intersections<double> intersections(convexHullPoints,
+                                                  mDims,
+                                                  offset);
         mRanges.reset(new types::Range[mDims.row]);
 
         std::vector<Intersections<double>::Intersection> intersectionsVec;
@@ -121,7 +117,7 @@ PolygonMask::PolygonMask(const std::vector<types::RowCol<double> >& points,
             intersections.get(row, intersectionsVec);
             if (intersectionsVec.empty())
             {
-                mRanges[row] = types::Range(); // Empty range
+                mRanges[row] = types::Range();  // Empty range
             }
             else if (intersectionsVec.size() == 1)
             {
@@ -134,7 +130,8 @@ PolygonMask::PolygonMask(const std::vector<types::RowCol<double> >& points,
                 // happen.
                 std::ostringstream ostr;
                 ostr << "Requires a convex polygon but these points produced "
-                     << intersectionsVec.size() << " intersections for row " << row;
+                     << intersectionsVec.size() << " intersections for row "
+                     << row;
                 throw except::Exception(Ctxt(ostr));
             }
         }
@@ -161,8 +158,7 @@ void PolygonMask::checkForAllTrueOrFalseRanges()
         }
 
         if (allRangesAreFull &&
-            (range.mStartElement != 0 ||
-             range.mNumElements != mDims.col))
+            (range.mStartElement != 0 || range.mNumElements != mDims.col))
         {
             allRangesAreFull = false;
             if (!allRangesAreEmpty)

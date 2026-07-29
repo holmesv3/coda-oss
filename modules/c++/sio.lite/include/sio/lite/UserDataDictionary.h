@@ -24,48 +24,66 @@
 
 #include <import/except.h>
 #include <import/sys.h>
-#include <map>
+
 #include <list>
-#include <vector>
+#include <map>
 #include <string>
+#include <vector>
 
 namespace sio
 {
 namespace lite
 {
-    
+
 /*!
  * \class OrderedDictionary
- * 
+ *
  * An OrderedDictionary keeps track of the order that items are added to
  * the dictionary, allowing you to iterate in order.
- * 
+ *
  * This class probably belongs in a utility library.
- * 
+ *
  */
-template < typename Key_T, typename Value_T >
+template <typename Key_T, typename Value_T>
 class OrderedDictionary
 {
 protected:
-    std::list< std::pair<Key_T, Value_T> > mList;
-    std::map < Key_T, Value_T > mMap;
+    std::list<std::pair<Key_T, Value_T>> mList;
+    std::map<Key_T, Value_T> mMap;
 
 public:
-    typedef typename std::list<std::pair<Key_T, Value_T> >::iterator Iterator;
-    typedef typename std::list<std::pair<Key_T, Value_T> >::const_iterator ConstIterator;
-    
-    OrderedDictionary(){}
-    virtual ~OrderedDictionary(){}
+    typedef typename std::list<std::pair<Key_T, Value_T>>::iterator Iterator;
+    typedef typename std::list<std::pair<Key_T, Value_T>>::const_iterator
+            ConstIterator;
 
-    Iterator begin() { return mList.begin(); }
-    Iterator end() { return mList.end(); }
-    
-    ConstIterator begin() const { return mList.begin(); }
-    ConstIterator end() const { return mList.end(); }
-
-    virtual Value_T& operator[] (const Key_T& key)
+    OrderedDictionary()
     {
-        typename std::map < Key_T, Value_T >::iterator it = mMap.find(key);
+    }
+    virtual ~OrderedDictionary()
+    {
+    }
+
+    Iterator begin()
+    {
+        return mList.begin();
+    }
+    Iterator end()
+    {
+        return mList.end();
+    }
+
+    ConstIterator begin() const
+    {
+        return mList.begin();
+    }
+    ConstIterator end() const
+    {
+        return mList.end();
+    }
+
+    virtual Value_T& operator[](const Key_T& key)
+    {
+        typename std::map<Key_T, Value_T>::iterator it = mMap.find(key);
         if (it == mMap.end())
             throw except::NoSuchKeyException();
         return it->second;
@@ -75,10 +93,16 @@ public:
     {
         return mMap.find(key) != mMap.end();
     }
-    
-    virtual size_t size() const { return mList.size(); } 
-    virtual bool empty() const { return mList.empty(); }
-    
+
+    virtual size_t size() const
+    {
+        return mList.size();
+    }
+    virtual bool empty() const
+    {
+        return mList.empty();
+    }
+
     virtual void add(Key_T key, const Value_T& value)
     {
         if (exists(key))
@@ -103,10 +127,11 @@ public:
     }
 };
 
-//! UserDataDictionary is an OrderedDictionary mapping string keys to string values
-typedef OrderedDictionary<std::string, std::vector<sys::byte> > UserDataDictionary;
+//! UserDataDictionary is an OrderedDictionary mapping string keys to string
+//! values
+typedef OrderedDictionary<std::string, std::vector<sys::byte>>
+        UserDataDictionary;
 
 }
 }
 #endif
-

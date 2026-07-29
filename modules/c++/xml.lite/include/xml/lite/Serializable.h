@@ -1,7 +1,7 @@
 /* =========================================================================
  * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,8 +23,8 @@
 #ifndef CODA_OSS_xml_lite_Serializable_h_INCLUDED_
 #define CODA_OSS_xml_lite_Serializable_h_INCLUDED_
 
-#include "io/OutputStream.h"
 #include "io/InputStream.h"
+#include "io/OutputStream.h"
 #include "io/Serializable.h"
 #include "xml/lite/MinidomParser.h"
 
@@ -41,7 +41,7 @@ namespace lite
 /*!
  *  \class Serializable
  *  \brief Document building and processing class
- *  
+ *
  *  This class provides a Serializable interface for XML documents.
  *  Internally, it has a parser for XML, and it has a "document"
  *  containing a tree representation for all of its nodes.  Note that
@@ -58,7 +58,9 @@ struct Serializable : public io::Serializable
     }
 
     //! Destructor
-    virtual ~Serializable() noexcept(false) {}
+    virtual ~Serializable() noexcept(false)
+    {
+    }
 
     Serializable(const Serializable&) = delete;
     Serializable& operator=(const Serializable&) = delete;
@@ -68,12 +70,12 @@ struct Serializable : public io::Serializable
      *  ref upon null.
      *  \return A Document
      */
-    virtual Document *getDocument() const
+    virtual Document* getDocument() const
     {
         return mParser.getDocument();
     }
 
-    virtual Document *getDocument(bool steal = false)
+    virtual Document* getDocument(bool steal = false)
     {
         return mParser.getDocument(steal);
     }

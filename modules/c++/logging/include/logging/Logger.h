@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  * (C) Copyright 2025-26 ARKA Group, L.P. All rights reserved
  *
@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -29,16 +29,17 @@
 #ifndef CODA_OSS_logging_Logger_h_INCLUDED_
 #define CODA_OSS_logging_Logger_h_INCLUDED_
 
-#include <string>
-#include <vector>
+#include <import/except.h>
+
 #include <memory>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "config/Exports.h"
 #include "logging/Filterer.h"
-#include "logging/LogRecord.h"
 #include "logging/Handler.h"
-#include <import/except.h>
+#include "logging/LogRecord.h"
 
 namespace logging
 {
@@ -55,8 +56,7 @@ struct CODA_OSS_API Logger : public Filterer
      * Constructs a Logger with an optional name
      * \param name  (optional) Name of the logger
      */
-    Logger(const std::string& name = "") :
-        mName(name)
+    Logger(const std::string& name = "") : mName(name)
     {
     }
 
@@ -120,7 +120,7 @@ struct CODA_OSS_API Logger : public Filterer
      * This Logger does not own the passed-in Handler.
      */
     void addHandler(Handler* handler, bool own = false);
-    void addHandler(std::unique_ptr<Handler>&&); // own = true
+    void addHandler(std::unique_ptr<Handler>&&);  // own = true
 
     /*!
      * Removes the specified Handler from the list of Handlers.

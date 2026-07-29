@@ -1,14 +1,15 @@
 #ifndef _WIN32
 #include "net/DaemonUnix.h"
 
-#include <iostream>
+#include <errno.h>  // errno
+#include <fcntl.h>  // open
+#include <signal.h>  // kill
+#include <sys/stat.h>  //open
+#include <sys/types.h>  // fork, umask, open
+#include <unistd.h>  // fork, umask, setsid, dup2, chdir, close
+
 #include <fstream>
-#include <errno.h> // errno
-#include <unistd.h> // fork, umask, setsid, dup2, chdir, close
-#include <sys/types.h> // fork, umask, open
-#include <sys/stat.h> //open
-#include <fcntl.h> // open
-#include <signal.h> // kill
+#include <iostream>
 #include <string>
 
 using namespace net;
@@ -71,13 +72,14 @@ void DaemonUnix::restart()
 
 void DaemonUnix::daemonize(int& argc, char**& argv)
 {
-    enum {
+    enum
+    {
         START,
         STOP,
         RESTART
     } command = START;
 
-    //parse command line parameters
+    // parse command line parameters
     for (int i = 1; i < argc; ++i)
     {
         std::string arg = argv[i];
@@ -115,7 +117,7 @@ void DaemonUnix::daemonize(int& argc, char**& argv)
     {
         restart();
     }
-    else 
+    else
     {
         start();
     }
@@ -138,13 +140,13 @@ void DaemonUnix::fork()
     // Fork so the parent can exit, this returns control to the command line
     // or shell invoking the program. This step is required so that the new
     // process is guaranteed not to be a process group leader. The next step
-    // fails if you're a process group leader. 
+    // fails if you're a process group leader.
     pid_t pid = ::fork();
     if (pid < 0)
         throw except::Exception(Ctxt("Error in first fork for daemon."));
-    else if (pid) // Parent
+    else if (pid)  // Parent
         ::_exit(0);
-  
+
     // Create a new SID for the child process
     // Since a controlling terminal is associated with a session, and this new
     // session has not yet acquired a controlling terminal our process now has
@@ -154,11 +156,11 @@ void DaemonUnix::fork()
 
     // Fork again so the parent, (the session group leader), can exit.
     // This means that we, as a non-session group leader, can never regain
-    // a controlling terminal. 
+    // a controlling terminal.
     pid = ::fork();
     if (pid < 0)
         throw except::Exception(Ctxt("Error in second fork for daemon."));
-    else if (pid) // Parent
+    else if (pid)  // Parent
         ::_exit(0);
 }
 
@@ -174,7 +176,7 @@ bool DaemonUnix::signal(sys::Pid_T pid, int sig)
     else if (errno == EPERM)
     {
         throw except::Exception(
-            Ctxt("Invalid permissions to signal existing daemon."));
+                Ctxt("Invalid permissions to signal existing daemon."));
     }
     else if (errno == EINVAL)
     {
@@ -212,7 +214,8 @@ void DaemonUnix::writePidfile()
 {
     if (!mPidfile.empty())
     {
-        std::ofstream outfile(mPidfile.c_str(), std::ios::out|std::ios::trunc);
+        std::ofstream outfile(mPidfile.c_str(),
+                              std::ios::out | std::ios::trunc);
         outfile << ::getpid() << std::endl;
         outfile.close();
     }
@@ -231,7 +234,7 @@ bool DaemonUnix::terminate(sys::Pid_T pid, unsigned int retry)
         {
             // Signal was sent, give process time to exit
             sleep(1);
-            
+
             // Test if process is still running
             if (!this->signal(pid, 0))
             {
@@ -252,18 +255,17 @@ void DaemonUnix::redirectStreamsTo(const std::string& filename)
 {
     if (openFileFor(STDIN_FILENO, "/dev/null", O_RDONLY) < 0)
     {
-        throw except::Exception(
-            Ctxt("Failed to open /dev/null for STDIN."));
+        throw except::Exception(Ctxt("Failed to open /dev/null for STDIN."));
     }
-    if (openFileFor(STDOUT_FILENO, filename, O_WRONLY|O_CREAT|O_TRUNC) < 0)
+    if (openFileFor(STDOUT_FILENO, filename, O_WRONLY | O_CREAT | O_TRUNC) < 0)
     {
-        throw except::Exception(
-            Ctxt(str::Format("Failed to open file %s for STDOUT.", filename)));
+        throw except::Exception(Ctxt(
+                str::Format("Failed to open file %s for STDOUT.", filename)));
     }
-    if (openFileFor(STDERR_FILENO, filename, O_WRONLY|O_CREAT|O_TRUNC) < 0)
+    if (openFileFor(STDERR_FILENO, filename, O_WRONLY | O_CREAT | O_TRUNC) < 0)
     {
-        throw except::Exception(
-            Ctxt(str::Format("Failed to open file %s for STDERR.", filename)));
+        throw except::Exception(Ctxt(
+                str::Format("Failed to open file %s for STDERR.", filename)));
     }
 }
 
@@ -274,7 +276,7 @@ int DaemonUnix::openFileFor(int fd, const std::string& filename, int flags)
         return -1;
     if (newfd == fd)
         return fd;
-    if (::dup2(newfd,fd) < 0) // replace fd with a copy of newfd
+    if (::dup2(newfd, fd) < 0)  // replace fd with a copy of newfd
         return -1;
     return fd;
 }

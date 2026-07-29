@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,10 +23,11 @@
 #ifndef __TIFF_KNOWN_TAGS_H__
 #define __TIFF_KNOWN_TAGS_H__
 
+#include <config/Exports.h>
+#include <import/mt.h>
+
 #include <map>
 #include <string>
-#include <import/mt.h>
-#include <config/Exports.h>
 
 #include "tiff/IFDEntry.h"
 
@@ -54,7 +55,7 @@ struct CODA_OSS_API KnownTags final
      * @return
      *   the IFDEntry associated with the name
      *****************************************************************/
-    tiff::IFDEntry *operator[](const std::string& nameKey);
+    tiff::IFDEntry* operator[](const std::string& nameKey);
 
     /**
      *****************************************************************
@@ -62,12 +63,12 @@ struct CODA_OSS_API KnownTags final
      * short.
      *
      * @param nameKey
-     *   the key to look up in the map, based on the TIFF tag 
+     *   the key to look up in the map, based on the TIFF tag
      *   identifier of the IFDEntry (i.e. 256)
      * @return
      *   the IFDEntry associated with the identifier
      *****************************************************************/
-    tiff::IFDEntry *operator[](const unsigned short tagKey);
+    tiff::IFDEntry* operator[](const unsigned short tagKey);
 
     //! Some common tags
     static constexpr auto IMAGE_WIDTH = "ImageWidth";
@@ -75,12 +76,13 @@ struct CODA_OSS_API KnownTags final
     static constexpr auto BITS_PER_SAMPLE = "BitsPerSample";
     static constexpr auto COMPRESSION = "Compression";
     static constexpr auto SAMPLES_PER_PIXEL = "SamplesPerPixel";
-    static constexpr auto PHOTOMETRIC_INTERPRETATION = "PhotometricInterpretation";
+    static constexpr auto PHOTOMETRIC_INTERPRETATION =
+            "PhotometricInterpretation";
     static constexpr auto SAMPLE_FORMAT = "SampleFormat";
 
     /**
      *****************************************************************
-     * Adds a IFDEntry with the specified values to the 
+     * Adds a IFDEntry with the specified values to the
      * KnownTagsRegsitry.
      *
      * @param tag
@@ -90,11 +92,11 @@ struct CODA_OSS_API KnownTags final
      * @param name
      *   the name identifier to add as (i.e. "ImageWidth")
      *****************************************************************/
-    void addEntry(const unsigned short tag, const unsigned short type,
-            const std::string& name);
+    void addEntry(const unsigned short tag,
+                  const unsigned short type,
+                  const std::string& name);
 
 private:
-
     //! The name to tag identifier map
     std::map<std::string, unsigned short> mNameMap;
 
@@ -108,16 +110,16 @@ private:
  * @brief Contains a globally accessable listing of all possible IFD
  * entries supported in the TIFF 6.0 specification.
  *
- * This class contains all TIFF IFD entries that are in the TIFF 6.0 
+ * This class contains all TIFF IFD entries that are in the TIFF 6.0
  * specification.  This includes the TIFF type of each tag as well
  * as a string that names the tag (i.e. "ImageWidth").  The entries
- * are globally allocated the first time the KnownTagsRegistry is 
+ * are globally allocated the first time the KnownTagsRegistry is
  * instantiated.  There are only two functions defined, both are
  * the [] operator, both return the TIFFIFDEntry associated with the
  * specified input.
  *********************************************************************/
 typedef mt::Singleton<KnownTags, true> KnownTagsRegistry;
 
-} // End namespace.
+}  // End namespace.
 
-#endif // __TIFF_TAG_MAP_REGISTRY_H__
+#endif  // __TIFF_TAG_MAP_REGISTRY_H__

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of plugin-c++ 
+ * This file is part of plugin-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * plugin-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,8 +24,8 @@
 #define __PLUGIN_ERROR_HANDLER_H__
 
 #include <import/except.h>
-#include <import/sys.h>
 #include <import/logging.h>
+#include <import/sys.h>
 
 #include "config/Exports.h"
 
@@ -34,9 +34,13 @@ namespace plugin
 class CODA_OSS_API ErrorHandler
 {
 public:
-    ErrorHandler() {}
+    ErrorHandler()
+    {
+    }
 
-    virtual ~ErrorHandler() {}
+    virtual ~ErrorHandler()
+    {
+    }
 
     virtual void onPluginDirectoryNotFound(const std::string& dir) = 0;
 

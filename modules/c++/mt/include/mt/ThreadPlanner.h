@@ -23,9 +23,8 @@
 #ifndef __MT_THREAD_PLANNER_H__
 #define __MT_THREAD_PLANNER_H__
 
-#include <stddef.h>
-
 #include <config/Exports.h>
+#include <stddef.h>
 
 namespace mt
 {
@@ -87,11 +86,10 @@ public:
     size_t getNumThreadsThatWillBeUsed() const;
 
 private:
-   size_t mNumElements;
-   size_t mNumThreads;
-   size_t mNumElementsPerThread;
+    size_t mNumElements;
+    size_t mNumThreads;
+    size_t mNumElementsPerThread;
 };
 }
 
 #endif
-

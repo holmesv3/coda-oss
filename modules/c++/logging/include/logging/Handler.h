@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  * (C) Copyright 2025-26 ARKA Group, L.P. All rights reserved
  *
@@ -15,8 +15,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -28,17 +28,18 @@
 #ifndef CODA_OSS_logging_Handler_h_INCLUDED_
 #define CODA_OSS_logging_Handler_h_INCLUDED_
 
-#include <string>
-#include <mutex>
-
-#include "config/Exports.h"
-#include "logging/LogRecord.h"
-#include "logging/Formatter.h"
-#include "logging/StandardFormatter.h"
-#include "logging/Filterer.h"
-#include <import/sys.h>
 #include <import/except.h>
 #include <import/mt.h>
+#include <import/sys.h>
+
+#include <mutex>
+#include <string>
+
+#include "config/Exports.h"
+#include "logging/Filterer.h"
+#include "logging/Formatter.h"
+#include "logging/LogRecord.h"
+#include "logging/StandardFormatter.h"
 
 namespace logging
 {
@@ -52,19 +53,20 @@ namespace logging
 struct CODA_OSS_API Handler : public Filterer
 {
     /*!
-     * Construct a Handler at the specified LogLevel (LogLevel::LOG_NOTSET is default)
+     * Construct a Handler at the specified LogLevel (LogLevel::LOG_NOTSET is
+     * default)
      */
     Handler(LogLevel level = LogLevel::LOG_NOTSET);
     virtual ~Handler() = default;
     Handler(const Handler&) = delete;
     Handler& operator=(const Handler&) = delete;
     Handler(Handler&&) = delete;
-    Handler& operator=(Handler&&) = delete;    
+    Handler& operator=(Handler&&) = delete;
 
-    /*! 
+    /*!
      * Sets the Formatter to use when formatting LogRecords
      * Not Threads Safe!
-     */ 
+     */
     virtual void setFormatter(Formatter* formatter);
     virtual void setFormatter(std::unique_ptr<Formatter>&&);
 
@@ -72,7 +74,10 @@ struct CODA_OSS_API Handler : public Filterer
     void setLevel(LogLevel level);
 
     //! Returns the LogLevel
-    LogLevel getLevel() const { return mLevel; }
+    LogLevel getLevel() const
+    {
+        return mLevel;
+    }
 
     /*!
      * Handles the LogRecord
@@ -88,18 +93,17 @@ struct CODA_OSS_API Handler : public Filterer
     virtual void close();
 
 protected:
-
     // for general string write
     virtual void write(const std::string&) = 0;
 
-    // for writing directly to stream, 
+    // for writing directly to stream,
     // used for the bulk of the logging for speed
     virtual void emitRecord(const LogRecord* record) = 0;
 
     LogLevel mLevel = LogLevel::LOG_NOTSET;
     std::recursive_mutex mHandlerLock;
     Formatter* mFormatter = nullptr;
-    StandardFormatter mDefaultFormatter; 
+    StandardFormatter mDefaultFormatter;
 };
 
 }

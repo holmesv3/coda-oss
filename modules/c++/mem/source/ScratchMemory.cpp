@@ -20,7 +20,6 @@
  *
  */
 #include <mem/Align.h>
-
 #include <mem/ScratchMemory.h>
 
 namespace mem
@@ -39,7 +38,8 @@ ScratchMemory::Segment::Segment(size_t numBytes_,
 
 void ScratchMemory::release(const std::string& key)
 {
-    std::map<std::string, Segment>::const_iterator iterSeg = mSegments.find(key);
+    std::map<std::string, Segment>::const_iterator iterSeg =
+            mSegments.find(key);
     if (iterSeg == mSegments.end())
     {
         throw except::Exception(Ctxt("Key " + key + " does not exist"));
@@ -56,12 +56,11 @@ void ScratchMemory::release(const std::string& key)
         const Segment& segment = iterSeg->second;
 
         mKeyOrder.push_back(key);
-        std::vector<std::string>::iterator keyIter = std::find(mKeyOrder.begin(),
-                                                               mKeyOrder.end(),
-                                                               key);
-        std::vector<std::string>::iterator nextKeyIter = mKeyOrder.erase(keyIter);
+        std::vector<std::string>::iterator keyIter =
+                std::find(mKeyOrder.begin(), mKeyOrder.end(), key);
+        std::vector<std::string>::iterator nextKeyIter =
+                mKeyOrder.erase(keyIter);
         const std::string nextKey = *nextKeyIter;
-
 
         //  The next two if blocks handle the edge case in which there are two
         //  segments at the same offset: one that has been released
@@ -69,14 +68,14 @@ void ScratchMemory::release(const std::string& key)
         //  previously released as well.
         //
         //  If the one that has not been released is released, then we need to
-        //  be careful in shifting around the following segments such that there's
-        //  no overlap.
+        //  be careful in shifting around the following segments such that
+        //  there's no overlap.
         if (mReleasedKeys.find(nextKey) != mReleasedKeys.end())
         {
             if (mConnectedKeys.find(key) != mConnectedKeys.end())
             {
-                std::map<std::string, Segment>::const_iterator iterSegOfPrevReleased =
-                        mSegments.find(nextKey);
+                std::map<std::string, Segment>::const_iterator
+                        iterSegOfPrevReleased = mSegments.find(nextKey);
                 mOffset = iterSegOfPrevReleased->second.offset;
             }
             else
@@ -137,7 +136,8 @@ void ScratchMemory::release(const std::string& key)
                 else
                 {
                     multipleReleased = true;
-                    endOfReleasedBlock = mOffset + numBuffers * (numElements + alignment - 1);
+                    endOfReleasedBlock = mOffset +
+                            numBuffers * (numElements + alignment - 1);
                 }
             }
             else
@@ -155,7 +155,6 @@ void ScratchMemory::release(const std::string& key)
             }
 
             put<sys::ubyte>(keyToInsert, numElements, numBuffers, alignment);
-
         }
         std::map<std::string, Segment>::const_iterator iterSegNew =
                 mSegments.find(firstReleasedKey);
@@ -177,13 +176,13 @@ void ScratchMemory::setup(const BufferView<sys::ubyte>& scratchBuffer)
         // use external storage
         if (mNumBytesNeeded > scratchBuffer.size)
         {
-            throw except::Exception(Ctxt(
-                    "Buffer has insufficient space for scratch memory"));
+            throw except::Exception(
+                    Ctxt("Buffer has insufficient space for scratch memory"));
         }
         if (scratchBuffer.data == nullptr)
         {
-            throw except::Exception(Ctxt(
-                    "Invalid external buffer was provided"));
+            throw except::Exception(
+                    Ctxt("Invalid external buffer was provided"));
         }
         mBuffer = scratchBuffer;
     }
@@ -199,24 +198,25 @@ void ScratchMemory::setup(const BufferView<sys::ubyte>& scratchBuffer)
         {
             segment.buffers[i] = mBuffer.data + currentOffset;
             align(&segment.buffers[i], segment.alignment);
-            currentOffset = segment.buffers[i] + segment.numBytes -
-                    mBuffer.data;
+            currentOffset =
+                    segment.buffers[i] + segment.numBytes - mBuffer.data;
         }
     }
 }
 
 const ScratchMemory::Segment& ScratchMemory::lookupSegment(
-        const std::string& key,
-        size_t indexBuffer) const
+        const std::string& key, size_t indexBuffer) const
 {
     if (mBuffer.data == nullptr)
     {
         std::ostringstream oss;
-        oss << "Tried to get scratch memory for \"" << key << "\" before running setup.";
+        oss << "Tried to get scratch memory for \"" << key
+            << "\" before running setup.";
         throw except::Exception(Ctxt(oss));
     }
 
-    std::map<std::string, Segment>::const_iterator iterSeg = mSegments.find(key);
+    std::map<std::string, Segment>::const_iterator iterSeg =
+            mSegments.find(key);
     if (iterSeg == mSegments.end())
     {
         std::ostringstream oss;
@@ -228,8 +228,8 @@ const ScratchMemory::Segment& ScratchMemory::lookupSegment(
     if (indexBuffer >= segment.buffers.size())
     {
         std::ostringstream oss;
-        oss << "Trying to get buffer index " << indexBuffer << " for \""
-            << key << "\", which has only " << segment.buffers.size() << " buffers";
+        oss << "Trying to get buffer index " << indexBuffer << " for \"" << key
+            << "\", which has only " << segment.buffers.size() << " buffers";
         throw except::Exception(Ctxt(oss));
     }
     return segment;

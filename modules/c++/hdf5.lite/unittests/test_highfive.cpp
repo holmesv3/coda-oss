@@ -20,21 +20,22 @@
  *
  */
 
-#include "import/std.h"
-#include <std/filesystem>
-
 #include <TestCase.h>
 
+#include <std/filesystem>
+
+#include "hdf5/lite/SpanRC.h"
+#include "hdf5/lite/highfive.h"
+#include "import/std.h"
+#include "mem/ComplexView.h"
 #include "sys/FileFinder.h"
 #include "types/RowCol.h"
-#include "mem/ComplexView.h"
 
-#include "hdf5/lite/highfive.h"
-#include "hdf5/lite/SpanRC.h"
-
-static std::filesystem::path find_unittest_file(const std::filesystem::path& name)
+static std::filesystem::path find_unittest_file(
+        const std::filesystem::path& name)
 {
-    static const auto unittests = std::filesystem::path("modules") / "c++" / "hdf5.lite" / "unittests";
+    static const auto unittests = std::filesystem::path("modules") / "c++" /
+            "hdf5.lite" / "unittests";
     return sys::test::findGITModuleFile("coda-oss", unittests, name);
 }
 
@@ -66,18 +67,20 @@ TEST_CASE(test_highfive_load)
 TEST_CASE(test_highfive_FileException)
 {
     static const std::filesystem::path path = "does not exist . h5";
-    HighFive::SilenceHDF5 silencer; // no need for diagnostics, we're expecting a failure
-    TEST_SPECIFIC_EXCEPTION(H5Easy::File(path.string()), HighFive::FileException);
+    HighFive::SilenceHDF5
+            silencer;  // no need for diagnostics, we're expecting a failure
+    TEST_SPECIFIC_EXCEPTION(H5Easy::File(path.string()),
+                            HighFive::FileException);
 }
 
 TEST_CASE(test_highfive_nested)
 {
     /*
-    Group '/' 
-    Group '/1' 
-        Group '/1/bar' 
-            Group '/1/bar/cat' 
-                Dataset 'i' 
+    Group '/'
+    Group '/1'
+        Group '/1/bar'
+            Group '/1/bar/cat'
+                Dataset 'i'
                     Size:  10x1
                     MaxSize:  10x1
                     Datatype:   H5T_IEEE_F64LE (double)
@@ -95,13 +98,13 @@ TEST_CASE(test_highfive_nested)
     const auto r = hdf5::lite::vv_load<double>(file, "/1/bar/dog/r");
     TEST_ASSERT_EQ(r.size(), 1);
     TEST_ASSERT_EQ(r[0].size(), 10);
-    
+
     TEST_ASSERT_EQ(i.size(), r.size());
     TEST_ASSERT_EQ(i[0].size(), r[0].size());
 }
 
-template<typename T>
-static auto read_complex(const HighFive::DataSet& r, const HighFive::DataSet& i) 
+template <typename T>
+static auto read_complex(const HighFive::DataSet& r, const HighFive::DataSet& i)
 {
     std::vector<T> r_result;
     std::ignore = hdf5::lite::readDataSet(r, r_result);
@@ -109,16 +112,17 @@ static auto read_complex(const HighFive::DataSet& r, const HighFive::DataSet& i)
     std::ignore = hdf5::lite::readDataSet(i, i_result);
     return std::make_pair(r, i);
 }
-template<typename T>
+template <typename T>
 static auto read_complex(const HighFive::Group& group)
 {
-    const auto i = group.getDataSet("i");   
+    const auto i = group.getDataSet("i");
     const auto r = group.getDataSet("r");
     return read_complex<T>(r, i);
 }
-template<typename T>
+template <typename T>
 static auto load_complex(const H5Easy::File& file,
-                         const std::string& r_path, const std::string& i_path)
+                         const std::string& r_path,
+                         const std::string& i_path)
 {
     const auto r = hdf5::lite::v_load<T>(file, r_path);
     const auto i = hdf5::lite::v_load<T>(file, i_path);
@@ -133,7 +137,8 @@ TEST_CASE(test_highfive_nested_small)
     // sub-sub groups: cat, dog
     // sub-sub-sub groups: a, b, c, d
     // data: i (float array), r (float array)
-    static const auto path = find_unittest_file("nested_complex_float32_data_small.h5");
+    static const auto path =
+            find_unittest_file("nested_complex_float32_data_small.h5");
 
     const H5Easy::File file(path.string());
 
@@ -147,24 +152,29 @@ TEST_CASE(test_highfive_nested_small)
     actual = std::accumulate(r.begin(), r.end(), 0.0f);
     TEST_ASSERT_EQ(actual, 10.0f);
 
-    const auto a = load_complex<float>(file, "/Data/1/bar/cat/a/r",  "/Data/1/bar/cat/a/i");
+    const auto a = load_complex<float>(file,
+                                       "/Data/1/bar/cat/a/r",
+                                       "/Data/1/bar/cat/a/i");
     const auto cx_view = mem::make_ComplexParallelView(a.first, a.second);
-    const auto cx_actual = std::accumulate(cx_view.begin(), cx_view.end(), std::complex<float>(0.0));
+    const auto cx_actual = std::accumulate(cx_view.begin(),
+                                           cx_view.end(),
+                                           std::complex<float>(0.0));
     TEST_ASSERT_EQ(cx_actual.real(), 10.0f);
     TEST_ASSERT_EQ(cx_actual.imag(), 0.0f);
 }
 
 TEST_CASE(test_highfive_nested_small_wrongType)
 {
-    static const auto path = find_unittest_file("nested_complex_float32_data_small.h5");
+    static const auto path =
+            find_unittest_file("nested_complex_float32_data_small.h5");
 
     const H5Easy::File file(path.string());
-    HighFive::SilenceHDF5 silencer; // no need for diagnostics, we're expecting a failure
-    TEST_SPECIFIC_EXCEPTION(
-        H5Easy::load<std::vector<std::complex<float>>>(file, "/Data/1/bar/cat/a/i"),
-        HighFive::DataSetException);
+    HighFive::SilenceHDF5
+            silencer;  // no need for diagnostics, we're expecting a failure
+    TEST_SPECIFIC_EXCEPTION(H5Easy::load<std::vector<std::complex<float>>>(
+                                    file, "/Data/1/bar/cat/a/i"),
+                            HighFive::DataSetException);
 }
-
 
 //*******************************************************************************
 
@@ -176,7 +186,8 @@ TEST_CASE(test_highfive_info)
     // https://www.mathworks.com/help/matlab/ref/h5info.html
     /*
     info = struct with fields:
-          Filename: '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
+          Filename:
+    '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
               Name: '/'
             Groups: [4x1 struct]
           Datasets: []
@@ -184,19 +195,19 @@ TEST_CASE(test_highfive_info)
              Links: []
         Attributes: [2x1 struct]
     */
-    
-    TEST_ASSERT_EQ(path.string(), file.getName());  
-    TEST_ASSERT_EQ("/",  file.getPath());
-    TEST_ASSERT_EQ(file.getNumberObjects(), 4); // 4 groups
+
+    TEST_ASSERT_EQ(path.string(), file.getName());
+    TEST_ASSERT_EQ("/", file.getPath());
+    TEST_ASSERT_EQ(file.getNumberObjects(), 4);  // 4 groups
     const auto objectNames = file.listObjectNames();
     TEST_ASSERT_EQ(objectNames.size(), 4);  // 4 groups
     for (auto&& name : objectNames)
     {
         const auto type = file.getObjectType(name);
         TEST_ASSERT(type == HighFive::ObjectType::Group);
-        
+
         const auto group = file.getGroup(name);
-        TEST_ASSERT_EQ(group.getPath(), "/" + name);   
+        TEST_ASSERT_EQ(group.getPath(), "/" + name);
     }
     TEST_ASSERT_EQ(file.getNumberAttributes(), 2);
 }
@@ -210,14 +221,15 @@ TEST_CASE(test_highfive_groupinfo)
     const auto g4 = file.getGroup("g4");
     /*
     info = struct with fields:
-      Filename: '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
+      Filename:
+    '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
           Name: '/g4'
         Groups: []
       Datasets: [4x1 struct]
      Datatypes: []
          Links: []
     Attributes: []
-    */    
+    */
     TEST_ASSERT_EQ(path.string(), g4.getFile().getName());
     const std::string groupPath("/g4");
     TEST_ASSERT_EQ(groupPath, g4.getPath());
@@ -230,7 +242,7 @@ TEST_CASE(test_highfive_groupinfo)
         TEST_ASSERT(type == HighFive::ObjectType::Dataset);
 
         const auto dataset = g4.getDataSet(name);
-        TEST_ASSERT_EQ(dataset.getPath(), groupPath + "/" +  name);
+        TEST_ASSERT_EQ(dataset.getPath(), groupPath + "/" + name);
     }
 }
 
@@ -243,14 +255,15 @@ TEST_CASE(test_highfive_datasetinfo)
     const auto time = file.getDataSet("/g4/time");
     /*
     info = struct with fields:
-      Filename: '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
+      Filename:
+    '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
           Name: 'time'
       Datatype: [1x1 struct]
      Dataspace: [1x1 struct]
      ChunkSize: 10
      FillValue: 0
        Filters: []
-    Attributes: [2x1 struct]    
+    Attributes: [2x1 struct]
     */
     TEST_ASSERT_EQ(path.string(), time.getFile().getName());
     const std::string dsPath("/g4/time");
@@ -261,7 +274,7 @@ TEST_CASE(test_highfive_datasetinfo)
 
     auto dims = time.getDimensions();
     TEST_ASSERT_EQ(dims.size(), 1);
-    TEST_ASSERT_EQ(10, dims[0]); // ChunkSize ???
+    TEST_ASSERT_EQ(10, dims[0]);  // ChunkSize ???
 
     const auto dataSpace = time.getSpace();
     dims = dataSpace.getDimensions();
@@ -271,15 +284,18 @@ TEST_CASE(test_highfive_datasetinfo)
     TEST_ASSERT_EQ(time.listAttributeNames().size(), 2);
 }
 
-static void read_complex(const std::string& testName, const HighFive::DataSet& r, const HighFive::DataSet& i) 
-{   
+static void read_complex(const std::string& testName,
+                         const HighFive::DataSet& r,
+                         const HighFive::DataSet& i)
+{
     TEST_ASSERT(r.getDataType().getClass() == HighFive::DataTypeClass::Float);
     TEST_ASSERT_EQ(r.getElementCount(), 10);
     TEST_ASSERT(i.getDataType().getClass() == HighFive::DataTypeClass::Float);
     TEST_ASSERT_EQ(i.getElementCount(), 10);
     std::ignore = read_complex<double>(r, i);
 }
-static void read_complex(const std::string& testName, const HighFive::Group& group)
+static void read_complex(const std::string& testName,
+                         const HighFive::Group& group)
 {
     read_complex(testName, group.getDataSet("r"), group.getDataSet("i"));
     std::ignore = read_complex<double>(group);
@@ -287,11 +303,11 @@ static void read_complex(const std::string& testName, const HighFive::Group& gro
 TEST_CASE(test_highfive_info_nested)
 {
     /*
-    Group '/' 
-    Group '/1' 
-        Group '/1/bar' 
-            Group '/1/bar/cat' 
-                Dataset 'i' 
+    Group '/'
+    Group '/1'
+        Group '/1/bar'
+            Group '/1/bar/cat'
+                Dataset 'i'
                     Size:  10x1
                     MaxSize:  10x1
                     Datatype:   H5T_IEEE_F64LE (double)
@@ -326,15 +342,16 @@ TEST_CASE(test_highfive_info_nested)
             const auto subGroupPath = groupPath + "/" + subGroupName;
             TEST_ASSERT_EQ(subGroup.getPath(), subGroupPath);
 
-
             TEST_ASSERT_EQ(subGroup.getNumberObjects(), 2);  // 2 groups
             objectNames = subGroup.listObjectNames();
-            const std::vector<std::string> expectedSubSubGroupNames{"cat", "dog"};
+            const std::vector<std::string> expectedSubSubGroupNames{"cat",
+                                                                    "dog"};
             TEST_ASSERT_EQ(objectNames.size(), expectedSubSubGroupNames.size());
             for (auto&& subSubGroupName : expectedSubSubGroupNames)
             {
                 const auto subSubGroup = subGroup.getGroup(subSubGroupName);
-                const auto subSubGroupPath = subGroupPath + "/" + subSubGroupName;
+                const auto subSubGroupPath =
+                        subGroupPath + "/" + subSubGroupName;
                 TEST_ASSERT_EQ(subSubGroup.getPath(), subSubGroupPath);
 
                 read_complex(testName, subSubGroup);
@@ -345,7 +362,7 @@ TEST_CASE(test_highfive_info_nested)
 
 //*******************************************************************************
 
-template<typename T>
+template <typename T>
 static auto make_data(const types::RowCol<size_t>& dims)
 {
     std::vector<std::vector<T>> retval(dims.row);
@@ -362,7 +379,7 @@ static auto make_data(const types::RowCol<size_t>& dims)
 }
 
 TEST_CASE(test_highfive_dump)
-{  
+{
     static const std::string dataset_name("/DS1");
     using dataset_t = float;
     static const auto path_ = find_unittest_file("example.h5");
@@ -371,7 +388,7 @@ TEST_CASE(test_highfive_dump)
     {
         const std::vector<dataset_t> data{1, 2, 3, 4, 5};
         H5Easy::File file(path.string(), H5Easy::File::Overwrite);
-        //std::ignore = H5Easy::dump(file, dataset_name, data);
+        // std::ignore = H5Easy::dump(file, dataset_name, data);
         TEST_SUCCESS;
     }
 
@@ -379,24 +396,24 @@ TEST_CASE(test_highfive_dump)
     const auto data = make_data<dataset_t>(dims);
     {
         H5Easy::File file(path.string(), H5Easy::File::Overwrite);
-        //std::ignore = H5Easy::dump(file, dataset_name, data);
+        // std::ignore = H5Easy::dump(file, dataset_name, data);
         TEST_SUCCESS;
     }
-    
+
     // Be sure we can read the file just written
     const H5Easy::File file(path.string(), H5Easy::File::ReadOnly);
-    //const auto DS1 = hdf5::lite::vv_load<dataset_t>(file, dataset_name);
-    //TEST_ASSERT_EQ(DS1.size(), dims.row);
-    //TEST_ASSERT_EQ(DS1[0].size(), dims.col);
-    //for (size_t r = 0; r < DS1.size(); r++)
+    // const auto DS1 = hdf5::lite::vv_load<dataset_t>(file, dataset_name);
+    // TEST_ASSERT_EQ(DS1.size(), dims.row);
+    // TEST_ASSERT_EQ(DS1[0].size(), dims.col);
+    // for (size_t r = 0; r < DS1.size(); r++)
     //{
-    //    for (size_t c = 0; c < DS1[r].size(); c++)
-    //    {
-    //        const auto expected = data[r][c];
-    //        const auto actual = DS1[r][c];
-    //        TEST_ASSERT_EQ(actual, expected);
-    //    }
-    //}
+    //     for (size_t c = 0; c < DS1[r].size(); c++)
+    //     {
+    //         const auto expected = data[r][c];
+    //         const auto actual = DS1[r][c];
+    //         TEST_ASSERT_EQ(actual, expected);
+    //     }
+    // }
 }
 
 TEST_CASE(test_highfive_write)
@@ -406,15 +423,16 @@ TEST_CASE(test_highfive_write)
 
     const types::RowCol<size_t> dims{10, 20};
     std::vector<double> data_(dims.area());
-    hdf5::lite::SpanRC<double> data(data_.data(), std::array<size_t, 2>{dims.row, dims.col});
+    hdf5::lite::SpanRC<double> data(data_.data(),
+                                    std::array<size_t, 2>{dims.row, dims.col});
     double d = 0.0;
     for (size_t r = 0; r < data.extent(0); r++)
     {
         for (size_t c = 0; c < data.extent(1); c++)
         {
             data(r, c) = d++;
-        }    
-    }    
+        }
+    }
     {
         H5Easy::File file(path.string(), H5Easy::File::Overwrite);
         const auto ds = hdf5::lite::writeDataSet(file, "DS1", data);
@@ -462,7 +480,7 @@ TEST_CASE(test_highfive_getDataType)
 {
     static const auto path = find_unittest_file("example.h5");
     const H5Easy::File file(path.string(), H5Easy::File::ReadOnly);
-    
+
     const auto time = file.getDataSet("/g4/time");
     TEST_ASSERT(time.getType() == HighFive::ObjectType::Dataset);
     TEST_ASSERT_EQ(time.getElementCount(), 10);
@@ -484,8 +502,10 @@ TEST_CASE(test_highfive_getDataType)
 
 template <typename THighFive>
 static auto getAttribute(const std::string& testName,
-                         const THighFive& obj, const std::string& name,
-                         HighFive::DataTypeClass typeClass, const std::string& typeName)
+                         const THighFive& obj,
+                         const std::string& name,
+                         HighFive::DataTypeClass typeClass,
+                         const std::string& typeName)
 {
     auto attribute = obj.getAttribute(name);
     TEST_ASSERT_EQ(attribute.getName(), name);
@@ -500,7 +520,11 @@ TEST_CASE(test_highfive_getAttribute)
     const H5Easy::File file(path.string(), H5Easy::File::ReadOnly);
 
     {
-        const auto attribute = getAttribute(testName, file, "attr1", HighFive::DataTypeClass::Integer, "Integer8");
+        const auto attribute = getAttribute(testName,
+                                            file,
+                                            "attr1",
+                                            HighFive::DataTypeClass::Integer,
+                                            "Integer8");
         const auto memSpace = attribute.getMemSpace();
         const auto elements = memSpace.getElementCount();
         TEST_ASSERT_EQ(elements, 10);
@@ -509,7 +533,11 @@ TEST_CASE(test_highfive_getAttribute)
         TEST_ASSERT_EQ(v.size(), elements);
     }
     {
-        const auto attribute = getAttribute(testName, file, "attr2", HighFive::DataTypeClass::Integer, "Integer32");
+        const auto attribute = getAttribute(testName,
+                                            file,
+                                            "attr2",
+                                            HighFive::DataTypeClass::Integer,
+                                            "Integer32");
         const auto memSpace = attribute.getMemSpace();
         const auto elements = memSpace.getElementCount();
         TEST_ASSERT_EQ(elements, 4);
@@ -518,14 +546,18 @@ TEST_CASE(test_highfive_getAttribute)
         TEST_ASSERT_EQ(v[0][0], 0);
         TEST_ASSERT_EQ(v[0][1], 1);
         TEST_ASSERT_EQ(v[1][0], 2);
-        TEST_ASSERT_EQ(v[1][1], 3);        
+        TEST_ASSERT_EQ(v[1][1], 3);
     }
 
     const auto time = file.getDataSet("/g4/time");
     {
-        const auto attribute = getAttribute(testName, time, "NAME", HighFive::DataTypeClass::String, "String40");
-        // throw DataSetException("Can't output std::string as fixed-length. Use raw arrays or FixedLenStringArray");
-        // std::string value;
+        const auto attribute = getAttribute(testName,
+                                            time,
+                                            "NAME",
+                                            HighFive::DataTypeClass::String,
+                                            "String40");
+        // throw DataSetException("Can't output std::string as fixed-length. Use
+        // raw arrays or FixedLenStringArray"); std::string value;
         // attribute.read(value);
         // HighFive::FixedLenStringArray<16> arr;
         // attribute.read(arr);
@@ -533,37 +565,43 @@ TEST_CASE(test_highfive_getAttribute)
         TEST_ASSERT_EQ(value, "time");
     }
     {
-        const auto attribute = getAttribute(testName, time, "CLASS", HighFive::DataTypeClass::String, "String128");
+        const auto attribute = getAttribute(testName,
+                                            time,
+                                            "CLASS",
+                                            HighFive::DataTypeClass::String,
+                                            "String128");
         // attribute.read(value);
         const auto value = hdf5::lite::read<std::string>(attribute);
         TEST_ASSERT_EQ(value, "DIMENSION_SCALE");
     }
 
-     const auto lat = file.getDataSet("/g4/lat");
+    const auto lat = file.getDataSet("/g4/lat");
     {
-        const auto attribute = getAttribute(testName, lat, "units", HighFive::DataTypeClass::String, "String104");
-        //HighFive::FixedLenStringArray<104> value;
-        //attribute.read(value);
+        const auto attribute = getAttribute(testName,
+                                            lat,
+                                            "units",
+                                            HighFive::DataTypeClass::String,
+                                            "String104");
+        // HighFive::FixedLenStringArray<104> value;
+        // attribute.read(value);
         const auto value = hdf5::lite::read<std::string>(attribute);
         TEST_ASSERT_EQ(value, "degrees_north");
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(test_highfive_load);
-    TEST_CHECK(test_highfive_FileException);
-    TEST_CHECK(test_highfive_nested);
-    TEST_CHECK(test_highfive_nested_small);
-    TEST_CHECK(test_highfive_nested_small_wrongType);
+TEST_MAIN(TEST_CHECK(test_highfive_load);
+          TEST_CHECK(test_highfive_FileException);
+          TEST_CHECK(test_highfive_nested);
+          TEST_CHECK(test_highfive_nested_small);
+          TEST_CHECK(test_highfive_nested_small_wrongType);
 
-    TEST_CHECK(test_highfive_info);
-    TEST_CHECK(test_highfive_groupinfo);
-    TEST_CHECK(test_highfive_datasetinfo);
-    TEST_CHECK(test_highfive_info_nested);
+          TEST_CHECK(test_highfive_info);
+          TEST_CHECK(test_highfive_groupinfo);
+          TEST_CHECK(test_highfive_datasetinfo);
+          TEST_CHECK(test_highfive_info_nested);
 
-    TEST_CHECK(test_highfive_dump);
-    TEST_CHECK(test_highfive_write);
+          TEST_CHECK(test_highfive_dump);
+          TEST_CHECK(test_highfive_write);
 
-    TEST_CHECK(test_highfive_getDataType);
-    TEST_CHECK(test_highfive_getAttribute);
- )
+          TEST_CHECK(test_highfive_getDataType);
+          TEST_CHECK(test_highfive_getAttribute);)

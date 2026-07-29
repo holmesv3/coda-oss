@@ -21,17 +21,18 @@
  *
  */
 
-#pragma once 
+#pragma once
 #ifndef CODA_OSS_sys_Span_h_INCLUDED_
 #define CODA_OSS_sys_Span_h_INCLUDED_
 
-#include <coda_oss/span.h>
 #include <coda_oss/cstddef.h>
-#include <vector>
+#include <coda_oss/span.h>
+
 #include <array>
 #include <type_traits>
+#include <vector>
 
-namespace sys // not "mem", it depends on sys.
+namespace sys  // not "mem", it depends on sys.
 {
 
 // Creating a `span` is verbose w/o deduction guidelines in C++17.
@@ -47,7 +48,8 @@ inline coda_oss::span<const T> make_const_span(T* ptr, size_t sz) noexcept
     return coda_oss::span<const T>(ptr, sz);
 }
 template <typename T>
-inline coda_oss::span<T> make_writable_span(T* ptr, size_t sz) noexcept // c.f., as_writable_bytes()
+inline coda_oss::span<T> make_writable_span(
+        T* ptr, size_t sz) noexcept  // c.f., as_writable_bytes()
 {
     return coda_oss::span<T>(ptr, sz);
 }
@@ -74,7 +76,8 @@ inline auto make_span(void* ptr, size_t sz) noexcept
 }
 
 template <typename T>
-inline auto make_const_span(coda_oss::span<T> v) noexcept // turn span<T> into span<const T>
+inline auto make_const_span(
+        coda_oss::span<T> v) noexcept  // turn span<T> into span<const T>
 {
     return make_const_span(v.data(), v.size());
 }
@@ -191,4 +194,4 @@ inline auto as_writable_bytes(T (&a)[N]) noexcept
 }
 
 }
-#endif // CODA_OSS_sys_Span_h_INCLUDED_
+#endif  // CODA_OSS_sys_Span_h_INCLUDED_

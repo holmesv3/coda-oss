@@ -52,4 +52,3 @@ CODA_OSS_API double besselIOrderN(size_t order, double x);
 }
 
 #endif
-

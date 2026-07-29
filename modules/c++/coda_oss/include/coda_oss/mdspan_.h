@@ -28,19 +28,21 @@
 
 #include "coda_oss/span.h"
 
-// This is a simple, partial, and incomplete implementation of `std::mdspan` (in C++23).
-// https://en.cppreference.com/w/cpp/container/mdspan
+// This is a simple, partial, and incomplete implementation of `std::mdspan` (in
+// C++23). https://en.cppreference.com/w/cpp/container/mdspan
 //
-// Why? Our (current) needs are much more limited than all the use-cases for `std::mdspan`:
-// dynamic (not static) extents, rank of 2 (rows x cols), contiguous memory, ...
-// By the time we really need more features, maybe we'll be using C++23? 
+// Why? Our (current) needs are much more limited than all the use-cases for
+// `std::mdspan`: dynamic (not static) extents, rank of 2 (rows x cols),
+// contiguous memory, ... By the time we really need more features, maybe we'll
+// be using C++23?
 namespace coda_oss
 {
 namespace details
 {
- // https://en.cppreference.com/w/cpp/container/mdspan/extents
-template<typename IndexType, size_t Rank>
-struct dextents final // this is actually supposed to be an alias template with all dynamic extents
+// https://en.cppreference.com/w/cpp/container/mdspan/extents
+template <typename IndexType, size_t Rank>
+struct dextents final  // this is actually supposed to be an alias template with
+                       // all dynamic extents
 {
     static_assert(Rank == 2, "Rank must have a value of 2");
     using index_type = IndexType;
@@ -48,12 +50,15 @@ struct dextents final // this is actually supposed to be an alias template with 
     using rank_type = size_t;
 
     constexpr dextents() = default;
-    
-    // These are supposed to be templates, but we don't need that complication right now.
+
+    // These are supposed to be templates, but we don't need that complication
+    // right now.
     constexpr dextents(index_type i0, index_type i1) noexcept : exts_{i0, i1}
     {
     }
-    constexpr explicit dextents(const std::array<index_type, Rank>& exts) noexcept : exts_(exts)
+    constexpr explicit dextents(
+            const std::array<index_type, Rank>& exts) noexcept :
+        exts_(exts)
     {
     }
 
@@ -76,10 +81,11 @@ private:
     std::array<index_type, Rank> exts_;
 };
 
-template<typename T, typename TExtents>
+template <typename T, typename TExtents>
 class mdspan final
 {
-    coda_oss::span<T> s_; // `span` instead of a raw pointer to get more range checking.
+    coda_oss::span<T>
+            s_;  // `span` instead of a raw pointer to get more range checking.
     TExtents ext_;
 
     // c.f., `types::RowCol`
@@ -98,10 +104,12 @@ public:
     constexpr mdspan() = default;
 
     // Again, these are supposed to be templates ...
-    mdspan(data_handle_type p, const extents_type& ext) noexcept : s_(p, area(ext)), ext_(ext)
+    mdspan(data_handle_type p, const extents_type& ext) noexcept :
+        s_(p, area(ext)), ext_(ext)
     {
     }
-    mdspan(data_handle_type p, const std::array<size_type, 2>& dims) noexcept : mdspan(p, extents_type(dims))
+    mdspan(data_handle_type p, const std::array<size_type, 2>& dims) noexcept :
+        mdspan(p, extents_type(dims))
     {
     }
 
@@ -135,7 +143,7 @@ public:
     {
         return s_.empty();
     }
-    
+
     auto extent(size_type rank) const
     {
         return ext_.extent(rank);
@@ -148,4 +156,3 @@ public:
 };
 }
 }
-

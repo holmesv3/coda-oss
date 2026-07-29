@@ -19,12 +19,12 @@
  * see <http://www.gnu.org/licenses/>.
  */
 
-#include "TestCase.h"
+#include <coda_oss/json/Std.h>
+#include <coda_oss/json/Types.h>
 
 #include <nlohmann/json.hpp>
 
-#include <coda_oss/json/Types.h>
-#include <coda_oss/json/Std.h>
+#include "TestCase.h"
 
 using json = nlohmann::json;
 using namespace std;
@@ -93,12 +93,9 @@ TEST_CASE(TestStdOptionEmpty)
     TEST_ASSERT(startVal == deserialized);
 }
 
-TEST_MAIN(
-    TEST_CHECK(TestStdComplex);
-    TEST_CHECK(TestStdSharedVal);
-    TEST_CHECK(TestStdSharedNull);
-    TEST_CHECK(TestStdUniqueVal);
-    TEST_CHECK(TestStdUniqueNull);
-    TEST_CHECK(TestStdOptionVal);
-    TEST_CHECK(TestStdOptionEmpty);
-)
+TEST_MAIN(TEST_CHECK(TestStdComplex); TEST_CHECK(TestStdSharedVal);
+          TEST_CHECK(TestStdSharedNull);
+          TEST_CHECK(TestStdUniqueVal);
+          TEST_CHECK(TestStdUniqueNull);
+          TEST_CHECK(TestStdOptionVal);
+          TEST_CHECK(TestStdOptionEmpty);)

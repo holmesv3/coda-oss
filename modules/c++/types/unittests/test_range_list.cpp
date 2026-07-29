@@ -19,17 +19,18 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
+#include <types/RangeList.h>
+
 #include <vector>
 
 #include "TestCase.h"
-#include <types/RangeList.h>
 
 TEST_CASE(TestDisjointInsertion)
 {
     types::RangeList RL;
-    RL.insert({3, 4}); // [3, 7)
-    RL.insert({9, 2}); // [9, 11)
-    RL.insert({1, 1}); // [1, 2)
+    RL.insert({3, 4});  // [3, 7)
+    RL.insert({9, 2});  // [9, 11)
+    RL.insert({1, 1});  // [1, 2)
 
     const std::vector<types::Range> ranges = RL.getRanges();
 
@@ -45,11 +46,11 @@ TEST_CASE(TestDisjointInsertion)
 TEST_CASE(TestMergedInsertion)
 {
     types::RangeList RL;
-    RL.insert({3, 4}); // [3, 7)
-    RL.insert({9, 2}); // [9, 11)
-    RL.insert({1, 1}); // [1, 2)
-    RL.insert({2, 1}); // [2, 3) merging starts now
-    RL.insert({6, 6}); // [6, 12)
+    RL.insert({3, 4});  // [3, 7)
+    RL.insert({9, 2});  // [9, 11)
+    RL.insert({1, 1});  // [1, 2)
+    RL.insert({2, 1});  // [2, 3) merging starts now
+    RL.insert({6, 6});  // [6, 12)
     // Final range should be [1, 12)
 
     const std::vector<types::Range> ranges = RL.getRanges();
@@ -80,8 +81,8 @@ TEST_CASE(TestSinglePointTouching)
 
 TEST_CASE(TestRemoveFromMiddle)
 {
-    types::RangeList RL(types::Range(10, 10)); // [10, 20)
-    RL.remove({11, 5}); // [11, 16)
+    types::RangeList RL(types::Range(10, 10));  // [10, 20)
+    RL.remove({11, 5});  // [11, 16)
     // Final ranges should be [10, 11), [16, 20)
 
     const std::vector<types::Range> ranges = RL.getRanges();
@@ -95,8 +96,8 @@ TEST_CASE(TestRemoveFromMiddle)
 
 TEST_CASE(TestRemoveFromLeft)
 {
-    types::RangeList RL(types::Range(10, 10)); // [10, 20)
-    RL.remove({8, 5}); // [8, 13)
+    types::RangeList RL(types::Range(10, 10));  // [10, 20)
+    RL.remove({8, 5});  // [8, 13)
     // Final range should be [13, 20)
 
     const std::vector<types::Range> ranges = RL.getRanges();
@@ -108,8 +109,8 @@ TEST_CASE(TestRemoveFromLeft)
 
 TEST_CASE(TestRemoveFromRight)
 {
-    types::RangeList RL(types::Range(10, 10)); // [10, 20)
-    RL.remove({15, 10}); // [15, 25)
+    types::RangeList RL(types::Range(10, 10));  // [10, 20)
+    RL.remove({15, 10});  // [15, 25)
     // Final range should be [10, 15)
 
     const std::vector<types::Range> ranges = RL.getRanges();
@@ -121,15 +122,14 @@ TEST_CASE(TestRemoveFromRight)
 
 TEST_CASE(TestRemoveMultiRangeOverlap)
 {
-    const std::vector<types::Range> initRanges =
-    {
-        { 0,  5}, // [0, 5)
-        {10, 10}, // [10, 20)
-        {25,  5}  // [25, 30)
+    const std::vector<types::Range> initRanges = {
+            {0, 5},  // [0, 5)
+            {10, 10},  // [10, 20)
+            {25, 5}  // [25, 30)
     };
 
     types::RangeList RL(initRanges);
-    RL.remove({2, 25}); // [2, 27)
+    RL.remove({2, 25});  // [2, 27)
     // Final ranges should be [0, 2), [27, 30)
 
     const std::vector<types::Range> ranges = RL.getRanges();
@@ -143,11 +143,10 @@ TEST_CASE(TestRemoveMultiRangeOverlap)
 
 TEST_CASE(TestExpansion)
 {
-    const std::vector<types::Range> initRanges =
-    {
-        { 1,  3}, // [1, 4)
-        {10, 10}, // [10, 20)
-        {24,  5}  // [24, 29)
+    const std::vector<types::Range> initRanges = {
+            {1, 3},  // [1, 4)
+            {10, 10},  // [10, 20)
+            {24, 5}  // [24, 29)
     };
 
     types::RangeList RL(initRanges);
@@ -171,47 +170,31 @@ TEST_CASE(TestIntersection)
     // C:     |--------|      |---|      |-| |-|    |-| |-|
 
     const types::RangeList A(std::vector<types::Range>(
-    {
-        {2, 5},
-        {10, 5},
-        {20, 10},
-        {31, 2},
-        {37, 1},
-        {45, 1}
+            {{2, 5}, {10, 5}, {20, 10}, {31, 2}, {37, 1}, {45, 1}
 
-    }));
+            }));
 
     const types::RangeList B(std::vector<types::Range>(
-    {
-        {1, 6},
-        {12, 2},
-        {22, 1},
-        {26, 3},
-        {30, 10},
-        {46, 1}
-    }));
+            {{1, 6}, {12, 2}, {22, 1}, {26, 3}, {30, 10}, {46, 1}}));
 
     // Final ranges: [2, 7), [12, 14), [22, 23), [26, 29), [31, 33), [37, 38)
     const types::RangeList C = A.intersect(B);
 
     const std::vector<types::Range> ranges = C.getRanges();
     TEST_ASSERT_EQ(ranges.size(), static_cast<size_t>(6));
-    TEST_ASSERT_TRUE(types::Range(2,5) == ranges[0]);
-    TEST_ASSERT_TRUE(types::Range(12,2) == ranges[1]);
-    TEST_ASSERT_TRUE(types::Range(22,1) == ranges[2]);
-    TEST_ASSERT_TRUE(types::Range(26,3) == ranges[3]);
-    TEST_ASSERT_TRUE(types::Range(31,2) == ranges[4]);
-    TEST_ASSERT_TRUE(types::Range(37,1) == ranges[5]);
+    TEST_ASSERT_TRUE(types::Range(2, 5) == ranges[0]);
+    TEST_ASSERT_TRUE(types::Range(12, 2) == ranges[1]);
+    TEST_ASSERT_TRUE(types::Range(22, 1) == ranges[2]);
+    TEST_ASSERT_TRUE(types::Range(26, 3) == ranges[3]);
+    TEST_ASSERT_TRUE(types::Range(31, 2) == ranges[4]);
+    TEST_ASSERT_TRUE(types::Range(37, 1) == ranges[5]);
 }
 
-TEST_MAIN(
-    TEST_CHECK(TestDisjointInsertion);
-    TEST_CHECK(TestMergedInsertion);
-    TEST_CHECK(TestSinglePointTouching);
-    TEST_CHECK(TestRemoveFromMiddle);
-    TEST_CHECK(TestRemoveFromLeft);
-    TEST_CHECK(TestRemoveFromRight);
-    TEST_CHECK(TestRemoveMultiRangeOverlap);
-    TEST_CHECK(TestExpansion);
-    TEST_CHECK(TestIntersection);
-)
+TEST_MAIN(TEST_CHECK(TestDisjointInsertion); TEST_CHECK(TestMergedInsertion);
+          TEST_CHECK(TestSinglePointTouching);
+          TEST_CHECK(TestRemoveFromMiddle);
+          TEST_CHECK(TestRemoveFromLeft);
+          TEST_CHECK(TestRemoveFromRight);
+          TEST_CHECK(TestRemoveMultiRangeOverlap);
+          TEST_CHECK(TestExpansion);
+          TEST_CHECK(TestIntersection);)

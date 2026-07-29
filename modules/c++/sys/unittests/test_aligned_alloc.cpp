@@ -20,17 +20,16 @@
  *
  */
 
-#include <iostream>
-
-#include <sys/Conf.h>
-#include <sys/Path.h>
 #include <except/Exception.h>
 #include <str/Convert.h>
+#include <sys/Conf.h>
+#include <sys/Path.h>
+
+#include <iostream>
+
 #include "TestCase.h"
 
-
-bool
-testAlignedAlloc(const size_t numBytes_, const size_t alignment)
+bool testAlignedAlloc(const size_t numBytes_, const size_t alignment)
 {
     // Allocate an aligned buffer
     void* const ptr = sys::alignedAlloc(numBytes_, alignment);
@@ -42,8 +41,7 @@ testAlignedAlloc(const size_t numBytes_, const size_t alignment)
 
     if (!isAligned)
     {
-        std::cerr << "Error: buffer " << ptr
-                  << " isn't aligned as expected!\n";
+        std::cerr << "Error: buffer " << ptr << " isn't aligned as expected!\n";
     }
     return isAligned;
 }
@@ -74,10 +72,7 @@ TEST_CASE(testAlignedAlloc128)
     TEST_ASSERT(testAlignedAlloc(numBytes, 128));
 }
 
-TEST_MAIN(
-    TEST_CHECK(testAlignedAlloc8);
-    TEST_CHECK(testAlignedAlloc16);
-    TEST_CHECK(testAlignedAlloc32);
-    TEST_CHECK(testAlignedAlloc64);
-    TEST_CHECK(testAlignedAlloc128);
-)
+TEST_MAIN(TEST_CHECK(testAlignedAlloc8); TEST_CHECK(testAlignedAlloc16);
+          TEST_CHECK(testAlignedAlloc32);
+          TEST_CHECK(testAlignedAlloc64);
+          TEST_CHECK(testAlignedAlloc128);)

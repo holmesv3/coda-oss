@@ -20,18 +20,19 @@
  *
  */
 
+#include <io/FileInputStream.h>
+#include <zip/ZipOutputStream.h>
+
 #include <string>
 #include <vector>
-#include <zip/ZipOutputStream.h>
-#include <io/FileInputStream.h>
 
 namespace
 {
 void usage(const std::string& progname)
 {
     std::cerr << "Usage: " << progname
-        << " -i <file #1> <zipPath #1> <file#2> <zipPath #2> ..."
-        << " [-o Output pathname]";
+              << " -i <file #1> <zipPath #1> <file#2> <zipPath #2> ..."
+              << " [-o Output pathname]";
 }
 }
 
@@ -52,8 +53,8 @@ int main(int argc, char** argv)
                 while (index < argc - 1)
                 {
                     if ((::strlen(argv[index]) > 0 && argv[index][0] == '-') ||
-                            (::strlen(argv[index + 1]) > 0 && 
-                                    argv[index + 1][0] == '-'))
+                        (::strlen(argv[index + 1]) > 0 &&
+                         argv[index + 1][0] == '-'))
                     {
                         break;
                     }

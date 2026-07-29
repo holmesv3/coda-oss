@@ -22,13 +22,12 @@
 #ifndef __POLYGON_DRAW_POLYGON_H__
 #define __POLYGON_DRAW_POLYGON_H__
 
-#include <vector>
-#include <algorithm>
-#include <cmath>
-
+#include <polygon/Intersections.h>
 #include <types/RowCol.h>
 
-#include <polygon/Intersections.h>
+#include <algorithm>
+#include <cmath>
+#include <vector>
 
 namespace polygon
 {
@@ -55,16 +54,16 @@ namespace polygon
  * Defaults to no offset.
  *
  * See Intersections class for additional details
-*/
+ */
 template <typename PointT, typename OutT>
-void drawPolygon(const std::vector<types::RowCol<PointT> >& points,
-                 size_t numRows,
-                 size_t numCols,
-                 OutT color,
-                 OutT* out,
-                 bool invert = false,
-                 types::RowCol<sys::SSize_T> offset =
-                         types::RowCol<sys::SSize_T>(0, 0))
+void drawPolygon(
+        const std::vector<types::RowCol<PointT>>& points,
+        size_t numRows,
+        size_t numCols,
+        OutT color,
+        OutT* out,
+        bool invert = false,
+        types::RowCol<sys::SSize_T> offset = types::RowCol<sys::SSize_T>(0, 0))
 {
     if (points.empty())
     {
@@ -74,9 +73,7 @@ void drawPolygon(const std::vector<types::RowCol<PointT> >& points,
 
     // We need to get all scanline intersections of polygon edges
     const Intersections<PointT> intersections(
-            points,
-            types::RowCol<size_t>(numRows, numCols),
-            offset);
+            points, types::RowCol<size_t>(numRows, numCols), offset);
 
     // Draw all intersection pairs
     std::vector<typename Intersections<PointT>::Intersection> intersectionsVec;

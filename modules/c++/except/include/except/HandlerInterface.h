@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of except-c++ 
+ * This file is part of except-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * except-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -41,7 +41,7 @@ namespace except
 /*!
  *  \class HandlerInterface
  *  \brief A class for handling notification events
- *  While this class used to service only Throwable events, it was 
+ *  While this class used to service only Throwable events, it was
  *  extended to provide a status message and a warning message.
  *  These events propogate to the HandlerInterface, usual via macro,
  *  and any derivation of this interface will define how to handle
@@ -54,10 +54,12 @@ class HandlerInterface
 public:
     //!  Constructor
     HandlerInterface()
-    {}
+    {
+    }
     //!  Destructor
     virtual ~HandlerInterface()
-    {}
+    {
+    }
 
     /*!
      *  Given an error, and a context in which it was produced, handle
@@ -98,9 +100,7 @@ public:
      *  \param dbg  The debug statement that was generated
      */
     virtual void onDebug(Context c, const std::string& dbg) = 0;
-
 };
 }
-
 
 #endif

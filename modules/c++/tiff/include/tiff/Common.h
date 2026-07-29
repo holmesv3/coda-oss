@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -29,8 +29,9 @@
 #define __TIFF_COMMON_H__
 
 #include <import/sys.h>
-#include <string>
+
 #include <sstream>
+#include <string>
 
 namespace tiff
 {
@@ -122,7 +123,6 @@ public:
         };
     };
 
-
     /*
      * Compression
      * http://www.awaresystems.be/imaging/tiff/tifftags/compression.html
@@ -146,7 +146,6 @@ public:
             PACK_BITS = 32773
         };
     };
-
 
     /**
      *****************************************************************
@@ -198,7 +197,8 @@ public:
      * @return
      *   the data in string format
      *****************************************************************/
-    template <typename T> static std::string toString(const T& data)
+    template <typename T>
+    static std::string toString(const T& data)
     {
         std::stringstream tempStream;
         tempStream << data;
@@ -221,7 +221,9 @@ class RationalPrintStrategy
 {
 public:
     //! Default Constructor
-    RationalPrintStrategy() {}
+    RationalPrintStrategy()
+    {
+    }
 
     //! Constructor
     ~RationalPrintStrategy()
@@ -230,7 +232,7 @@ public:
 
     /**
      *************************************************************
-     * Converts the specified data to a string.  Both numerator and 
+     * Converts the specified data to a string.  Both numerator and
      * denominator are 32 bit signed longs stored in a single 64 bit integer
      *
      * @param data
@@ -239,7 +241,6 @@ public:
      *   the string form of the rational number
      *************************************************************/
     static std::string toString(const sys::Uint64_T data);
-
 };
 
 /**
@@ -285,7 +286,8 @@ sys::Uint64_T combine(sys::Uint32_T numerator, sys::Uint32_T denominator);
  * @param denominator
  *   the returned denominator
  *****************************************************************/
-//void split(sys::Uint32_T value, sys::Uint32_T &numerator, sys::Uint32_T &denominator);
+// void split(sys::Uint32_T value, sys::Uint32_T &numerator, sys::Uint32_T
+// &denominator);
 
 /**
  *****************************************************************
@@ -299,9 +301,10 @@ sys::Uint64_T combine(sys::Uint32_T numerator, sys::Uint32_T denominator);
  * @param denominator
  *   the returned denominator
  *****************************************************************/
-void split(sys::Uint64_T value, sys::Uint32_T &numerator,
-           sys::Uint32_T &denominator);
+void split(sys::Uint64_T value,
+           sys::Uint32_T& numerator,
+           sys::Uint32_T& denominator);
 
-} // End namespace tiff.
+}  // End namespace tiff.
 
-#endif // __TIFF_COMMON_H__
+#endif  // __TIFF_COMMON_H__

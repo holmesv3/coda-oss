@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of dbi-c++ 
+ * This file is part of dbi-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * dbi-c++ is free software; you can redistribute it and/or modify
@@ -14,16 +14,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-
 #if defined(USE_MYSQL)
 
 #include "dbi/MySQLConnection.h"
+
 #include <import/sys.h>
 
 bool dbi::MySQLConnection::connect(const std::string& database,
@@ -32,13 +32,18 @@ bool dbi::MySQLConnection::connect(const std::string& database,
                                    const std::string& host,
                                    unsigned int port)
 {
-    if (port == 0) port = 3306;
+    if (port == 0)
+        port = 3306;
     // Attempt to connect to this database and let the user
     // know if it was successful or not
-    if (!mysql_real_connect(&mDBHandle, host.c_str(),
-                            user.c_str(),  pass.c_str(),
-                            database.c_str(), port,
-                            nullptr, 0))
+    if (!mysql_real_connect(&mDBHandle,
+                            host.c_str(),
+                            user.c_str(),
+                            pass.c_str(),
+                            database.c_str(),
+                            port,
+                            nullptr,
+                            0))
     {
         return false;
     }
@@ -90,7 +95,7 @@ dbi::Row dbi::MySQLResultSet::fetchRow()
     int numFields = mysql_num_fields(mResults);
 
     // Get an array of field lengths for this row
-    unsigned long *fieldLengths = mysql_fetch_lengths(mResults);
+    unsigned long* fieldLengths = mysql_fetch_lengths(mResults);
 
     // Cannot go any further in giving the correct row
     // and field information, give up
@@ -100,7 +105,7 @@ dbi::Row dbi::MySQLResultSet::fetchRow()
     }
 
     // Create a result set auto pointer and give it to the user
-    //std::unique_ptr< Row > row(new Row);
+    // std::unique_ptr< Row > row(new Row);
     dbi::Row row;
 
     for (int i = 0; i < numFields; i++)

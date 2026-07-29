@@ -23,20 +23,20 @@
 #ifndef CODA_OSS_sio_lite_ReadUtils_h_
 #define CODA_OSS_sio_lite_ReadUtils_h_
 
-#include <string>
-#include <memory>
-#include <vector>
-
-#include <gsl/gsl.h>
-#include <sys/Conf.h>
 #include <except/Exception.h>
-#include <types/RowCol.h>
+#include <gsl/gsl.h>
 #include <mem/ScopedArray.h>
-#include <sio/lite/FileReader.h>
-#include <sio/lite/FileHeader.h>
 #include <sio/lite/ElementType.h>
-#include <sys/filesystem.h>
+#include <sio/lite/FileHeader.h>
+#include <sio/lite/FileReader.h>
+#include <sys/Conf.h>
 #include <sys/Span.h>
+#include <sys/filesystem.h>
+#include <types/RowCol.h>
+
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace sio
 {

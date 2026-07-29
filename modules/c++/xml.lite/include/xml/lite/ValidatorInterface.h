@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -33,19 +33,18 @@
  * pool.
  */
 
-#include <string>
-#include <vector>
 #include <coda_oss/string.h>
-
 #include <config/Exports.h>
 #include <io/InputStream.h>
-#include <str/Convert.h>
 #include <logging/Logger.h>
-#include <sys/filesystem.h>
+#include <str/Convert.h>
 #include <str/Encoding.h>
-
+#include <sys/filesystem.h>
 #include <xml/lite/Element.h>
 #include <xml/lite/QName.h>
+
+#include <string>
+#include <vector>
 
 namespace xml
 {
@@ -54,7 +53,7 @@ namespace lite
 
 /*!
  * \class ValidationInfo
- * \brief This is the information for one 
+ * \brief This is the information for one
  *        schema validation error.
  */
 struct ValidationInfo final
@@ -63,24 +62,35 @@ struct ValidationInfo final
                    const std::string& level,
                    const std::string& file,
                    size_t line) :
-        mMessage(message), mLevel(level), 
-        mFile(file), mLine(line) 
+        mMessage(message), mLevel(level), mFile(file), mLine(line)
     {
     }
 
-    std::string getMessage() const { return mMessage; }
-    std::string getLevel() const { return mLevel; }
-    std::string getFile() const { return mFile; }
-    size_t getLine() const { return mLine; }
+    std::string getMessage() const
+    {
+        return mMessage;
+    }
+    std::string getLevel() const
+    {
+        return mLevel;
+    }
+    std::string getFile() const
+    {
+        return mFile;
+    }
+    size_t getLine() const
+    {
+        return mLine;
+    }
 
     //! stream to a string
     std::string toString() const
     {
         std::ostringstream oss;
-        oss << "[" << this->getLevel() << "]" << 
-            " from File: " << this->getFile() << 
-            " on Line: " << this->getLine() << 
-            " with Message: " << this->getMessage();
+        oss << "[" << this->getLevel() << "]"
+            << " from File: " << this->getFile()
+            << " on Line: " << this->getLine()
+            << " with Message: " << this->getMessage();
         return oss.str();
     }
 
@@ -100,7 +110,6 @@ private:
 class CODA_OSS_API ValidatorInterface
 {
 public:
-
     enum ValidationErrorType
     {
         VALIDATION_WARNING = 0,
@@ -108,20 +117,24 @@ public:
         VALIDATION_FATAL
     };
 
-    /*! 
+    /*!
      *  Constructor
      *  \param schemaPaths  Vector of both paths and singular schemas
      *                      Note: All schemas must end in *.xsd
      *  \param log          Logger for reporting errors
-     *  \param recursive    Do a recursive search for schemas on directory 
+     *  \param recursive    Do a recursive search for schemas on directory
      *                      input
      */
     ValidatorInterface(const std::vector<std::string>& /*schemaPaths*/,
                        logging::Logger* /*log*/,
-                       bool /*recursive*/ = true) {}
+                       bool /*recursive*/ = true)
+    {
+    }
     ValidatorInterface(const std::vector<coda_oss::filesystem::path>&,
                        logging::Logger* /*log*/,
-                       bool /*recursive*/ = true) { }
+                       bool /*recursive*/ = true)
+    {
+    }
 
     //! Destructor.
     virtual ~ValidatorInterface() = default;
@@ -174,12 +187,15 @@ public:
     virtual bool validate(const std::string& xml,
                           const std::string& xmlID,
                           std::vector<ValidationInfo>& errors) const = 0;
-    virtual bool validate(const coda_oss::u8string&, const std::string& /*xmlID*/, std::vector<ValidationInfo>&) const = 0;
-    virtual bool validate(const str::W1252string&, const std::string& /*xmlID*/, std::vector<ValidationInfo>&) const = 0;
+    virtual bool validate(const coda_oss::u8string&,
+                          const std::string& /*xmlID*/,
+                          std::vector<ValidationInfo>&) const = 0;
+    virtual bool validate(const str::W1252string&,
+                          const std::string& /*xmlID*/,
+                          std::vector<ValidationInfo>&) const = 0;
 };
 
-inline std::ostream& operator<< (std::ostream& out,
-                                 const ValidationInfo& info)
+inline std::ostream& operator<<(std::ostream& out, const ValidationInfo& info)
 {
     out << info.toString();
     return out;

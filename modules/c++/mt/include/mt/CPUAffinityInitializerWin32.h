@@ -20,21 +20,21 @@
  *
  */
 
-
 #ifndef __MT_CPU_AFFINITY_INITIALIZER_WIN32_H__
 #define __MT_CPU_AFFINITY_INITIALIZER_WIN32_H__
 
 #ifdef _WIN32
 
+#include <mem/SharedPtr.h>
 #include <mt/AbstractCPUAffinityInitializer.h>
 #include <mt/CPUAffinityThreadInitializerWin32.h>
-#include <mem/SharedPtr.h>
 
 namespace mt
 {
 /*!
  * \class CPUAffinityInitializerWin32
- * \brief Windows-specific class for providing thread-level affinity initializers.
+ * \brief Windows-specific class for providing thread-level affinity
+ * initializers.
  * \todo This is a stub implementation that doesn't do anything. Make this work.
  */
 class CPUAffinityInitializerWin32 : public AbstractCPUAffinityInitializer
@@ -60,4 +60,3 @@ private:
 
 #endif
 #endif
-

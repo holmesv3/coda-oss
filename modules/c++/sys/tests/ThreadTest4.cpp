@@ -29,51 +29,49 @@ using namespace std;
 class Getter : public sys::Runnable
 {
 public:
-    Getter(sys::Mutex *by, int * val, int n) : theVal(val), syncBy(by), id(n)
-    {}
+    Getter(sys::Mutex* by, int* val, int n) : theVal(val), syncBy(by), id(n)
+    {
+    }
     virtual ~Getter() = default;
 
-    CODA_OSS_disable_warning_push
-    CODA_OSS_DISABLE_UNREACHABLE_CODE
-    virtual void run() override
+    CODA_OSS_disable_warning_push CODA_OSS_DISABLE_UNREACHABLE_CODE virtual void
+    run() override
     {
         for (int i = 0; i < 250; i++)
         {
-
             std::cout << "Getter::run: " << std::endl;
             std::cout << typeid(this).name() << std::endl;
             syncBy->lock();
             int x = get();
-            cout << "Thread id: "<< id << " got back " << x << endl;
+            cout << "Thread id: " << id << " got back " << x << endl;
             syncBy->unlock();
             sys::Thread::yield();
         }
     }
     CODA_OSS_disable_warning_pop
 
-    int get()
+            int
+            get()
     {
-
         return *theVal;
     }
-protected:
-    int *theVal;
-    sys::Mutex *syncBy;
-    int id;
 
+protected:
+    int* theVal;
+    sys::Mutex* syncBy;
+    int id;
 };
 class Putter : public sys::Runnable
 {
 public:
-    Putter(sys::Mutex *by,int *val, int n) : theVal(val), syncBy(by), id(n)
-    {}
+    Putter(sys::Mutex* by, int* val, int n) : theVal(val), syncBy(by), id(n)
+    {
+    }
     virtual ~Putter() = default;
 
-    CODA_OSS_disable_warning_push
-    CODA_OSS_DISABLE_UNREACHABLE_CODE
-    virtual void run() override
+    CODA_OSS_disable_warning_push CODA_OSS_DISABLE_UNREACHABLE_CODE virtual void
+    run() override
     {
-
         std::cout << "Putter::run: " << std::endl;
         std::cout << typeid(this).name() << std::endl;
 
@@ -81,23 +79,23 @@ public:
         {
             syncBy->lock();
             set(i);
-            cout << "Thread id: "<< id << " set to " << i << endl;
+            cout << "Thread id: " << id << " set to " << i << endl;
             syncBy->unlock();
 
             sys::Thread::yield();
-
         }
-
     }
     CODA_OSS_disable_warning_pop
 
-    void set(int val)
+            void
+            set(int val)
     {
         *theVal = val;
     }
+
 protected:
-    int *theVal;
-    sys::Mutex *syncBy;
+    int* theVal;
+    sys::Mutex* syncBy;
     int id;
 };
 
@@ -107,12 +105,11 @@ int main()
     {
         int val = 24;
         sys::Mutex syncBy;
-        sys::Thread *gT[5];
-        sys::Thread *pT[5];
+        sys::Thread* gT[5];
+        sys::Thread* pT[5];
 
         for (int i = 0; i < 5; i++)
         {
-
             gT[i] = new sys::Thread(new Getter(&syncBy, &val, i));
             gT[i]->start();
 
@@ -134,7 +131,6 @@ int main()
             cout << "Joined on pT[" << i << "]" << endl;
         }
         //	sys::Thread::yield();
-
     }
     catch (except::Exception& e)
     {

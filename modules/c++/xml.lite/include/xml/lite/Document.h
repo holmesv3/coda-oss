@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -37,13 +37,12 @@
  */
 
 #include <assert.h>
-
-#include <utility>
-#include <memory>
-#include "coda_oss/string.h"
-
 #include <config/Exports.h>
 
+#include <memory>
+#include <utility>
+
+#include "coda_oss/string.h"
 #include "xml/lite/Element.h"
 #include "xml/lite/QName.h"
 
@@ -65,12 +64,13 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
         mRootNode(rootNode), mOwnRoot(own)
     {
     }
-    #ifndef SWIG // SWIG doesn't like std::unique_ptr
-    explicit Document(std::unique_ptr<Element>&& rootNode) : // implicitly own=true
+#ifndef SWIG  // SWIG doesn't like std::unique_ptr
+    explicit Document(
+            std::unique_ptr<Element>&& rootNode) :  // implicitly own=true
         Document(rootNode.release(), true /*own*/)
     {
     }
-    #endif // SWIG
+#endif  // SWIG
 
     /*!
      * Destroy the xml tree.  This deletes the nodes if they exist
@@ -81,7 +81,7 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
         destroy();
     }
 
-    #ifndef SWIG // SWIG doesn't like std::unique_ptr
+#ifndef SWIG  // SWIG doesn't like std::unique_ptr
     std::unique_ptr<Document>& clone(std::unique_ptr<Document>& doc) const
     {
         doc = std::make_unique<Document>();
@@ -96,7 +96,7 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
         std::unique_ptr<Document> doc;
         return clone(doc).release();
     }
-    #endif // SWIG
+#endif  // SWIG
 
     /*!
      * Factory-type method for creating a new Element
@@ -105,11 +105,16 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
      * \param characterData The character data (if any)
      * \return A new element
      */
-    virtual Element *createElement(const std::string & qname, const std::string & uri, std::string characterData = "");
-    #ifndef SWIG // SWIG doesn't like std::unique_ptr
-    std::unique_ptr<Element> createElement(const xml::lite::QName&, const std::string& characterData) const;
-    std::unique_ptr<Element> createElement(const xml::lite::QName&, const coda_oss::u8string& characterData) const;
-    #endif // SWIG
+    virtual Element* createElement(const std::string& qname,
+                                   const std::string& uri,
+                                   std::string characterData = "");
+#ifndef SWIG  // SWIG doesn't like std::unique_ptr
+    std::unique_ptr<Element> createElement(
+            const xml::lite::QName&, const std::string& characterData) const;
+    std::unique_ptr<Element> createElement(
+            const xml::lite::QName&,
+            const coda_oss::u8string& characterData) const;
+#endif  // SWIG
 
     /*!
      * Blanket destructor.  This thing deletes everything
@@ -124,13 +129,13 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
      * \param element Element to add
      * \param underThis Element to add element to
      */
-    void insert(Element * element, Element * underThis);
+    void insert(Element* element, Element* underThis);
 
     /*!
      * Remove an element from the tree, starting at the root
      * \param toDelete The node to delete (This DOES do deletion)
      */
-    void remove(Element * toDelete);
+    void remove(Element* toDelete);
 
     /*!
      * Remove an element from the tree, starting at the second param
@@ -139,38 +144,40 @@ struct CODA_OSS_API Document  // SOAPDocument derives :-(
      * be an optimization depending on the task, so I allow it to remain
      * public
      */
-    void remove(Element * toDelete, Element * fromHere);
+    void remove(Element* toDelete, Element* fromHere);
 
     /*!
      * Sets the internal root element
      * \param element The node to set.
      */
-    void setRootElement(Element * element, bool own = true);
-    #ifndef SWIG // SWIG doesn't like std::unique_ptr
-    void setRootElement(std::unique_ptr<Element>&& element) // implicitly own=true
+    void setRootElement(Element* element, bool own = true);
+#ifndef SWIG  // SWIG doesn't like std::unique_ptr
+    void setRootElement(
+            std::unique_ptr<Element>&& element)  // implicitly own=true
     {
         setRootElement(element.release(), true /*own*/);
     }
-    #endif // SWIG
+#endif  // SWIG
 
     /*!
      * Retrieves the internal root element
      * \return The root node
      */
-    Element *getRootElement(bool steal = false)
+    Element* getRootElement(bool steal = false)
     {
         if (steal)
             mOwnRoot = false;
         return mRootNode;
     }
-    #ifndef SWIG // SWIG doesn't like std::unique_ptr
-    std::unique_ptr<Element>& getRootElement(std::unique_ptr<Element>& rootNode) // implicitly steal=true
+#ifndef SWIG  // SWIG doesn't like std::unique_ptr
+    std::unique_ptr<Element>& getRootElement(
+            std::unique_ptr<Element>& rootNode)  // implicitly steal=true
     {
         rootNode.reset(getRootElement(true /*steal*/));
         return rootNode;
     }
-    #endif // SWIG
-    Element *getRootElement() const
+#endif  // SWIG
+    Element* getRootElement() const
     {
         return mRootNode;
     }
@@ -180,7 +187,7 @@ private:
     Document& operator=(const Document&);
 
     //! The root node element
-    Element *mRootNode;
+    Element* mRootNode;
     bool mOwnRoot;
 };
 
@@ -210,5 +217,4 @@ inline const Element& getRootElement(const Document* pDoc)
 }
 }
 
-#endif // CODA_OSS_xml_lite_Doocument_h_INCLUDED_
-
+#endif  // CODA_OSS_xml_lite_Doocument_h_INCLUDED_

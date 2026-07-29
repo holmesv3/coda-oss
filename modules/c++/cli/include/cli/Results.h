@@ -26,12 +26,11 @@
 
 #include <map>
 #include <memory>
-#include <utility>
 #include <stdexcept>
-
-#include "sys/Conf.h"
+#include <utility>
 
 #include "cli/Value.h"
+#include "sys/Conf.h"
 
 namespace cli
 {
@@ -92,13 +91,13 @@ public:
         return p->second.get();
     }
 
-    template<typename T>
+    template <typename T>
     T get(const std::string& key, unsigned int index = 0) const
     {
         return getValue(key)->get<T>(index);
     }
 
-    template<typename T>
+    template <typename T>
     T operator()(const std::string& key, unsigned int index = 0) const
     {
         return get<T>(key, index);
@@ -127,26 +126,39 @@ public:
         cli::Value* pExistingValue = hasValue(key) ? getValue(key) : nullptr;
         if ((pExistingValue == nullptr) || (pExistingValue != value))
         {
-            // Either 1) we didn't already have a value or 2) the existing value is different
+            // Either 1) we didn't already have a value or 2) the existing value
+            // is different
             put(key, std::unique_ptr<cli::Value>(value));
         }
     }
 
-    void put(const std::string& key, cli::Results *args)
+    void put(const std::string& key, cli::Results* args)
     {
         if (hasSubResults(key))
         {
-            cli::Results *existing = getSubResults(key);
+            cli::Results* existing = getSubResults(key);
             if (existing != args)
                 delete existing;
         }
         mResults[key] = args;
     }
 
-    auto begin() { return mValues.begin(); }
-    auto begin() const { return mValues.begin(); }
-    auto end() { return mValues.end(); }
-    auto end() const { return mValues.end(); }
+    auto begin()
+    {
+        return mValues.begin();
+    }
+    auto begin() const
+    {
+        return mValues.begin();
+    }
+    auto end()
+    {
+        return mValues.end();
+    }
+    auto end() const
+    {
+        return mValues.end();
+    }
 
 private:
     ValueStorage_T mValues;
@@ -155,8 +167,9 @@ private:
     void destroy()
     {
         mValues.clear();
-        for (ResultsIter_T it = mResults.begin(), end = mResults.end(); it
-                != end; ++it)
+        for (ResultsIter_T it = mResults.begin(), end = mResults.end();
+             it != end;
+             ++it)
             delete it->second;
         mResults.clear();
     }

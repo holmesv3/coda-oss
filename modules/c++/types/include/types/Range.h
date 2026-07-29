@@ -46,8 +46,7 @@ struct CODA_OSS_API Range
      * \param numElements Number of elements in range
      */
     Range(size_t startElement, size_t numElements) :
-        mStartElement(startElement),
-        mNumElements(numElements)
+        mStartElement(startElement), mNumElements(numElements)
     {
     }
     // TODO: remove "m" prefix since these are public
@@ -104,8 +103,7 @@ struct CODA_OSS_API Range
      *
      * \return True if the ranges overlap, false otherwise
      */
-    bool overlaps(const types::Range& rhs,
-                  types::Range& overlap) const
+    bool overlaps(const types::Range& rhs, types::Range& overlap) const
     {
         if (overlaps(rhs))
         {
@@ -140,7 +138,7 @@ struct CODA_OSS_API Range
         }
 
         return (mStartElement == rhs.endElement()) ||
-               (rhs.mStartElement == endElement());
+                (rhs.mStartElement == endElement());
     }
 
     /*!

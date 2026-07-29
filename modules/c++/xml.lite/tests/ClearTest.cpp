@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,19 +14,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <import/xml/lite.h>
 #include <import/io.h>
-#include <vector>
+#include <import/xml/lite.h>
+
 #include <iostream>
-const char
-        * xmldata =
-                "<root okay=\"1\"><A>This</A><A>is</A><A>an</A><A><B>ugly</B></A><B>otter</B></root>";
+#include <vector>
+const char* xmldata = "<root "
+                      "okay=\"1\"><A>This</A><A>is</A><A>an</A><A><B>ugly</B></"
+                      "A><B>otter</B></root>";
 void printCD(std::string tag, std::vector<xml::lite::Element*>& e)
 {
     std::cout << tag << ": ";
@@ -71,4 +72,3 @@ int main()
     elem->print(sout);
     std::cout << std::endl;
 }
-

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,8 +23,9 @@
 #ifndef __TIFF_GENERIC_TYPE_H__
 #define __TIFF_GENERIC_TYPE_H__
 
-#include <string>
 #include <import/io.h>
+
+#include <string>
 
 #include "tiff/Common.h"
 
@@ -56,7 +57,7 @@ public:
      * @return
      *   the data in byte format
      *****************************************************************/
-    virtual unsigned char *data() const = 0;
+    virtual unsigned char* data() const = 0;
 
     /**
      *****************************************************************
@@ -88,18 +89,16 @@ public:
  * the data to a string for printing, and retrieving the data in
  * byte form.
  *********************************************************************/
-template <typename Data_T, typename Strategy_T = tiff::PrintStrategy> class GenericType :
-    public TypeInterface
+template <typename Data_T, typename Strategy_T = tiff::PrintStrategy>
+class GenericType : public TypeInterface
 {
 public:
     //! Default constructor
-    GenericType() :
-        mData(0)
+    GenericType() : mData(0)
     {
     }
 
-    explicit GenericType(std::string s) :
-        mData(str::toType<Data_T>(s))
+    explicit GenericType(std::string s) : mData(str::toType<Data_T>(s))
     {
     }
 
@@ -110,7 +109,7 @@ public:
      * @param data
      *   the data to initialize the object with
      *****************************************************************/
-    GenericType(const unsigned char *data)
+    GenericType(const unsigned char* data)
     {
         const void* const pData = data;
         mData = *(static_cast<const Data_T*>(pData));
@@ -130,7 +129,7 @@ public:
      *****************************************************************/
     virtual void serialize(io::OutputStream& output) override
     {
-        output.write((char *)&mData, sizeof(Data_T));
+        output.write((char*)&mData, sizeof(Data_T));
     }
 
     /**
@@ -142,12 +141,12 @@ public:
      *****************************************************************/
     virtual void deserialize(io::InputStream& input) override
     {
-        input.read((char *)&mData, sizeof(Data_T));
+        input.read((char*)&mData, sizeof(Data_T));
     }
 
-    virtual unsigned char *data() const override
+    virtual unsigned char* data() const override
     {
-        return (unsigned char *)&mData;
+        return (unsigned char*)&mData;
     }
 
     virtual unsigned short size() const override
@@ -173,11 +172,10 @@ public:
     }
 
 protected:
-
     //! The member data
     Data_T mData;
 };
 
-} // End namespace.
+}  // End namespace.
 
-#endif // __TIFF_GENERIC_TYPE_H__
+#endif  // __TIFF_GENERIC_TYPE_H__

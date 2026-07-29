@@ -28,11 +28,10 @@
 #if !defined(USE_IO_STREAMS)
 
 #include "except/Exception.h"
-#include "sys/File.h"
-#include "sys/filesystem.h"
 #include "io/InputStream.h"
 #include "io/SeekableStreams.h"
-
+#include "sys/File.h"
+#include "sys/filesystem.h"
 
 /*!
  *  \file FileInputStreamOS.h
@@ -65,7 +64,6 @@ protected:
     size_t mMinChunksForThreading;
 
 public:
-
     FileInputStreamOS() = default;
 
     /*!
@@ -79,14 +77,18 @@ public:
         mMinChunksForThreading(defaultMinChunksForThreading)
     {
         // Let this SystemException slide for now
-        mFile.create(inputFile,
-                     sys::File::READ_ONLY,
-                     sys::File::EXISTING);
+        mFile.create(inputFile, sys::File::READ_ONLY, sys::File::EXISTING);
     }
     explicit FileInputStreamOS(const coda_oss::filesystem::path& inputFile) :
-        FileInputStreamOS(inputFile.string()) { }
-    FileInputStreamOS(const char* inputFile) : // "file.txt" could be either std::string or std::filesystem::path
-        FileInputStreamOS(std::string(inputFile))  {  }
+        FileInputStreamOS(inputFile.string())
+    {
+    }
+    FileInputStreamOS(
+            const char* inputFile) :  // "file.txt" could be either std::string
+                                      // or std::filesystem::path
+        FileInputStreamOS(std::string(inputFile))
+    {
+    }
 
     FileInputStreamOS(const sys::File& inputFile) :
         mMaxReadThreads(defaultNumThreads),
@@ -98,7 +100,7 @@ public:
 
     virtual ~FileInputStreamOS()
     {
-        if ( isOpen() )
+        if (isOpen())
         {
             close();
         }
@@ -123,7 +125,6 @@ public:
         return mFile.isOpen();
     }
 
-
     /*!
      *  Open the file in the mode provided
      *  \param file The file to open
@@ -131,13 +132,8 @@ public:
      */
     virtual void create(const std::string& str)
     {
-        mFile.create(str,
-                     sys::File::READ_ONLY,
-                     sys::File::EXISTING);
-
+        mFile.create(str, sys::File::READ_ONLY, sys::File::EXISTING);
     }
-
-
 
     /*!
      *  Go to the offset at the location specified.
@@ -148,19 +144,19 @@ public:
         int from = sys::File::FROM_CURRENT;
         switch (whence)
         {
-            case END:
-                from = sys::File::FROM_END;
-                break;
+        case END:
+            from = sys::File::FROM_END;
+            break;
 
-            case START:
-                from = sys::File::FROM_START;
-                break;
+        case START:
+            from = sys::File::FROM_START;
+            break;
 
-            case CURRENT:
-            default:
-                from = sys::File::FROM_CURRENT;
+        case CURRENT:
+        default:
+            from = sys::File::FROM_CURRENT;
         }
-        return mFile.seekTo( off, from );
+        return mFile.seekTo(off, from);
     }
 
     /*!

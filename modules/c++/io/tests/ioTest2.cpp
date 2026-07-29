@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -36,14 +36,14 @@ public:
         sys::SSize_T c;
         unsigned char buf[25] = "";
 
-        while ((c = in.read((sys::byte*) buf, 25)) != FileInputStream::IS_EOF)
-            out.write((sys::byte*) buf, c);
+        while ((c = in.read((sys::byte*)buf, 25)) != FileInputStream::IS_EOF)
+            out.write((sys::byte*)buf, c);
         in.close();
         out.close();
     }
 };
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     try
     {
@@ -56,5 +56,4 @@ int main(int argc, char **argv)
     {
         cout << e.toString() << endl;
     }
-
 }

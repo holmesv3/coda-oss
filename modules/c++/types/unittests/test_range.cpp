@@ -19,11 +19,11 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
+#include <types/Range.h>
+
 #include <numeric>
 
 #include "TestCase.h"
-
-#include <types/Range.h>
 
 TEST_CASE(TestGetNumSharedElements)
 {
@@ -41,17 +41,20 @@ TEST_CASE(TestGetNumSharedElements)
 
     // Intersects 'range' at its upper bound but doesn't cover the
     // full extent - shares [120, 150)
-    TEST_ASSERT_EQ(range.getNumSharedElements(120, 45), static_cast<size_t>(30));
+    TEST_ASSERT_EQ(range.getNumSharedElements(120, 45),
+                   static_cast<size_t>(30));
 
     // Lays between the upper and lower bound of 'range' - 'range' should
     // share all elements [120, 135]
-    TEST_ASSERT_EQ(range.getNumSharedElements(120, 15), static_cast<size_t>(15));
+    TEST_ASSERT_EQ(range.getNumSharedElements(120, 15),
+                   static_cast<size_t>(15));
 
     // Covers the entirety of 'range', should share [100, 150)
     TEST_ASSERT_EQ(range.getNumSharedElements(0, 200), static_cast<size_t>(50));
 
     // Ranges are the same - should share [100, 150)
-    TEST_ASSERT_EQ(range.getNumSharedElements(100, 50), static_cast<size_t>(50));
+    TEST_ASSERT_EQ(range.getNumSharedElements(100, 50),
+                   static_cast<size_t>(50));
 }
 
 TEST_CASE(TestTouches)
@@ -59,23 +62,23 @@ TEST_CASE(TestTouches)
     // Ranges do not overlap or touch -- touches(...) returns false
     {
         const types::Range A(5, 4);  // [5, 8]
-        const types::Range B(12, 1); // [12, 12]
+        const types::Range B(12, 1);  // [12, 12]
         TEST_ASSERT_FALSE(A.touches(B));
         TEST_ASSERT_FALSE(B.touches(A));
     }
 
     // Ranges overlap -- touches(...) returns false
     {
-        const types::Range A(5, 4); // [5, 8]
-        const types::Range B(8, 1); // [8, 8]
+        const types::Range A(5, 4);  // [5, 8]
+        const types::Range B(8, 1);  // [8, 8]
         TEST_ASSERT_FALSE(A.touches(B));
         TEST_ASSERT_FALSE(B.touches(A));
     }
 
     // Ranges touch -- touches(...) returns true
     {
-        const types::Range A(5, 4); // [5, 8]
-        const types::Range B(9, 1); // [9, 9]
+        const types::Range A(5, 4);  // [5, 8]
+        const types::Range B(9, 1);  // [9, 9]
         TEST_ASSERT_TRUE(A.touches(B));
         TEST_ASSERT_TRUE(B.touches(A));
     }
@@ -83,7 +86,7 @@ TEST_CASE(TestTouches)
     // One of the ranges is empty -- touches(...) returns false
     {
         const types::Range A(10, 0);  // [10, 0)
-        const types::Range B(10, 10); // [10, 20)
+        const types::Range B(10, 10);  // [10, 20)
         TEST_ASSERT_FALSE(A.touches(B));
         TEST_ASSERT_FALSE(B.touches(A));
     }
@@ -91,7 +94,7 @@ TEST_CASE(TestTouches)
     // Both of the ranges are empty -- touches(...) returns false
     {
         const types::Range A(10, 0);  // [10, 0)
-        const types::Range B(10, 0); // [10, 20)
+        const types::Range B(10, 0);  // [10, 20)
         TEST_ASSERT_FALSE(A.touches(B));
         TEST_ASSERT_FALSE(B.touches(A));
     }
@@ -142,8 +145,5 @@ TEST_CASE(TestSplit)
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(TestGetNumSharedElements);
-    TEST_CHECK(TestTouches);
-    TEST_CHECK(TestSplit);
-    )
+TEST_MAIN(TEST_CHECK(TestGetNumSharedElements); TEST_CHECK(TestTouches);
+          TEST_CHECK(TestSplit);)

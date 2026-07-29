@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of plugin-c++ 
+ * This file is part of plugin-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * plugin-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,17 +23,15 @@
 #include "plugin/ErrorHandler.h"
 
 plugin::DefaultErrorHandler::DefaultErrorHandler(logging::LoggerPtr logger) :
-	mLogger(logger)
+    mLogger(logger)
 {
 }
 
-void plugin::DefaultErrorHandler::
-onPluginDirectoryNotFound(const std::string& dir)
+void plugin::DefaultErrorHandler::onPluginDirectoryNotFound(
+        const std::string& dir)
 {
     throw except::FileNotFoundException(
-        Ctxt(std::string("Plugin directory not found: ") +
-             dir)
-    );
+            Ctxt(std::string("Plugin directory not found: ") + dir));
 }
 
 void plugin::DefaultErrorHandler::onPluginLoadFailed(const std::string& file)
@@ -48,7 +46,8 @@ void plugin::DefaultErrorHandler::onPluginLoadedAlready(const std::string& file)
         mLogger->info("Plugin manager already loaded: " + file);
 }
 
-void plugin::DefaultErrorHandler::onPluginVersionUnsupported(const std::string& message)
+void plugin::DefaultErrorHandler::onPluginVersionUnsupported(
+        const std::string& message)
 {
     if (mLogger.get())
         mLogger->warn(message);

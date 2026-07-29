@@ -21,16 +21,16 @@
  *
  */
 
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <errno.h>
 
-#include <sstream>
-#include <vector>
-#include <set>
 #include <fstream>
+#include <set>
+#include <sstream>
 #include <stdexcept>
+#include <vector>
 
 #include "sys/Conf.h"
 #include "sys/sys_config.h"
@@ -40,20 +40,19 @@
 
 #if defined(__APPLE__)
 
-#include <sys/types.h>
-#include <sys/sysctl.h>
-#include <mach/vm_statistics.h>
-#include <mach/mach_types.h>
-#include <mach/mach_init.h>
 #include <mach/mach_host.h>
+#include <mach/mach_init.h>
+#include <mach/mach_types.h>
+#include <mach/vm_statistics.h>
+#include <sys/sysctl.h>
+#include <sys/types.h>
 
 #endif
 
-#include "sys/OSUnix.h"
-#include "sys/File.h"
-#include "sys/ScopedCPUAffinityUnix.h"
 #include "str/Tokenizer.h"
-
+#include "sys/File.h"
+#include "sys/OSUnix.h"
+#include "sys/ScopedCPUAffinityUnix.h"
 
 namespace
 {
@@ -75,8 +74,7 @@ std::string readLink(const std::string& pathname)
 class CharWrapper
 {
 public:
-    CharWrapper(char* array):
-        mArray(array)
+    CharWrapper(char* array) : mArray(array)
     {
     }
     ~CharWrapper()
@@ -87,6 +85,7 @@ public:
     {
         return mArray;
     }
+
 private:
     char* mArray;
 };
@@ -104,10 +103,9 @@ std::set<std::string> get_unique_thread_siblings()
 
     const std::vector<std::string> searchPaths(1, sysCPUPath.getPath());
     const std::vector<std::string> subDirs =
-        sys::FileFinder::search(
-            sys::DirectoryOnlyPredicate(),
-            searchPaths,
-            false);
+            sys::FileFinder::search(sys::DirectoryOnlyPredicate(),
+                                    searchPaths,
+                                    false);
 
     std::set<std::string> unique_ts;
     for (std::vector<std::string>::const_iterator ii = subDirs.begin();
@@ -159,7 +157,6 @@ std::string sys::OSUnix::getNodeName() const
     return std::string(name.nodename);
 }
 
-
 bool sys::OSUnix::exists(const std::string& path) const
 {
     struct stat info;
@@ -174,8 +171,8 @@ void sys::OSUnix::removeFile(const std::string& pathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing file [" <<  pathname <<
-            "] with error [" << err.toString() << "]";
+        oss << "Failure removing file [" << pathname << "] with error ["
+            << err.toString() << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -187,8 +184,8 @@ void sys::OSUnix::removeDirectory(const std::string& pathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing directory [" <<  pathname <<
-            "] with error [" << err.toString() << "]";
+        oss << "Failure removing directory [" << pathname << "] with error ["
+            << err.toString() << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -217,7 +214,7 @@ bool sys::OSUnix::isFile(const std::string& path) const
     struct stat info;
     if (stat(path.c_str(), &info) == -1)
         return false;
-//        throw sys::SystemException("Stat failed");
+    //        throw sys::SystemException("Stat failed");
     return (S_ISREG(info.st_mode)) ? (true) : (false);
 }
 
@@ -226,7 +223,7 @@ bool sys::OSUnix::isDirectory(const std::string& path) const
     struct stat info;
     if (stat(path.c_str(), &info) == -1)
         return false;
-//        throw sys::SystemException("Stat failed");
+    //        throw sys::SystemException("Stat failed");
     return (S_ISDIR(info.st_mode)) ? (true) : (false);
 }
 
@@ -247,13 +244,15 @@ std::string sys::OSUnix::getTempName(const std::string& path,
                                      const std::string& prefix) const
 {
     std::string name;
-#if defined(_USE_MKSTEMP) || defined(__linux__) || defined(__linux) || defined(linux__)
+#if defined(_USE_MKSTEMP) || defined(__linux__) || defined(__linux) || \
+        defined(linux__)
     std::string pathname(path);
     pathname += "/" + prefix + "XXXXXX";
     std::vector<char> fullPath(pathname.size() + 1);
     strcpy(&fullPath[0], pathname.c_str());
     int ret = mkstemp(&fullPath[0]);
-    if (ret == -1) name = "";
+    if (ret == -1)
+        name = "";
     else
     {
         name = &fullPath[0];
@@ -265,7 +264,7 @@ std::string sys::OSUnix::getTempName(const std::string& path,
     else
     {
         name = tempname.get();
-        sys::File (name, sys::File::WRITE_ONLY, sys::File::CREATE);
+        sys::File(name, sys::File::WRITE_ONLY, sys::File::CREATE);
     }
 #endif
     if (name.empty())
@@ -304,7 +303,7 @@ std::string sys::OSUnix::getEnv(const std::string& s) const
     const char* envVal = getenv(s.c_str());
     if (envVal == nullptr)
         throw sys::SystemException(
-            Ctxt("Unable to get unix environment variable " + s));
+                Ctxt("Unable to get unix environment variable " + s));
     return std::string(envVal);
 }
 
@@ -340,10 +339,10 @@ void sys::OSUnix::setEnv(const std::string& var,
         ret = 0;
     }
 #endif
-    if(ret != 0)
+    if (ret != 0)
     {
-        throw sys::SystemException(Ctxt(
-                "Unable to set unix environment variable " + var));
+        throw sys::SystemException(
+                Ctxt("Unable to set unix environment variable " + var));
     }
 }
 
@@ -355,7 +354,8 @@ void sys::OSUnix::unsetEnv(const std::string& var)
     // variable could not be changed
     if (ret == -1)
     {
-      throw sys::SystemException(Ctxt("Unable to unset unix environment variable " + var));
+        throw sys::SystemException(
+                Ctxt("Unable to unset unix environment variable " + var));
     }
 }
 
@@ -451,37 +451,36 @@ sys::SIMDInstructionSet sys::OSUnix::getSIMDInstructionSet() const
 void sys::OSUnix::createSymlink(const std::string& origPathname,
                                 const std::string& symlinkPathname) const
 {
-    if(symlink(origPathname.c_str(), symlinkPathname.c_str()))
+    if (symlink(origPathname.c_str(), symlinkPathname.c_str()))
     {
-        throw sys::SystemException(Ctxt(
-                "Symlink creation has failed"));
+        throw sys::SystemException(Ctxt("Symlink creation has failed"));
     }
 }
 
 void sys::OSUnix::removeSymlink(const std::string& symlinkPathname) const
 {
-	if (::unlink(symlinkPathname.c_str()) != 0)
-	{
-		sys::Err err;
-		std::ostringstream oss;
-		oss << "Failure removing symlink [" <<  symlinkPathname <<
-			"] with error [" << err.toString() << "]";
+    if (::unlink(symlinkPathname.c_str()) != 0)
+    {
+        sys::Err err;
+        std::ostringstream oss;
+        oss << "Failure removing symlink [" << symlinkPathname
+            << "] with error [" << err.toString() << "]";
 
-		throw except::Exception(Ctxt(oss));
-	}
+        throw except::Exception(Ctxt(oss));
+    }
 }
 
 size_t sysconfCaller(int name)
 {
     long long returnVal = sysconf(name);
-    if(returnVal == -1){
-        throw sys::SystemException(Ctxt(
-                "Call to sysconf() has failed"));
+    if (returnVal == -1)
+    {
+        throw sys::SystemException(Ctxt("Call to sysconf() has failed"));
     }
     return returnVal;
 }
 
-void sys::OSUnix::getMemInfo(size_t &totalPhysMem, size_t &freePhysMem) const
+void sys::OSUnix::getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const
 {
     // Unfortunately sysctl is the best way to do this on OSX,
     // but sysctl is deprecated in favor of sysconf on linux
@@ -489,23 +488,24 @@ void sys::OSUnix::getMemInfo(size_t &totalPhysMem, size_t &freePhysMem) const
     long long physMem = 0;
     size_t size = sizeof(physMem);
     int status = sysctlbyname("hw.memsize", &physMem, &size, 0, 0);
-    if(status)
+    if (status)
     {
         throw sys::SystemException(Ctxt("Call to sysctl() has failed"));
     }
 
-    mach_port_t            machPort = mach_host_self();
-    mach_msg_type_number_t count     = HOST_VM_INFO_COUNT;
-    vm_size_t              pageSize = 0;
-    vm_statistics_data_t   vmstat;
+    mach_port_t machPort = mach_host_self();
+    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+    vm_size_t pageSize = 0;
+    vm_statistics_data_t vmstat;
 
-    if(KERN_SUCCESS != host_statistics(machPort, HOST_VM_INFO,
-                (host_info_t) &vmstat, &count))
+    if (KERN_SUCCESS !=
+        host_statistics(machPort, HOST_VM_INFO, (host_info_t)&vmstat, &count))
     {
-        throw sys::SystemException(Ctxt("Call to host_statistics() has failed"));
+        throw sys::SystemException(
+                Ctxt("Call to host_statistics() has failed"));
     }
 
-    if(KERN_SUCCESS != host_page_size(machPort, &pageSize))
+    if (KERN_SUCCESS != host_page_size(machPort, &pageSize))
     {
         throw sys::SystemException(Ctxt("Call to host_page_size has failed"));
     }
@@ -520,8 +520,8 @@ void sys::OSUnix::getMemInfo(size_t &totalPhysMem, size_t &freePhysMem) const
     long long totalNumPages = sysconfCaller(_SC_PHYS_PAGES);
     long long availNumPages = sysconfCaller(_SC_AVPHYS_PAGES);
 
-    totalPhysMem = (pageSize*totalNumPages/1024)/1024;
-    freePhysMem = (pageSize*availNumPages/1024)/1024;
+    totalPhysMem = (pageSize * totalNumPages / 1024) / 1024;
+    freePhysMem = (pageSize * availNumPages / 1024) / 1024;
 
 #endif
 }
@@ -532,15 +532,16 @@ std::string sys::OSUnix::getCurrentExecutable(
     std::vector<std::string> possibleSymlinks;
 
     // Linux
-    possibleSymlinks.push_back(sys::Path::joinPaths(
-            sys::Path::delimiter()[0] + std::string("proc"),
-            sys::Path::joinPaths("self", "exe")));
+    possibleSymlinks.push_back(
+            sys::Path::joinPaths(sys::Path::delimiter()[0] +
+                                         std::string("proc"),
+                                 sys::Path::joinPaths("self", "exe")));
 
     // Solaris
     possibleSymlinks.push_back(sys::Path::joinPaths(
             sys::Path::delimiter()[0] + std::string("proc"),
             sys::Path::joinPaths("self",
-            sys::Path::joinPaths("path", "a.out"))));
+                                 sys::Path::joinPaths("path", "a.out"))));
 
     for (size_t ii = 0; ii < possibleSymlinks.size(); ++ii)
     {
@@ -565,7 +566,7 @@ void sys::DirectoryUnix::close()
 {
     if (mDir)
     {
-        closedir( mDir);
+        closedir(mDir);
         mDir = nullptr;
     }
 }

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -38,17 +38,17 @@
  *  (1).
  */
 
-#include <import/net.h>
-#include <import/sys.h>
 #include <import/except.h>
 #include <import/mem.h>
+#include <import/net.h>
+#include <import/sys.h>
+
 #include "my_packet.h"
 
 using namespace net;
 
 int main(int argc, char** argv)
 {
-
     if (argc != 2)
     {
         die_printf("Usage: %s <port>\n", argv[0]);
@@ -58,7 +58,8 @@ int main(int argc, char** argv)
         int port = atoi(argv[1]);
 
         SocketAddress address(port);
-        std::unique_ptr<Socket> listener = TCPServerSocketFactory().create(address);
+        std::unique_ptr<Socket> listener =
+                TCPServerSocketFactory().create(address);
         SocketAddress clientAddress;
         std::unique_ptr<Socket> client = listener->accept(clientAddress);
         // Print client address here!!
@@ -69,7 +70,6 @@ int main(int argc, char** argv)
         client->send(&one, sizeof(int));
         client->close();
         listener->close();
-
     }
     catch (except::Exception& ex)
     {

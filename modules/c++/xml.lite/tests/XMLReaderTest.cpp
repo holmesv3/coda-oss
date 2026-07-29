@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -32,9 +32,9 @@
  */
 #if defined(USE_EXPAT) || defined(USE_XERCES) || defined(USE_LIBXML)
 
+#include <import/except.h>
 #include <import/io.h>
 #include <import/sys.h>
-#include <import/except.h>
 #include <import/xml/lite.h>
 
 using namespace std;
@@ -47,9 +47,11 @@ class Reporter : public xml::lite::ContentHandler
 {
 public:
     Reporter() : mDepth(0)
-    {}
+    {
+    }
     ~Reporter()
-    {}
+    {
+    }
 
     void printAttributes(const xml::lite::Attributes& attr)
     {
@@ -68,7 +70,7 @@ public:
      *  \param  data   The data picked up by the handler
      *  \param  length The length of the data picked up by the handler
      */
-    void characters(const char *data, int length)
+    void characters(const char* data, int length)
     {
         // Do nothing: Im not interested in keeping track of this
     }
@@ -76,18 +78,18 @@ public:
     /*!
      *  Define  start element method.  Fired when a begin tag is found.
      *  \param  name    The name of the tag
-     *  \param  atts A list of attributes in the begin tag 
+     *  \param  atts A list of attributes in the begin tag
      */
-    void startElement(const std::string & uri,
-                      const std::string & localName,
-                      const std::string & qname,
-                      const xml::lite::Attributes & atts)
+    void startElement(const std::string& uri,
+                      const std::string& localName,
+                      const std::string& qname,
+                      const xml::lite::Attributes& atts)
     {
         printDepth();
         cout << "START ELEMENT "
-        << "(uri=\"" << uri << "\" "
-        << "localName=\"" << localName << "\" "
-        << "qname=\"" << qname << "\")" << endl;
+             << "(uri=\"" << uri << "\" "
+             << "localName=\"" << localName << "\" "
+             << "qname=\"" << qname << "\")" << endl;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         printDepth();
         cout << "<== BEGIN ATT LIST ==> " << endl;
@@ -102,22 +104,21 @@ public:
      *  Define  end element method.  Fired when a begin tag is found.
      *  \param  name   The name of the element tag
      */
-    void endElement(const std::string & uri,
-                    const std::string & localName,
-                    const std::string & qname)
+    void endElement(const std::string& uri,
+                    const std::string& localName,
+                    const std::string& qname)
     {
         printDepth();
         cout << "END ELEMENT "
-        << "(uri=\"" << uri << "\" "
-        << "localName=\"" << localName << "\" "
-        << "qname=\"" << qname << "\")" << endl;
+             << "(uri=\"" << uri << "\" "
+             << "localName=\"" << localName << "\" "
+             << "qname=\"" << qname << "\")" << endl;
         cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
         cout << "================================================" << endl;
         --mDepth;
     }
 
 private:
-
     void printDepth()
     {
         for (int i = 0; i < mDepth; i++)
@@ -128,31 +129,31 @@ private:
 
 // If I put in a streamTo() to an output stream, it works
 // Otherwise it runs forever
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     try
     {
         // Check to make sure we have right length
         if (argc != 2)
-            throw Exception(Ctxt(str::Format("Usage: %s <xml file>\n", argv[0])));
+            throw Exception(
+                    Ctxt(str::Format("Usage: %s <xml file>\n", argv[0])));
 
         // Create an input stream
-        FileInputStream
-        xmlFile(argv[1]);
+        FileInputStream xmlFile(argv[1]);
 
         xml::lite::XMLReader xmlReader;
-        
+
         std::cout << "XML Driver: " << xmlReader.getDriverName() << std::endl;
         xmlReader.setContentHandler(new Reporter());
 
-        //EVAL( s.stream().str() );
-        // Use the provided parse method to parse the input file
-        //xmlReporter.parse(s);
+        // EVAL( s.stream().str() );
+        //  Use the provided parse method to parse the input file
+        // xmlReporter.parse(s);
         xmlReader.parse(xmlFile);
         xmlFile.close();
     }
     // Catch all throwables and exit in a reasonable manner
-    catch (Throwable & t)
+    catch (Throwable& t)
     {
         cout << "Caught Throwable: " << t.toString() << endl;
 
@@ -163,6 +164,6 @@ int main(int argc, char **argv)
 }
 #else
 int main()
-{}
+{
+}
 #endif
-

@@ -52,4 +52,4 @@ using ScopedCopyablePtr = ScopedPtr<T, std::false_type /*CopyIsClone*/>;
 
 }
 
-#endif // CODA_OSS_mem_ScopedCopyablePtr_h_INCLUDED_
+#endif  // CODA_OSS_mem_ScopedCopyablePtr_h_INCLUDED_

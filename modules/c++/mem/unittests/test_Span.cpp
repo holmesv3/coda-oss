@@ -20,21 +20,21 @@
  *
  */
 
-#include <stdint.h>
-
-#include <vector>
-#include <string>
-
 #include <coda_oss/span.h>
+#include <stdint.h>
 #include <sys/Span.h>
+
+#include <string>
+#include <vector>
 
 #include "TestCase.h"
 
- template<typename TContainer, typename TSpan>
- static void testSpanBuffer_(const std::string& testName,
-     const TContainer& ints, const TSpan& span)
+template <typename TContainer, typename TSpan>
+static void testSpanBuffer_(const std::string& testName,
+                            const TContainer& ints,
+                            const TSpan& span)
 {
-     (void)testName;
+    (void)testName;
     TEST_ASSERT_EQ(ints.size(), span.size());
     TEST_ASSERT_EQ(ints.data(), span.data());
 
@@ -57,12 +57,12 @@ TEST_CASE(testSpanBuffer)
     }
 }
 
- template <typename TContainer, typename TSpan>
+template <typename TContainer, typename TSpan>
 static void testSpanVector_(const std::string& testName,
                             const TContainer& ints,
                             const TSpan& span)
 {
-     (void)testName;
+    (void)testName;
     TEST_ASSERT_EQ(ints.size(), span.size());
     TEST_ASSERT_EQ(ints.data(), span.data());
 
@@ -85,11 +85,13 @@ TEST_CASE(testSpanVector)
 TEST_CASE(testGslNarrow)
 {
     constexpr int i = INT16_MAX;
-    static /*constexpr*/ auto s = gsl::narrow<int16_t>(i); // avoid "conditional expression is constant"
+    static /*constexpr*/ auto s = gsl::narrow<int16_t>(
+            i);  // avoid "conditional expression is constant"
     TEST_ASSERT_EQ(INT16_MAX, s);
 
     constexpr double d = 3.14;
-    static /*constexpr*/ auto v = gsl::narrow_cast<int>(d); // avoid "conditional expression is constant"
+    static /*constexpr*/ auto v = gsl::narrow_cast<int>(
+            d);  // avoid "conditional expression is constant"
     TEST_ASSERT_EQ(3, v);
 
     TEST_THROWS(gsl::narrow<int>(d));
@@ -110,7 +112,7 @@ TEST_CASE(test_sys_make_span)
     auto cs = sys::make_span(q, 1);
     TEST_ASSERT(cs.data() == q);
     TEST_ASSERT_EQ(cs[0], i);
-    //cs[0] = 123; // cs = span<const>
+    // cs[0] = 123; // cs = span<const>
     TEST_ASSERT_EQ(i, 314);
 
     std::vector<int> v{314};
@@ -129,9 +131,6 @@ TEST_CASE(test_sys_make_span)
     TEST_ASSERT_EQ(u[0], 314);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testSpanBuffer);
-    TEST_CHECK(testSpanVector);
-    TEST_CHECK(testGslNarrow);
-    TEST_CHECK(test_sys_make_span);
-    )
+TEST_MAIN(TEST_CHECK(testSpanBuffer); TEST_CHECK(testSpanVector);
+          TEST_CHECK(testGslNarrow);
+          TEST_CHECK(test_sys_make_span);)

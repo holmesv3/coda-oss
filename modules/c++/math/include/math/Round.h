@@ -23,8 +23,9 @@
 #ifndef __MATH_ROUND_H__
 #define __MATH_ROUND_H__
 
-#include <cmath>
 #include <stddef.h>
+
+#include <cmath>
 
 #include "config/Exports.h"
 
@@ -36,7 +37,8 @@ namespace math
  *  \param value A number to evaluate
  *  \return The 'fixed' number
  */
-template<typename T> inline T fix(T value_)
+template <typename T>
+inline T fix(T value_)
 {
     const double value = value_;
     const auto result = value > 0.0 ? std::floor(value) : std::ceil(value);
@@ -50,10 +52,12 @@ template<typename T> inline T fix(T value_)
  *  \param value A number to evaluate
  *  \return The rounded number
  */
-template<typename T> inline T round(T value_)
+template <typename T>
+inline T round(T value_)
 {
     const double value = value_;
-    const auto result = value > 0.0 ? std::floor(value + 0.5) : std::ceil(value - 0.5);
+    const auto result =
+            value > 0.0 ? std::floor(value + 0.5) : std::ceil(value - 0.5);
     return static_cast<T>(result);
 }
 
@@ -64,7 +68,8 @@ template<typename T> inline T round(T value_)
  *  \param fractionalDigits Number of fractional digits to round to
  *  \return The rounded number
  */
-template<typename T> inline T round(T value_, size_t fractionalDigits)
+template <typename T>
+inline T round(T value_, size_t fractionalDigits)
 {
     double power10 = 1.0;
     for (size_t i = 0; i < fractionalDigits; ++i)
@@ -73,8 +78,9 @@ template<typename T> inline T round(T value_, size_t fractionalDigits)
     }
 
     const double value = value_;
-    const auto result = value > 0.0 ? std::floor(value * power10 + 0.5) / power10
-                        : std::ceil(value * power10 - 0.5) / power10;
+    const auto result = value > 0.0
+            ? std::floor(value * power10 + 0.5) / power10
+            : std::ceil(value * power10 - 0.5) / power10;
     return static_cast<T>(result);
 }
 

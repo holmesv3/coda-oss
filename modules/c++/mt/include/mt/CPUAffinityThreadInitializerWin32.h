@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __MT_CPU_AFFINITY_THREAD_INITIALIZER_WIN32_H__
 #define __MT_CPU_AFFINITY_THREAD_INITIALIZER_WIN32_H__
 
@@ -35,10 +34,13 @@ namespace mt
  * \brief Windows-specific setting of the CPU affinity of a thread
  * \todo This is a stub implementation that doesn't do anything. Make this work.
  */
-class CPUAffinityThreadInitializerWin32 : public AbstractCPUAffinityThreadInitializer
+class CPUAffinityThreadInitializerWin32
+    : public AbstractCPUAffinityThreadInitializer
 {
 public:
-    virtual void initialize() {}
+    virtual void initialize()
+    {
+    }
 };
 }
 

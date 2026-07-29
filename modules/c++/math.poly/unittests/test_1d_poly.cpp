@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of math.poly-c++ 
+ * This file is part of math.poly-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * math.poly-c++ is free software; you can redistribute it and/or modify
@@ -14,21 +14,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
+#include <math/poly/OneD.h>
 #include <stdlib.h>
+
 #include <tuple>
 
-#include <math/poly/OneD.h>
 #include "TestCase.h"
 
 double getRand()
 {
-    static const auto call_srand = [](){ srand(176); return true; };
+    static const auto call_srand = []()
+    {
+        srand(176);
+        return true;
+    };
     static auto srand_called = call_srand();
     std::ignore = srand_called;
     return (50.0 * rand() / RAND_MAX - 25.0);
@@ -153,27 +158,27 @@ TEST_CASE(testVelocity)
 
     // Constant poly should have 0 velocity
     math::poly::OneD<double> poly(getRandPoly(0));
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.velocity(val), 0.0);
     }
 
     // Linear poly should have constant velocity
     poly = getRandPoly(1);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.velocity(val), poly[1]);
     }
 
     // Check quadratic and cubic against the derivative
     poly = getRandPoly(2);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.velocity(val), poly.derivative()(val));
     }
 
     poly = getRandPoly(3);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.velocity(val), poly.derivative()(val));
     }
@@ -186,43 +191,42 @@ TEST_CASE(testAcceleration)
 
     // Constant and linear polys should have 0 acceleration
     math::poly::OneD<double> poly(getRandPoly(0));
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.acceleration(val), 0.0);
     }
 
     poly = getRandPoly(1);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.acceleration(val), 0);
     }
 
     // Quadratic poly should have constant acceleration
     poly = getRandPoly(2);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
         TEST_ASSERT_EQ(poly.acceleration(val), 2 * poly[2]);
     }
-    
+
     // Check cubic and quartic against the 2nd derivative
     poly = getRandPoly(3);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(poly.acceleration(val), poly.derivative().derivative()(val));
+        TEST_ASSERT_EQ(poly.acceleration(val),
+                       poly.derivative().derivative()(val));
     }
 
     poly = getRandPoly(4);
-    for (const auto& val: values)
+    for (const auto& val : values)
     {
-        TEST_ASSERT_EQ(poly.acceleration(val), poly.derivative().derivative()(val));
+        TEST_ASSERT_EQ(poly.acceleration(val),
+                       poly.derivative().derivative()(val));
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(testScaleVariable);
-    TEST_CHECK(testTruncateTo);
-    TEST_CHECK(testTruncateToNonZeros);
-    TEST_CHECK(testTransformInput);
-    TEST_CHECK(testVelocity);
-    TEST_CHECK(testAcceleration);
-)
+TEST_MAIN(TEST_CHECK(testScaleVariable); TEST_CHECK(testTruncateTo);
+          TEST_CHECK(testTruncateToNonZeros);
+          TEST_CHECK(testTransformInput);
+          TEST_CHECK(testVelocity);
+          TEST_CHECK(testAcceleration);)

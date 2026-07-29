@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of plugin-c++ 
+ * This file is part of plugin-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * plugin-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,18 +23,17 @@
 #ifndef __PLUGIN_BASIC_PLUGIN_MANAGER_H__
 #define __PLUGIN_BASIC_PLUGIN_MANAGER_H__
 
-#include <vector>
-#include <map>
-#include<memory>
-
-#include <import/sys.h>
-#include <import/str.h>
 #include <import/except.h>
-
+#include <import/str.h>
+#include <import/sys.h>
 #include <mem/SharedPtr.h>
 
-#include "plugin/PluginDefines.h"
+#include <map>
+#include <memory>
+#include <vector>
+
 #include "plugin/ErrorHandler.h"
+#include "plugin/PluginDefines.h"
 
 namespace plugin
 {
@@ -81,13 +80,13 @@ namespace plugin
  *  3) a worker class that inherits an interface which performs
  *  the tasks required of the plugin
  */
-template<typename T> class BasicPluginManager
+template <typename T>
+class BasicPluginManager
 {
 public:
     typedef std::shared_ptr<PluginIdentity<T>> SharedPluginIdentity;
-    typedef std::map<std::string,
-                     std::pair<T*, SharedPluginIdentity> >
-        HandlerRegistry;
+    typedef std::map<std::string, std::pair<T*, SharedPluginIdentity>>
+            HandlerRegistry;
 
     /*!
      *  This is a default constructor, but its use is discouraged, since
@@ -95,10 +94,11 @@ public:
      *  manager's major and minor version.  Consider using the alternative
      *  constructor.
      */
-    BasicPluginManager() : mMajorVersion(PLUGIN_API_MAJOR_VERSION),
-            mMinorVersion(PLUGIN_API_MINOR_VERSION)
-    {}
-
+    BasicPluginManager() :
+        mMajorVersion(PLUGIN_API_MAJOR_VERSION),
+        mMinorVersion(PLUGIN_API_MINOR_VERSION)
+    {
+    }
 
     /*!
      *  Constructor.  Takes the major and minor version of the plugin
@@ -111,12 +111,12 @@ public:
      *
      */
     BasicPluginManager(int majorVersion, int minorVersion) :
-            mMajorVersion(majorVersion),
-            mMinorVersion(minorVersion)
-    {}
+        mMajorVersion(majorVersion), mMinorVersion(minorVersion)
+    {
+    }
 
     /*!
-     *  Destructor.  Unloads registry if it has elements still 
+     *  Destructor.  Unloads registry if it has elements still
      *  inside.
      *  \see unload()
      *
@@ -138,8 +138,7 @@ public:
      *  \param path      The path of directories to load plugins from
      *  \param eh        An error handler to pass
      */
-    void load(const std::vector<std::string>& path, 
-              ErrorHandler* eh)
+    void load(const std::vector<std::string>& path, ErrorHandler* eh)
     {
         sys::OS os;
 
@@ -153,8 +152,8 @@ public:
         }
 
         //! load all the shared libraries found
-        std::vector<std::string> sharedLibs = 
-            os.search(path, "", PLUGIN_DSO_EXTENSION, false);
+        std::vector<std::string> sharedLibs =
+                os.search(path, "", PLUGIN_DSO_EXTENSION, false);
         for (size_t i = 0; i < sharedLibs.size(); ++i)
         {
             loadPlugin(sharedLibs[i], eh);
@@ -173,7 +172,7 @@ public:
         for (it = mHandlers.begin(); it != mHandlers.end(); ++it)
         {
             PluginIdentity<T>& identity = *(it->second.second);
-            //std::cout << typeid(identity).name() << std::endl;
+            // std::cout << typeid(identity).name() << std::endl;
             identity.destroyHandler(it->second.first);
         }
         mHandlers.clear();
@@ -193,9 +192,8 @@ public:
      */
     T* getHandler(const std::string& name)
     {
-        typename HandlerRegistry::const_iterator it =
-            mHandlers.find( name );
-        if ( it != mHandlers.end() )
+        typename HandlerRegistry::const_iterator it = mHandlers.find(name);
+        if (it != mHandlers.end())
             return it->second.first;
         return nullptr;
     }
@@ -207,7 +205,7 @@ public:
      *  \param name The name of the plugin to retrieve.
      *  \return The plugin handler
      */
-    T* operator[] (const std::string& name )
+    T* operator[](const std::string& name)
     {
         return getHandler(name);
     }
@@ -241,9 +239,8 @@ public:
      */
     bool exists(const std::string& name) const
     {
-        typename HandlerRegistry::const_iterator it =
-            mHandlers.find( name );
-        return ( it != mHandlers.end() );
+        typename HandlerRegistry::const_iterator it = mHandlers.find(name);
+        return (it != mHandlers.end());
     }
 
     /*!
@@ -254,7 +251,7 @@ public:
      *  \param identity The plugin identifier
      *  \param eh The error handler to be used if something bad happens
      */
-    virtual void addHandler(std::shared_ptr<PluginIdentity<T> > identity,
+    virtual void addHandler(std::shared_ptr<PluginIdentity<T>> identity,
                             ErrorHandler* eh)
     {
         try
@@ -272,14 +269,20 @@ public:
             int minorVersion = identity->getMinorVersion();
 
             const char** ops = identity->getOperations();
-            if (! pluginVersionSupported( majorVersion, minorVersion ) )
+            if (!pluginVersionSupported(majorVersion, minorVersion))
             {
                 std::ostringstream oss;
 
                 for (unsigned int i = 0; ops[i] != nullptr; i++)
                     oss << ops[i] << ":";
-                auto unsupported = str::Format("For plugin supporting ops %s version ", oss.str());
-                unsupported += str::Format("[%d.%d] not supported (%d.%d)", majorVersion, minorVersion, mMajorVersion, mMinorVersion);
+                auto unsupported =
+                        str::Format("For plugin supporting ops %s version ",
+                                    oss.str());
+                unsupported += str::Format("[%d.%d] not supported (%d.%d)",
+                                           majorVersion,
+                                           minorVersion,
+                                           mMajorVersion,
+                                           mMinorVersion);
                 eh->onPluginVersionUnsupported(unsupported);
                 return;
             }
@@ -287,10 +290,11 @@ public:
             for (size_t i = 0; ops[i] != nullptr; ++i)
             {
                 T* pluginHandler = identity->spawnHandler();
-                if (! pluginHandler )
+                if (!pluginHandler)
                 {
                     eh->onPluginLoadFailed(
-                        str::Format("Failed to spawn handler for op %s", ops[i]));
+                            str::Format("Failed to spawn handler for op %s",
+                                        ops[i]));
                     // Keep going
                 }
                 mHandlers[ops[i]].first = pluginHandler;
@@ -323,16 +327,14 @@ public:
             // First check if the DSO is already loaded
             for (unsigned int i = 0; i < mDSOs.size(); ++i)
             {
-
                 std::string baseLib =
-                    sys::Path(mDSOs[i]->getLibName()).getBasePath();
+                        sys::Path(mDSOs[i]->getLibName()).getBasePath();
 
                 if (baseLib == baseFile)
                 {
-
                     // Give the caller a chance to exit out
                     eh->onPluginLoadedAlready(file);
-                    
+
                     // And if we are still here, we need to resume loading
                     dso = mDSOs[i];
                     loadDSO = false;
@@ -348,20 +350,23 @@ public:
                 dso = autoDSO.release();
             }
 
-            // Retrieve the plugin identity and add a handler to the registry.
+// Retrieve the plugin identity and add a handler to the registry.
 
-            // Retrieve the plugin identity and add a handler to the registry.
-            #if _MSC_VER
-            __pragma(warning(push))
-            __pragma(warning(disable: 4191)) // '...': unsafe conversion from '...' to '...'
-            #endif
-            auto ident = reinterpret_cast<const void*(*)(void)>(dso->retrieve(getPluginIdentName()));
-            #if _MSC_VER
+// Retrieve the plugin identity and add a handler to the registry.
+#if _MSC_VER
+            __pragma(warning(push)) __pragma(warning(
+                    disable
+                    : 4191))  // '...': unsafe conversion from '...' to '...'
+#endif
+                    auto ident = reinterpret_cast<const void* (*)(void)>(
+                            dso->retrieve(getPluginIdentName()));
+#if _MSC_VER
             __pragma(warning(pop))
-            #endif
+#endif
 
-            const SharedPluginIdentity* const plugin =
-                static_cast<const SharedPluginIdentity*>((*ident)());
+                    const SharedPluginIdentity* const plugin =
+                            static_cast<const SharedPluginIdentity*>(
+                                    (*ident)());
 
             addHandler(*plugin, eh);
         }
@@ -398,19 +403,16 @@ public:
      *  \param eh        The error handler to pass in, in case something
      *                   fails.
      */
-    void loadDir(const std::string& dirName, 
-                 ErrorHandler* eh)
+    void loadDir(const std::string& dirName, ErrorHandler* eh)
     {
         load(std::vector<std::string>(1, dirName), eh);
     }
 
 protected:
-
     virtual const char* getPluginIdentName() const
     {
         return GET_PLUGIN_IDENT;
     }
-
 
     /*!
      *  Override this call, for example, if you want to only
@@ -421,16 +423,16 @@ protected:
      *  \param majorVersion The major version of the plugin
      *  \param minorVersion The minor version of the plugin
      */
-    virtual bool pluginVersionSupported( int majorVersion, int minorVersion )
+    virtual bool pluginVersionSupported(int majorVersion, int minorVersion)
     {
-        return ( (majorVersion == mMajorVersion) &&
-                 (minorVersion == mMinorVersion) );
+        return ((majorVersion == mMajorVersion) &&
+                (minorVersion == mMinorVersion));
     }
     int mMajorVersion;
     int mMinorVersion;
 
 private:
-    HandlerRegistry        mHandlers;
+    HandlerRegistry mHandlers;
     std::vector<sys::DLL*> mDSOs;
 };
 

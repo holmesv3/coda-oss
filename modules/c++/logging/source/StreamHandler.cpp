@@ -29,9 +29,7 @@
 
 namespace logging
 {
-StreamHandler::StreamHandler(LogLevel level) :
-    Handler(level),
-    mClosed(false)
+StreamHandler::StreamHandler(LogLevel level) : Handler(level), mClosed(false)
 {
     mStream.reset(new io::StandardOutStream());
 
@@ -39,10 +37,8 @@ StreamHandler::StreamHandler(LogLevel level) :
     write(mFormatter->getPrologue());
 }
 
-StreamHandler::StreamHandler(io::OutputStream* stream,
-                             LogLevel level) :
-    Handler(level),
-    mClosed(false)
+StreamHandler::StreamHandler(io::OutputStream* stream, LogLevel level) :
+    Handler(level), mClosed(false)
 {
     mStream.reset(stream);
 
@@ -111,7 +107,7 @@ void StreamHandler::write(const std::string& str)
 {
     if (!str.empty())
     {
-        //acquire lock
+        // acquire lock
         mt::CriticalSection<decltype(mHandlerLock)> lock(&mHandlerLock);
 
         // write to stream

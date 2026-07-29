@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * logging-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -29,6 +29,7 @@
 #pragma once
 
 #include <string>
+
 #include "logging/LogRecord.h"
 
 namespace logging
@@ -37,11 +38,14 @@ namespace logging
 /*!
  * \class Filter
  *
- * \brief Filter instances are used to perform arbitrary filtering of LogRecords.
+ * \brief Filter instances are used to perform arbitrary filtering of
+ * LogRecords.
  */
 struct Filter
 {
-    Filter(std::string name = "") : mName(name){}
+    Filter(std::string name = "") : mName(name)
+    {
+    }
     virtual ~Filter() = default;
 
     virtual bool filter(const LogRecord* record) const;

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,16 +14,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <import/net.h>
-#include <import/sys.h>
 #include <import/io.h>
 #include <import/mem.h>
+#include <import/net.h>
+#include <import/sys.h>
 
 using namespace net;
 using namespace sys;
@@ -31,13 +31,13 @@ using namespace io;
 using namespace except;
 
 std::unique_ptr<Socket> createMulticastSubscriber(const std::string& group,
-        const SocketAddress& local)
+                                                  const SocketAddress& local)
 {
     std::unique_ptr<Socket> socket(new Socket(UDP_PROTO));
 
     struct ip_mreq mreq;
 
-    //const net::SockAddrIn_T& in = address.getAddress();
+    // const net::SockAddrIn_T& in = address.getAddress();
 
     // Need to initialize our structure properly here.
     //     memcpy(&mreq.imr_multiaddr,
@@ -79,10 +79,11 @@ int main(int argc, char** argv)
 
         // Register ourselves with the OS as members of this group
 
-        std::unique_ptr<Socket> socket = createMulticastSubscriber(mcastGroup, here);
+        std::unique_ptr<Socket> socket =
+                createMulticastSubscriber(mcastGroup, here);
         Packet packet;
         SocketAddress whereFrom;
-        socket->recvFrom(whereFrom, (char*) &packet, sizeof(packet));
+        socket->recvFrom(whereFrom, (char*)&packet, sizeof(packet));
         std::cout << "Recv'd message: " << packet.what << std::endl;
         std::cout << "Packet #: " << packet.number << std::endl;
         socket->close();
@@ -91,5 +92,4 @@ int main(int argc, char** argv)
     {
         std::cout << ex.toString() << std::endl;
     }
-
 }

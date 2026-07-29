@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -40,15 +40,15 @@ void xml::lite::NamespaceStack::pop()
     mRefStack.pop();
 }
 
-
 void xml::lite::NamespaceStack::newMapping(const std::string& prefix,
-        const Uri& uri)
+                                           const Uri& uri)
 {
     ++mRefStack.top();
     mMappingStack.push_back(xml::lite::NamespaceEntity(prefix, uri.value));
 }
 
-void xml::lite::NamespaceStack::getMapping(const std::string& prefix, Uri& result) const
+void xml::lite::NamespaceStack::getMapping(const std::string& prefix,
+                                           Uri& result) const
 {
     for (int i = (int)mMappingStack.size() - 1; i >= 0; --i)
     {
@@ -61,8 +61,8 @@ void xml::lite::NamespaceStack::getMapping(const std::string& prefix, Uri& resul
     result = xml::lite::Uri();
 }
 
-void xml::lite::NamespaceStack::
-getAllPrefixes(std::vector<std::string>& allPrefixes) const
+void xml::lite::NamespaceStack::getAllPrefixes(
+        std::vector<std::string>& allPrefixes) const
 {
     allPrefixes.reserve(mMappingStack.size());
     for (unsigned int i = 0; i < mMappingStack.size(); i++)

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of hdf5.lite-c++ 
+ * This file is part of hdf5.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2022, Maxar Technologies, Inc.
  *
  * hdf5.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -29,14 +29,13 @@
  * \brief Utility routines for using HighFive
  */
 
-#include <string>
 #include <stdexcept>
+#include <string>
 #include <vector>
-
-#include "types/RowCol.h"
 
 #include "H5_.h"
 #include "SpanRC.h"
+#include "types/RowCol.h"
 
 namespace hdf5
 {
@@ -56,7 +55,9 @@ inline auto vv_load(const H5Easy::File& file, const std::string& dataset_name)
 }
 
 template <typename T>
-inline HighFive::DataSet writeDataSet(H5Easy::File& file, const std::string& dataset_name, SpanRC<T> data /*, TODO ...*/)
+inline HighFive::DataSet writeDataSet(H5Easy::File& file,
+                                      const std::string& dataset_name,
+                                      SpanRC<T> data /*, TODO ...*/)
 {
     const std::vector<size_t> dims{data.extent(0), data.extent(1)};
     const HighFive::DataSpace dataspace{dims};
@@ -65,10 +66,13 @@ inline HighFive::DataSet writeDataSet(H5Easy::File& file, const std::string& dat
     return retval;
 }
 
-template<typename T>
-inline HighFive::DataSet writeDataSet(const H5Easy::File& file, const std::string& dataset_name, const T& values /*, TODO ...*/)
-{ 
-    auto dataset = file.createDataSet<T>(dataset_name, HighFive::DataSpace::From(values));
+template <typename T>
+inline HighFive::DataSet writeDataSet(const H5Easy::File& file,
+                                      const std::string& dataset_name,
+                                      const T& values /*, TODO ...*/)
+{
+    auto dataset = file.createDataSet<T>(dataset_name,
+                                         HighFive::DataSpace::From(values));
     dataset.write(values);
     return dataset;
 }
@@ -76,7 +80,8 @@ inline HighFive::DataSet writeDataSet(const H5Easy::File& file, const std::strin
 // This loads 2D data into one large block of contiguous memory.
 // (HighFive::DataSet::read() uses a vector of vectors).
 template <typename T>
-inline SpanRC<T> readDataSet(const HighFive::DataSet& dataSet, std::vector<T>& result /*, TODO ...*/)
+inline SpanRC<T> readDataSet(const HighFive::DataSet& dataSet,
+                             std::vector<T>& result /*, TODO ...*/)
 {
     const auto dimensions = dataSet.getSpace().getDimensions();
     if (dimensions.size() > 2)
@@ -93,13 +98,16 @@ inline SpanRC<T> readDataSet(const HighFive::DataSet& dataSet, std::vector<T>& r
 }
 
 template <typename T>
-inline SpanRC<T> loadDataSet(const H5Easy::File& file, const std::string& dataset_name, std::vector<T>& result /*, TODO ...*/)
+inline SpanRC<T> loadDataSet(const H5Easy::File& file,
+                             const std::string& dataset_name,
+                             std::vector<T>& result /*, TODO ...*/)
 {
     auto dataSet = file.getDataSet(dataset_name);
     return readDataSet(dataSet, result);
 }
 
-// Wrapper around HighFive::Attribute::read() to fix problems bug with reading strings
+// Wrapper around HighFive::Attribute::read() to fix problems bug with reading
+// strings
 template <typename T>
 inline void read(const HighFive::Attribute& attribute, T& array)
 {
@@ -112,7 +120,7 @@ inline void read(const HighFive::Attribute& attribute, std::string& array)
     const auto dataType = attribute.getDataType();
     if (!dataType.isFixedLenStr())
     {
-        return attribute.read(array); // let HighFive deal with it
+        return attribute.read(array);  // let HighFive deal with it
     }
 
     // https://stackoverflow.com/questions/31344648/c-c-hdf5-read-string-attribute
@@ -125,12 +133,12 @@ inline void read(const HighFive::Attribute& attribute, std::string& array)
     array = buf.data();
 }
 
-template<typename T>
+template <typename T>
 inline T read(const HighFive::Attribute& a)
 {
     return a.read<T>();
 }
-template<>
+template <>
 inline std::string read(const HighFive::Attribute& a)
 {
     std::string retval;
@@ -141,4 +149,4 @@ inline std::string read(const HighFive::Attribute& a)
 }
 }
 
-#endif // CODA_OSS_hdf5_lite_highfive_h_INCLUDED_
+#endif  // CODA_OSS_hdf5_lite_highfive_h_INCLUDED_

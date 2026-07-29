@@ -20,12 +20,12 @@
  *
  */
 
-#include <iostream>
-#include <stdexcept>
-
-#include <sys/Path.h>
 #include <except/Exception.h>
 #include <io/ReadUtils.h>
+#include <sys/Path.h>
+
+#include <iostream>
+#include <stdexcept>
 
 int main(int argc, char** argv)
 {

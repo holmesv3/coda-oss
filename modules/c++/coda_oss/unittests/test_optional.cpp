@@ -20,12 +20,11 @@
  *
  */
 
-#include "coda_oss_TestCase.h"
-
 #include <array>
 #include <ostream>
 
 #include "coda_oss/optional.h"
+#include "coda_oss_TestCase.h"
 
 namespace str
 {
@@ -52,7 +51,7 @@ std::ostream& operator<<(std::ostream& s, const coda_oss::optional<T>& opt)
     return s;
 }
 
-template<typename TOptional>
+template <typename TOptional>
 static void testOptional_(const std::string& testName, const TOptional& opt)
 {
     const coda_oss::optional<int> null;

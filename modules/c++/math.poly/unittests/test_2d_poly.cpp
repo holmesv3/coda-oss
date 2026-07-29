@@ -20,15 +20,20 @@
  *
  */
 
+#include <math/poly/TwoD.h>
 #include <stdlib.h>
+
 #include <tuple>
 
-#include <math/poly/TwoD.h>
 #include "TestCase.h"
 
 double getRand()
 {
-    static const auto call_srand = [](){ srand(176); return true; };
+    static const auto call_srand = []()
+    {
+        srand(176);
+        return true;
+    };
     static auto srand_called = call_srand();
     std::ignore = srand_called;
     return (50.0 * rand() / RAND_MAX - 25.0);
@@ -48,8 +53,7 @@ math::poly::TwoD<double> getRandPoly(size_t orderX, size_t orderY)
     return poly;
 }
 
-void getRandValues(std::vector<double>& xValues,
-                   std::vector<double>& yValues)
+void getRandValues(std::vector<double>& xValues, std::vector<double>& yValues)
 {
     xValues.resize(100);
     yValues.resize(xValues.size());
@@ -439,7 +443,6 @@ TEST_CASE(testIsScalar)
 
     TEST_ASSERT_FALSE(p1.isScalar());
 
-
     math::poly::TwoD<double> p2(1, 3);
     p2[0][0] = 1;
     TEST_ASSERT(p2.isScalar());
@@ -489,13 +492,9 @@ TEST_CASE(testAtY)
     TEST_ASSERT_EQ(p4.flipXY().atY(4)(5), p4(4, 5));
 }
 
-TEST_MAIN(
-    TEST_CHECK(testScaleVariable);
-    TEST_CHECK(testTruncateTo);
-    TEST_CHECK(testTruncateToNonZeros);
-    TEST_CHECK(testTransformInput);
-    TEST_CHECK(testOperators);
-    TEST_CHECK(testIsScalar);
-    TEST_CHECK(testAtY);
-    )
-
+TEST_MAIN(TEST_CHECK(testScaleVariable); TEST_CHECK(testTruncateTo);
+          TEST_CHECK(testTruncateToNonZeros);
+          TEST_CHECK(testTransformInput);
+          TEST_CHECK(testOperators);
+          TEST_CHECK(testIsScalar);
+          TEST_CHECK(testAtY);)

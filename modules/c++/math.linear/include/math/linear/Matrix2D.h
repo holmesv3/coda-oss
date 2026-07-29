@@ -22,17 +22,17 @@
 #ifndef __MATH_LINEAR_MATRIX_2D_H__
 #define __MATH_LINEAR_MATRIX_2D_H__
 
-#include <cmath>
-#include <algorithm>
-#include <functional>
-#include <std/memory>
-#include <cstddef>
-
-#include <import/sys.h>
 #include <import/gsl.h>
+#include <import/sys.h>
+#include <math/linear/MatrixMxN.h>
 #include <mem/ScopedArray.h>
 #include <mem/SharedPtr.h>
-#include <math/linear/MatrixMxN.h>
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <functional>
+#include <std/memory>
 
 namespace math
 {
@@ -48,17 +48,17 @@ class Vector;
  *  \brief Flexible sized Matrix template
  *
  *  This class provides a flexible size class of arbitrary, sizable
- *  dimensions M and N.  Invocations are not required to know the size of these matrices
- *  at compile time.  This class is more flexible then its MatrixMxN counterpart, however
- *  the MatrixMxN should be favored wherever possible (in other words, whenever the
- *  matrix dimensions are known a priori).
+ *  dimensions M and N.  Invocations are not required to know the size of these
+ * matrices at compile time.  This class is more flexible then its MatrixMxN
+ * counterpart, however the MatrixMxN should be favored wherever possible (in
+ * other words, whenever the matrix dimensions are known a priori).
  *
- *  This class is assumed to be a mathematical matrix of small to moderate size.  Memory
- *  allocation is managed by the ScopedArray used underneath.
+ *  This class is assumed to be a mathematical matrix of small to moderate size.
+ * Memory allocation is managed by the ScopedArray used underneath.
  *
  *
  */
-template <typename _T=double>
+template <typename _T = double>
 class Matrix2D
 {
     friend class Vector<_T>;
@@ -83,8 +83,7 @@ class Matrix2D
         mStorage = std::make_unique<_T[]>(mMN);
         mRaw = mStorage.get();
     }
-    Matrix2D(size_t M, size_t N, std::nullptr_t) :
-        mM(M), mN(N), mMN(M*N)
+    Matrix2D(size_t M, size_t N, std::nullptr_t) : mM(M), mN(N), mMN(M * N)
     {
         reset();
     }
@@ -103,31 +102,29 @@ public:
      *  \endcode
      *
      */
-    Matrix2D(size_t M, size_t N, _T cv = 0) :
-        Matrix2D(M, N, nullptr)
+    Matrix2D(size_t M, size_t N, _T cv = 0) : Matrix2D(M, N, nullptr)
     {
         std::fill_n(mRaw, mMN, cv);
     }
-   /*!
-     *  Construct a matrix from a 1D raw M*N pointer.
-     *  Assumes that the pointer is of correct size.
-     *
-     *  \code
-          double raw9[] =
-          {
-             1, 2, 3
-             4, 5, 6,
-             7, 8, 8
-          };
-          Matrix2D<> A(3, 3, raw9);
-     *  \endcode
-     *
-     *  \param raw A raw pointer to copy internally
-     */
-    Matrix2D(size_t M, size_t N, const _T* raw) :
-        Matrix2D(M, N, nullptr)
+    /*!
+      *  Construct a matrix from a 1D raw M*N pointer.
+      *  Assumes that the pointer is of correct size.
+      *
+      *  \code
+           double raw9[] =
+           {
+              1, 2, 3
+              4, 5, 6,
+              7, 8, 8
+           };
+           Matrix2D<> A(3, 3, raw9);
+      *  \endcode
+      *
+      *  \param raw A raw pointer to copy internally
+      */
+    Matrix2D(size_t M, size_t N, const _T* raw) : Matrix2D(M, N, nullptr)
     {
-        std::copy(raw, raw+mMN, mRaw);
+        std::copy(raw, raw + mMN, mRaw);
     }
     /*!
      *  Construct a matrix from a 1D M*N vector.
@@ -158,10 +155,9 @@ public:
           Matrix2D<> At(A.transpose());
      *  \endcode
      */
-    Matrix2D(const Matrix2D& mx) :
-        Matrix2D(mx.mM, mx.mN)
+    Matrix2D(const Matrix2D& mx) : Matrix2D(mx.mM, mx.mN)
     {
-        std::copy(mx.mRaw, mx.mRaw+mMN, mRaw);
+        std::copy(mx.mRaw, mx.mRaw + mMN, mRaw);
     }
     /*!
      *  Supports use of the class as a decorator
@@ -175,7 +171,7 @@ public:
      *  \endcode
      */
     Matrix2D(size_t M, size_t N, _T* raw, bool adopt) :
-        mM(M), mN(N), mMN(M*N), mRaw(raw)
+        mM(M), mN(N), mMN(M * N), mRaw(raw)
     {
         if (adopt)
         {
@@ -186,8 +182,7 @@ public:
     }
 
     template <size_t _MD, size_t _ND>
-    Matrix2D(const MatrixMxN<_MD, _ND>& input) :
-        Matrix2D(_MD, _ND)
+    Matrix2D(const MatrixMxN<_MD, _ND>& input) : Matrix2D(_MD, _ND)
     {
         for (size_t idx = 0, mm = 0; mm < _MD; ++mm)
         {
@@ -212,12 +207,12 @@ public:
     {
         if (this != &mx)
         {
-            mM  = mx.mM;
-            mN  = mx.mN;
+            mM = mx.mM;
+            mN = mx.mN;
             mMN = mx.mMN;
             reset();
 
-            std::copy(mx.mRaw, mx.mRaw+mMN, mRaw);
+            std::copy(mx.mRaw, mx.mRaw + mMN, mRaw);
         }
         return *this;
     }
@@ -236,8 +231,8 @@ public:
      */
     Matrix2D& operator=(const _T& sv)
     {
-        mM  = 1;
-        mN  = 1;
+        mM = 1;
+        mN = 1;
         mMN = 1;
         reset();
         mRaw[0] = sv;
@@ -246,7 +241,6 @@ public:
 
     //! Nothing is allocated by us
     ~Matrix2D() = default;
-
 
     /*!
      *  Get back the value at index i, j
@@ -260,7 +254,7 @@ public:
     inline _T operator()(size_t i, size_t j) const
     {
 #if defined(MATH_LINEAR_BOUNDS)
-        assert( i < mM && j < mN );
+        assert(i < mM && j < mN);
 #endif
         return mRaw[i * mN + j];
     }
@@ -279,7 +273,7 @@ public:
     inline _T& operator()(size_t i, size_t j)
     {
 #if defined(MATH_LINEAR_BOUNDS)
-        assert( i < mM && j < mN );
+        assert(i < mM && j < mN);
 #endif
         return mRaw[i * mN + j];
     }
@@ -301,8 +295,8 @@ public:
      *  http://www.parashift.com/c++-faq-lite/operator-overloading.html#faq-13.10
      *  http://www.parashift.com/c++-faq-lite/operator-overloading.html#faq-13.11
      *
-     *  But it is even more dangerous, since the user can cause damage by unwittingly
-     *  treating row i as a mutable pointer.
+     *  But it is even more dangerous, since the user can cause damage by
+     * unwittingly treating row i as a mutable pointer.
      */
     inline _T* operator[](size_t i)
     {
@@ -321,7 +315,7 @@ public:
     inline const _T* row(size_t i) const
     {
 #if defined(MATH_LINEAR_BOUNDS)
-        assert( i < mM);
+        assert(i < mM);
 #endif
         return &mRaw[i * mN];
     }
@@ -334,7 +328,7 @@ public:
     inline _T* row(size_t i)
     {
 #if defined(MATH_LINEAR_BOUNDS)
-        assert( i < mM);
+        assert(i < mM);
 #endif
         return &mRaw[i * mN];
     }
@@ -441,16 +435,28 @@ public:
     }
 
     //!  Return number of rows (M)
-    size_t rows() const { return mM; }
+    size_t rows() const
+    {
+        return mM;
+    }
 
     //!  Return number of cols (N)
-    size_t cols() const { return mN; }
+    size_t cols() const
+    {
+        return mN;
+    }
 
     //!  Return total size (M x N)
-    size_t size() const { return mMN; }
+    size_t size() const
+    {
+        return mMN;
+    }
 
     //! Get a constant ref to the underlying vector
-    const _T* get() const { return mRaw; }
+    const _T* get() const
+    {
+        return mRaw;
+    }
 
     /*!
      *  Equality operator test
@@ -469,9 +475,9 @@ public:
      *  \param mx The source matrix
      *  \return this (the copy)
      */
-    template<typename Matrix_T> inline bool operator==(const Matrix_T& mx) const
+    template <typename Matrix_T>
+    inline bool operator==(const Matrix_T& mx) const
     {
-
         if (rows() != mx.rows() || cols() != mx.cols())
             return false;
 
@@ -481,7 +487,7 @@ public:
         {
             for (size_t j = 0; j < N; ++j)
             {
-                if (! equals(mRaw[i * N + j], mx(i, j)))
+                if (!equals(mRaw[i * N + j], mx(i, j)))
                     return false;
             }
         }
@@ -505,9 +511,10 @@ public:
      *  \param mx The source matrix
      *  \return this (the copy)
      */
-    template<typename Matrix_T> inline bool operator!=(const Matrix_T& mx) const
+    template <typename Matrix_T>
+    inline bool operator!=(const Matrix_T& mx) const
     {
-            return !(*this == mx);
+        return !(*this == mx);
     }
 
     /*!
@@ -581,12 +588,11 @@ public:
      *  \endcode
      *
      */
-    Matrix2D
-        multiply(const Matrix2D& mx) const
+    Matrix2D multiply(const Matrix2D& mx) const
     {
         if (mN != mx.mM)
-            throw except::Exception(Ctxt(
-                "Invalid inner dimension sizes for multiply"));
+            throw except::Exception(
+                    Ctxt("Invalid inner dimension sizes for multiply"));
 
         const auto M = mM;
         const auto P = mx.mN;
@@ -614,22 +620,21 @@ public:
      *  \endcode
      *
      */
-    void
-    multiply(const Matrix2D& mx, Matrix2D &out) const
+    void multiply(const Matrix2D& mx, Matrix2D& out) const
     {
-        const auto  M(mM);
+        const auto M(mM);
         const auto N(mN);
         const auto P(mx.mN);
 
         if (mN != mx.mM)
-            throw except::Exception(Ctxt(
-                "Invalid inner dimension sizes for multiply"));
+            throw except::Exception(
+                    Ctxt("Invalid inner dimension sizes for multiply"));
         if (out.mM != M)
-            throw except::Exception(Ctxt(
-                "Invalid output row size for multiply"));
+            throw except::Exception(
+                    Ctxt("Invalid output row size for multiply"));
         if (out.mN != P)
-            throw except::Exception(Ctxt(
-                "Invalid output column size for multiply"));
+            throw except::Exception(
+                    Ctxt("Invalid output column size for multiply"));
 
         for (size_t i = 0; i < M; i++)
         {
@@ -644,7 +649,6 @@ public:
             }
         }
     }
-
 
     /*!
      *  Take in a matrix that is NxN and apply each diagonal
@@ -673,7 +677,7 @@ public:
         {
             for (j = 0; j < mN; j++)
             {
-                mRaw[i * mN + j] *= mx(j,j);
+                mRaw[i * mN + j] *= mx(j, j);
             }
         }
         return *this;
@@ -693,7 +697,7 @@ public:
         {
             for (j = 0; j < mN; j++)
             {
-                mRaw[i * mN + j] *= mx(j,0);
+                mRaw[i * mN + j] *= mx(j, 0);
             }
         }
         return *this;
@@ -713,8 +717,7 @@ public:
      *
      *
      */
-    Matrix2D
-        multiplyDiagonal(const Matrix2D& mx) const
+    Matrix2D multiplyDiagonal(const Matrix2D& mx) const
     {
         Matrix2D newM = *this;
         newM.scaleDiagonal(mx);
@@ -726,8 +729,7 @@ public:
      *  row vector
      *
      */
-    Matrix2D
-        multiplyDiagonalRowVector(const Matrix2D& mx) const
+    Matrix2D multiplyDiagonalRowVector(const Matrix2D& mx) const
     {
         Matrix2D newM = *this;
         newM.scaleDiagonalRowVector(mx);
@@ -747,18 +749,17 @@ public:
      *  \endcode
      *
      */
-    Matrix2D&
-    operator+=(const Matrix2D& mx)
+    Matrix2D& operator+=(const Matrix2D& mx)
     {
         if (mM != mx.mM || mN != mx.mN)
-            throw except::Exception(Ctxt("Required to equally size matrices for element-wise add"));
+            throw except::Exception(Ctxt(
+                    "Required to equally size matrices for element-wise add"));
 
         for (size_t i = 0; i < mMN; ++i)
         {
             mRaw[i] += mx.mRaw[i];
         }
         return *this;
-
     }
 
     /*!
@@ -773,11 +774,11 @@ public:
      *  \endcode
      *
      */
-    Matrix2D&
-    operator-=(const Matrix2D& mx)
+    Matrix2D& operator-=(const Matrix2D& mx)
     {
         if (mx.mM != mM || mx.mN != mN)
-            throw except::Exception(Ctxt("Matrices must be same size for element-wise subtract"));
+            throw except::Exception(Ctxt(
+                    "Matrices must be same size for element-wise subtract"));
 
         for (size_t i = 0; i < mM; i++)
         {
@@ -787,7 +788,6 @@ public:
             }
         }
         return *this;
-
     }
 
     /*!
@@ -829,7 +829,6 @@ public:
         return newM;
     }
 
-
     /*!
      *  Create a NxM matrix which is the transpose of this
      *  MxN matrix.
@@ -843,7 +842,6 @@ public:
      */
     Matrix2D transpose() const
     {
-
         Matrix2D x(mN, mM);
         for (size_t i = 0; i < mM; i++)
             for (size_t j = 0; j < mN; j++)
@@ -868,7 +866,6 @@ public:
      */
     Matrix2D decomposeLU(std::vector<size_t>& pivotsM) const
     {
-
         Matrix2D lu(mM, mN);
 
         for (size_t i = 0; i < mM; i++)
@@ -903,7 +900,6 @@ public:
                 }
                 colj[i] -= s;
                 rowi[j] = colj[i];
-
             }
 
             size_t p = j;
@@ -911,7 +907,6 @@ public:
             {
                 if (std::abs(colj[i]) > std::abs(colj[p]))
                     p = i;
-
             }
             if (p != j)
             {
@@ -927,7 +922,7 @@ public:
                 pivotsM[p] = pivotsM[j];
                 pivotsM[j] = k;
             }
-            if (j < mM && std::abs( lu(j, j) ))
+            if (j < mM && std::abs(lu(j, j)))
             {
                 for (size_t i = j + 1; i < mM; i++)
                 {
@@ -935,7 +930,6 @@ public:
                     lu(i, j) /= lu(j, j);
                 }
             }
-
         }
 
         return lu;
@@ -957,7 +951,8 @@ public:
      */
     Matrix2D permute(const std::vector<size_t>& pivotsM, size_t n = 0) const
     {
-        if (n == 0) n = mN;
+        if (n == 0)
+            n = mN;
         Matrix2D perm(mM, n);
         for (size_t i = 0; i < mM; i++)
         {
@@ -969,11 +964,11 @@ public:
         return perm;
     }
 
-     /*
+    /*
      * Find the square of the L2 norm
      * Sum of squares of the vector elements
      */
-     _T normSq() const
+    _T normSq() const
     {
         const auto sz = mM * mN;
         _T acc(0);
@@ -999,7 +994,7 @@ public:
      */
     Matrix2D& normalize()
     {
-        return scale(1.0/norm());
+        return scale(1.0 / norm());
     }
 
     /*!
@@ -1009,7 +1004,7 @@ public:
      */
     Matrix2D unit() const
     {
-        return multiply(1.0/norm());
+        return multiply(1.0 / norm());
     }
 
     /*!
@@ -1024,7 +1019,6 @@ public:
     {
         return add(mx);
     }
-
 
     /*!
      *  Alias for this->subtract();
@@ -1049,7 +1043,6 @@ public:
      */
     Matrix2D operator*(_T scalar) const
     {
-
         return multiply(scalar);
     }
 
@@ -1063,8 +1056,7 @@ public:
      */
     Matrix2D operator/(_T scalar) const
     {
-
-        return multiply(1/scalar);
+        return multiply(1 / scalar);
     }
 
     /*!
@@ -1074,8 +1066,7 @@ public:
            C = A * B;
      *  \endcode
      */
-    Matrix2D
-    operator*(const Matrix2D& mx) const
+    Matrix2D operator*(const Matrix2D& mx) const
     {
         return multiply(mx);
     }
@@ -1102,7 +1093,7 @@ public:
      *  serialize out to a boost stream
      */
     template <class Archive>
-    void serialize(Archive& ar, const unsigned int  /*version*/)
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mM;
         ar & mN;
@@ -1113,7 +1104,7 @@ public:
         }
         for (size_t ii = 0; ii < mMN; ++ii)
         {
-            ar & mRaw[ii];
+            ar& mRaw[ii];
         }
     }
 };
@@ -1129,22 +1120,22 @@ public:
  *  \param N the dimension in rows and in cols for the matrix to be produced
  *
  */
-template<typename _T> Matrix2D<_T>
-    identityMatrix(size_t N)
+template <typename _T>
+Matrix2D<_T> identityMatrix(size_t N)
 {
     Matrix2D<_T> mx(N, N);
     for (size_t i = 0; i < N; i++)
     {
         for (size_t j = 0; j < N; j++)
         {
-            mx(i, j) = (i == j) ? 1: 0;
+            mx(i, j) = (i == j) ? 1 : 0;
         }
     }
     return mx;
 }
 
-template<typename _T, typename Vector_T > Matrix2D<_T>
-    diagonalMatrix(const Vector_T& diag)
+template <typename _T, typename Vector_T>
+Matrix2D<_T> diagonalMatrix(const Vector_T& diag)
 {
     size_t N = diag.size();
 
@@ -1161,13 +1152,11 @@ template<typename _T, typename Vector_T > Matrix2D<_T>
  *  Method based on TNT
  *
  */
-template<typename _T>
-    math::linear::Matrix2D<_T> solveLU(const std::vector<size_t>& pivotsM,
-                                       const Matrix2D<_T> &lu,
-                                       const Matrix2D<_T> &b)
+template <typename _T>
+math::linear::Matrix2D<_T> solveLU(const std::vector<size_t>& pivotsM,
+                                   const Matrix2D<_T>& lu,
+                                   const Matrix2D<_T>& b)
 {
-
-
     // If we dont have something in the diagonal, we can't solve this
     math::linear::Matrix2D<_T> x = b.permute(pivotsM);
 
@@ -1179,7 +1168,7 @@ template<typename _T>
         {
             for (size_t jj = 0; jj < P; jj++)
             {
-                x(ii, jj) -= x(kk, jj)*lu(ii, kk);
+                x(ii, jj) -= x(kk, jj) * lu(ii, kk);
             }
         }
     }
@@ -1196,7 +1185,7 @@ template<typename _T>
             // This one could be _Q
             for (size_t jj = 0; jj < P; jj++)
             {
-                x(ii, jj) -= x(kk, jj)*lu(ii, kk);
+                x(ii, jj) -= x(kk, jj) * lu(ii, kk);
             }
         }
     }
@@ -1210,9 +1199,10 @@ template<typename _T>
  *  this for 2x2s
  *
  */
-template<typename _T> inline Matrix2D<_T> inverse2x2(const Matrix2D<_T>& mx)
+template <typename _T>
+inline Matrix2D<_T> inverse2x2(const Matrix2D<_T>& mx)
 {
-    const double determinant = mx(1,1) * mx(0,0) - mx(1,0)*mx(0,1);
+    const double determinant = mx(1, 1) * mx(0, 0) - mx(1, 0) * mx(0, 1);
 
     if (almostZero(determinant))
     {
@@ -1221,12 +1211,12 @@ template<typename _T> inline Matrix2D<_T> inverse2x2(const Matrix2D<_T>& mx)
 
     // Standard 2x2 inverse
     Matrix2D<_T> inv(2, 2);
-    inv(0,0) =  mx(1,1);
-    inv(0,1) = -mx(0,1);
-    inv(1,0) = -mx(1,0);
-    inv(1,1) =  mx(0,0);
+    inv(0, 0) = mx(1, 1);
+    inv(0, 1) = -mx(0, 1);
+    inv(1, 0) = -mx(1, 0);
+    inv(1, 1) = mx(0, 0);
 
-    inv.scale( 1.0 / determinant );
+    inv.scale(1.0 / determinant);
     return inv;
 }
 
@@ -1236,26 +1226,26 @@ template<typename _T> inline Matrix2D<_T> inverse2x2(const Matrix2D<_T>& mx)
  *  this for 3x3s
  *
  */
-template<typename _T> inline Matrix2D<_T>
-    inverse3x3(const Matrix2D<_T>& mx)
+template <typename _T>
+inline Matrix2D<_T> inverse3x3(const Matrix2D<_T>& mx)
 {
-    double a = mx(0,0);
-    double b = mx(0,1);
-    double c = mx(0,2);
+    double a = mx(0, 0);
+    double b = mx(0, 1);
+    double c = mx(0, 2);
 
-    double d = mx(1,0);
-    double e = mx(1,1);
-    double f = mx(1,2);
+    double d = mx(1, 0);
+    double e = mx(1, 1);
+    double f = mx(1, 2);
 
-    double g = mx(2,0);
-    double h = mx(2,1);
-    double i = mx(2,2);
+    double g = mx(2, 0);
+    double h = mx(2, 1);
+    double i = mx(2, 2);
 
-    double g1 = e*i - f*h;
-    double g2 = d*i - f*g;
-    double g3 = d*h - e*g;
+    double g1 = e * i - f * h;
+    double g2 = d * i - f * g;
+    double g3 = d * h - e * g;
 
-    const double determinant = a*g1 - b*g2 + c*g3;
+    const double determinant = a * g1 - b * g2 + c * g3;
 
     if (almostZero(determinant))
     {
@@ -1263,10 +1253,16 @@ template<typename _T> inline Matrix2D<_T>
     }
 
     Matrix2D<double> inv(3, 3);
-    inv(0,0) =  g1; inv(0,1) =  c*h - b*i; inv(0,2) =  b*f - c*e;
-    inv(1,0) = -g2; inv(1,1) =  a*i - c*g; inv(1,2) =  c*d - a*f;
-    inv(2,0) =  g3; inv(2,1) =  b*g - a*h; inv(2,2) =  a*e - b*d;
-    inv.scale( 1.0 / determinant );
+    inv(0, 0) = g1;
+    inv(0, 1) = c * h - b * i;
+    inv(0, 2) = b * f - c * e;
+    inv(1, 0) = -g2;
+    inv(1, 1) = a * i - c * g;
+    inv(1, 2) = c * d - a * f;
+    inv(2, 0) = g3;
+    inv(2, 1) = b * g - a * h;
+    inv(2, 2) = a * e - b * d;
+    inv.scale(1.0 / determinant);
 
     return inv;
 }
@@ -1281,8 +1277,8 @@ template<typename _T> inline Matrix2D<_T>
  *  \endcode
  *
  */
-template<typename _T> inline
-    Matrix2D<_T> inverseLU(const Matrix2D<_T>& mx)
+template <typename _T>
+inline Matrix2D<_T> inverseLU(const Matrix2D<_T>& mx)
 {
     const auto M = mx.rows();
     const auto N = mx.cols();
@@ -1314,8 +1310,8 @@ template<typename _T> inline
          Matrix2D<> Ainv = inverse<double>(A);
  *  \endcode
  */
-template<typename _T> inline
-    Matrix2D<_T> inverse(const Matrix2D<_T>& mx)
+template <typename _T>
+inline Matrix2D<_T> inverse(const Matrix2D<_T>& mx)
 {
     // Try to speed this up
     if (mx.rows() != mx.cols())
@@ -1324,7 +1320,7 @@ template<typename _T> inline
         return inverse2x2<_T>(mx);
     if (mx.rows() == 3)
         return inverse3x3<_T>(mx);
-        // TODO Add 4x4
+    // TODO Add 4x4
 
     return inverseLU<_T>(mx);
 }
@@ -1336,8 +1332,8 @@ template<typename _T> inline
  * \return Left inverse
  * \throws if matrix is not left-invertible
  */
-template<typename _T> inline
-    Matrix2D<_T> leftInverse(const Matrix2D<_T>& mx)
+template <typename _T>
+inline Matrix2D<_T> leftInverse(const Matrix2D<_T>& mx)
 {
     return inverse(mx.transpose() * mx) * mx.transpose();
 }
@@ -1349,14 +1345,14 @@ template<typename _T> inline
  * \return Right inverse
  * \throws if matrix is not right-invertible
  */
-template<typename _T> inline
-    Matrix2D<_T> rightInverse(const Matrix2D<_T>& mx)
+template <typename _T>
+inline Matrix2D<_T> rightInverse(const Matrix2D<_T>& mx)
 {
     return mx.transpose() * inverse(mx * mx.transpose());
 }
 
-template<typename _T> Matrix2D<_T>
-operator*(_T scalar, const Matrix2D<_T>& m)
+template <typename _T>
+Matrix2D<_T> operator*(_T scalar, const Matrix2D<_T>& m)
 {
     return m.multiply(scalar);
 }
@@ -1365,7 +1361,7 @@ operator*(_T scalar, const Matrix2D<_T>& m)
  *  Try to pretty print the Matrix to an ostream.
  *  \return Reference to ostream
  */
-template<typename _T>
+template <typename _T>
 std::ostream& operator<<(std::ostream& os, const Matrix2D<_T>& m)
 {
     os << "(" << m.rows() << ',' << m.cols() << ")" << std::endl;

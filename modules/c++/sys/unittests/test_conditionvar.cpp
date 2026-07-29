@@ -20,8 +20,8 @@
  *
  */
 
-#include <sys/ConditionVar.h>
 #include <mt/CriticalSection.h>
+#include <sys/ConditionVar.h>
 
 #include "TestCase.h"
 
@@ -83,9 +83,6 @@ TEST_CASE(testMultipleTimeouts)
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(testDefaultConstructor);
-    TEST_CHECK(testParameterizedConstructor);
-    TEST_CHECK(testMultipleTimeouts);
-    )
-
+TEST_MAIN(TEST_CHECK(testDefaultConstructor);
+          TEST_CHECK(testParameterizedConstructor);
+          TEST_CHECK(testMultipleTimeouts);)

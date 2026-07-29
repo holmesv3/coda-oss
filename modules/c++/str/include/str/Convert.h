@@ -35,25 +35,29 @@
 #include <string>
 #include <typeinfo>
 
-#include "config/Exports.h"
-#include "coda_oss/string.h"
-#include "coda_oss/optional.h"
 #include "coda_oss/cstddef.h"
-#include "types/Complex.h"
-#include "import/except.h"
+#include "coda_oss/optional.h"
+#include "coda_oss/string.h"
+#include "config/Exports.h"
 #include "gsl/gsl.h"
+#include "import/except.h"
 #include "str/Encoding.h"
+#include "types/Complex.h"
 
 namespace str
 {
-template <typename T> int getPrecision(const T& type);
-template <typename T> int getPrecision(const std::complex<T>&);
+template <typename T>
+int getPrecision(const T& type);
+template <typename T>
+int getPrecision(const std::complex<T>&);
 #if CODA_OSS_types_unique_ComplexInteger
-template <typename T> int getPrecision(const types::ComplexInteger<T>&);
+template <typename T>
+int getPrecision(const types::ComplexInteger<T>&);
 #endif
 
-// Note that std::to_string() doesn't necessarily generate the same output as writing
-// to std::cout; see https://en.cppreference.com/w/cpp/string/basic_string/to_string
+// Note that std::to_string() doesn't necessarily generate the same output as
+// writing to std::cout; see
+// https://en.cppreference.com/w/cpp/string/basic_string/to_string
 template <typename T>
 std::string toString_(const T& value)
 {
@@ -128,7 +132,8 @@ inline std::string toString(const std::string& value)
 {
     return value;
 }
-// Prevent the template above from getting used; instead, use routines from **Encoding.h**.
+// Prevent the template above from getting used; instead, use routines from
+// **Encoding.h**.
 std::string toString(const std::wstring&) = delete;
 std::string toString(const std::u16string&) = delete;
 std::string toString(const std::u32string&) = delete;
@@ -140,9 +145,12 @@ inline std::string toString(std::string::const_pointer pStr)
     return toString(std::string(pStr));
 }
 // can't be a template; `bool` overload above is a better match
-std::string toString(std::wstring::const_pointer) = delete; // only used in unittests
-std::string toString(std::u16string::const_pointer) = delete; // only used in unittests
-std::string toString(std::u32string::const_pointer) = delete; // only used in unittests
+std::string toString(std::wstring::const_pointer) =
+        delete;  // only used in unittests
+std::string toString(std::u16string::const_pointer) =
+        delete;  // only used in unittests
+std::string toString(std::u32string::const_pointer) =
+        delete;  // only used in unittests
 
 inline std::ostream& operator<<(std::ostream& os, const coda_oss::u8string& s)
 {
@@ -162,7 +170,7 @@ inline std::string toString(const coda_oss::optional<T>& value)
     return toString(value.value());
 }
 
-template<typename T>
+template <typename T>
 inline std::string toString(const T& real, const T& imag)
 {
     return toString(std::complex<T>(real, imag));
@@ -212,7 +220,9 @@ CODA_OSS_API long long strtoll(const char* str, char** endptr, int base);
 /**
  *  strtoull wrapper for msvc compatibility.
  */
-CODA_OSS_API unsigned long long strtoull(const char* str, char** endptr, int base);
+CODA_OSS_API unsigned long long strtoull(const char* str,
+                                         char** endptr,
+                                         int base);
 
 /**
  *  Convert a string containing a number in any base to a numerical type.
@@ -329,4 +339,4 @@ T generic_cast(const std::string& value)
 
 }
 
-#endif // CODA_OSS_str_Convert_h_INCLUDED_
+#endif  // CODA_OSS_str_Convert_h_INCLUDED_

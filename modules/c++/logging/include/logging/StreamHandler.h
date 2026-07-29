@@ -27,12 +27,14 @@
 #ifndef __LOGGING_STREAM_HANDLER_H__
 #define __LOGGING_STREAM_HANDLER_H__
 
-#include <memory>
-#include "config/Exports.h"
-#include "logging/LogRecord.h"
-#include "logging/Handler.h"
 #include <import/io.h>
 #include <mem/SharedPtr.h>
+
+#include <memory>
+
+#include "config/Exports.h"
+#include "logging/Handler.h"
+#include "logging/LogRecord.h"
 
 namespace logging
 {
@@ -47,8 +49,13 @@ struct CODA_OSS_API StreamHandler : public Handler
     StreamHandler(LogLevel level = LogLevel::LOG_NOTSET);
 
     //! Constructs a StreamHandler using the specified OutputStream
-    StreamHandler(io::OutputStream* stream, LogLevel level = LogLevel::LOG_NOTSET);
-    StreamHandler(std::unique_ptr<io::OutputStream>&& stream, LogLevel level = LogLevel::LOG_NOTSET) : StreamHandler(stream.release(), level) { }
+    StreamHandler(io::OutputStream* stream,
+                  LogLevel level = LogLevel::LOG_NOTSET);
+    StreamHandler(std::unique_ptr<io::OutputStream>&& stream,
+                  LogLevel level = LogLevel::LOG_NOTSET) :
+        StreamHandler(stream.release(), level)
+    {
+    }
 
     virtual ~StreamHandler();
 

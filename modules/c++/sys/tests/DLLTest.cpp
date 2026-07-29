@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,6 +23,7 @@
 #include <import/except.h>
 #include <import/str.h>
 #include <import/sys.h>
+
 #include <string>
 using namespace except;
 using namespace sys;
@@ -33,11 +34,11 @@ int main(int argc, char** argv)
 {
     if (argc != 3)
     {
-        die_printf(
-                   "Usage: %s <dso-path> <hook>\n\twhere hook=bool (void*)(void)\n",
+        die_printf("Usage: %s <dso-path> <hook>\n\twhere hook=bool "
+                   "(void*)(void)\n",
                    argv[0]);
     }
-    // Ok, we got past the initial hurdle, now lets 
+    // Ok, we got past the initial hurdle, now lets
     // try and load the thing
     try
     {
@@ -53,12 +54,9 @@ int main(int argc, char** argv)
         {
             throw Exception(Ctxt("The hook failed!"));
         }
-
     }
     catch (Throwable& ex)
     {
         std::cout << ex.toString() << std::endl;
     }
-
 }
-

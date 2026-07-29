@@ -20,14 +20,13 @@
  *
  */
 
-#include <io/ReadUtils.h>
-
-#include <io/FileInputStream.h>
 #include <coda_oss/span.h>
+#include <io/FileInputStream.h>
+#include <io/ReadUtils.h>
 
 namespace io
 {
-template<typename TPath, typename T>
+template <typename TPath, typename T>
 void readFileContents_(const TPath& pathname, std::vector<T>& buffer)
 {
     io::FileInputStream inStream(pathname);
@@ -42,7 +41,8 @@ void readFileContents(const std::string& pathname,
 {
     readFileContents_(pathname, buffer);
 }
-void readFileContents(const coda_oss::filesystem::path& pathname, std::vector<coda_oss::byte>& buffer)
+void readFileContents(const coda_oss::filesystem::path& pathname,
+                      std::vector<coda_oss::byte>& buffer)
 {
     readFileContents_(pathname, buffer);
 }

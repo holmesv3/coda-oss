@@ -23,13 +23,14 @@
 #define CODA_OSS_polygon_PolygonMask_h_INCLUDED_
 #pragma once
 
-#include <vector>
-#include <memory>
-
-#include <sys/Conf.h>
 #include <mem/ScopedArray.h>
-#include <types/RowCol.h>
+#include <sys/Conf.h>
 #include <types/Range.h>
+#include <types/RowCol.h>
+
+#include <memory>
+#include <vector>
+
 #include "config/Exports.h"
 
 namespace polygon
@@ -55,8 +56,7 @@ struct CODA_OSS_API PolygonMask final
      * \param dims Dimensions.  Pixels outside of these dimensions will still
      * get reported as outside the polygon.
      */
-    PolygonMask(MarkModesEnum markMode,
-                const types::RowCol<size_t>& dims);
+    PolygonMask(MarkModesEnum markMode, const types::RowCol<size_t>& dims);
 
     /*!
      * \param mask An existing polygon mask where true means a valid pixel
@@ -68,8 +68,7 @@ struct CODA_OSS_API PolygonMask final
      * \param dims Dimensions the polygon should be considered over.  Pixels
      * outside of these dimensions will get reported as outside the polygon.
      */
-    PolygonMask(const bool* mask,
-                const types::RowCol<size_t>& dims);
+    PolygonMask(const bool* mask, const types::RowCol<size_t>& dims);
 
     /*!
      * \param points Vector specifying the convex polygon.
@@ -82,11 +81,10 @@ struct CODA_OSS_API PolygonMask final
      *
      * \throws Exception if polygon is concave
      */
-    PolygonMask(const std::vector<types::RowCol<double> >& points,
+    PolygonMask(const std::vector<types::RowCol<double>>& points,
                 const types::RowCol<size_t>& dims,
                 types::RowCol<sys::SSize_T> offset =
                         types::RowCol<sys::SSize_T>(0, 0));
-
 
     PolygonMask(const PolygonMask&) = delete;
     PolygonMask& operator=(const PolygonMask&) = delete;
@@ -102,7 +100,7 @@ struct CODA_OSS_API PolygonMask final
     {
         if (row >= mDims.row || mMarkMode == MARK_ALL_FALSE)
         {
-            return types::Range(); // Empty range
+            return types::Range();  // Empty range
         }
         else
         {
@@ -167,4 +165,4 @@ private:
 };
 }
 
-#endif // CODA_OSS_polygon_PolygonMask_h_INCLUDED_
+#endif  // CODA_OSS_polygon_PolygonMask_h_INCLUDED_

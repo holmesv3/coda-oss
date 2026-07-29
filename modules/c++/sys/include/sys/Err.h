@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __SYS_ERR_H__
 #define __SYS_ERR_H__
 
@@ -35,10 +34,10 @@
  *  to obtain the error
  */
 
-#include "sys/Conf.h"
 #include <string.h>
 
 #include "config/Exports.h"
+#include "sys/Conf.h"
 
 namespace sys
 {
@@ -115,10 +114,12 @@ struct CODA_OSS_API Err
     //!  Return the last error
     virtual int getLast() const;
 
-    int getErrID() const noexcept { return mErrId; }
+    int getErrID() const noexcept
+    {
+        return mErrId;
+    }
 
 protected:
-
     int mErrId = __last_err__;
 };
 
@@ -136,8 +137,7 @@ struct SocketErr : public Err
      *  \param err An error to initialize from
      *
      */
-    SocketErr(const SocketErr& err) :
-        Err(err.getErrID())
+    SocketErr(const SocketErr& err) : Err(err.getErrID())
     {
     }
 
@@ -169,7 +169,6 @@ struct SocketErr : public Err
 
     //!  Redefined for socket errors
     virtual int getLast() const override;
-
 };
 
 }

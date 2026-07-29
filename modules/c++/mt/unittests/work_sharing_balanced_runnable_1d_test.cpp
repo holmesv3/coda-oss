@@ -26,8 +26,7 @@
 
 struct IncOp final
 {
-    IncOp(std::vector<size_t>& globalWorkDone) :
-        mGlobalWorkDone(globalWorkDone)
+    IncOp(std::vector<size_t>& globalWorkDone) : mGlobalWorkDone(globalWorkDone)
     {
     }
 
@@ -85,6 +84,5 @@ TEST_CASE(WorkSharingBalancedRunnable1DTestWorkDoneLessWorkThanThreads)
 }
 
 TEST_MAIN(
-    TEST_CHECK(WorkSharingBalancedRunnable1DTestWorkDone);
-    TEST_CHECK(WorkSharingBalancedRunnable1DTestWorkDoneLessWorkThanThreads);
-)
+        TEST_CHECK(WorkSharingBalancedRunnable1DTestWorkDone); TEST_CHECK(
+                WorkSharingBalancedRunnable1DTestWorkDoneLessWorkThanThreads);)

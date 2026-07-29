@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -34,17 +34,18 @@ std::string xml::lite::QName::getName() const
 std::string xml::lite::QName::toString() const
 {
     std::string fullName;
-    if (mPrefix.length()) fullName = mPrefix + std::string(":");
+    if (mPrefix.length())
+        fullName = mPrefix + std::string(":");
     fullName += mLocalName;
     return fullName;
 }
 
-void xml::lite::QName::setName( const std::string& str)
+void xml::lite::QName::setName(const std::string& str)
 {
     mLocalName = str;
 }
 
-void xml::lite::QName::setPrefix( const std::string& prefix )
+void xml::lite::QName::setPrefix(const std::string& prefix)
 {
     mPrefix = prefix;
 }
@@ -54,10 +55,8 @@ std::string xml::lite::QName::getPrefix() const
     return mPrefix;
 }
 
-
 void xml::lite::QName::setQName(const std::string& str)
 {
-
     size_t x = str.find_first_of(':');
     // Either we have a namespace prefix
     if (x != std::string::npos)
@@ -89,7 +88,8 @@ const xml::lite::Uri& xml::lite::QName::getUri() const
     return mAssocUri;
 }
 
-static std::string flatten(const std::vector<std::string>& strs, size_t start = 0)
+static std::string flatten(const std::vector<std::string>& strs,
+                           size_t start = 0)
 {
     std::string retval;
     for (size_t i = start; i < strs.size(); i++)
@@ -106,13 +106,14 @@ static const std::string& validate_uri(const std::string& uri, bool validate)
         return uri;
     }
 
-    // Do some very simple sanity-checking on a URI; this could be (much?) more sophisticated.
-    // https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
-    if (uri.length() <= 6) // "ab:CDEF"
+    // Do some very simple sanity-checking on a URI; this could be (much?) more
+    // sophisticated. https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+    if (uri.length() <= 6)  // "ab:CDEF"
     {
         // There's nothing that says we can't have short URIs, but does it
         // make sense in actual use cases?
-        throw std::invalid_argument("string value '" + uri + "' is (too?) short.");
+        throw std::invalid_argument("string value '" + uri +
+                                    "' is (too?) short.");
     }
 
     const auto r = str::split(uri, ":");
@@ -124,15 +125,17 @@ static const std::string& validate_uri(const std::string& uri, bool validate)
     if (r[0].length() <= 1)
     {
         // Is "a:" a real-world scheme?
-        throw std::invalid_argument("string value '" + r[0] + "' is not a URI scheme.");
+        throw std::invalid_argument("string value '" + r[0] +
+                                    "' is not a URI scheme.");
     }
 
-    const auto path = flatten(r, 1); // don't care about other ':'s
+    const auto path = flatten(r, 1);  // don't care about other ':'s
     if (path.length() <= 6)
     {
         // does it make sense to have a really short path?
         // in SIX we have "urn:us:gov"
-        throw std::invalid_argument("string value '" +  path + "' is (too?) short for a URI path.");        
+        throw std::invalid_argument("string value '" + path +
+                                    "' is (too?) short for a URI path.");
     }
 
     return uri;
@@ -143,6 +146,10 @@ xml::lite::Uri::Uri(const std::string& uri, bool validate)
 }
 
 // Some projects have bogus? URIs ... do don't validate unless explicitly asked
-xml::lite::Uri::Uri(const std::string& uri) : Uri(uri, false /*validate*/) { }
+xml::lite::Uri::Uri(const std::string& uri) : Uri(uri, false /*validate*/)
+{
+}
 
-xml::lite::Uri::Uri() : Uri("") { } // default constructor; empty URI is OK
+xml::lite::Uri::Uri() : Uri("")
+{
+}  // default constructor; empty URI is OK

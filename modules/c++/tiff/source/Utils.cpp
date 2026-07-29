@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -82,49 +82,53 @@ tiff::IFD* tiff::Utils::createGeoTiffIFD(tiff::IFD* ifd)
 
     tiff::IFD* geoIFD = new tiff::IFD;
 
-    tiff::IFDEntry *geoDir = (*ifd)["GeoKeyDirectoryTag"];
-    tiff::IFDEntry* const doubleParams =
-            ifd->exists("GeoDoubleParamsTag") ? (*ifd)["GeoDoubleParamsTag"]
-                                              : nullptr;
-    tiff::IFDEntry* const asciiParams =
-            ifd->exists("GeoAsciiParamsTag") ? (*ifd)["GeoAsciiParamsTag"]
-                                             : nullptr;
+    tiff::IFDEntry* geoDir = (*ifd)["GeoKeyDirectoryTag"];
+    tiff::IFDEntry* const doubleParams = ifd->exists("GeoDoubleParamsTag")
+            ? (*ifd)["GeoDoubleParamsTag"]
+            : nullptr;
+    tiff::IFDEntry* const asciiParams = ifd->exists("GeoAsciiParamsTag")
+            ? (*ifd)["GeoAsciiParamsTag"]
+            : nullptr;
 
     std::vector<tiff::TypeInterface*> geoVals = geoDir->getValues();
     size_t idx = 0;
 
-    
-    str::toType<unsigned short>(geoVals[idx++]->toString()); // skipping keyDirVersion
-    str::toType<unsigned short>(geoVals[idx++]->toString()); // skipping keyRevision 
-    str::toType<unsigned short>(geoVals[idx++]->toString()); // skipping keyRevisionMinor
+    str::toType<unsigned short>(
+            geoVals[idx++]->toString());  // skipping keyDirVersion
+    str::toType<unsigned short>(
+            geoVals[idx++]->toString());  // skipping keyRevision
+    str::toType<unsigned short>(
+            geoVals[idx++]->toString());  // skipping keyRevisionMinor
     const unsigned short numKeys =
-        str::toType<unsigned short>(geoVals[idx++]->toString());
+            str::toType<unsigned short>(geoVals[idx++]->toString());
 
     for (unsigned short i = 0; i < numKeys; ++i)
     {
         // Ensure idx is in range
         if (idx + 3 >= geoVals.size())
         {
-            throw except::Exception(Ctxt(
-                "'GeoKeyDirectoryTag' specified " + 
-                std::to_string(numKeys) + " keys but the IFD entry only had " + std::to_string(geoVals.size()) + " values"));
+            throw except::Exception(Ctxt("'GeoKeyDirectoryTag' specified " +
+                                         std::to_string(numKeys) +
+                                         " keys but the IFD entry only had " +
+                                         std::to_string(geoVals.size()) +
+                                         " values"));
         }
 
         const unsigned short keyId =
-            str::toType<unsigned short>(geoVals[idx++]->toString());
+                str::toType<unsigned short>(geoVals[idx++]->toString());
         const unsigned short tiffTagLoc =
-            str::toType<unsigned short>(geoVals[idx++]->toString());
+                str::toType<unsigned short>(geoVals[idx++]->toString());
         const unsigned short count =
-            str::toType<unsigned short>(geoVals[idx++]->toString());
+                str::toType<unsigned short>(geoVals[idx++]->toString());
         const std::string valueStr(geoVals[idx++]->toString());
 
         unsigned short entryType = tiff::Const::Type::NOTYPE;
         switch (tiffTagLoc)
         {
-        case 34736: // GeoDoubleParamsTag
+        case 34736:  // GeoDoubleParamsTag
             entryType = tiff::Const::Type::DOUBLE;
             break;
-        case 34737: // GeoAsciiParamsTag
+        case 34737:  // GeoAsciiParamsTag
             entryType = tiff::Const::Type::ASCII;
             break;
         default:
@@ -133,16 +137,17 @@ tiff::IFD* tiff::Utils::createGeoTiffIFD(tiff::IFD* ifd)
         }
 
         const std::map<unsigned short, std::string>::const_iterator iter =
-            keyMap.find(keyId);
+                keyMap.find(keyId);
         const std::string name = (iter == keyMap.end()) ? "" : iter->second;
 
-        tiff::IFDEntry *entry = new tiff::IFDEntry(keyId, entryType, name);
+        tiff::IFDEntry* entry = new tiff::IFDEntry(keyId, entryType, name);
 
         if (tiffTagLoc == 0)
         {
             if (count != 1)
             {
-                throw except::Exception(Ctxt("Expected a count of 1 but got " + std::to_string(count)));
+                throw except::Exception(Ctxt("Expected a count of 1 but got " +
+                                             std::to_string(count)));
             }
 
             entry->addValue(new tiff::GenericType<unsigned short>(valueStr));
@@ -150,25 +155,21 @@ tiff::IFD* tiff::Utils::createGeoTiffIFD(tiff::IFD* ifd)
         else if (tiffTagLoc == 34736 && doubleParams)
         {
             const unsigned short valueOffset =
-                str::toType<unsigned short>(valueStr);
+                    str::toType<unsigned short>(valueStr);
             for (unsigned short j = 0; j < count; ++j)
             {
-                entry->addValue(
-                                new tiff::GenericType<double>(
-                                                              (*doubleParams)[valueOffset
-                                                                      + j]->toString()));
+                entry->addValue(new tiff::GenericType<double>(
+                        (*doubleParams)[valueOffset + j]->toString()));
             }
         }
         else if (tiffTagLoc == 34737 && asciiParams)
         {
             const unsigned short valueOffset =
-                str::toType<unsigned short>(valueStr);
+                    str::toType<unsigned short>(valueStr);
             for (unsigned short j = 0; j < count; ++j)
             {
-                entry->addValue(
-                                new tiff::GenericType<std::string>(
-                                                                   (*asciiParams)[valueOffset
-                                                                           + j]->toString()));
+                entry->addValue(new tiff::GenericType<std::string>(
+                        (*asciiParams)[valueOffset + j]->toString()));
             }
         }
 

@@ -21,6 +21,7 @@
  */
 
 #include <import/sys.h>
+
 #include <iostream>
 
 using namespace sys;
@@ -30,10 +31,12 @@ int main(int, char**)
     try
     {
         sys::OS os;
-        size_t freePhysMem=0, totalPhysMem=0;
+        size_t freePhysMem = 0, totalPhysMem = 0;
         os.getMemInfo(totalPhysMem, freePhysMem);
-        std::cout << "Total system memory: " << totalPhysMem << " MB" << std::endl;
-        std::cout << "Free system memory: " << freePhysMem << " MB" << std::endl;
+        std::cout << "Total system memory: " << totalPhysMem << " MB"
+                  << std::endl;
+        std::cout << "Free system memory: " << freePhysMem << " MB"
+                  << std::endl;
     }
     catch (const except::Exception& ex)
     {
@@ -46,7 +49,7 @@ int main(int, char**)
         std::cerr << "Caught std::exception: " << ex.what() << std::endl;
         return 1;
     }
-    catch(...)
+    catch (...)
     {
         std::cerr << "Caught unknown exception\n";
         return 1;

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,17 +14,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #ifndef __SYS_TIME_STAMP_H__
 #define __SYS_TIME_STAMP_H__
 
 #include <string>
+
 #include "str/Format.h"
 #include "sys/Conf.h"
 #include "sys/LocalDateTime.h"
@@ -33,7 +33,7 @@
 /*!
  *  \file  TimeStamp.h
  *  \brief Get a timestamp in a system-independent manner
- * 
+ *
  *  Provide the API for timestamps
  */
 
@@ -47,7 +47,10 @@ namespace sys
 struct TimeStamp final
 {
     //! The maximum length of a timestamp
-    enum { MAX_TIME_STAMP = 64 };
+    enum
+    {
+        MAX_TIME_STAMP = 64
+    };
 
     /*!
      *  Default constructor.

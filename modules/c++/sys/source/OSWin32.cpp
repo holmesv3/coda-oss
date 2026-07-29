@@ -23,23 +23,23 @@
 #include <assert.h>
 
 #include <iostream>
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #ifdef _WIN32
 
-#include "sys/OSWin32.h"
 #include "sys/File.h"
+#include "sys/OSWin32.h"
 
 std::string sys::OSWin32::getPlatformName() const
 {
     OSVERSIONINFO info;
     info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-    #pragma warning(push)
-    #pragma warning(disable : 4996)  // '...' : was declared deprecated
+#pragma warning(push)
+#pragma warning(disable : 4996)  // '...' : was declared deprecated
     if (!GetVersionEx(&info))
         throw sys::SystemException("While performing GetVersionEx()");
-    #pragma warning(pop)
+#pragma warning(pop)
 
     std::string platform;
     if (info.dwPlatformId == VER_PLATFORM_WIN32s)
@@ -59,7 +59,10 @@ std::string sys::OSWin32::getPlatformName() const
         platform = "Unknown Windows OS";
     }
     auto retval = platform + ": ";
-    retval += str::Format("%d.%d [build: %d], ", info.dwMajorVersion, info.dwMinorVersion, info.dwBuildNumber);
+    retval += str::Format("%d.%d [build: %d], ",
+                          info.dwMajorVersion,
+                          info.dwMinorVersion,
+                          info.dwBuildNumber);
     retval += info.szCSDVersion;
     return retval;
 }
@@ -70,7 +73,8 @@ std::string sys::OSWin32::getNodeName() const
     size_t size = 512;
     if (GetComputerName(buffer, (LPDWORD)&size))
         return std::string(buffer, size);
-    else return std::string("Unknown");
+    else
+        return std::string("Unknown");
 }
 
 bool sys::OSWin32::exists(const std::string& path) const
@@ -84,13 +88,16 @@ bool sys::OSWin32::exists(const std::string& path) const
         {
             char* err = nullptr;
             FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                          FORMAT_MESSAGE_FROM_SYSTEM,
-                          nullptr, errCode,
+                                  FORMAT_MESSAGE_FROM_SYSTEM,
+                          nullptr,
+                          errCode,
                           MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                          (LPTSTR) &err, 0, nullptr);
-            throw except::Exception(Ctxt(
-                "Problem while testing file existence for " + path +
-                " with Error: " + std::string(err)));
+                          (LPTSTR)&err,
+                          0,
+                          nullptr);
+            throw except::Exception(
+                    Ctxt("Problem while testing file existence for " + path +
+                         " with Error: " + std::string(err)));
         }
         return false;
     }
@@ -109,8 +116,8 @@ void sys::OSWin32::removeFile(const std::string& pathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing file [" <<  pathname <<
-            "] with error [" << err.toString() << "]";
+        oss << "Failure removing file [" << pathname << "] with error ["
+            << err.toString() << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -122,8 +129,8 @@ void sys::OSWin32::removeDirectory(const std::string& pathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing directory [" <<  pathname <<
-            "] with error [" << err.toString() << "]";
+        oss << "Failure removing directory [" << pathname << "] with error ["
+            << err.toString() << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -136,11 +143,10 @@ bool sys::OSWin32::move(const std::string& path,
     // MOVEFILE_WRITE_THROUGH    - report status after performing a flush
     return (MoveFileEx(path.c_str(),
                        newPath.c_str(),
-                       MOVEFILE_REPLACE_EXISTING |
-                       MOVEFILE_WRITE_THROUGH)) ? (true) : (false);
+                       MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
+            ? (true)
+            : (false);
 }
-
-
 
 bool sys::OSWin32::isFile(const std::string& path) const
 {
@@ -149,12 +155,14 @@ bool sys::OSWin32::isFile(const std::string& path) const
     //  2) Not Directory
     //  3) Not Archive - we aren't doing that...
     const DWORD what = GetFileAttributes(path.c_str());
-    if (what == INVALID_FILE_ATTRIBUTES) // "if the function fails, the return value is INVALID_FILE_ATTRIBUTES."
+    if (what == INVALID_FILE_ATTRIBUTES)  // "if the function fails, the return
+                                          // value is INVALID_FILE_ATTRIBUTES."
     {
-        //const auto dwError = GetLastError();
+        // const auto dwError = GetLastError();
         return false;
     }
-    const auto fileAttributeDirectory = (what & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
+    const auto fileAttributeDirectory =
+            (what & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
     return !fileAttributeDirectory;
 }
 
@@ -189,9 +197,7 @@ std::string sys::OSWin32::getTempName(const std::string& path,
                                       const std::string& prefix) const
 {
     char buffer[MAX_PATH]{};
-    if (GetTempFileName(path.c_str(),
-                        prefix.c_str(),
-                        0, buffer) == 0)
+    if (GetTempFileName(path.c_str(), prefix.c_str(), 0, buffer) == 0)
     {
         throw except::Exception(Ctxt("Unable to create a temporary file"));
     }
@@ -228,34 +234,42 @@ static std::string getEnv(const std::string& s)
     const DWORD size = GetEnvironmentVariable(s.c_str(), nullptr, 0);
     if (size == 0)
     {
-        throw sys::SystemException(Ctxt(
-            "Unable to get windows environment variable " + s));
+        throw sys::SystemException(
+                Ctxt("Unable to get windows environment variable " + s));
     }
     std::vector<char> buffer(size + 1);
     const DWORD retVal = GetEnvironmentVariable(s.c_str(), &buffer[0], size);
-    // Win32 API weirdness -- see https://msdn.microsoft.com/en-us/libary/windows/desktop/ms683188%28v=vs.85%29.aspx
-    // When less then the size of the buffer is allocated, it returns the required size, including the null character
-    // Otherwise, it returns the size of the variable, not including the null character
+    // Win32 API weirdness -- see
+    // https://msdn.microsoft.com/en-us/libary/windows/desktop/ms683188%28v=vs.85%29.aspx
+    // When less then the size of the buffer is allocated, it returns the
+    // required size, including the null character Otherwise, it returns the
+    // size of the variable, not including the null character
     if (retVal + 1 != size)
     {
         throw sys::SystemException(Ctxt(
-           "Environment variable size does not match allocated size for " + s));
+                "Environment variable size does not match allocated size for " +
+                s));
     }
     if (retVal == 0)
     {
-        throw sys::SystemException(Ctxt(
-               "Environment variable size changed unexpectedly to zero \
-                following buffer allocation " + s));
+        throw sys::SystemException(
+                Ctxt("Environment variable size changed unexpectedly to zero \
+                following buffer allocation " +
+                     s));
     }
     return buffer.data();
 }
 
 static const char* getenv_(const std::string& s)
 {
-    #pragma warning(push)
-    #pragma warning(disable: 4996) // '...': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+#pragma warning(push)
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': This function or variable may be unsafe. Consider
+                 // using _dupenv_s instead. To disable deprecation, use
+                 // _CRT_SECURE_NO_WARNINGS. See online help for details.
     return getenv(s.c_str());
-    #pragma warning(pop)
+#pragma warning(pop)
 }
 
 std::string sys::OSWin32::getEnv(const std::string& s) const
@@ -275,27 +289,27 @@ bool sys::OSWin32::isEnvSet(const std::string& s) const
     return getenv_(s) != nullptr;
 }
 
-static void setEnv(const std::string& var,
-                          const std::string& val)
+static void setEnv(const std::string& var, const std::string& val)
 {
     const BOOL ret = SetEnvironmentVariable(var.c_str(), val.c_str());
     if (!ret)
     {
-        throw sys::SystemException(Ctxt(
-            "Unable to set windows environment variable " + var));
+        throw sys::SystemException(
+                Ctxt("Unable to set windows environment variable " + var));
     }
 
     const auto s = var + "=" + val;
     const auto result = _putenv(s.c_str());
-    if (result != 0) // "The functions return 0 if successful, or -1 if there's an error."
+    if (result != 0)  // "The functions return 0 if successful, or -1 if there's
+                      // an error."
     {
-        throw sys::SystemException(Ctxt("Unable to set windows environment variable " + var));
+        throw sys::SystemException(
+                Ctxt("Unable to set windows environment variable " + var));
     }
-
 }
 void sys::OSWin32::setEnv(const std::string& var,
                           const std::string& val,
-			  bool overwrite)
+                          bool overwrite)
 {
     if (overwrite || !isEnvSet(var))
     {
@@ -308,14 +322,17 @@ void sys::OSWin32::unsetEnv(const std::string& var)
     const BOOL ret = SetEnvironmentVariable(var.c_str(), nullptr);
     if (!ret)
     {
-        throw sys::SystemException(Ctxt("Unable to unset windows environment variable " + var));
+        throw sys::SystemException(
+                Ctxt("Unable to unset windows environment variable " + var));
     }
 
     const auto s = var + "=";
     const auto result = _putenv(s.c_str());
-    if (result != 0) // "The functions return 0 if successful, or -1 if there's an error."
+    if (result != 0)  // "The functions return 0 if successful, or -1 if there's
+                      // an error."
     {
-        throw sys::SystemException(Ctxt("Unable to unset windows environment variable " + var));
+        throw sys::SystemException(
+                Ctxt("Unable to unset windows environment variable " + var));
     }
 }
 
@@ -329,7 +346,7 @@ size_t sys::OSWin32::getNumCPUs() const
 size_t sys::OSWin32::getNumCPUsAvailable() const
 {
     throw except::NotImplementedException(
-        Ctxt("Windows getNumCPUsAvailable not yet implemented."));
+            Ctxt("Windows getNumCPUsAvailable not yet implemented."));
 }
 
 size_t sys::OSWin32::getNumPhysicalCPUs() const
@@ -338,20 +355,20 @@ size_t sys::OSWin32::getNumPhysicalCPUs() const
     //      See reference implementation at
     //      https://devblogs.microsoft.com/oldnewthing/?p=2823
     throw except::NotImplementedException(
-        Ctxt("Windows getNumPhysicalCPUs not yet implemented."));
+            Ctxt("Windows getNumPhysicalCPUs not yet implemented."));
 }
 
 size_t sys::OSWin32::getNumPhysicalCPUsAvailable() const
 {
     throw except::NotImplementedException(
-        Ctxt("Windows getNumPhysicalCPUsAvailable not yet implemented."));
+            Ctxt("Windows getNumPhysicalCPUsAvailable not yet implemented."));
 }
 
 void sys::OSWin32::getAvailableCPUs(std::vector<int>& /*physicalCPUs*/,
                                     std::vector<int>& /*htCPUs*/) const
 {
     throw except::NotImplementedException(
-        Ctxt("Windows getAvailableCPUs not yet implemented."));
+            Ctxt("Windows getAvailableCPUs not yet implemented."));
 }
 
 sys::SIMDInstructionSet sys::OSWin32::getSIMDInstructionSet() const
@@ -389,24 +406,27 @@ void sys::OSWin32::createSymlink(const std::string& origPathname,
     // will run on a Windows XP machine, you want to configure with the
     // following flags (except again you may need to substitute the constants
     // with the actual values)
-    // --with-cflags="/DNTDDI_VERSION=NTDDI_WINXPSP3 /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
-    // --with-cxxflags="/DNTDDI_VERSION=NTDDI_WINXPSP3 /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
+    // --with-cflags="/DNTDDI_VERSION=NTDDI_WINXPSP3
+    // /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
+    // --with-cxxflags="/DNTDDI_VERSION=NTDDI_WINXPSP3
+    // /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
 #ifdef NTDDI_VERSION
 #if NTDDI_VERSION >= 0x06000000
-    if(!CreateSymbolicLink(const_cast<char*>(symlinkPathname.c_str()),
-                           const_cast<char*>(origPathname.c_str()), true))
+    if (!CreateSymbolicLink(const_cast<char*>(symlinkPathname.c_str()),
+                            const_cast<char*>(origPathname.c_str()),
+                            true))
     {
-        throw sys::SystemException(Ctxt(
-            "Call to CreateSymbolicLink() has failed"));
+        throw sys::SystemException(
+                Ctxt("Call to CreateSymbolicLink() has failed"));
     }
 #else
-    throw sys::SystemException(Ctxt(
-        "Windows version does not support symlinks"));
+    throw sys::SystemException(
+            Ctxt("Windows version does not support symlinks"));
 #endif
 #else
     // Don't think this should occur
-    throw sys::SystemException(Ctxt(
-            "NTDDI_VERSION macro not set to check Windows version"));
+    throw sys::SystemException(
+            Ctxt("NTDDI_VERSION macro not set to check Windows version"));
 #endif
 }
 
@@ -416,8 +436,8 @@ void sys::OSWin32::removeSymlink(const std::string& symlinkPathname) const
     {
         sys::Err err;
         std::ostringstream oss;
-        oss << "Failure removing symlink [" <<  symlinkPathname <<
-            "] with error [" << err.toString() << "]";
+        oss << "Failure removing symlink [" << symlinkPathname
+            << "] with error [" << err.toString() << "]";
 
         throw except::Exception(Ctxt(oss));
     }
@@ -427,26 +447,26 @@ void sys::OSWin32::getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const
 {
     MEMORYSTATUSEX memInfo;
     memInfo.dwLength = sizeof(MEMORYSTATUSEX);
-    if(GlobalMemoryStatusEx(&memInfo))
+    if (GlobalMemoryStatusEx(&memInfo))
     {
         totalPhysMem = memInfo.ullTotalPhys;
         freePhysMem = memInfo.ullAvailPhys;
 
         // convert to megabytes
-        totalPhysMem /= (1024*1024);
-        freePhysMem /= (1024*1024);
+        totalPhysMem /= (1024 * 1024);
+        freePhysMem /= (1024 * 1024);
     }
     else
     {
-        throw sys::SystemException(Ctxt(
-            "Call to GlobalMemoryStatusEx() has failed"));
+        throw sys::SystemException(
+                Ctxt("Call to GlobalMemoryStatusEx() has failed"));
     }
 }
 
 std::string sys::OSWin32::getCurrentExecutable(
         const std::string& argvPathname_) const
 {
-    //XP doesn't always null-terminate the buffer, so taking some precautions
+    // XP doesn't always null-terminate the buffer, so taking some precautions
     char buffer[MAX_PATH + 2];
     memset(buffer, 0, MAX_PATH + 2);
 

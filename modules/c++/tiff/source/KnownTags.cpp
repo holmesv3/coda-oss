@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,19 +14,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
 #include "tiff/KnownTags.h"
 
+#include <import/mt.h>
+
 #include <string>
 
 #include "tiff/Common.h"
 #include "tiff/IFDEntry.h"
-#include <import/mt.h>
 
 tiff::KnownTags::KnownTags()
 {
@@ -36,7 +37,9 @@ tiff::KnownTags::KnownTags()
     addEntry(257, tiff::Const::Type::LONG, tiff::KnownTags::IMAGE_LENGTH);
     addEntry(258, tiff::Const::Type::SHORT, tiff::KnownTags::BITS_PER_SAMPLE);
     addEntry(259, tiff::Const::Type::SHORT, tiff::KnownTags::COMPRESSION);
-    addEntry(262, tiff::Const::Type::SHORT, tiff::KnownTags::PHOTOMETRIC_INTERPRETATION);
+    addEntry(262,
+             tiff::Const::Type::SHORT,
+             tiff::KnownTags::PHOTOMETRIC_INTERPRETATION);
     addEntry(263, tiff::Const::Type::SHORT, "Thresholding");
     addEntry(264, tiff::Const::Type::SHORT, "CellWidth");
     addEntry(265, tiff::Const::Type::SHORT, "CellLength");
@@ -121,38 +124,38 @@ tiff::KnownTags::KnownTags()
     addEntry(34737, tiff::Const::Type::ASCII, "GeoAsciiParamsTag");
 }
 
-
 tiff::KnownTags::~KnownTags()
 {
-    for(std::map<unsigned short, tiff::IFDEntry*>::iterator it = mKnownTags.begin();
-        it != mKnownTags.end(); ++it)
+    for (std::map<unsigned short, tiff::IFDEntry*>::iterator it =
+                 mKnownTags.begin();
+         it != mKnownTags.end();
+         ++it)
         delete it->second;
     mKnownTags.clear();
 }
 
-void tiff::KnownTags::addEntry(const unsigned short tag, 
-                               const unsigned short type, 
+void tiff::KnownTags::addEntry(const unsigned short tag,
+                               const unsigned short type,
                                const std::string& name)
 {
     std::map<unsigned short, tiff::IFDEntry*>::iterator pos =
-        mKnownTags.find(tag);
+            mKnownTags.find(tag);
     if (pos != mKnownTags.end())
         return;
 
     mNameMap[name] = tag;
-    mKnownTags[tag]   = new tiff::IFDEntry(tag, type, name);
+    mKnownTags[tag] = new tiff::IFDEntry(tag, type, name);
 }
 
-tiff::IFDEntry *tiff::KnownTags::operator[] (const std::string& nameKey)
+tiff::IFDEntry* tiff::KnownTags::operator[](const std::string& nameKey)
 {
     unsigned short tagKey = mNameMap[nameKey];
     return (*this)[tagKey];
 }
 
-tiff::IFDEntry *tiff::KnownTags::operator[] (const unsigned short tagKey)
+tiff::IFDEntry* tiff::KnownTags::operator[](const unsigned short tagKey)
 {
     std::map<unsigned short, tiff::IFDEntry*>::iterator pos =
-        mKnownTags.find(tagKey);
+            mKnownTags.find(tagKey);
     return pos != mKnownTags.end() ? pos->second : nullptr;
 }
-

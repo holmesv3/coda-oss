@@ -20,17 +20,19 @@
  *
  */
 
-#include <std/string>
-#include <std/span>
-#include "coda_oss/CPlusPlus.h"
-#include "io/StringStream.h"
 #include <TestCase.h>
 
+#include <std/span>
+#include <std/string>
+
+#include "coda_oss/CPlusPlus.h"
+#include "io/StringStream.h"
 #include "xml/lite/MinidomParser.h"
 
-// It seems that a macro is better than a utility routine, see https://github.com/tahonermann/char8_t-remediation
-// C++20 changed the type of u8 to char8_t* https://en.cppreference.com/w/cpp/language/string_literal
-// Not putting this everywhere because (1) well, it's a macro, and (2) it's mostly
+// It seems that a macro is better than a utility routine, see
+// https://github.com/tahonermann/char8_t-remediation C++20 changed the type of
+// u8 to char8_t* https://en.cppreference.com/w/cpp/language/string_literal Not
+// putting this everywhere because (1) well, it's a macro, and (2) it's mostly
 // only test code that uses string literals.
 #if CODA_OSS_cpp20
 #define U8(s) u8##s
@@ -99,7 +101,7 @@ TEST_CASE(test_getElementsByTagName)
 {
     test_MinidomParser xmlParser;
     const auto& root = xmlParser.getRootElement();
-    
+
     {
         const auto aElements = root.getElementsByTagName("a", true /*recurse*/);
         TEST_ASSERT_EQ(std::ssize(aElements), 1);
@@ -108,7 +110,7 @@ TEST_CASE(test_getElementsByTagName)
         const auto characterData = a.getCharacterData();
         TEST_ASSERT_EQ(characterData, text());
     }
-    
+
     const auto docElements = root.getElementsByTagName("doc");
     TEST_ASSERT_FALSE(docElements.empty());
     TEST_ASSERT_EQ(docElements.size(), static_cast<size_t>(1));
@@ -128,7 +130,8 @@ TEST_CASE(test_getElementsByTagName_duplicate)
     const auto& root = xmlParser.getRootElement();
 
     {
-        const auto duplicateElements = root.getElementsByTagName("duplicate", true /*recurse*/);
+        const auto duplicateElements =
+                root.getElementsByTagName("duplicate", true /*recurse*/);
         TEST_ASSERT_EQ(duplicateElements.size(), static_cast<size_t>(2));
         const auto& duplicate = *(duplicateElements[0]);
 
@@ -140,7 +143,8 @@ TEST_CASE(test_getElementsByTagName_duplicate)
     TEST_ASSERT_FALSE(docElements.empty());
     TEST_ASSERT_EQ(std::ssize(docElements), 1);
     {
-        const auto duplicateElements = docElements[0]->getElementsByTagName("duplicate");
+        const auto duplicateElements =
+                docElements[0]->getElementsByTagName("duplicate");
         TEST_ASSERT_EQ(std::ssize(duplicateElements), 2);
         const auto& duplicate = *(duplicateElements[0]);
 
@@ -174,17 +178,23 @@ TEST_CASE(test_getElementByTagName_nothrow)
     const auto& root = xmlParser.getRootElement();
 
     {
-        const auto pNotFound = root.getElementByTagName(std::nothrow, "not_found", true /*recurse*/);
+        const auto pNotFound = root.getElementByTagName(std::nothrow,
+                                                        "not_found",
+                                                        true /*recurse*/);
         TEST_ASSERT_NULL(pNotFound);
-        const auto pDuplicate = root.getElementByTagName(std::nothrow, "duplicate", true /*recurse*/);
+        const auto pDuplicate = root.getElementByTagName(std::nothrow,
+                                                         "duplicate",
+                                                         true /*recurse*/);
         TEST_ASSERT_NULL(pDuplicate);
     }
 
     const auto& doc = root.getElementByTagName("doc");
     {
-        const auto pNotFound = doc.getElementByTagName(std::nothrow, "not_found");
+        const auto pNotFound =
+                doc.getElementByTagName(std::nothrow, "not_found");
         TEST_ASSERT_NULL(pNotFound);
-        const auto pDuplicate = doc.getElementByTagName(std::nothrow, "duplicate");
+        const auto pDuplicate =
+                doc.getElementByTagName(std::nothrow, "duplicate");
         TEST_ASSERT_NULL(pDuplicate);
     }
 }
@@ -193,13 +203,19 @@ TEST_CASE(test_getElementByTagName_throw)
 {
     test_MinidomParser xmlParser;
     const auto& root = xmlParser.getRootElement();
-    
-    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("not_found", true /*recurse*/), xml::lite::XMLException);
-    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("duplicate", true /*recurse*/), xml::lite::XMLException);
+
+    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("not_found",
+                                                     true /*recurse*/),
+                            xml::lite::XMLException);
+    TEST_SPECIFIC_EXCEPTION(root.getElementByTagName("duplicate",
+                                                     true /*recurse*/),
+                            xml::lite::XMLException);
 
     const auto& doc = root.getElementByTagName("doc");
-    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("not_found"), xml::lite::XMLException);
-    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("duplicate"), xml::lite::XMLException);
+    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("not_found"),
+                            xml::lite::XMLException);
+    TEST_SPECIFIC_EXCEPTION(doc.getElementByTagName("duplicate"),
+                            xml::lite::XMLException);
 }
 
 TEST_CASE(test_getValue)
@@ -207,7 +223,7 @@ TEST_CASE(test_getValue)
     test_MinidomParser xmlParser;
     const auto& root = xmlParser.getRootElement();
 
-     using namespace xml::lite;
+    using namespace xml::lite;
     {
         const auto& e = root.getElementByTagName("int", true /*recurse*/);
         int value;
@@ -266,7 +282,6 @@ TEST_CASE(test_getValue)
     }
 }
 
-
 TEST_CASE(test_getValueFailure)
 {
     test_MinidomParser xmlParser;
@@ -297,14 +312,15 @@ TEST_CASE(test_getValueThrows)
     test_MinidomParser xmlParser;
     const auto& root = xmlParser.getRootElement();
 
-     using namespace xml::lite;
+    using namespace xml::lite;
     {
         const auto& e = root.getElementByTagName("string", true /*recurse*/);
         TEST_SPECIFIC_EXCEPTION(getValue<int>(e), except::BadCastException);
     }
     {
         const auto& e = root.getElementByTagName("empty", true /*recurse*/);
-        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(e), except::BadCastException);
+        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(e),
+                                except::BadCastException);
     }
 }
 
@@ -339,10 +355,10 @@ TEST_CASE(test_setValue)
     }
     {
         auto& e = root.getElementByTagName("bool", true /*recurse*/);
-        
+
         auto toString = [](const bool& value) { return value ? "yes" : "no"; };
         setValue(e, true, toString);
-        
+
         auto toType = [](const std::string& value) { return value == "yes"; };
         bool value = false;
         auto result = castValue(e, value, toType);
@@ -361,7 +377,7 @@ int main(int, char**)
     TEST_CHECK(test_getElementsByTagName);
     TEST_CHECK(test_getElementsByTagName_duplicate);
     TEST_CHECK(test_getElementByTagName);
-    TEST_CHECK(test_getElementByTagName_nothrow);    
+    TEST_CHECK(test_getElementByTagName_nothrow);
     TEST_CHECK(test_getElementByTagName_throw);
 
     TEST_CHECK(test_getValue);

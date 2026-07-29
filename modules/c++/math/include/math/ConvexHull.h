@@ -23,17 +23,14 @@
 #ifndef __MATH_CONVEX_HULL_H__
 #define __MATH_CONVEX_HULL_H__
 
-#include <algorithm>
-#include <vector>
-#include <limits>
-
-#include <sys/Conf.h>
-
-#include <str/Convert.h>
-
 #include <except/Exception.h>
-
+#include <str/Convert.h>
+#include <sys/Conf.h>
 #include <types/RowCol.h>
+
+#include <algorithm>
+#include <limits>
+#include <vector>
 
 namespace math
 {
@@ -90,14 +87,14 @@ public:
      *  \param convexHull [output] Convex hull points
      *
      */
-    ConvexHull(std::vector<RowCol>& rawPoints,
-               std::vector<RowCol>& convexHull)
+    ConvexHull(std::vector<RowCol>& rawPoints, std::vector<RowCol>& convexHull)
     {
         if (rawPoints.size() < 2)
         {
             throw except::Exception(Ctxt(
-                "ConvexHull constructor error: must use at least 2 input "
-                "points but " + std::to_string(rawPoints.size()) + " were used"));
+                    "ConvexHull constructor error: must use at least 2 input "
+                    "points but " +
+                    std::to_string(rawPoints.size()) + " were used"));
         }
 
         // Enforce (at compile time) that T is a signed type
@@ -108,8 +105,8 @@ public:
     }
 
 private:
-    ConvexHull(const ConvexHull& );
-    const ConvexHull& operator=(const ConvexHull& );
+    ConvexHull(const ConvexHull&);
+    const ConvexHull& operator=(const ConvexHull&);
 
 private:
     // Sorts on col, then row
@@ -142,10 +139,9 @@ private:
      *        0  p2 is on a straight line
      *
      */
-    static
-    sys::SSize_T direction(const RowCol& p0,
-                           const RowCol& p1,
-                           const RowCol& p2) noexcept
+    static sys::SSize_T direction(const RowCol& p0,
+                                  const RowCol& p1,
+                                  const RowCol& p2) noexcept
     {
         const T firstTerm = (p0.col - p1.col) * (p2.row - p1.row);
         const T secondTerm = (p2.col - p1.col) * (p0.row - p1.row);
@@ -165,7 +161,7 @@ private:
         }
     }
 
-    void partitionPoints(std::vector<RowCol> &rawPoints)
+    void partitionPoints(std::vector<RowCol>& rawPoints)
     {
         // Sort the raw points
         // This is done to get the far left and far right points of the
@@ -187,7 +183,7 @@ private:
         const size_t end = rawPoints.size() - 1;
         for (size_t ii = 1; ii < end; ++ii)
         {
-            RowCol const &rawPoint(rawPoints[ii]);
+            RowCol const& rawPoint(rawPoints[ii]);
             if (direction(mLeft, mRight, rawPoint) < 0)
             {
                 mUpperPartitionPoints.push_back(rawPoint);
@@ -208,7 +204,7 @@ private:
      * \param output [output] The points in the corresponding convex hull
      *
      */
-    void buildHalfHull(sys::SSize_T         factor,
+    void buildHalfHull(sys::SSize_T factor,
                        std::vector<RowCol>& input,
                        std::vector<RowCol>& output)
     {
@@ -284,7 +280,7 @@ private:
         ///        even though it's a duplicate, but this seems to be
         ///        convention.
         for (typename std::vector<RowCol>::reverse_iterator iter =
-                 upperHull.rbegin() + 1;
+                     upperHull.rbegin() + 1;
              iter != upperHull.rend();
              ++iter)
         {
@@ -294,15 +290,14 @@ private:
 
 private:
     // The leftmost and rightmost points
-    RowCol               mLeft;
-    RowCol               mRight;
+    RowCol mLeft;
+    RowCol mRight;
 
     // Sorted set of upper and lower partitioned points that lie inside
     // 'mLeft' and 'mRight'
-    std::vector<RowCol>  mLowerPartitionPoints;
-    std::vector<RowCol>  mUpperPartitionPoints;
+    std::vector<RowCol> mLowerPartitionPoints;
+    std::vector<RowCol> mUpperPartitionPoints;
 };
 }
 
 #endif
-

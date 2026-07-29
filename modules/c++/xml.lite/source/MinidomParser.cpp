@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -28,7 +28,8 @@ xml::lite::MinidomParser::MinidomParser(bool storeEncoding)
 {
     if (!storeEncoding)
     {
-        throw std::invalid_argument("'storeEncoding' is no longer used and must always be 'true'");
+        throw std::invalid_argument(
+                "'storeEncoding' is no longer used and must always be 'true'");
     }
     mReader.setContentHandler(&mHandler);
 }
@@ -37,7 +38,10 @@ void xml::lite::MinidomParser::parse(io::InputStream& is, int size)
 {
     mReader.parse(is, size);
 }
-void xml::lite::MinidomParser::parse(io::InputStream& is, const void*pInitialEncoding, const void* pFallbackEncoding, int size)
+void xml::lite::MinidomParser::parse(io::InputStream& is,
+                                     const void* pInitialEncoding,
+                                     const void* pFallbackEncoding,
+                                     int size)
 {
     mReader.parse(is, pInitialEncoding, pFallbackEncoding, size);
 }
@@ -56,16 +60,19 @@ xml::lite::Document* xml::lite::MinidomParser::getDocument(bool steal)
 {
     return mHandler.getDocument(steal);
 }
-std::unique_ptr<xml::lite::Document>& xml::lite::MinidomParser::getDocument(std::unique_ptr<Document>& pDocument)
+std::unique_ptr<xml::lite::Document>& xml::lite::MinidomParser::getDocument(
+        std::unique_ptr<Document>& pDocument)
 {
     return mHandler.getDocument(pDocument);
 }
 
-void xml::lite::MinidomParser::setDocument(xml::lite::Document* newDocument, bool own)
+void xml::lite::MinidomParser::setDocument(xml::lite::Document* newDocument,
+                                           bool own)
 {
     mHandler.setDocument(newDocument, own);
 }
-void xml::lite::MinidomParser::setDocument(std::unique_ptr<Document>&& newDocument)
+void xml::lite::MinidomParser::setDocument(
+        std::unique_ptr<Document>&& newDocument)
 {
     mHandler.setDocument(std::move(newDocument));
 }

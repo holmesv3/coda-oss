@@ -85,8 +85,4 @@ TEST_CASE(test_lengths)
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(test_degrees);
-    TEST_CHECK(test_lengths);
-)
-
+TEST_MAIN(TEST_CHECK(test_degrees); TEST_CHECK(test_lengths);)

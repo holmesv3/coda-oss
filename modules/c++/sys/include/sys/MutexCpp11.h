@@ -76,4 +76,4 @@ private:
 };
 }
 
-#endif // CODA_OSS_sys_MutexCpp11_h_INCLUDED_
+#endif  // CODA_OSS_sys_MutexCpp11_h_INCLUDED_

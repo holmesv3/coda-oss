@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -48,11 +48,11 @@
  *
  */
 
-#include <stack>
 #include <map>
-#include <vector>
+#include <stack>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "except/Exception.h"
 #include "xml/lite/QName.h"
@@ -105,7 +105,7 @@ struct NamespaceStack final
      *  \param prefix  The unique prefix to associate
      *  \param uri     The uri to associate
      */
-    void newMapping(const std::string & prefix, const Uri&);
+    void newMapping(const std::string& prefix, const Uri&);
     void newMapping(const std::string& prefix, const std::string& uri)
     {
         newMapping(prefix, Uri(uri));
@@ -131,7 +131,7 @@ struct NamespaceStack final
      *  \param allPrefixes All of the prefixes
      *
      */
-    void getAllPrefixes(std::vector<std::string> &allPrefixes) const;
+    void getAllPrefixes(std::vector<std::string>& allPrefixes) const;
 
 private:
     NamespaceEntityMap mMappingStack;

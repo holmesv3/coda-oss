@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of math.linear-c++ 
+ * This file is part of math.linear-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * math.linear-c++ is free software; you can redistribute it and/or modify
@@ -14,16 +14,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <stdlib.h>
-
 #include <math/linear/Vector.h>
 #include <serialize/Serialize.h>
+#include <stdlib.h>
+
 #include "TestCase.h"
 
 namespace
@@ -51,7 +51,8 @@ TEST_CASE(testVectorDoubleSerialize)
     //! verify the result matches
     for (size_t ii = 0; ii < in.size(); ++ii)
     {
-        TEST_ASSERT_ALMOST_EQ_EPS(in[ii], out[ii],
+        TEST_ASSERT_ALMOST_EQ_EPS(in[ii],
+                                  out[ii],
                                   std::numeric_limits<double>::epsilon());
     }
 }
@@ -78,7 +79,8 @@ TEST_CASE(testVectorFloatSerialize)
     //! verify the result matches
     for (size_t ii = 0; ii < in.size(); ++ii)
     {
-        TEST_ASSERT_ALMOST_EQ_EPS(in[ii], out[ii],
+        TEST_ASSERT_ALMOST_EQ_EPS(in[ii],
+                                  out[ii],
                                   std::numeric_limits<float>::epsilon());
     }
 }

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -31,9 +31,9 @@
  *  This handler inherits a ContentHandler, and loads all components
  *  into a more simple and logical tree structure.  Whereas, in DOM,
  *  EVERYTHING is a node, here, the hierarchical approach is used.
- *  An element is a tagset (i.e., &lt;blah att1="hello"&gt;hi I'm dan&lt;/blah&gt;,
- *  and embedded tags are children.  To walk the tree, get the top-
- *  level element and walk it.
+ *  An element is a tagset (i.e., &lt;blah att1="hello"&gt;hi I'm
+ * dan&lt;/blah&gt;, and embedded tags are children.  To walk the tree, get the
+ * top- level element and walk it.
  *
  *  There is memory allocation in this file, however, the paradigm is
  *  that since it occurs internally, it should be deleted internally
@@ -45,14 +45,15 @@
  *  \todo Add iterators
  */
 
-#include <stack>
-#include <memory>
-#include "coda_oss/string.h"
-
 #include <config/Exports.h>
-#include "XMLReader.h"
-#include "io/StandardStreams.h"
+
+#include <memory>
+#include <stack>
+
 #include "Document.h"
+#include "XMLReader.h"
+#include "coda_oss/string.h"
+#include "io/StandardStreams.h"
 
 namespace xml
 {
@@ -64,13 +65,13 @@ namespace lite
  *
  * The class has a tree that it populates with XML data as
  * it parses,  The Document* is owned by this class, no matter,
- * whether it is allocated externally or not.  DONT delete it 
+ * whether it is allocated externally or not.  DONT delete it
  * explicitly unless you are looking for disaster.
  */
 struct CODA_OSS_API MinidomHandler final : public ContentHandler
 {
     //! Constructor.  Uses default document
-    MinidomHandler() 
+    MinidomHandler()
     {
         setDocument(std::make_unique<Document>());
     }
@@ -85,22 +86,23 @@ struct CODA_OSS_API MinidomHandler final : public ContentHandler
     MinidomHandler(MinidomHandler&&) = default;
     MinidomHandler& operator=(MinidomHandler&&) = default;
 
-    void setDocument(Document *newDocument, bool own = true);
+    void setDocument(Document* newDocument, bool own = true);
     void setDocument(std::unique_ptr<Document>&&);  // own = true
 
     /**
      * Retrieves the Document.
      * @param steal     if specified, ownership will be given up (if owned)
      */
-    Document *getDocument(bool steal = false)
+    Document* getDocument(bool steal = false)
     {
         if (steal)
             mOwnDocument = false;
         return mDocument;
     }
-    std::unique_ptr<Document>& getDocument(std::unique_ptr<Document>&);  // steal = true
+    std::unique_ptr<Document>& getDocument(
+            std::unique_ptr<Document>&);  // steal = true
 
-    Document *getDocument() const
+    Document* getDocument() const
     {
         return mDocument;
     }
@@ -113,7 +115,7 @@ struct CODA_OSS_API MinidomHandler final : public ContentHandler
      * \param length The length of the char data
      */
     void characters(const char* value, int length) override;
-    bool vcharacters(const void /*XMLCh*/*, size_t length) override;  
+    bool vcharacters(const void /*XMLCh*/*, size_t length) override;
 
     /*!
      * This method is fired when a new tag is entered.
@@ -126,10 +128,10 @@ struct CODA_OSS_API MinidomHandler final : public ContentHandler
      * \param qname  The qname
      * \param atts  The attributes
      */
-    void startElement(const std::string & uri,
-                              const std::string & localName,
-                              const std::string & qname,
-                              const Attributes & atts) override;
+    void startElement(const std::string& uri,
+                      const std::string& localName,
+                      const std::string& qname,
+                      const Attributes& atts) override;
 
     /*!
      * Handles the actual popping of the node off the node
@@ -139,9 +141,9 @@ struct CODA_OSS_API MinidomHandler final : public ContentHandler
      * \param localName The local name
      * \param qname  The qname
      */
-    void endElement(const std::string & uri,
-                            const std::string & localName,
-                            const std::string & qname) override;
+    void endElement(const std::string& uri,
+                    const std::string& localName,
+                    const std::string& qname) override;
 
     void clear();
 
@@ -150,7 +152,7 @@ struct CODA_OSS_API MinidomHandler final : public ContentHandler
      * character data. Otherwise, it will be trimmed.
      */
     void preserveCharacterData(bool preserve);
-    
+
 private:
     /*!
      * We want to push only the proper amount of bytes
@@ -168,7 +170,7 @@ private:
 
     coda_oss::u8string currentCharacterData;
     std::stack<int> bytesForElement;
-    std::stack<Element *> nodeStack;
+    std::stack<Element*> nodeStack;
     Document* mDocument = nullptr;
     bool mOwnDocument = true;
     bool mPreserveCharData = false;

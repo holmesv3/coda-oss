@@ -42,9 +42,7 @@ namespace poly
  * \return Scaled polynomial of the same order as the original polynomial
  */
 template <typename PolyT>
-PolyT scaleVariable(const PolyT& poly,
-                    double scaleX,
-                    double scaleY)
+PolyT scaleVariable(const PolyT& poly, double scaleX, double scaleY)
 {
     PolyT newP = poly;
 
@@ -77,8 +75,7 @@ PolyT scaleVariable(const PolyT& poly,
  * \return Scaled polynomial of the same order as the original polynomial
  */
 template <typename PolyT>
-PolyT scaleVariable(const PolyT& poly,
-                    double scale)
+PolyT scaleVariable(const PolyT& poly, double scale)
 {
     PolyT newP = poly;
 

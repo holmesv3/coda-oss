@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,19 +14,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
 #include "tiff/TypeFactory.h"
-#include "tiff/Common.h"
-#include "tiff/GenericType.h"
+
 #include <import/except.h>
 
-tiff::TypeInterface *tiff::TypeFactory::create(const unsigned char *data,
-        const unsigned short type)
+#include "tiff/Common.h"
+#include "tiff/GenericType.h"
+
+tiff::TypeInterface* tiff::TypeFactory::create(const unsigned char* data,
+                                               const unsigned short type)
 {
     tiff::TypeInterface* tiffType = nullptr;
     switch (type)
@@ -44,8 +46,8 @@ tiff::TypeInterface *tiff::TypeFactory::create(const unsigned char *data,
         tiffType = new tiff::GenericType<sys::Uint32_T>(data);
         break;
     case tiff::Const::Type::RATIONAL:
-        tiffType  = new tiff::GenericType<sys::Uint64_T,
-            tiff::RationalPrintStrategy>(data);
+        tiffType = new tiff::GenericType<sys::Uint64_T,
+                                         tiff::RationalPrintStrategy>(data);
         break;
     case tiff::Const::Type::SBYTE:
         tiffType = new tiff::GenericType<char>(data);
@@ -61,7 +63,7 @@ tiff::TypeInterface *tiff::TypeFactory::create(const unsigned char *data,
         break;
     case tiff::Const::Type::SRATIONAL:
         tiffType = new tiff::GenericType<sys::Uint64_T,
-                tiff::RationalPrintStrategy>(data);
+                                         tiff::RationalPrintStrategy>(data);
         break;
     case tiff::Const::Type::FLOAT:
         tiffType = new tiff::GenericType<float>(data);

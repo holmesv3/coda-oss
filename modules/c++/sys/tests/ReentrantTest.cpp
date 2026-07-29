@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,36 +14,44 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <iostream>
 #include <import/sys.h>
+
+#include <iostream>
 using namespace sys;
 
 class NoteThread : public Thread
 {
 public:
     NoteThread()
-    {   std::cout << "Constructed a thread" << std::endl;}
+    {
+        std::cout << "Constructed a thread" << std::endl;
+    }
     void run() override
-    {   std::cout << "Running a thread" << std::endl;}
+    {
+        std::cout << "Running a thread" << std::endl;
+    }
 
     ~NoteThread()
-    {   std::cout << "Completed a thread. Destroying..." << std::endl;}
-
+    {
+        std::cout << "Completed a thread. Destroying..." << std::endl;
+    }
 };
 
 int main()
 {
     try
     {
-        std::cout << "Your implementation of sys is multi-threaded" << std::endl;
+        std::cout << "Your implementation of sys is multi-threaded"
+                  << std::endl;
         NoteThread* nThr = new NoteThread;
-        std::cout << "Your thread type is: " << nThr->getNativeType() << std::endl;
+        std::cout << "Your thread type is: " << nThr->getNativeType()
+                  << std::endl;
 
         nThr->start();
         nThr->join();
@@ -54,7 +62,6 @@ int main()
     catch (except::Throwable& t)
     {
         std::cout << "Caught throwable: " << t.toString() << std::endl;
-
     }
     catch (std::exception& e)
     {

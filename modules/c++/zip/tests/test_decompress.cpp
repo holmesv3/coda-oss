@@ -1,7 +1,7 @@
 /* =========================================================================
  * This file is part of zip-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * zip-c++ is free software; you can redistribute it and/or modify
@@ -14,14 +14,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <import/sys.h>
 #include <import/io.h>
+#include <import/sys.h>
 #include <import/zip.h>
 
 int main(int argc, char** argv)
@@ -34,13 +34,15 @@ int main(int argc, char** argv)
         std::string inputName(argv[1]);
         std::string outputName(argv[2]);
 
-        std::cout << "Attempting to unzip: " 
-                  << std::endl << "\tInput: " << inputName << std::endl
-                  << "\tTarget: " << outputName << std::endl;;
-        
+        std::cout << "Attempting to unzip: " << std::endl
+                  << "\tInput: " << inputName << std::endl
+                  << "\tTarget: " << outputName << std::endl;
+        ;
+
         zip::GZipInputStream input(inputName);
         io::FileOutputStream output(outputName);
-        while ( input.streamTo(output, 8192) );
+        while (input.streamTo(output, 8192))
+            ;
 
         input.close();
         output.close();
@@ -52,4 +54,3 @@ int main(int argc, char** argv)
     }
     return 0;
 }
-

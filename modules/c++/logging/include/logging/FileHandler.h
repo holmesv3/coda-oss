@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * logging-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -27,15 +27,16 @@
 #ifndef __LOGGING_FILE_HANDLER_H__
 #define __LOGGING_FILE_HANDLER_H__
 
-#include <string>
+#include <import/io.h>
+#include <import/mem.h>
+#include <import/sys.h>
+
 #include <iostream>
 #include <std/memory>
+#include <string>
 
 #include "logging/LogRecord.h"
 #include "logging/StreamHandler.h"
-#include <import/io.h>
-#include <import/sys.h>
-#include <import/mem.h>
 
 namespace logging
 {
@@ -45,9 +46,12 @@ namespace logging
  */
 struct FileHandler : public StreamHandler
 {
-    FileHandler(const coda_oss::filesystem::path& fname, LogLevel level = LogLevel::LOG_NOTSET,
+    FileHandler(const coda_oss::filesystem::path& fname,
+                LogLevel level = LogLevel::LOG_NOTSET,
                 int creationFlags = sys::File::CREATE | sys::File::TRUNCATE) :
-        StreamHandler(std::make_unique<io::FileOutputStream>(fname.string(), creationFlags), level)
+        StreamHandler(std::make_unique<io::FileOutputStream>(fname.string(),
+                                                             creationFlags),
+                      level)
     {
         // In case we are in append mode
         if (auto pStream = dynamic_cast<io::FileOutputStream*>(mStream.get()))
@@ -59,7 +63,6 @@ struct FileHandler : public StreamHandler
 
     FileHandler(const FileHandler&) = delete;
     FileHandler& operator=(const FileHandler&) = delete;
-
 };
 }
 #endif

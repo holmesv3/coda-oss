@@ -28,11 +28,11 @@
 #include <assert.h>
 #include <stdint.h>
 
-#include <vector>
 #include <complex>
-#include <stdexcept>
 #include <functional>
 #include <iterator>
+#include <stdexcept>
+#include <vector>
 
 #include "coda_oss/span.h"
 #include "config/disable_compiler_warnings.h"
@@ -40,11 +40,11 @@
 namespace mem
 {
 
- /*!
+/*!
  *  \class ComplexViewConstIterator
  *  \brief Iterate over a ComplexParallelView class only needing to know the
  * "axis" of the std::complex<>, i.e., "float" or "double".
- * 
+ *
  * This allows view-independent code to be written without having to use
  * a TView-template; instead ComplexViewConstIterator<T> can be used.
  * And often such code is dependent on T (i.e., "float", but not "double")
@@ -63,9 +63,10 @@ struct ComplexViewConstIterator final
 
     template <typename TView>
     explicit ComplexViewConstIterator(TView view) :
-        size_(view.size()) // Saving the size avoids the need for another constructor.
+        size_(view.size())  // Saving the size avoids the need for another
+                            // constructor.
     {
-        index_f_ = [view](size_type i) { return view[i]; };        
+        index_f_ = [view](size_type i) { return view[i]; };
     }
     // Help ensure the iterators use the same view
     auto end_() const
@@ -78,7 +79,8 @@ struct ComplexViewConstIterator final
     ComplexViewConstIterator() = default;
     ~ComplexViewConstIterator() = default;
     ComplexViewConstIterator(const ComplexViewConstIterator&) = default;
-    ComplexViewConstIterator& operator=(const ComplexViewConstIterator&) = default;
+    ComplexViewConstIterator& operator=(const ComplexViewConstIterator&) =
+            default;
     ComplexViewConstIterator(ComplexViewConstIterator&&) = default;
     ComplexViewConstIterator& operator=(ComplexViewConstIterator&&) = default;
 
@@ -139,20 +141,22 @@ private:
     size_type size_;  // used to create the end_() iterator
 };
 
- /*!
+/*!
  *  \class ComplexView
- *  \brief These classes class provide read-only views onto a collection of complex
- * numbers. For the simple case, it's roughtly std::span<const std::complex<T>>. However,
- * sometimes the data is in two parallel arrays:
+ *  \brief These classes class provide read-only views onto a collection of
+ * complex numbers. For the simple case, it's roughtly std::span<const
+ * std::complex<T>>. However, sometimes the data is in two parallel arrays:
  *    const float* reals;
  *    const float* imags;
- * This classes have (almost) the same access routines regardless of how the underlying data is actually stored.
- * 
+ * This classes have (almost) the same access routines regardless of how the
+ * underlying data is actually stored.
+ *
  * Thing are intentinally kept very simple (for now), because it's not yet clear
  * what functionality will be needed.
  */
 
-// Storing an array of std::complex is called "interleaved," e.g., https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2663r2.html
+// Storing an array of std::complex is called "interleaved," e.g.,
+// https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2663r2.html
 
 template <typename T>
 struct ComplexInterleavedView final
@@ -161,7 +165,7 @@ struct ComplexInterleavedView final
     using value_type = std::complex<T>;
     using cxvalue_t_ = value_type;
     using span_t_ = coda_oss::span<const cxvalue_t_>;
-    using axis_t_ = typename cxvalue_t_::value_type; // i.e., float
+    using axis_t_ = typename cxvalue_t_::value_type;  // i.e., float
     using const_iterator = ComplexViewConstIterator<axis_t_>;
     using iterator = const_iterator;
 
@@ -193,7 +197,8 @@ struct ComplexInterleavedView final
     // std::complex<> (copying one pointer vs. two doubles).  But this
     // provides a (subtle) way for clients to know what "view style" they're
     // using, should that be needed; it also more closely matches std::span<>.
-    constexpr const cxvalue_t_& index(size_type idx) const noexcept // i.e., std::complex<float>
+    constexpr const cxvalue_t_& index(
+            size_type idx) const noexcept  // i.e., std::complex<float>
     {
         return data_[idx];
     }
@@ -206,10 +211,11 @@ struct ComplexInterleavedView final
     {
         return data_.size();
     }
-    
+
     const_iterator begin() const
     {
-        // not data_.begin(), we want our "generic" ComplexViewConstIterator iterator
+        // not data_.begin(), we want our "generic" ComplexViewConstIterator
+        // iterator
         return ComplexViewConstIterator<axis_t_>(data_);
     }
     const_iterator end() const
@@ -224,7 +230,8 @@ private:
         std::vector<axis_t_> retval(size());
         for (size_t i = 0; i < size(); i++)
         {
-            retval[i] = (this->*axis)(i);  // call via pointer to member function
+            retval[i] =
+                    (this->*axis)(i);  // call via pointer to member function
         }
         return retval;
     }
@@ -244,7 +251,7 @@ public:
     }
 
 private:
-    span_t_ data_; // i.e., std::span<const std::complex<float>>
+    span_t_ data_;  // i.e., std::span<const std::complex<float>>
 };
 template <typename T>
 inline auto make_ComplexInterleavedView(coda_oss::span<const std::complex<T>> s)
@@ -254,16 +261,19 @@ inline auto make_ComplexInterleavedView(coda_oss::span<const std::complex<T>> s)
 template <typename TVectorLike>
 inline auto make_ComplexInterleavedView(const TVectorLike& v)
 {
-    using cxvalue_t = typename TVectorLike::value_type; // i.e., std::complex<float>
+    using cxvalue_t =
+            typename TVectorLike::value_type;  // i.e., std::complex<float>
     using span_t = coda_oss::span<const cxvalue_t>;
 
     return make_ComplexInterleavedView(span_t(v.data(), v.size()));
 }
 
-// This is not the "normal" storage in C++ (that would be "interleaved" via std::complex, above).  However,
-// it's one more likely to need additional "support."
+// This is not the "normal" storage in C++ (that would be "interleaved" via
+// std::complex, above).  However, it's one more likely to need additional
+// "support."
 template <typename T>
-struct ComplexParallelView final // Two parallel arrays, absolutely nothing to to with multi-treading.
+struct ComplexParallelView final  // Two parallel arrays, absolutely nothing to
+                                  // to with multi-treading.
 {
     using size_type = size_t;
     using value_type = T;
@@ -275,7 +285,8 @@ struct ComplexParallelView final // Two parallel arrays, absolutely nothing to t
 
     ComplexParallelView() = delete;
     ~ComplexParallelView() = default;
-    ComplexParallelView(span_t_ reals, span_t_ imags) : reals_(reals), imags_(imags)
+    ComplexParallelView(span_t_ reals, span_t_ imags) :
+        reals_(reals), imags_(imags)
     {
         if (reals_.size() != imags_.size())
         {
@@ -300,7 +311,8 @@ struct ComplexParallelView final // Two parallel arrays, absolutely nothing to t
         return imags_[idx];
     }
 
-    constexpr cxvalue_t_ index(size_type idx) const noexcept // i.e., std::complex<float>
+    constexpr cxvalue_t_ index(
+            size_type idx) const noexcept  // i.e., std::complex<float>
     {
         // Note that this is a COPY because the "real" and "imag" parts MUST be
         // next to each other. https://en.cppreference.com/w/cpp/numeric/complex
@@ -344,19 +356,21 @@ struct ComplexParallelView final // Two parallel arrays, absolutely nothing to t
     }
 
 private:
-    span_t_ reals_; // i.e., std::span<const float>
+    span_t_ reals_;  // i.e., std::span<const float>
     span_t_ imags_;
 };
 template <typename T>
-inline auto make_ComplexParallelView(coda_oss::span<const T> reals, coda_oss::span<const T> imags)
+inline auto make_ComplexParallelView(coda_oss::span<const T> reals,
+                                     coda_oss::span<const T> imags)
 {
     return ComplexParallelView<T>(reals, imags);
 }
 template <typename TVectorLike>
-inline auto make_ComplexParallelView(const TVectorLike& reals_, const TVectorLike& imags_)
+inline auto make_ComplexParallelView(const TVectorLike& reals_,
+                                     const TVectorLike& imags_)
 {
     using value_type = typename TVectorLike::value_type;  // i.e., float
-    using cxvalue_t = std::complex<value_type>; // i.e., std::complex<float>
+    using cxvalue_t = std::complex<value_type>;  // i.e., std::complex<float>
     using axis_t = typename cxvalue_t::value_type;  // i.e., float
     using span_t = coda_oss::span<const axis_t>;
 
@@ -365,6 +379,6 @@ inline auto make_ComplexParallelView(const TVectorLike& reals_, const TVectorLik
     return make_ComplexParallelView(reals, imags);
 }
 
-} 
+}
 
 #endif  // CODA_OSS_mem_ComplexView_h_INCLUDED_

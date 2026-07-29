@@ -25,8 +25,8 @@
 
 #include <assert.h>
 
-#include <utility>
 #include <stdexcept>
+#include <utility>
 
 // Simple version of std::optional since that doesn't exist until C++17.
 // http://en.cppreference.com/w/cpp/utility/Optional
@@ -37,7 +37,8 @@ namespace details
 {
 inline void throw_bad_optional_access()
 {
-    throw std::logic_error("No value for optional<>.");  // TODO: std::bad_optional_access
+    throw std::logic_error(
+            "No value for optional<>.");  // TODO: std::bad_optional_access
 }
 
 template <typename T>
@@ -91,19 +92,19 @@ public:
     }
 
     // https://en.cppreference.com/w/cpp/utility/optional/operator%3D
-    optional& operator=(const optional& other) 
+    optional& operator=(const optional& other)
     {
         value_ = other.value_;
         has_value_ = other.has_value_;
         return *this;
     }
-    optional& operator=(optional&& other) noexcept 
+    optional& operator=(optional&& other) noexcept
     {
         value_ = std::move(other.value_);
         has_value_ = std::move(other.has_value_);
         return *this;
     }
-    template <typename U = T> 
+    template <typename U = T>
     optional& operator=(U&& value) noexcept
     {
         value_ = std::forward<U>(value);
@@ -125,7 +126,8 @@ public:
         return *this;
     }
 
-    template <typename... Args>  // https://en.cppreference.com/w/cpp/utility/Optional/emplace
+    template <
+            typename... Args>  // https://en.cppreference.com/w/cpp/utility/Optional/emplace
     T& emplace(Args&&... args)
     {
         value_ = value_type(std::forward<Args>(args)...);
@@ -174,32 +176,38 @@ public:
     const T* operator->() const
     {
         assert(has_value());
-        return &value_;  // "This operator does not check whether the optional contains a value!"
+        return &value_;  // "This operator does not check whether the optional
+                         // contains a value!"
     }
     T* operator->() noexcept
     {
         assert(has_value());
-        return &value_;  // "This operator does not check whether the optional contains a value!"
+        return &value_;  // "This operator does not check whether the optional
+                         // contains a value!"
     }
     const T& operator*() const& noexcept
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional contains a value!"
+        return value_;  // "This operator does not check whether the optional
+                        // contains a value!"
     }
     T& operator*() &
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional contains a value!"
+        return value_;  // "This operator does not check whether the optional
+                        // contains a value!"
     }
     const T&& operator*() const&&
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional contains a value!"
+        return value_;  // "This operator does not check whether the optional
+                        // contains a value!"
     }
     T&& operator*() &&
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional contains a value!"
+        return value_;  // "This operator does not check whether the optional
+                        // contains a value!"
     }
 
     // https://en.cppreference.com/w/cpp/utility/optional/value_or
@@ -232,8 +240,10 @@ inline optional<T> make_optional(TArgs&&... args)
 // Compares two optional objects, lhs and rhs. The contained values are compared
 // (using the corresponding operator of T) only if both lhs and rhs contain
 // values. Otherwise,
-// * lhs is considered equal to rhs if, and only if, both lhs and rhs do not contain a value.
-// * lhs is considered less than rhs if, and only if, rhs contains a value and lhs does not.
+// * lhs is considered equal to rhs if, and only if, both lhs and rhs do not
+// contain a value.
+// * lhs is considered less than rhs if, and only if, rhs contains a value and
+// lhs does not.
 template <typename T, typename U>
 inline bool operator==(const optional<T>& lhs, const optional<U>& rhs)
 {
@@ -242,7 +252,8 @@ inline bool operator==(const optional<T>& lhs, const optional<U>& rhs)
     {
         return false;
     }
-    // "Otherwise, if bool(lhs) == false (and so bool(rhs) == false as well), returns true."
+    // "Otherwise, if bool(lhs) == false (and so bool(rhs) == false as well),
+    // returns true."
     if (!lhs.has_value())
     {
         assert(!rhs.has_value());

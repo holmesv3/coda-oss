@@ -19,14 +19,14 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
-#include <algorithm>
-
 #include <types/RangeList.h>
+
+#include <algorithm>
 
 namespace
 {
-std::vector<types::Range>
-difference(const types::Range& orig, const types::Range& overlap)
+std::vector<types::Range> difference(const types::Range& orig,
+                                     const types::Range& overlap)
 {
     // If the original range is fully contained by the overlap,
     // the difference is the empty set
@@ -40,17 +40,15 @@ difference(const types::Range& orig, const types::Range& overlap)
     // Create left range
     if (orig.mStartElement < overlap.mStartElement)
     {
-        result.emplace_back(
-                orig.mStartElement,
-                overlap.mStartElement - orig.mStartElement);
+        result.emplace_back(orig.mStartElement,
+                            overlap.mStartElement - orig.mStartElement);
     }
 
     // Create right range
     if (orig.endElement() > overlap.endElement())
     {
-        result.emplace_back(
-                overlap.endElement(),
-                orig.endElement() - overlap.endElement());
+        result.emplace_back(overlap.endElement(),
+                            orig.endElement() - overlap.endElement());
     }
     return result;
 }
@@ -58,14 +56,12 @@ difference(const types::Range& orig, const types::Range& overlap)
 
 namespace types
 {
-RangeList::RangeList(const types::Range& range) :
-    mRangeList(0)
+RangeList::RangeList(const types::Range& range) : mRangeList(0)
 {
     insert(range);
 }
 
-RangeList::RangeList(const std::vector<types::Range>& ranges) :
-    mRangeList(0)
+RangeList::RangeList(const std::vector<types::Range>& ranges) : mRangeList(0)
 {
     for (const auto& inputRange : ranges)
     {
@@ -200,9 +196,9 @@ void RangeList::expand(size_t expansion, size_t maxEndElement)
 
     for (const auto& range : oldRanges)
     {
-        const size_t start =
-                (range.mStartElement >= expansion) ?
-                range.mStartElement - expansion : 0;
+        const size_t start = (range.mStartElement >= expansion)
+                ? range.mStartElement - expansion
+                : 0;
 
         const size_t end =
                 std::min(range.endElement() + expansion, maxEndElement);

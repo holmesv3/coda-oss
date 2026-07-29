@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,18 +24,18 @@
 #ifndef CODA_OSS_xml_lite_import_lite_h_INCLUDED_
 #define CODA_OSS_xml_lite_import_lite_h_INCLUDED_
 
-#include "xml/lite/ContentHandler.h"
 #include "xml/lite/Attributes.h"
-#include "xml/lite/QName.h"
-#include "xml/lite/NamespaceStack.h"
+#include "xml/lite/ContentHandler.h"
 #include "xml/lite/Document.h"
 #include "xml/lite/Element.h"
-#include "xml/lite/XMLException.h"
-#include "xml/lite/XMLReader.h"
 #include "xml/lite/MinidomHandler.h"
 #include "xml/lite/MinidomParser.h"
+#include "xml/lite/NamespaceStack.h"
+#include "xml/lite/QName.h"
 #include "xml/lite/Serializable.h"
 #include "xml/lite/Validator.h"
+#include "xml/lite/XMLException.h"
+#include "xml/lite/XMLReader.h"
 
 /*!
  *  \file lite.h

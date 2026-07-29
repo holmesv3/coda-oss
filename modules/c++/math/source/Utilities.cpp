@@ -21,18 +21,18 @@
  */
 #include "math/Utilities.h"
 
-#if !_WIN32 // TODO: what about Apple?
+#if !_WIN32  // TODO: what about Apple?
 // https://man7.org/linux/man-pages/man3/sincos.3.html
 #if !defined(_GNU_SOURCE)
-#define _GNU_SOURCE         /* See feature_test_macros(7) */
-#endif // _GNU_SOURCE
-#endif // _WIN32
-
-#include <math.h>
-#include <cmath>
+#define _GNU_SOURCE /* See feature_test_macros(7) */
+#endif  // _GNU_SOURCE
+#endif  // _WIN32
 
 #include <except/Exception.h>
+#include <math.h>
 #include <str/Convert.h>
+
+#include <cmath>
 
 namespace math
 {
@@ -41,7 +41,9 @@ sys::Uint64_T nChooseK(size_t n, size_t k)
     if (n < k)
     {
         throw except::Exception(Ctxt("n Choose k undefined for n < k.\n"
-                "n: " + std::to_string(n) + " k: " + std::to_string(k)));
+                                     "n: " +
+                                     std::to_string(n) +
+                                     " k: " + std::to_string(k)));
     }
 
     // Algorithm to compute n Choose k without using factorials found here:
@@ -59,12 +61,12 @@ sys::Uint64_T nChooseK(size_t n, size_t k)
 
 inline void sincosf_(float x, float& sin, float& cos)
 {
-    #if !_WIN32 // TODO: what about Apple?
+#if !_WIN32  // TODO: what about Apple?
     sincosf(x, &sin, &cos);
-    #else
+#else
     sin = std::sin(x);
     cos = std::cos(x);
-    #endif
+#endif
 }
 inline void sincos_(double x, double& sin, double& cos)
 {

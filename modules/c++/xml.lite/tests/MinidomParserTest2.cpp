@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,17 +14,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#if defined (USE_EXPAT) || defined(USE_XERCES) || defined(USE_LIBXML)
+#if defined(USE_EXPAT) || defined(USE_XERCES) || defined(USE_LIBXML)
+#include <import/except.h>
 #include <import/io.h>
 #include <import/sys.h>
 #include <import/xml/lite.h>
-#include <import/except.h>
+
 #include <string>
 
 using namespace std;
@@ -42,19 +43,23 @@ const std::string LOCATION_URI = "";
 const std::string NAME_TAG = "name";
 const std::string NAME_URI = "";
 
-void addService(Document *doc, Element *rootElement, string name, string location);
-bool removeService(Document *doc, Element *rootElement, string name);
-bool findService(Document *doc, Element *rootElement, string name);
+void addService(Document* doc,
+                Element* rootElement,
+                string name,
+                string location);
+bool removeService(Document* doc, Element* rootElement, string name);
+bool findService(Document* doc, Element* rootElement, string name);
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     try
     {
         if (argc != 5)
         {
             throw Exception(Ctxt(str::Format(
-                                     "Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd service\n\t-s\tsubtract service\n\t-o\toutput file\n",
-                                     argv[0])));
+                    "Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd "
+                    "service\n\t-s\tsubtract service\n\t-o\toutput file\n",
+                    argv[0])));
         }
 
         StandardOutStream out;
@@ -80,8 +85,8 @@ int main(int argc, char **argv)
 
         inXmlFile.close();
 
-        Document *doc = treeBuilder.getDocument();
-        Element *rootElement = doc->getRootElement();
+        Document* doc = treeBuilder.getDocument();
+        Element* rootElement = doc->getRootElement();
 
         string name = argv[2];
         string location = argv[3];
@@ -100,38 +105,42 @@ int main(int argc, char **argv)
 
         switch (argv[1][1])
         {
-            case 'a':
-                addService(doc, rootElement, name, location);
+        case 'a':
+            addService(doc, rootElement, name, location);
 #if defined(USE_IO_STREAMS)
-                outXmlFile.open(argv[4]);
+            outXmlFile.open(argv[4]);
 #else
-                outXmlFile.create(argv[4]);
+            outXmlFile.create(argv[4]);
 #endif
-                if (rootElement) rootElement->print(outXmlFile);
-                break;
-            case 's':
-                removeService(doc, rootElement, name);
-                rootElement = doc->getRootElement();
+            if (rootElement)
+                rootElement->print(outXmlFile);
+            break;
+        case 's':
+            removeService(doc, rootElement, name);
+            rootElement = doc->getRootElement();
 #if defined(USE_IO_STREAMS)
-                outXmlFile.open(argv[4]);
+            outXmlFile.open(argv[4]);
 #else
-                outXmlFile.create(argv[4]);
+            outXmlFile.create(argv[4]);
 #endif
-                if (rootElement) rootElement->print(outXmlFile);
-                break;
-            case 'o':
-                if (rootElement) rootElement->print(out);
-                break;
-            default:
-                throw Exception(Ctxt(str::Format(
-                                         "Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd service\n\t-s\tsubtract service\n\t-o\toutput file\n",
-                                         argv[0])));
+            if (rootElement)
+                rootElement->print(outXmlFile);
+            break;
+        case 'o':
+            if (rootElement)
+                rootElement->print(out);
+            break;
+        default:
+            throw Exception(Ctxt(str::Format(
+                    "Usage: %s [OPTION] <service> <uri> <file>\n\n\t-a\tadd "
+                    "service\n\t-s\tsubtract service\n\t-o\toutput file\n",
+                    argv[0])));
         }
 
         outXmlFile.close();
 
-    }    // Catch all throwables and exit in a reasonable manner
-    catch (Throwable & t)
+    }  // Catch all throwables and exit in a reasonable manner
+    catch (Throwable& t)
     {
         cout << t.toString() << endl;
         // If we caught an exception, exit unfavorably.
@@ -140,14 +149,17 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
-void addService(Document *doc, Element *rootElement, string name, string location)
+void addService(Document* doc,
+                Element* rootElement,
+                string name,
+                string location)
 {
     Element *toAdd, *child;
 
-    if (findService(doc, rootElement, name)) return;
+    if (findService(doc, rootElement, name))
+        return;
 
-    toAdd = doc->createElement(SERVICE_TAG, SERVICE_URI, "" );
+    toAdd = doc->createElement(SERVICE_TAG, SERVICE_URI, "");
     child = doc->createElement(NAME_TAG, NAME_URI, NAME_TAG);
     child->setCharacterData(name);
     toAdd->addChild(child);
@@ -158,10 +170,10 @@ void addService(Document *doc, Element *rootElement, string name, string locatio
     doc->insert(toAdd, rootElement);
 }
 
-bool removeService(Document *doc, Element *rootElement, string name)
+bool removeService(Document* doc, Element* rootElement, string name)
 {
     bool found(false);
-    vector< Element* >::iterator childIterator;
+    vector<Element*>::iterator childIterator;
 
     childIterator = rootElement->getChildren().begin();
     for (; childIterator != rootElement->getChildren().end(); ++childIterator)
@@ -174,16 +186,17 @@ bool removeService(Document *doc, Element *rootElement, string name)
         else
         {
             found = removeService(doc, *childIterator, name);
-            if (found) return true;
+            if (found)
+                return true;
         }
     }
     return false;
 }
 
-bool findService(Document *doc, Element *rootElement, string name)
+bool findService(Document* doc, Element* rootElement, string name)
 {
     bool found(false);
-    vector< Element* >::iterator childIterator;
+    vector<Element*>::iterator childIterator;
 
     childIterator = rootElement->getChildren().begin();
     for (; childIterator != rootElement->getChildren().end(); ++childIterator)
@@ -195,13 +208,14 @@ bool findService(Document *doc, Element *rootElement, string name)
         else
         {
             found = findService(doc, *childIterator, name);
-            if (found) return true;
+            if (found)
+                return true;
         }
     }
     return false;
 }
 #else
 int main()
-{}
+{
+}
 #endif
-

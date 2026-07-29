@@ -37,7 +37,7 @@ namespace sys
  */
 struct AtomicCounterImplCpp11 final
 {
-    using ValueType = size_t ;
+    using ValueType = size_t;
 
     explicit AtomicCounterImplCpp11(ValueType initialValue) noexcept :
         mValue(initialValue)

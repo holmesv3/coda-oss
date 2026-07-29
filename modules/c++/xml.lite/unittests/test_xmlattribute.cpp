@@ -20,11 +20,11 @@
  *
  */
 
+#include <TestCase.h>
+
 #include <string>
 
 #include "io/StringStream.h"
-#include <TestCase.h>
-
 #include "xml/lite/MinidomParser.h"
 #include "xml/lite/QName.h"
 
@@ -154,7 +154,8 @@ TEST_CASE(test_getAttributeNotFound)
     result = attributes.getValue(999, value);
     TEST_ASSERT_FALSE(result);
 
-    TEST_SPECIFIC_EXCEPTION(attributes.getValue("not_found"), except::NoSuchKeyException);        
+    TEST_SPECIFIC_EXCEPTION(attributes.getValue("not_found"),
+                            except::NoSuchKeyException);
     TEST_THROWS(attributes.getValue(999));
 }
 
@@ -260,11 +261,15 @@ TEST_CASE(test_getAttributeValueThrows)
     const auto& attributes = values.getAttributes();
 
     using namespace xml::lite;
-    TEST_SPECIFIC_EXCEPTION(getValue<int>(attributes, "string"), except::BadCastException);
-    TEST_SPECIFIC_EXCEPTION(getValue<double>(attributes, "string"), except::BadCastException);
-    TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "empty"), except::BadCastException);
+    TEST_SPECIFIC_EXCEPTION(getValue<int>(attributes, "string"),
+                            except::BadCastException);
+    TEST_SPECIFIC_EXCEPTION(getValue<double>(attributes, "string"),
+                            except::BadCastException);
+    TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "empty"),
+                            except::BadCastException);
 
-    TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "not_found"), except::NoSuchKeyException);
+    TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, "not_found"),
+                            except::NoSuchKeyException);
 }
 
 TEST_CASE(test_getAttributeValueByIndex)
@@ -290,7 +295,7 @@ TEST_CASE(test_getAttributeValueByIndex)
         const auto result = getValue(attributes, 1, value);
         TEST_ASSERT_TRUE(result);
         TEST_ASSERT_EQ(3.14, value);
-        
+
         value = getValue<double>(attributes, 1);
         TEST_ASSERT_EQ(3.14, value);
     }
@@ -307,11 +312,13 @@ TEST_CASE(test_getAttributeValueByIndex)
         std::string value;
         auto result = getValue(attributes, -1, value);
         TEST_ASSERT_FALSE(result);
-        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, -1), except::NoSuchKeyException);
+        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, -1),
+                                except::NoSuchKeyException);
 
         result = getValue(attributes, 999, value);
         TEST_ASSERT_FALSE(result);
-        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, 999), except::NoSuchKeyException);
+        TEST_SPECIFIC_EXCEPTION(getValue<std::string>(attributes, 999),
+                                except::NoSuchKeyException);
     }
 }
 

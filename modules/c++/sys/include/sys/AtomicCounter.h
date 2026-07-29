@@ -33,14 +33,13 @@ namespace sys
  *  \brief This class provides atomic incrementing, decrementing, and setting
  *         of an unsigned integer.  All operations are thread-safe.
  */
-template<typename TAtomicCounterImpl>
+template <typename TAtomicCounterImpl>
 struct AtomicCounterT final
 {
-    using ValueType = typename TAtomicCounterImpl::ValueType ;
+    using ValueType = typename TAtomicCounterImpl::ValueType;
 
     //! Constructor
-    AtomicCounterT(ValueType initialValue = 0) :
-        mImpl(initialValue)
+    AtomicCounterT(ValueType initialValue = 0) : mImpl(initialValue)
     {
     }
 
@@ -53,7 +52,7 @@ struct AtomicCounterT final
         return mImpl.getThenIncrement();
     }
 
-    ValueType operator++(int )
+    ValueType operator++(int)
     {
         return getThenIncrement();
     }
@@ -87,7 +86,7 @@ struct AtomicCounterT final
         return mImpl.getThenDecrement();
     }
 
-    ValueType operator--(int )
+    ValueType operator--(int)
     {
         return getThenDecrement();
     }
@@ -127,7 +126,6 @@ struct AtomicCounterT final
 private:
     TAtomicCounterImpl mImpl;
 };
-
 
 using AtomicCounterCpp11 = AtomicCounterT<AtomicCounterImplCpp11>;
 using AtomicCounter = AtomicCounterCpp11;

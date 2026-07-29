@@ -41,4 +41,4 @@ using SharedPtr = std::shared_ptr<T>;
 
 #include <mem/SharedPtrCpp11.h>
 
-#endif // CODA_OSS_mem_SharedPtr_h_INCLUDED_
+#endif  // CODA_OSS_mem_SharedPtr_h_INCLUDED_

@@ -23,17 +23,17 @@
 #ifndef __MT_THREAD_GROUP_H__
 #define __MT_THREAD_GROUP_H__
 
-#include <vector>
-#include <memory>
-#include <exception>
-
-#include <sys/Conf.h>
+#include <config/Exports.h>
 #include <except/Error.h>
+#include <mem/SharedPtr.h>
+#include <sys/Conf.h>
+#include <sys/Mutex.h>
 #include <sys/Runnable.h>
 #include <sys/Thread.h>
-#include <sys/Mutex.h>
-#include <mem/SharedPtr.h>
-#include <config/Exports.h>
+
+#include <exception>
+#include <memory>
+#include <vector>
 
 #if !defined(MT_DEFAULT_PINNING)
 #include "mt/mt_config.h"
@@ -66,23 +66,23 @@ struct CODA_OSS_API ThreadGroup
     ThreadGroup(bool pinToCPU = getDefaultPinToCPU());
 
     /*!
-    *  Destructor. Attempts to join all threads.
-    */
+     *  Destructor. Attempts to join all threads.
+     */
     ~ThreadGroup();
 
     ThreadGroup(const ThreadGroup&) = delete;
     ThreadGroup& operator=(const ThreadGroup&) = delete;
 
     /*!
-    *  Creates and starts a thread from a sys::Runnable.
-    *  \param runnable pointer to sys::Runnable
-    */
-    void createThread(sys::Runnable *runnable);
+     *  Creates and starts a thread from a sys::Runnable.
+     *  \param runnable pointer to sys::Runnable
+     */
+    void createThread(sys::Runnable* runnable);
 
     /*!
-    *  Creates and starts a thread from a sys::Runnable.
-    *  \param runnable unique_ptr to sys::Runnable
-    */
+     *  Creates and starts a thread from a sys::Runnable.
+     *  \param runnable unique_ptr to sys::Runnable
+     */
     void createThread(std::unique_ptr<sys::Runnable>&& runnable);
 
     /*!
@@ -114,7 +114,7 @@ struct CODA_OSS_API ThreadGroup
 private:
     std::unique_ptr<CPUAffinityInitializer> mAffinityInit;
     size_t mLastJoined;
-    std::vector<std::shared_ptr<sys::Thread> > mThreads;
+    std::vector<std::shared_ptr<sys::Thread>> mThreads;
     std::vector<except::Exception> mExceptions;
     sys::Mutex mMutex;
 
@@ -145,7 +145,7 @@ private:
      */
     struct ThreadGroupRunnable : public sys::Runnable
     {
-           /*!
+        /*!
          * Constructor.
          * \param runnable sys::Runnable object that will be executed by
          *                 the current thread

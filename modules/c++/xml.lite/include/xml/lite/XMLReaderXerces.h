@@ -28,23 +28,22 @@
 
 #if defined(USE_XERCES)
 
+#include <config/Exports.h>
+#include <except/Error.h>
+#include <io/InputStream.h>
+#include <io/OutputStream.h>
+#include <io/StringStream.h>
+#include <mt/CriticalSection.h>
+#include <sys/Mutex.h>
+
 #include <string>
 
-#include <config/Exports.h>
-
-#include <sys/Mutex.h>
-#include <mt/CriticalSection.h>
-#include <except/Error.h>
-#include <io/StringStream.h>
-#include <io/OutputStream.h>
-#include <io/InputStream.h>
-
-#include "xml/lite/XMLException.h"
-#include "xml/lite/ContentHandler.h"
 #include "xml/lite/Attributes.h"
+#include "xml/lite/ContentHandler.h"
 #include "xml/lite/NamespaceStack.h"
-#include "xml/lite/XMLReaderInterface.h"
 #include "xml/lite/UtilitiesXerces.h"
+#include "xml/lite/XMLException.h"
+#include "xml/lite/XMLReaderInterface.h"
 
 namespace xml
 {
@@ -62,12 +61,11 @@ namespace lite
 class CODA_OSS_API XMLReaderXerces final : public XMLReaderInterface
 {
     XercesContext mCtxt;
-    std::unique_ptr<SAX2XMLReader>        mNative;
+    std::unique_ptr<SAX2XMLReader> mNative;
     std::unique_ptr<XercesContentHandler> mDriverContentHandler;
-    std::unique_ptr<XercesErrorHandler>   mErrorHandler;
+    std::unique_ptr<XercesErrorHandler> mErrorHandler;
 
 public:
-
     //! Constructor.  Creates a new XML parser
     XMLReaderXerces();
 
@@ -85,7 +83,7 @@ public:
      *  This method returns a reference to the content handler.
      *  \return content handler
      */
-    xml::lite::ContentHandler *getContentHandler() override
+    xml::lite::ContentHandler* getContentHandler() override
     {
         return mDriverContentHandler->retrieveXMLLiteContentHandler();
     }
@@ -102,17 +100,24 @@ public:
 
     void parse(io::InputStream& is, int size = io::InputStream::IS_END);
 
-    void parse(bool storeEncoding, io::InputStream& is, int size = io::InputStream::IS_END);
-    void parse(io::InputStream& is, const void*pInitialEncoding, const void* pFallbackEncoding,
-        int size = io::InputStream::IS_END);
-    
+    void parse(bool storeEncoding,
+               io::InputStream& is,
+               int size = io::InputStream::IS_END);
+    void parse(io::InputStream& is,
+               const void* pInitialEncoding,
+               const void* pFallbackEncoding,
+               int size = io::InputStream::IS_END);
+
     //! Method to create an xml reader
     void create() override;
 
     //! Method to destroy an xml reader
     void destroy() override;
 
-    std::string getDriverName() const override { return "xerces"; }
+    std::string getDriverName() const override
+    {
+        return "xerces";
+    }
 
     static const void* getWindows1252Encoding();
 
@@ -127,4 +132,4 @@ private:
 }
 
 #endif
-#endif // CODA_OSS_xml_lite_XMLReaderXerces_h_INCLUDED_
+#endif  // CODA_OSS_xml_lite_XMLReaderXerces_h_INCLUDED_

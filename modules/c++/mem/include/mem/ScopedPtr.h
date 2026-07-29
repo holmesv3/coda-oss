@@ -21,7 +21,7 @@
  *
  */
 
-#pragma once 
+#pragma once
 #ifndef CODA_OSS_mem_ScopedPtr_h_INCLUDED_
 #define CODA_OSS_mem_ScopedPtr_h_INCLUDED_
 
@@ -31,8 +31,8 @@
 #include <std/memory>
 #include <type_traits>
 
-#include "sys/Conf.h"
 #include "mem/SharedPtr.h"
+#include "sys/Conf.h"
 
 namespace mem
 {
@@ -62,7 +62,7 @@ class ScopedPtr
 
     void duplicate(const T& from, std::true_type)
     {
-        reset(from.clone());    
+        reset(from.clone());
     }
     void duplicate(const T& from, std::false_type)
     {
@@ -112,13 +112,13 @@ public:
         auto rhs_ptr = rhs.get();
         if (ptr == nullptr && rhs_ptr == nullptr)
         {
-            return true; // both NULL: equal
+            return true;  // both NULL: equal
         }
         if (ptr == nullptr || rhs_ptr == nullptr)
         {
-            return false; // either NULL, but not both (above): not equal
+            return false;  // either NULL, but not both (above): not equal
         }
-        return *ptr == *rhs_ptr; // compare the (non-NULL) objects
+        return *ptr == *rhs_ptr;  // compare the (non-NULL) objects
     }
 
     bool operator!=(const ScopedPtr& rhs) const noexcept

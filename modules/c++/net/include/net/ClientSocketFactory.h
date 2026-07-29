@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,8 +23,8 @@
 #ifndef __NET_CLIENT_SOCKET_FACTORY_H__
 #define __NET_CLIENT_SOCKET_FACTORY_H__
 
-#include "net/Socket.h"
 #include "mem/SharedPtr.h"
+#include "net/Socket.h"
 
 /*!
  *  \file
@@ -53,7 +53,6 @@ namespace net
 class ClientSocketFactory
 {
 public:
-
     /*!
      *  Constructor.  Takes a protocol.  One of the notable
      *  behaviors of this constructor is that on Windows, it
@@ -72,7 +71,8 @@ public:
 
     //!  Destructor
     virtual ~ClientSocketFactory()
-    {}
+    {
+    }
 
     /*!
      *  Create a socket associated with the given address.
@@ -96,7 +96,8 @@ public:
      * \param s The socket
      */
     virtual void setOptions(Socket&)
-    {}
+    {
+    }
 
 protected:
     int mProto;
@@ -113,8 +114,8 @@ class TCPClientSocketFactory : public ClientSocketFactory
 {
 public:
     TCPClientSocketFactory() : ClientSocketFactory(TCP_PROTO)
-    {}
-
+    {
+    }
 };
 
 /*!
@@ -128,7 +129,8 @@ class UDPClientSocketFactory : public ClientSocketFactory
 {
 public:
     UDPClientSocketFactory() : ClientSocketFactory(UDP_PROTO)
-    {}
+    {
+    }
 
     /*!
      * Sets SO_BROADCAST socket option.
@@ -140,7 +142,6 @@ public:
         int on = 1;
         s.setOption(SOL_SOCKET, SO_BROADCAST, on);
     }
-
 };
 
 }

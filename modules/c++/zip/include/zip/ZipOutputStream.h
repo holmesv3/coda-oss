@@ -23,10 +23,11 @@
 #ifndef __ZIP_ZIP_OUTPUT_STREAM_H__
 #define __ZIP_ZIP_OUTPUT_STREAM_H__
 
-#include <string>
-#include <zip.h>
-#include <sys/Conf.h>
 #include <io/OutputStream.h>
+#include <sys/Conf.h>
+#include <zip.h>
+
+#include <string>
 
 namespace zip
 {
@@ -35,7 +36,7 @@ namespace zip
  *  \brief Creates a zip file which can hold a variable amount of files
  *         in a user defined directory structure.
  */
-class ZipOutputStream: public io::OutputStream
+class ZipOutputStream : public io::OutputStream
 {
 public:
     /*
@@ -70,7 +71,7 @@ public:
      *  \brief Convenience function which will create, write, and close a file.
      *
      *  \inputPathname The path to the file that you want added to the zip.
-     *  \zipPathname The path and file name you want the inputPathname to 
+     *  \zipPathname The path and file name you want the inputPathname to
      *               appear as in the zip file.
      */
     void write(const std::string& inputPathname,

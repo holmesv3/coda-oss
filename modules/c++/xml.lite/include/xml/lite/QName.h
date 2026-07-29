@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,7 +24,7 @@
 #ifndef CODA_OSS_xml_lite_QName_h_INCLLUDED_
 #define CODA_OSS_xml_lite_QName_h_INCLLUDED_
 
- /*!
+/*!
  * \file QName.h
  * \brief A Qualified name (includes the namespace stuff)
  *
@@ -39,13 +39,13 @@
  *
  */
 
-#include <string>
-#include <ostream>
-
 #include <config/Exports.h>
 
-#include "sys/OS.h"
+#include <ostream>
+#include <string>
+
 #include "str/Manip.h"
+#include "sys/OS.h"
 
 namespace xml
 {
@@ -205,9 +205,9 @@ public:
 };
 inline bool operator==(const QName& lhs, const QName& rhs)
 {
-    return (lhs.getName() == rhs.getName())
-        && (lhs.getAssociatedUri() == rhs.getAssociatedUri())
-        && (lhs.getPrefix() == rhs.getPrefix());
+    return (lhs.getName() == rhs.getName()) &&
+            (lhs.getAssociatedUri() == rhs.getAssociatedUri()) &&
+            (lhs.getPrefix() == rhs.getPrefix());
 }
 inline bool operator!=(const QName& lhs, const QName& rhs)
 {
@@ -216,22 +216,22 @@ inline bool operator!=(const QName& lhs, const QName& rhs)
 
 namespace literals  // c.f. std::literals
 {
-    // This might be overkill, in part because we don't deal with a lot of literal QNames or URLs.
-    // But it's interesting example code, and hidden in a "literals" namespace; be cautious
-    // about extensive use outside of test code.
+// This might be overkill, in part because we don't deal with a lot of literal
+// QNames or URLs. But it's interesting example code, and hidden in a "literals"
+// namespace; be cautious about extensive use outside of test code.
 
-    // https://en.cppreference.com/w/cpp/language/user_literal
-    inline xml::lite::Uri operator"" _u(const char* str, std::size_t len)
-    {
-        // https://en.cppreference.com/w/cpp/string/basic_string/operator%22%22s
-        return xml::lite::Uri(std::string(str, len));
-    }
-    // https://en.cppreference.com/w/cpp/language/user_literal
-    inline xml::lite::QName operator"" _q(const char* str, std::size_t len)
-    {
-        // https://en.cppreference.com/w/cpp/string/basic_string/operator%22%22s
-        return xml::lite::QName(std::string(str, len));
-    }
+// https://en.cppreference.com/w/cpp/language/user_literal
+inline xml::lite::Uri operator"" _u(const char* str, std::size_t len)
+{
+    // https://en.cppreference.com/w/cpp/string/basic_string/operator%22%22s
+    return xml::lite::Uri(std::string(str, len));
+}
+// https://en.cppreference.com/w/cpp/language/user_literal
+inline xml::lite::QName operator"" _q(const char* str, std::size_t len)
+{
+    // https://en.cppreference.com/w/cpp/string/basic_string/operator%22%22s
+    return xml::lite::QName(std::string(str, len));
+}
 }
 
 }

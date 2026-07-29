@@ -21,8 +21,8 @@
  */
 
 #include <sys/LocalDateTime.h>
-#include <sys/UTCDateTime.h>
 #include <sys/OS.h>
+#include <sys/UTCDateTime.h>
 
 #include "TestCase.h"
 
@@ -154,7 +154,9 @@ TEST_CASE(testParameterizedConstructor)
     TEST_ASSERT_EQ(u5.getSecond(), u4.getSecond());
 }
 
-static void testDateTimeDetails_(const std::string& testName, const tm& result, const sys::DateTime& dt)
+static void testDateTimeDetails_(const std::string& testName,
+                                 const tm& result,
+                                 const sys::DateTime& dt)
 {
     const auto ad = result.tm_year + 1900;  // "years since 1900"
     // this might break in 2038: https://en.wikipedia.org/wiki/Year_2038_problem
@@ -196,9 +198,7 @@ TEST_CASE(testGetTimeInMillis)
     TEST_ASSERT_LESSER_EQ(result, far_into_the_future);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testDefaultConstructor);
-    TEST_CHECK(testParameterizedConstructor);
-    TEST_CHECK(testDateTimeDetails);
-    TEST_CHECK(testGetTimeInMillis);
-)
+TEST_MAIN(TEST_CHECK(testDefaultConstructor);
+          TEST_CHECK(testParameterizedConstructor);
+          TEST_CHECK(testDateTimeDetails);
+          TEST_CHECK(testGetTimeInMillis);)

@@ -54,9 +54,12 @@ inline void ScratchMemory::put<sys::ubyte>(const std::string& key,
         oss << "Scratch memory space was already reserved for " << key;
         throw except::Exception(Ctxt(oss));
     }
-    mSegments.insert(
-            iterSeg,
-            std::make_pair(key, Segment(numElements, numBuffers, alignment, segmentOffset)));
+    mSegments.insert(iterSeg,
+                     std::make_pair(key,
+                                    Segment(numElements,
+                                            numBuffers,
+                                            alignment,
+                                            segmentOffset)));
 
     mKeyOrder.push_back(key);
 }
@@ -89,8 +92,8 @@ BufferView<const T> ScratchMemory::getBufferView(const std::string& key,
                                                  size_t indexBuffer) const
 {
     const Segment& segment = lookupSegment(key, indexBuffer);
-    return BufferView<const T>(
-            reinterpret_cast<const T*>(segment.buffers[indexBuffer]),
-            segment.numBytes);
+    return BufferView<const T>(reinterpret_cast<const T*>(
+                                       segment.buffers[indexBuffer]),
+                               segment.numBytes);
 }
 }

@@ -33,10 +33,9 @@ TEST_CASE(testNaNsAreNotEqual)
     // the caller is testing against a known value, so if this comes up
     // NaN oddness is already expected.
     TEST_ASSERT_NOT_EQ(std::numeric_limits<float>::quiet_NaN(),
-        std::numeric_limits<float>::quiet_NaN());
+                       std::numeric_limits<float>::quiet_NaN());
 
     TEST_ASSERT_NOT_EQ(std::numeric_limits<float>::quiet_NaN(), 3.4);
-
 }
 
 TEST_CASE(testNaNIsNotAlmostEqualToNumber)
@@ -50,13 +49,13 @@ TEST_CASE(testNaNIsNotAlmostEqualToNumber)
     TEST_ASSERT_ALMOST_EQ_EPS(std::numeric_limits<float>::quiet_NaN(),
                 5, 3);
     */
-    TEST_ASSERT_TRUE(true); // need to use hidden "testName" parameter
+    TEST_ASSERT_TRUE(true);  // need to use hidden "testName" parameter
 }
 
 TEST_CASE(testIsNaN)
 {
     TEST_ASSERT_TRUE(IS_NAN(std::numeric_limits<float>::quiet_NaN()));
-    int five = 5; // "conditional expression is constant"
+    int five = 5;  // "conditional expression is constant"
     TEST_ASSERT_FALSE(IS_NAN(five));
     TEST_ASSERT_FALSE(IS_NAN(std::string("test string")));
 }
@@ -87,14 +86,13 @@ TEST_CASE(test_ssize)
 
     // Since C++20 the signed size (std::ssize) is available
     auto i = std::ssize(v);
-    for (--i; i != -1; --i) { }
+    for (--i; i != -1; --i)
+    {
+    }
     TEST_ASSERT_EQ(i, -1);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testNaNsAreNotEqual);
-    TEST_CHECK(testNaNIsNotAlmostEqualToNumber);
-    TEST_CHECK(testIsNaN);
-    TEST_CHECK(test_ssize);
-    )
-
+TEST_MAIN(TEST_CHECK(testNaNsAreNotEqual);
+          TEST_CHECK(testNaNIsNotAlmostEqualToNumber);
+          TEST_CHECK(testIsNaN);
+          TEST_CHECK(test_ssize);)

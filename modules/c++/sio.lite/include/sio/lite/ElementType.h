@@ -23,8 +23,8 @@
 #ifndef __SIO_LITE_ELEMENT_TYPE_H__
 #define __SIO_LITE_ELEMENT_TYPE_H__
 
-#include <sys/Conf.h>
 #include <sio/lite/FileHeader.h>
+#include <sys/Conf.h>
 
 namespace sio
 {
@@ -66,12 +66,12 @@ struct ElementType<double>
     static const size_t Type = sio::lite::FileHeader::FLOAT;
 };
 template <>
-struct ElementType<std::complex<float> >
+struct ElementType<std::complex<float>>
 {
     static const size_t Type = sio::lite::FileHeader::COMPLEX_FLOAT;
 };
 template <>
-struct ElementType<std::complex<double> >
+struct ElementType<std::complex<double>>
 {
     static const size_t Type = sio::lite::FileHeader::COMPLEX_FLOAT;
 };

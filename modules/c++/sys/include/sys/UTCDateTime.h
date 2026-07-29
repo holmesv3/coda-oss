@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,12 +23,12 @@
 #ifndef __SYS_UTC_DATE_TIME_H__
 #define __SYS_UTC_DATE_TIME_H__
 
-#include <ostream>
+#include <sys/DateTime.h>
+
 #include <istream>
+#include <ostream>
 
 #include "config/Exports.h"
-
-#include <sys/DateTime.h>
 
 namespace sys
 {
@@ -63,8 +63,8 @@ public:
     /*!
      *  Construct with date and time values.
      */
-    UTCDateTime(int year, int month, int day, 
-            int hour, int minute, double second);
+    UTCDateTime(
+            int year, int month, int day, int hour, int minute, double second);
     /*!
      *  Construct with time in milliseconds.
      */

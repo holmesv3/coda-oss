@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __SYS_WIN32_OS_H__
 #define __SYS_WIN32_OS_H__
 
@@ -68,8 +67,7 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
      *  Determine the username
      *  \return The username
      */
-    //virtual std::string getUsername() const;
-
+    // virtual std::string getUsername() const;
 
     /*!
      *  Does this path exist?
@@ -126,7 +124,6 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
      *  \return true if the directory was changed, otherwise false.
      */
     virtual bool changeDirectory(const std::string& path) const;
-
 
     virtual Pid_T getProcessId() const;
 
@@ -249,10 +246,10 @@ struct CODA_OSS_API OSWin32 final : public AbstractOS
     virtual void getMemInfo(size_t& totalPhysMem, size_t& freePhysMem) const;
 
     /*!
-    *  Get the absolute path to the current executable
-    */
+     *  Get the absolute path to the current executable
+     */
     virtual std::string getCurrentExecutable(
-        const std::string& argvPathname = "") const;
+            const std::string& argvPathname = "") const;
 
 protected:
     /*!

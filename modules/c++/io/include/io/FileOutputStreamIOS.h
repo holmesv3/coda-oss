@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,25 +24,26 @@
 #define __IO_FILE_OUTPUT_STREAM_IOS_H__
 
 #if defined(USE_IO_STREAMS)
-#include <ios>
-#include <iostream>
-#include <fstream>
-#include "io/SeekableStreams.h"
 #include <import/except.h>
 #include <import/sys.h>
 
+#include <fstream>
+#include <ios>
+#include <iostream>
+
+#include "io/SeekableStreams.h"
 
 /*!
  *  \file FileOutputStreamIOS.h
  *  \brief The OutputStream representation of a file
  *
  *  The file contains the representation of an input stream
- *  from a file.  It mimics the Java io package API.  These classes are deprecated,
+ *  from a file.  It mimics the Java io package API.  These classes are
+ * deprecated,
  */
 
 namespace io
 {
-
 
 /*!
  *  \class FileOutputStreamOS
@@ -57,14 +58,14 @@ struct FileOutputStreamIOS : public OutputStream
 {
     FileOutputStreamIOS() = default;
 
-
     /*!
      *  Alternate Constructor.  Takes an output file and a mode
      *  \param outputFile The file name
      *  \param creationFlags see sys::File
      */
     FileOutputStreamIOS(const std::string& outputFile,
-                       int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
+                        int creationFlags = sys::File::CREATE |
+                                sys::File::TRUNCATE);
 
     /*!
      *  Alternate Constructor.  Takes an output file and a mode
@@ -72,12 +73,14 @@ struct FileOutputStreamIOS : public OutputStream
      *  \param creationFlags see sys::File
      */
     FileOutputStreamIOS(const char* outputFile,
-                       int creationFlags = sys::File::CREATE | sys::File::TRUNCATE);
+                        int creationFlags = sys::File::CREATE |
+                                sys::File::TRUNCATE);
 
     //! Deconstructor, closes the file stream.
     virtual ~FileOutputStreamIOS()
     {
-        if (isOpen()) close();
+        if (isOpen())
+            close();
     }
 
     /*!
@@ -91,7 +94,7 @@ struct FileOutputStreamIOS : public OutputStream
      *  \param file The file to open
      *  \param mode The mode
      */
-    virtual void open(const char *file,
+    virtual void open(const char* file,
                       std::ios::openmode mode = std::ios::out);
 
     using OutputStream::write;
@@ -121,9 +124,9 @@ struct FileOutputStreamIOS : public OutputStream
     {
         mFStream.flush();
     }
-    
+
     sys::Off_T seek(sys::Off_T offset, io::Seekable::Whence whence);
-    
+
     sys::Off_T tell();
 
 protected:

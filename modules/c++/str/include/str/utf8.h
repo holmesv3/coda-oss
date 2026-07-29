@@ -24,12 +24,12 @@
 #define CODA_OSS_str_utf8_h_INCLUDED_
 #pragma once
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #include <cstddef>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 //*************************************************************************
 //*************************************************************************
@@ -125,7 +125,8 @@ inline constexpr bool is_code_point_valid(u32 cp)
 }
 
 template <typename octet_iterator>
-inline /*constexpr*/ typename std::iterator_traits<octet_iterator>::difference_type
+inline /*constexpr*/ typename std::iterator_traits<
+        octet_iterator>::difference_type
 sequence_length(octet_iterator lead_it)
 {
     uint8_t lead = mask8(*lead_it);
@@ -142,7 +143,8 @@ sequence_length(octet_iterator lead_it)
 }
 
 template <typename octet_difference_type>
-inline /*constexpr*/ bool is_overlong_sequence(uint32_t cp, octet_difference_type length)
+inline /*constexpr*/ bool is_overlong_sequence(uint32_t cp,
+                                               octet_difference_type length)
 {
     if (cp < 0x80)
     {
@@ -186,9 +188,12 @@ utf_error increase_safely(octet_iterator& it, octet_iterator end)
     return UTF8_OK;
 }
 
-#define UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(IT, END) {  \
+#define UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(IT, END) \
+    {                                                  \
         utf_error ret = increase_safely(IT, END);      \
-        if (ret != UTF8_OK)   return ret; }
+        if (ret != UTF8_OK)                            \
+            return ret;                                \
+    }
 
 /// get_sequence_x functions decode utf-8 sequences of the length x
 template <typename octet_iterator>
@@ -254,7 +259,8 @@ utf_error get_sequence_4(octet_iterator& it,
 
     UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(it, end)
 
-    code_point = ((code_point << 18) & 0x1fffff) + ((mask8(*it) << 12) & 0x3ffff);
+    code_point =
+            ((code_point << 18) & 0x1fffff) + ((mask8(*it) << 12) & 0x3ffff);
 
     UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(it, end)
 
@@ -337,10 +343,6 @@ inline utf_error validate_next(octet_iterator& it, octet_iterator end)
 
 }  // namespace impl
 
-
-
-
-
 /// The library API - functions intended to be called by the users
 
 // Byte order mark
@@ -352,8 +354,7 @@ octet_iterator find_invalid(octet_iterator start, octet_iterator end)
     octet_iterator result = start;
     while (result != end)
     {
-        utf8::impl::utf_error err_code =
-                utf8::impl::validate_next(result, end);
+        utf8::impl::utf_error err_code = utf8::impl::validate_next(result, end);
         if (err_code != impl::UTF8_OK)
             return result;
     }
@@ -486,8 +487,7 @@ output_iterator replace_invalid(octet_iterator start,
     while (start != end)
     {
         octet_iterator sequence_start = start;
-        impl::utf_error err_code =
-                utf8::impl::validate_next(start, end);
+        impl::utf_error err_code = utf8::impl::validate_next(start, end);
         switch (err_code)
         {
         case impl::UTF8_OK:
@@ -609,8 +609,7 @@ octet_iterator utf16to8(u16bit_iterator start,
             {
                 uint32_t trail_surrogate = utf8::impl::mask16(*start++);
                 if (utf8::impl::is_trail_surrogate(trail_surrogate))
-                    cp = (cp << 10) + trail_surrogate +
-                            impl::SURROGATE_OFFSET;
+                    cp = (cp << 10) + trail_surrogate + impl::SURROGATE_OFFSET;
                 else
                     throw invalid_utf16(static_cast<uint16_t>(trail_surrogate));
             }
@@ -636,8 +635,7 @@ u16bit_iterator utf8to16(octet_iterator start,
         uint32_t cp = utf8::next(start, end);
         if (cp > 0xffff)
         {  // make a surrogate pair
-            *result++ =
-                    static_cast<uint16_t>((cp >> 10) + impl::LEAD_OFFSET);
+            *result++ = static_cast<uint16_t>((cp >> 10) + impl::LEAD_OFFSET);
             *result++ = static_cast<uint16_t>((cp & 0x3ff) +
                                               impl::TRAIL_SURROGATE_MIN);
         }
@@ -669,13 +667,16 @@ u32bit_iterator utf8to32(octet_iterator start,
     return result;
 }
 
-// warning C4996: '...': warning STL4015: The std::iterator class template (used as a base class to provide typedefs)
-// is deprecated in C++17. (The <iterator> header is NOT deprecated.) The C++ Standard has never required
-// user-defined iterators to derive from std::iterator. To fix this warning, stop deriving from std::iterator and
-// start providing publicly accessible typedefs named iterator_category, value_type, difference_type, pointer, and reference.
-// Note that value_type is required to be non-const, even for constant iterators. You can define
-// _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING or
-// _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received this warning.
+// warning C4996: '...': warning STL4015: The std::iterator class template (used
+// as a base class to provide typedefs) is deprecated in C++17. (The <iterator>
+// header is NOT deprecated.) The C++ Standard has never required user-defined
+// iterators to derive from std::iterator. To fix this warning, stop deriving
+// from std::iterator and start providing publicly accessible typedefs named
+// iterator_category, value_type, difference_type, pointer, and reference. Note
+// that value_type is required to be non-const, even for constant iterators. You
+// can define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING or
+// _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received
+// this warning.
 //
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0174r2.html#2.1
 

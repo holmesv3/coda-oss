@@ -20,7 +20,6 @@
  *
  */
 
-
 #ifndef __SYS_THREAD_PTHREAD_THREAD_H__
 #define __SYS_THREAD_PTHREAD_THREAD_H__
 
@@ -28,10 +27,10 @@
 
 #if CODA_OSS_POSIX_SOURCE
 
-#include <sched.h>
 #include <pthread.h>
-#include "sys/ThreadInterface.h"
+#include <sched.h>
 
+#include "sys/ThreadInterface.h"
 
 /*!
  *  \file ThreadPosix.h
@@ -43,14 +42,14 @@
 namespace sys
 {
 
-    /*!
-     *  Function returns a string identifier for the current
-     *  thread.
-     */
-    inline long getThreadID()
-    {
-      return static_cast<long>(pthread_self());
-    }
+/*!
+ *  Function returns a string identifier for the current
+ *  thread.
+ */
+inline long getThreadID()
+{
+    return static_cast<long>(pthread_self());
+}
 
 /*!
  *  \class ThreadPosix
@@ -62,33 +61,34 @@ namespace sys
 struct ThreadPosix : public ThreadInterface
 {
     /*!
-    *  Default constructor.  Allows ThreadInterface to bind this to target
-    *  \param name  The name
-    */
-    ThreadPosix(const std::string& name = "") :
-            ThreadInterface(name)
-    {}
+     *  Default constructor.  Allows ThreadInterface to bind this to target
+     *  \param name  The name
+     */
+    ThreadPosix(const std::string& name = "") : ThreadInterface(name)
+    {
+    }
     /*!
      *  Alternate constructor
      *  \param target  What to run
-    *  \param name  The name
+     *  \param name  The name
      */
-    ThreadPosix(Runnable *target,
-                const std::string& name = "") :
-            ThreadInterface(target, name)
-    {}
+    ThreadPosix(Runnable* target, const std::string& name = "") :
+        ThreadInterface(target, name)
+    {
+    }
 
-
-    ThreadPosix(Runnable *target,
+    ThreadPosix(Runnable* target,
                 const std::string& name,
                 int level,
                 int priority) :
-            ThreadInterface(target, name, level, priority)
-    {}
+        ThreadInterface(target, name, level, priority)
+    {
+    }
 
     //! Destructor
     virtual ~ThreadPosix()
-    {}
+    {
+    }
 
     ThreadPosix(const ThreadPosix&) = delete;
     ThreadPosix& operator=(const ThreadPosix&) = delete;
@@ -98,14 +98,12 @@ struct ThreadPosix : public ThreadInterface
      */
     virtual void start() override;
 
-
     /*!
      *  Run function defined and bound to pthread_create.
      *  This should not be invoked directly
      *  \param v The start arg
      */
-    static void *__start(void *v);
-
+    static void* __start(void* v);
 
     /*!
      *  Calls the native destroy stuff
@@ -144,7 +142,6 @@ struct ThreadPosix : public ThreadInterface
 
 private:
     pthread_t mNative{};
-
 };
 
 }

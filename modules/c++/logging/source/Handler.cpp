@@ -40,7 +40,7 @@ Handler::Handler(LogLevel level)
 void Handler::close()
 {
     // delete if necessary
-    if (mFormatter != &mDefaultFormatter) // "delete NULL" is ok
+    if (mFormatter != &mDefaultFormatter)  // "delete NULL" is ok
     {
         delete mFormatter;
         mFormatter = nullptr;
@@ -57,7 +57,7 @@ bool Handler::handle(const LogRecord* record)
     bool rv = false;
     if (filter(record))
     {
-        //acquire lock
+        // acquire lock
         mt::CriticalSection<decltype(mHandlerLock)> lock(&mHandlerLock);
         try
         {
@@ -66,15 +66,15 @@ bool Handler::handle(const LogRecord* record)
         }
         catch (const except::Throwable&)
         {
-            //TODO do something here?
-            //std::cout << t.getTrace() << std::endl;
+            // TODO do something here?
+            // std::cout << t.getTrace() << std::endl;
         }
     }
     return rv;
 }
 void Handler::setFormatter(Formatter* formatter)
 {
-    //check if current formatter
+    // check if current formatter
     if (mFormatter != formatter)
     {
         // delete old formatter

@@ -23,12 +23,12 @@
 #ifndef __TYPES_PAGE_ROW_COL_H__
 #define __TYPES_PAGE_ROW_COL_H__
 
-#include <cstddef>
+#include <types/RowCol.h>
+
 #include <cmath>
+#include <cstddef>
 #include <cstdlib>
 #include <limits>
-
-#include <types/RowCol.h>
 
 namespace types
 {
@@ -40,7 +40,7 @@ namespace types
  *  accessing page-row-col triples that just does what you want.
  *
  */
-template<typename T>
+template <typename T>
 struct PageRowCol
 {
     T page;
@@ -52,13 +52,17 @@ struct PageRowCol
     // especially when doing scalar operations that might otherwise
     // create ambiguities
     PageRowCol() :
-        page(static_cast<T>(0.0)), row(static_cast<T>(0.0)), col(static_cast<T>(0.0)) {}
+        page(static_cast<T>(0.0)),
+        row(static_cast<T>(0.0)),
+        col(static_cast<T>(0.0))
+    {
+    }
 
+    PageRowCol(T p, T r, T c) : page(p), row(r), col(c)
+    {
+    }
 
-    PageRowCol(T p, T r, T c) :
-        page(p), row(r), col(c) {}
-
-    template<typename Other_T>
+    template <typename Other_T>
     explicit PageRowCol(const PageRowCol<Other_T>& p)
     {
         page = static_cast<T>(p.page);
@@ -66,7 +70,7 @@ struct PageRowCol
         col = static_cast<T>(p.col);
     }
 
-    template<typename Other_T1, typename Other_T2>
+    template <typename Other_T1, typename Other_T2>
     PageRowCol(Other_T1 p, const RowCol<Other_T2>& rc)
     {
         page = static_cast<T>(p);
@@ -74,19 +78,19 @@ struct PageRowCol
         col = static_cast<T>(rc.col);
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol& operator=(const PageRowCol<Other_T>& p)
     {
         if (this != (PageRowCol*)&p)
         {
-	    page = static_cast<T>(p.page);
-	    row = static_cast<T>(p.row);
-	    col = static_cast<T>(p.col);
+            page = static_cast<T>(p.page);
+            row = static_cast<T>(p.row);
+            col = static_cast<T>(p.col);
         }
         return *this;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol& operator+=(const PageRowCol<Other_T>& p)
     {
         page += static_cast<T>(p.page);
@@ -95,14 +99,14 @@ struct PageRowCol
         return *this;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol operator+(const PageRowCol<Other_T>& p) const
     {
         PageRowCol copy(*this);
         return copy += p;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol& operator*=(const PageRowCol<Other_T>& p)
     {
         page *= static_cast<T>(p.page);
@@ -111,14 +115,14 @@ struct PageRowCol
         return *this;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol operator*(const PageRowCol<Other_T>& p) const
     {
         PageRowCol copy(*this);
         return copy *= p;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol& operator-=(const PageRowCol<Other_T>& p)
     {
         page -= static_cast<T>(p.page);
@@ -127,14 +131,14 @@ struct PageRowCol
         return *this;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol operator-(const PageRowCol<Other_T>& p) const
     {
         PageRowCol copy(*this);
         return copy -= p;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol& operator/=(const PageRowCol<Other_T>& p)
     {
         page /= static_cast<T>(p.page);
@@ -143,7 +147,7 @@ struct PageRowCol
         return *this;
     }
 
-    template<typename Other_T>
+    template <typename Other_T>
     PageRowCol operator/(const PageRowCol<Other_T>& p) const
     {
         PageRowCol copy(*this);
@@ -216,10 +220,9 @@ struct PageRowCol
         return page == p.page && row == p.row && col == p.col;
     }
 
-
     bool operator!=(const PageRowCol<T>& p) const
     {
-        return ! (PageRowCol::operator==(p));
+        return !(PageRowCol::operator==(p));
     }
 
     T volume() const
@@ -250,17 +253,15 @@ template <>
 inline bool PageRowCol<float>::operator==(const PageRowCol<float>& p) const
 {
     constexpr auto eps = std::numeric_limits<float>::epsilon();
-    return std::abs(page - p.page) < eps &&
-           std::abs(row - p.row) < eps &&
-           std::abs(col - p.col) < eps;
+    return std::abs(page - p.page) < eps && std::abs(row - p.row) < eps &&
+            std::abs(col - p.col) < eps;
 }
 template <>
 inline bool PageRowCol<double>::operator==(const PageRowCol<double>& p) const
 {
     constexpr auto eps = std::numeric_limits<double>::epsilon();
-    return std::abs(page - p.page) < eps &&
-           std::abs(row - p.row) < eps &&
-           std::abs(col - p.col) < eps;
+    return std::abs(page - p.page) < eps && std::abs(row - p.row) < eps &&
+            std::abs(col - p.col) < eps;
 }
 }
 

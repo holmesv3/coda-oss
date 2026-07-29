@@ -20,17 +20,16 @@
  *
  */
 
-
 #ifndef __MT_CPU_AFFINITY_THREAD_INITIALIZER_LINUX_H__
 #define __MT_CPU_AFFINITY_THREAD_INITIALIZER_LINUX_H__
 
 #if !defined(__APPLE_CC__)
 #if defined(__linux) || defined(__linux__)
 
-#include <memory>
-
-#include <sys/ScopedCPUAffinityUnix.h>
 #include <mt/AbstractCPUAffinityThreadInitializer.h>
+#include <sys/ScopedCPUAffinityUnix.h>
+
+#include <memory>
 
 namespace mt
 {
@@ -38,11 +37,10 @@ namespace mt
  * \class CPUAffinityThreadInitializerLinux
  * \brief Linux-specific setting of the CPU affinity of a thread
  */
-class CPUAffinityThreadInitializerLinux :
-        public AbstractCPUAffinityThreadInitializer
+class CPUAffinityThreadInitializerLinux
+    : public AbstractCPUAffinityThreadInitializer
 {
 public:
-
     /*!
      * Constructor
      *

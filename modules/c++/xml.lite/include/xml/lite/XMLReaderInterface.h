@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,9 +24,9 @@
 #ifndef CODA_OSS_xml_lite_XMLReaderInterface_h_INCLUDED_
 #define CODA_OSS_xml_lite_XMLReaderInterface_h_INCLUDED_
 
-#include <typeinfo>
-
 #include <config/Exports.h>
+
+#include <typeinfo>
 
 #include "XMLException.h"
 
@@ -37,7 +37,6 @@ namespace lite
 class CODA_OSS_API XMLReaderInterface : public io::OutputStream
 {
 public:
-
     //!  Constructor
     XMLReaderInterface()
     {
@@ -68,7 +67,7 @@ public:
      *  \param is The input stream to read from
      *  \param size The number of bytes to read
      */
-    void parse(io::InputStream & is, int size = io::InputStream::IS_END);
+    void parse(io::InputStream& is, int size = io::InputStream::IS_END);
 
     //! Method to create an xml reader
     virtual void create() = 0;

@@ -39,7 +39,7 @@ namespace mem
 // Thus, this class to help make the transition easier.
 // Using (very) sparingly!
 
-template<typename T>
+template <typename T>
 class AutoPtr final
 {
     std::unique_ptr<T> ptr_;
@@ -59,14 +59,15 @@ public:
     {
         *this = r;
     }
-    AutoPtr& operator=(const AutoPtr&) = delete; // can't change a "const" object
+    AutoPtr& operator=(const AutoPtr&) =
+            delete;  // can't change a "const" object
     AutoPtr(const AutoPtr&) = delete;
 
     ~AutoPtr() = default;
     AutoPtr(AutoPtr&&) = default;
     AutoPtr& operator=(AutoPtr&&) = default;
 
-    template<typename U>
+    template <typename U>
     AutoPtr& operator=(std::unique_ptr<U>&& p) noexcept
     {
         ptr_ = std::move(p);
@@ -78,23 +79,22 @@ public:
         *this = std::move(p);
     }
 
-    template<typename TAutoPtr> // std::auto_ptr can cause deprecated warnings
+    template <typename TAutoPtr>  // std::auto_ptr can cause deprecated warnings
     AutoPtr& assign(TAutoPtr p) noexcept
     {
         ptr_.reset(p.release());
         return *this;
     }
-    template<typename TAutoPtr> // std::auto_ptr can cause deprecated warnings
+    template <typename TAutoPtr>  // std::auto_ptr can cause deprecated warnings
     AutoPtr& operator=(TAutoPtr p) noexcept
     {
         return assign(p);
     }
-    template<typename TAutoPtr> // std::auto_ptr can cause deprecated warnings
+    template <typename TAutoPtr>  // std::auto_ptr can cause deprecated warnings
     AutoPtr(TAutoPtr p) noexcept
     {
         *this = assign(p);
     }
-
 
     T* get() const noexcept
     {
@@ -106,7 +106,7 @@ public:
         return ptr_.release();
     }
 
-    template<typename U>
+    template <typename U>
     void reset(U* p = nullptr) noexcept
     {
         ptr_.reset(p);
@@ -121,11 +121,16 @@ public:
         return get();
     }
 
-    operator std::unique_ptr<T>& () { return ptr_; }
-    operator const std::unique_ptr<T>& () const { return ptr_; }
-    
+    operator std::unique_ptr<T>&()
+    {
+        return ptr_;
+    }
+    operator const std::unique_ptr<T>&() const
+    {
+        return ptr_;
+    }
 };
 
-} // namespace mem
+}  // namespace mem
 
-#endif // CODA_OSS_mem_AutoPtr_h_INCLUDED_
+#endif  // CODA_OSS_mem_AutoPtr_h_INCLUDED_

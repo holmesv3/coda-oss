@@ -14,8 +14,8 @@
 #include <string>
 #include <vector>
 
-#include "sys/Path.h"
 #include "gsl/gsl.h"
+#include "sys/Path.h"
 
 namespace fs = sys::filesystem;
 
@@ -30,23 +30,30 @@ static inline std::string strerror_(int errnum)
 #endif
 }
 
-static inline std::string make_what(const char* curfile, const int lineNum, const std::string& msg)
+static inline std::string make_what(const char* curfile,
+                                    const int lineNum,
+                                    const std::string& msg)
 {
     std::ostringstream what;
     what << "ERROR: " << curfile << ", Line " << lineNum << ": " << msg;
     return what.str();
 }
-static inline std::string make_what(const char* curfile, const int lineNum, const std::ostringstream& msg)
+static inline std::string make_what(const char* curfile,
+                                    const int lineNum,
+                                    const std::ostringstream& msg)
 {
     return make_what(curfile, lineNum, msg.str());
 }
 // A macro for conveniently throwing errors.
-// Need "throw" to be visible, not hidden inside of a function, so that code-analysis tools can see it.
-#define CODA_OSS_sys_filesystem_THROW_ERR(MSG) throw std::runtime_error(make_what(__FILE__, __LINE__, MSG)) // TODO: std::filesystem_error
+// Need "throw" to be visible, not hidden inside of a function, so that
+// code-analysis tools can see it.
+#define CODA_OSS_sys_filesystem_THROW_ERR(MSG)   \
+    throw std::runtime_error(make_what(__FILE__, \
+                                       __LINE__, \
+                                       MSG))  // TODO: std::filesystem_error
 
 fs::path::string_type fs::path::to_native(const std::string& s_)
 {
-   
 #ifdef _WIN32
     return str::details::to_wstring(s_);
 #else
@@ -68,13 +75,16 @@ fs::path& fs::path::operator/=(const path& p)
 {
     // https://en.cppreference.com/w/cpp/filesystem/path/append
 
-    if (p.is_absolute()) // || (p.has_root_name() && p.root_name() != root_name())
+    if (p.is_absolute())  // || (p.has_root_name() && p.root_name() !=
+                          // root_name())
     {
-        p_ = p.native();  // "If p.is_absolute() ... replaces the current path with p ..."
+        p_ = p.native();  // "If p.is_absolute() ... replaces the current path
+                          // with p ..."
     }
     else
     {
-        // TODO: there is more to do here ... see http://en.cppreference.com/w/cpp/filesystem/path/append
+        // TODO: there is more to do here ... see
+        // http://en.cppreference.com/w/cpp/filesystem/path/append
         p_ = to_native(sys::Path::joinPaths(string(), p.string()));
     }
 
@@ -108,7 +118,7 @@ std::string fs::path::string() const
 
 fs::path fs::path::root_path() const
 {
-  return parent_path() / stem();
+    return parent_path() / stem();
 }
 
 fs::path fs::path::parent_path() const
@@ -140,14 +150,15 @@ fs::path fs::path::extension() const
     auto fn = filename().string();
     const auto dot = fn.find(".");
 
-    // "If ... filename() does not contain the . character, then empty path is returned."
+    // "If ... filename() does not contain the . character, then empty path is
+    // returned."
     if (dot == std::string::npos)
     {
         return fs::path();
     }
 
-    // "If the first character in the filename is a period, that period is ignored
-    // (a filename like '.profile' is not treated as an extension)"
+    // "If the first character in the filename is a period, that period is
+    // ignored (a filename like '.profile' is not treated as an extension)"
     if (dot == 0)
     {
         fn = fn.substr(1);
@@ -167,12 +178,15 @@ bool fs::path::is_absolute() const
 }
 bool fs::path::is_relative() const
 {
-    return !is_absolute();  // "... the other way round." http://en.cppreference.com/w/cpp/filesystem/path/is_absrel
+    return !is_absolute();  // "... the other way round."
+                            // http://en.cppreference.com/w/cpp/filesystem/path/is_absrel
 }
 
 fs::path fs::operator/(const fs::path& lhs, const fs::path& rhs)
 {
-    return fs::path(lhs) /= rhs;  // "... returns path(lhs) /= rhs." http://en.cppreference.com/w/cpp/filesystem/path/operator_slash
+    return fs::path(lhs) /=
+            rhs;  // "... returns path(lhs) /= rhs."
+                  // http://en.cppreference.com/w/cpp/filesystem/path/operator_slash
 }
 
 fs::path fs::absolute(const path& p)
@@ -184,18 +198,22 @@ fs::path fs::temp_directory_path()
 {
     // https://en.cppreference.com/w/cpp/filesystem/temp_directory_path
     //
-    // On POSIX systems, the path may be the one specified in the environment variables TMPDIR, TMP, TEMP, TEMPDIR, and, if none of them are
-    // specified, the path "/tmp" is returned.
+    // On POSIX systems, the path may be the one specified in the environment
+    // variables TMPDIR, TMP, TEMP, TEMPDIR, and, if none of them are specified,
+    // the path "/tmp" is returned.
     //
     // On Windows systems, the path is typically the one returned by GetTempPath
 #if defined(_WIN32)
 
     // https://msdn.microsoft.com/en-us/library/b0084kay.aspx
-    // "_WIN32 Defined as 1 when the compilation target is 32 - bit ARM, 64 - bit ARM, x86, or x64.Otherwise, undefined."
+    // "_WIN32 Defined as 1 when the compilation target is 32 - bit ARM, 64 -
+    // bit ARM, x86, or x64.Otherwise, undefined."
 
     // https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettemppatha
-    std::array<CHAR, MAX_PATH + 2> buf;  // "The maximum possible return value is MAX_PATH+1 (261)."
-    const auto result = GetTempPathA(static_cast<DWORD>(buf.size()), buf.data());
+    std::array<CHAR, MAX_PATH + 2>
+            buf;  // "The maximum possible return value is MAX_PATH+1 (261)."
+    const auto result =
+            GetTempPathA(static_cast<DWORD>(buf.size()), buf.data());
     if (result == 0)  // "If the function fails, the return value is zero"
     {
         CODA_OSS_sys_filesystem_THROW_ERR("GetTempPathA() failed.");
@@ -240,7 +258,8 @@ bool fs::create_directory(const path& p_)
             CODA_OSS_sys_filesystem_THROW_ERR(ss.str());
         }
 
-        // If we got here, the path exists and is a directory, which is what we want
+        // If we got here, the path exists and is a directory, which is what we
+        // want
     }
     return created;
 }
@@ -267,7 +286,8 @@ bool fs::remove(const path& p_)
 {
     // https://en.cppreference.com/w/cpp/io/c/remove
     const auto p = p_.string();
-    return ::remove(p.c_str()) == 0;  // "0 upon success or non-zero value on error."
+    return ::remove(p.c_str()) ==
+            0;  // "0 upon success or non-zero value on error."
 }
 
 fs::path fs::current_path()
@@ -290,12 +310,13 @@ fs::path fs::current_path()
 std::uintmax_t fs::file_size(const fs::path& p)
 {
     const sys::Path path(p.string());
-    return gsl::narrow <std::uintmax_t>(path.length());
+    return gsl::narrow<std::uintmax_t>(path.length());
 }
 
 bool fs::details::Equals(const path& lhs, const path& rhs) noexcept
 {
-    return sys::Path::normalizePath(lhs.string()) == sys::Path::normalizePath(rhs.string());
+    return sys::Path::normalizePath(lhs.string()) ==
+            sys::Path::normalizePath(rhs.string());
 }
 
 std::ostream& fs::details::Ostream(std::ostream& os, const path& p)

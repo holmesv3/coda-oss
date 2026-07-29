@@ -20,19 +20,19 @@
  *
  */
 
-#include <tuple> // std::ignore
-#include <std/span>
-
-#include <types/Complex.h>
 #include <config/compiler_extensions.h>
 #include <import/str.h>
+#include <types/Complex.h>
+
+#include <std/span>
+#include <tuple>  // std::ignore
 
 #include "TestCase.h"
 
 TEST_CASE(testTrim)
 {
     std::string s = "  test   ";
-    str::trim( s);
+    str::trim(s);
     TEST_ASSERT_EQ(s, "test");
 }
 
@@ -40,19 +40,22 @@ TEST_CASE(testData)
 {
     std::string s;
     // https://en.cppreference.com/w/cpp/string/basic_string/resize
-    s.resize(3); // "Resizes the string to contain count characters." 
-    
-    CODA_OSS_disable_warning_push
-    #if _MSC_VER
-    #pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. ...
-    #endif
+    s.resize(3);  // "Resizes the string to contain count characters."
 
-    // https://en.cppreference.com/w/cpp/string/basic_string/data
-    // "Modifying the past-the-end null terminator stored at data()+size() to any value other than CharT() has undefined behavior."
-    std::ignore = strcpy(str::data(s), "abc"); 
-    
-    CODA_OSS_disable_warning_pop
-    TEST_ASSERT_EQ(s, "abc");
+    CODA_OSS_disable_warning_push
+#if _MSC_VER
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': This function or variable may be unsafe. ...
+#endif
+
+            // https://en.cppreference.com/w/cpp/string/basic_string/data
+            // "Modifying the past-the-end null terminator stored at
+            // data()+size() to any value other than CharT() has undefined
+            // behavior."
+                    std::ignore = strcpy(str::data(s), "abc");
+
+    CODA_OSS_disable_warning_pop TEST_ASSERT_EQ(s, "abc");
 }
 
 TEST_CASE(testUpper)
@@ -60,35 +63,40 @@ TEST_CASE(testUpper)
     const std::string s_ = "test-something1";
     std::string s = s_;
     TEST_ASSERT(str::eq(s, "TEST-SOMETHING1"));
-    str::upper( s);
+    str::upper(s);
     TEST_ASSERT_EQ(s, "TEST-SOMETHING1");
 
-    //#if _WIN32
-    //s = "<×àa`öo\"øo/þb÷>";
-    //str::w1252_upper(s);
-    //TEST_ASSERT_EQ(s, "<×ÀA`ÖO\"ØO/ÞB÷>");
-    //#endif
+    // #if _WIN32
+    // s = "<×àa`öo\"øo/þb÷>";
+    // str::w1252_upper(s);
+    // TEST_ASSERT_EQ(s, "<×ÀA`ÖO\"ØO/ÞB÷>");
+    // #endif
 }
 
 TEST_CASE(test_toupper)
 {
-    for (uint16_t i = 0x20; i <= 0xff; i++) // uint16_t to avoid wrap-around
+    for (uint16_t i = 0x20; i <= 0xff; i++)  // uint16_t to avoid wrap-around
     {
         const auto w1252 = static_cast<str::Windows1252_T>(i);
         const auto w1252_upper = str::to_w1252_upper(w1252);
 
-        const auto w1252_lower = w1252 == w1252_upper ? w1252 : str::to_w1252_lower(w1252_upper); // round-trip
-        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252), static_cast<uint8_t>(w1252_lower));
+        const auto w1252_lower = w1252 == w1252_upper
+                ? w1252
+                : str::to_w1252_lower(w1252_upper);  // round-trip
+        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252),
+                       static_cast<uint8_t>(w1252_lower));
 
-        if (i <= 0x7f) // ASCII
+        if (i <= 0x7f)  // ASCII
         {
             const auto ch = static_cast<char>(i);
             const auto upper = toupper(ch);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(upper), static_cast<uint8_t>(w1252_upper));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(upper),
+                           static_cast<uint8_t>(w1252_upper));
 
-            const auto lower = ch == upper ? ch : tolower(upper); // round-trip
+            const auto lower = ch == upper ? ch : tolower(upper);  // round-trip
             TEST_ASSERT_EQ(ch, lower);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(lower), static_cast<uint8_t>(w1252_lower));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(lower),
+                           static_cast<uint8_t>(w1252_lower));
         }
     }
 }
@@ -101,32 +109,37 @@ TEST_CASE(testLower)
     str::lower(s);
     TEST_ASSERT_EQ(s, "test1");
 
-    //#if _WIN32
-    //s = "[×ÀÖØÞ÷]";
-    //str::w1252_lower(s);
-    //TEST_ASSERT_EQ(s, "[×àöøþ÷]");
-    //#endif
+    // #if _WIN32
+    // s = "[×ÀÖØÞ÷]";
+    // str::w1252_lower(s);
+    // TEST_ASSERT_EQ(s, "[×àöøþ÷]");
+    // #endif
 }
 
 TEST_CASE(test_tolower)
 {
-    for (uint16_t i = 0x20; i <= 0xff; i++) // uint16_t to avoid wrap-around
+    for (uint16_t i = 0x20; i <= 0xff; i++)  // uint16_t to avoid wrap-around
     {
         const auto w1252 = static_cast<str::Windows1252_T>(i);
         const auto w1252_lower = str::to_w1252_lower(w1252);
 
-        const auto w1252_upper = w1252 == w1252_lower ? w1252 : str::to_w1252_upper(w1252_lower); // round-trip
-        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252), static_cast<uint8_t>(w1252_upper));
+        const auto w1252_upper = w1252 == w1252_lower
+                ? w1252
+                : str::to_w1252_upper(w1252_lower);  // round-trip
+        TEST_ASSERT_EQ(static_cast<uint8_t>(w1252),
+                       static_cast<uint8_t>(w1252_upper));
 
-        if (i <= 0x7f) // ASCII
+        if (i <= 0x7f)  // ASCII
         {
             const auto ch = static_cast<char>(i);
             const auto lower = tolower(ch);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(lower), static_cast<uint8_t>(w1252_lower));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(lower),
+                           static_cast<uint8_t>(w1252_lower));
 
-            const auto upper = ch == lower ? ch : toupper(lower); // round-trip
+            const auto upper = ch == lower ? ch : toupper(lower);  // round-trip
             TEST_ASSERT_EQ(ch, upper);
-            TEST_ASSERT_EQ(static_cast<uint8_t>(upper), static_cast<uint8_t>(w1252_upper));
+            TEST_ASSERT_EQ(static_cast<uint8_t>(upper),
+                           static_cast<uint8_t>(w1252_upper));
         }
     }
 }
@@ -239,7 +252,8 @@ TEST_CASE(testContainsOnly)
 {
     TEST_ASSERT(str::containsOnly("abc", "abcdefghijklmnopqrstuvwxyz"));
     TEST_ASSERT_FALSE(str::containsOnly("abc!", "abcdefghijklmnopqrstuvwxyz"));
-    TEST_ASSERT(str::containsOnly("some-cool-id", "-abcdefghijklmnopqrstuvwxyz"));
+    TEST_ASSERT(
+            str::containsOnly("some-cool-id", "-abcdefghijklmnopqrstuvwxyz"));
     TEST_ASSERT(str::containsOnly("\n\r\t ", " \t\n\r0123456789"));
     TEST_ASSERT(str::containsOnly("1-2-3", " \t\n\r0123456789-"));
 }
@@ -259,7 +273,8 @@ TEST_CASE(testRoundDouble)
     std::cout << nv << std::endl;
     std::cout << (nv - static_cast<int>(nv)) << std::endl;
     std::cout << std::numeric_limits<double>::epsilon() << std::endl;
-    TEST_ASSERT_EQ(static_cast<int>(std::ceil(nv)), static_cast<int>(numerator));
+    TEST_ASSERT_EQ(static_cast<int>(std::ceil(nv)),
+                   static_cast<int>(numerator));
 }
 
 TEST_CASE(testEscapeForXMLNoReplace)
@@ -323,15 +338,22 @@ TEST_CASE(test_toStringComplexShort)
     const std::string expected("(1,-2)");
 
     CODA_OSS_disable_warning_push
-    #if _MSC_VER
-    #pragma warning(disable: 4996) // '...': warning STL4037: The effect of instantiating the template std::complex for any type other than float, double, or long double is unspecified. You can define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this warning
-    #endif
-    const std::complex<short> std_cx_short(1, -2);
-    CODA_OSS_disable_warning_pop
-    auto actual = str::toString(std_cx_short);
+#if _MSC_VER
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the
+                 // template std::complex for any type other than float, double,
+                 // or long double is unspecified. You can define
+                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                 // this warning
+#endif
+            const std::complex<short>
+                    std_cx_short(1, -2);
+    CODA_OSS_disable_warning_pop auto actual = str::toString(std_cx_short);
     TEST_ASSERT_EQ(actual, expected);
 
-    const types::ComplexInteger<short> types_cx_short(std_cx_short);  // "copy constructor" or overload
+    const types::ComplexInteger<short> types_cx_short(
+            std_cx_short);  // "copy constructor" or overload
     actual = str::toString(types_cx_short);
     TEST_ASSERT_EQ(actual, expected);
 
@@ -344,21 +366,31 @@ TEST_CASE(test_toTypeComplexShort)
     const std::string strValue("(1,-2)");
 
     CODA_OSS_disable_warning_push
-    #if _MSC_VER
-    #pragma warning(disable: 4996) // '...': warning STL4037: The effect of instantiating the template std::complex for any type other than float, double, or long double is unspecified. You can define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this warning
-    #endif
-    const auto cx_actual = str::toType<std::complex<short>>(strValue);
-    CODA_OSS_disable_warning_pop
-    auto strActual = str::toString(cx_actual);
+#if _MSC_VER
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the
+                 // template std::complex for any type other than float, double,
+                 // or long double is unspecified. You can define
+                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                 // this warning
+#endif
+            const auto cx_actual = str::toType<std::complex<short>>(strValue);
+    CODA_OSS_disable_warning_pop auto strActual = str::toString(cx_actual);
     TEST_ASSERT_EQ(strActual, strValue);
 
     CODA_OSS_disable_warning_push
-    #if _MSC_VER
-    #pragma warning(disable: 4996) // '...': warning STL4037: The effect of instantiating the template std::complex for any type other than float, double, or long double is unspecified. You can define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this warning
-    #endif
-    auto zactual = str::toType<types::ComplexInteger<short>>(strValue);
-    CODA_OSS_disable_warning_pop
-    strActual = str::toString(zactual);
+#if _MSC_VER
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the
+                 // template std::complex for any type other than float, double,
+                 // or long double is unspecified. You can define
+                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
+                 // this warning
+#endif
+            auto zactual = str::toType<types::ComplexInteger<short>>(strValue);
+    CODA_OSS_disable_warning_pop strActual = str::toString(zactual);
     TEST_ASSERT_EQ(strActual, strValue);
 
     zactual = str::toType<types::Complex<int16_t>>(strValue);
@@ -366,33 +398,28 @@ TEST_CASE(test_toTypeComplexShort)
     TEST_ASSERT_EQ(strActual, strValue);
 }
 
-
-TEST_MAIN(
-    TEST_CHECK(testTrim);
-    TEST_CHECK(testData);
-    TEST_CHECK(testUpper);
-    TEST_CHECK(test_toupper);
-    TEST_CHECK(testLower);
-    TEST_CHECK(test_tolower);
-    TEST_CHECK(test_eq_ne);
-    TEST_CHECK(testReplace);
-    TEST_CHECK(testReplaceAllInfinite);
-    TEST_CHECK(testReplaceAllRecurse);
-    TEST_CHECK(testContains);
-    TEST_CHECK(testNotContains);
-    TEST_CHECK(testSplit);
-    TEST_CHECK(testIsAlpha);
-    TEST_CHECK(testIsAlphaSpace);
-    TEST_CHECK(testIsNumeric);
-    TEST_CHECK(testIsNumericSpace);
-    TEST_CHECK(testIsAlphanumeric);
-    TEST_CHECK(testIsWhitespace);
-    TEST_CHECK(testContainsOnly);
-    TEST_CHECK(testRoundDouble);
-    TEST_CHECK(testEscapeForXMLNoReplace);
-    TEST_CHECK(testEscapeForXMLKitchenSink);
-    TEST_CHECK(test_toStringComplexFloat);
-    TEST_CHECK(test_toTypeComplexFloat);
-    TEST_CHECK(test_toStringComplexShort);
-    TEST_CHECK(test_toTypeComplexShort);
-    )
+TEST_MAIN(TEST_CHECK(testTrim); TEST_CHECK(testData); TEST_CHECK(testUpper);
+          TEST_CHECK(test_toupper);
+          TEST_CHECK(testLower);
+          TEST_CHECK(test_tolower);
+          TEST_CHECK(test_eq_ne);
+          TEST_CHECK(testReplace);
+          TEST_CHECK(testReplaceAllInfinite);
+          TEST_CHECK(testReplaceAllRecurse);
+          TEST_CHECK(testContains);
+          TEST_CHECK(testNotContains);
+          TEST_CHECK(testSplit);
+          TEST_CHECK(testIsAlpha);
+          TEST_CHECK(testIsAlphaSpace);
+          TEST_CHECK(testIsNumeric);
+          TEST_CHECK(testIsNumericSpace);
+          TEST_CHECK(testIsAlphanumeric);
+          TEST_CHECK(testIsWhitespace);
+          TEST_CHECK(testContainsOnly);
+          TEST_CHECK(testRoundDouble);
+          TEST_CHECK(testEscapeForXMLNoReplace);
+          TEST_CHECK(testEscapeForXMLKitchenSink);
+          TEST_CHECK(test_toStringComplexFloat);
+          TEST_CHECK(test_toTypeComplexFloat);
+          TEST_CHECK(test_toStringComplexShort);
+          TEST_CHECK(test_toTypeComplexShort);)

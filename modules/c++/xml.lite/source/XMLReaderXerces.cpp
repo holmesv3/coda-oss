@@ -22,11 +22,11 @@
 #include "xml/lite/XMLReaderXerces.h"
 
 #include <assert.h>
+#include <mem/ScopedArray.h>
 
 #include <vector>
 
 #include "xml/lite/XMLReader.h"
-#include <mem/ScopedArray.h>
 
 #if defined(USE_XERCES)
 
@@ -40,7 +40,9 @@ const void* xml::lite::XMLReaderXerces::getWindows1252Encoding()
     return XMLUni::fgWin1252EncodingString;
 }
 
-static void parse(SAX2XMLReader& parser, const std::vector<sys::byte>& buffer, const XMLCh* pEncoding)
+static void parse(SAX2XMLReader& parser,
+                  const std::vector<sys::byte>& buffer,
+                  const XMLCh* pEncoding)
 {
     // Does not take ownership
     MemBufInputSource memBuffer((const unsigned char*)buffer.data(),
@@ -54,22 +56,25 @@ static void parse(SAX2XMLReader& parser, const std::vector<sys::byte>& buffer, c
     }
     parser.parse(memBuffer);
 }
-static void parse(SAX2XMLReader& parser, const std::vector<sys::byte>& buffer,
-    const XMLCh* pInitialEncoding, const XMLCh* pFallbackEncoding)
+static void parse(SAX2XMLReader& parser,
+                  const std::vector<sys::byte>& buffer,
+                  const XMLCh* pInitialEncoding,
+                  const XMLCh* pFallbackEncoding)
 {
     try
     {
         parse(parser, buffer, pInitialEncoding);
-        return; // successful parse
+        return;  // successful parse
     }
     catch (const except::Error& e)
     {
         const auto msg = e.getMessage();
-        if (msg != " (1,1): invalid byte 'X' at position 2 of a 2-byte sequence")
+        if (msg !=
+            " (1,1): invalid byte 'X' at position 2 of a 2-byte sequence")
         {
             throw;
         }
-        
+
         // Trying again will fail, so don't bother
         if (pFallbackEncoding == pInitialEncoding)
         {
@@ -81,13 +86,16 @@ static void parse(SAX2XMLReader& parser, const std::vector<sys::byte>& buffer,
     parse(parser, buffer, pFallbackEncoding);
 }
 
-void xml::lite::XMLReaderXerces::parse(io::InputStream& is, const void*pInitialEncoding_, const void* pFallbackEncoding_, int size)
+void xml::lite::XMLReaderXerces::parse(io::InputStream& is,
+                                       const void* pInitialEncoding_,
+                                       const void* pFallbackEncoding_,
+                                       int size)
 {
     io::StringStream oss;
     is.streamTo(oss, size);
 
     const auto available = oss.available();
-    if ( available <= 0 )
+    if (available <= 0)
     {
         throw xml::lite::XMLParseException(Ctxt("No stream available"));
     }
@@ -95,7 +103,8 @@ void xml::lite::XMLReaderXerces::parse(io::InputStream& is, const void*pInitialE
     oss.read(buffer.data(), buffer.size());
 
     const auto pInitialEncoding = static_cast<const XMLCh*>(pInitialEncoding_);
-    const auto pFallbackEncoding = static_cast<const XMLCh*>(pFallbackEncoding_);
+    const auto pFallbackEncoding =
+            static_cast<const XMLCh*>(pFallbackEncoding_);
     ::parse(*mNative, buffer, pInitialEncoding, pFallbackEncoding);
 }
 void xml::lite::XMLReaderXerces::parse(io::InputStream& is, int size)
@@ -112,8 +121,8 @@ void xml::lite::XMLReaderXerces::create()
 
     mNative.reset(XMLReaderFactory::createXMLReader());
     mNative->setFeature(XMLUni::fgSAX2CoreNameSpacePrefixes, true);
-    mNative->setFeature(XMLUni::fgSAX2CoreValidation, false);   // optional
-    mNative->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);    // optional
+    mNative->setFeature(XMLUni::fgSAX2CoreValidation, false);  // optional
+    mNative->setFeature(XMLUni::fgSAX2CoreNameSpaces, true);  // optional
     mNative->setFeature(XMLUni::fgXercesSchema, false);
     // We do schema validation as an option not DTDs
     mNative->setFeature(XMLUni::fgXercesSkipDTDValidation, true);

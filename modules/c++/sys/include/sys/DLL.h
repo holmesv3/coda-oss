@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,7 +23,6 @@
 #pragma once
 #ifndef __SYS_DLL_H__
 #define __SYS_DLL_H__
-
 
 /*!
  *  \file DLL.h
@@ -37,23 +36,22 @@
  *
  */
 
-# ifdef _WIN32
-#   include "sys/Conf.h"
-#   define DLL_PUBLIC_FUNCTION extern "C" __declspec (dllexport)
+#ifdef _WIN32
+#include "sys/Conf.h"
+#define DLL_PUBLIC_FUNCTION extern "C" __declspec(dllexport)
 typedef HINSTANCE DYNAMIC_LIBRARY;
 typedef FARPROC DLL_FUNCTION_PTR;
-# else
-#   include <dlfcn.h>
-#   define DLL_FLAGSET RTLD_LAZY
-#   define DLL_PUBLIC_FUNCTION extern "C"
+#else
+#include <dlfcn.h>
+#define DLL_FLAGSET RTLD_LAZY
+#define DLL_PUBLIC_FUNCTION extern "C"
 typedef void* DYNAMIC_LIBRARY;
 typedef void* DLL_FUNCTION_PTR;
-# endif
+#endif
 
+#include "config/Exports.h"
 #include "except/Exception.h"
 #include "sys/Err.h"
-#include "config/Exports.h"
-
 
 namespace sys
 {
@@ -68,7 +66,7 @@ namespace sys
 struct DLLException : public except::Exception
 {
     /*!
-     *  Constructor.  
+     *  Constructor.
      */
     DLLException()
     {
@@ -80,8 +78,7 @@ struct DLLException : public except::Exception
      *  dll error
      *  \param message The base message
      */
-    DLLException(const char* message) :
-            except::Exception(message)
+    DLLException(const char* message) : except::Exception(message)
     {
         adjustMessage();
     }
@@ -91,8 +88,7 @@ struct DLLException : public except::Exception
      *  dll error
      *  \param message The base message
      */
-    DLLException(const std::string& message) :
-            except::Exception(message)
+    DLLException(const std::string& message) : except::Exception(message)
     {
         adjustMessage();
     }
@@ -114,16 +110,15 @@ struct DLLException : public except::Exception
  *  This is a class to load a DLL (.dll or .so) at runtime.  This
  *  uses the dl API for unix and the windows DLL stuff.  Here is an
  *  example of DLL usage:
- *  
+ *
  *   DLL dll( "my_dll" );
  *   dll.retrieve( "my_function" )();
  *   DLL_FUNCTION_PTR ptr = dll.retrieve( "my_function_2" );
  *   ptr();
  *
- *  For more information of coding with dll's see the 
+ *  For more information of coding with dll's see the
  *  CodingWithDLLsGuide
  */
-
 
 struct CODA_OSS_API DLL
 {
@@ -137,9 +132,9 @@ struct CODA_OSS_API DLL
      *  have called this constructor, unless you unload() first
      *  \param libName The name of the library
      */
-    DLL( const std::string& libName )
+    DLL(const std::string& libName)
     {
-        load( libName );
+        load(libName);
     }
     /*!
      *  Destructor.  This auto-closes the DLL if you didn't call
@@ -148,7 +143,7 @@ struct CODA_OSS_API DLL
      */
     virtual ~DLL()
     {
-        if ( mLib )
+        if (mLib)
         {
             try
             {
@@ -165,7 +160,7 @@ struct CODA_OSS_API DLL
      *  This also sets the internal member mLibName.
      *  \param libName  The library name to load
      */
-    void load( const std::string& libName );
+    void load(const std::string& libName);
 
     /*!
      *  Unload the library explicitly.  This resets
@@ -182,7 +177,7 @@ struct CODA_OSS_API DLL
      *
      */
     DLL_FUNCTION_PTR
-    retrieve( const std::string& functionName );
+    retrieve(const std::string& functionName);
 
     /*!
      *  Get the name of the library that is currently loaded
@@ -199,9 +194,7 @@ protected:
 
     //!  The library by handle
     DYNAMIC_LIBRARY mLib;
-
 };
-
 
 }
 

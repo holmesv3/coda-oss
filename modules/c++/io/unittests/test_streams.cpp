@@ -20,14 +20,14 @@
  *
  */
 
-#include <std/span>
-#include <std/cstddef>
-
+#include <TestCase.h>
 #include <import/io.h>
 #include <mem/BufferView.h>
-#include <sys/Conf.h>
-#include <TestCase.h>
 #include <string.h>
+#include <sys/Conf.h>
+
+#include <std/cstddef>
+#include <std/span>
 
 TEST_CASE(testStringStream)
 {
@@ -85,7 +85,7 @@ TEST_CASE(testByteStream)
     stream.write("abcdef");
     TEST_ASSERT_EQ(std::ssize(stream), 24);
 
-     const std::string test("test");
+    const std::string test("test");
     {
         stream.clear();
         TEST_ASSERT_EQ(stream.available(), 0);
@@ -99,7 +99,8 @@ TEST_CASE(testByteStream)
     }
     {
         stream.clear();
-        const std::span<const std::string::value_type> test_span(test.data(), test.size());
+        const std::span<const std::string::value_type> test_span(test.data(),
+                                                                 test.size());
         stream.write(test_span);
         stream.seek(0, io::Seekable::START);
         TEST_ASSERT_EQ(stream.available(), 4);
@@ -194,7 +195,8 @@ TEST_CASE(testBufferViewIntStream)
     auto result = stream.read(&output[0], 2);
     TEST_ASSERT_EQ(result, 2);
     TEST_ASSERT_EQ(stream.tell(), static_cast<sys::Off_T>(2 * sizeof(int)));
-    TEST_ASSERT_EQ(stream.available(), static_cast<sys::Off_T>(2 * sizeof(int)));
+    TEST_ASSERT_EQ(stream.available(),
+                   static_cast<sys::Off_T>(2 * sizeof(int)));
     stream.seek(1 * sizeof(int), io::Seekable::CURRENT);
     result = stream.read(&output[2], 1);
     TEST_ASSERT_EQ(result, 1);
@@ -243,7 +245,7 @@ TEST_CASE(testRotate)
     std::string outFile = "test_rotate.txt";
     size_t maxFiles = 5;
 
-    cleanupFiles( outFile);
+    cleanupFiles(outFile);
 
     sys::OS os;
 
@@ -257,7 +259,7 @@ TEST_CASE(testRotate)
         TEST_ASSERT(os.isFile(outFile + ".1"));
         TEST_ASSERT_EQ(out.getCount(), 1);
 
-        for(size_t i = 0; i < maxFiles - 1; ++i)
+        for (size_t i = 0; i < maxFiles - 1; ++i)
         {
             std::string fname = outFile + "." + std::to_string(i + 1);
             std::string next = outFile + "." + std::to_string(i + 2);
@@ -270,30 +272,30 @@ TEST_CASE(testRotate)
         }
     }
 
-    cleanupFiles( outFile);
+    cleanupFiles(outFile);
 }
 
 TEST_CASE(testNeverRotate)
 {
     std::string outFile = "test_rotate.txt";
-    cleanupFiles( outFile);
+    cleanupFiles(outFile);
 
     sys::OS os;
     {
         io::RotatingFileOutputStream out(outFile);
-        for(size_t i = 0; i < 1024; ++i)
-        out.write("0");
+        for (size_t i = 0; i < 1024; ++i)
+            out.write("0");
         TEST_ASSERT(os.exists(outFile));
         TEST_ASSERT_FALSE(os.isFile(outFile + ".1"));
         TEST_ASSERT_EQ(out.getCount(), 1024);
     }
-    cleanupFiles( outFile);
+    cleanupFiles(outFile);
 }
 
 TEST_CASE(testRotateReset)
 {
     std::string outFile = "test_rotate.txt";
-    cleanupFiles( outFile);
+    cleanupFiles(outFile);
 
     sys::OS os;
     io::RotatingFileOutputStream out(outFile, 10);
@@ -313,21 +315,18 @@ TEST_CASE(testRotateReset)
         out.write("0");
         TEST_FAIL_MSG("Stream is closed; should throw.");
     }
-    catch(except::Exception&)
+    catch (except::Exception&)
     {
     }
 
-    cleanupFiles( outFile);
+    cleanupFiles(outFile);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testStringStream);
-    TEST_CHECK(testByteStream);
-    TEST_CHECK(testProxyOutputStream);
-    TEST_CHECK(testCountingOutputStream);
-    TEST_CHECK(testBufferViewStream);
-    TEST_CHECK(testBufferViewIntStream);
-    TEST_CHECK(testRotate);
-    TEST_CHECK(testNeverRotate);
-    TEST_CHECK(testRotateReset);
-    )
+TEST_MAIN(TEST_CHECK(testStringStream); TEST_CHECK(testByteStream);
+          TEST_CHECK(testProxyOutputStream);
+          TEST_CHECK(testCountingOutputStream);
+          TEST_CHECK(testBufferViewStream);
+          TEST_CHECK(testBufferViewIntStream);
+          TEST_CHECK(testRotate);
+          TEST_CHECK(testNeverRotate);
+          TEST_CHECK(testRotateReset);)

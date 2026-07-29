@@ -20,16 +20,15 @@
  *
  */
 
-
 #if !defined(__APPLE_CC__)
 #if defined(__linux) || defined(__linux__)
 
-#include <sstream>
-
-#include <sys/OS.h>
-#include <sys/Conf.h>
 #include <except/Exception.h>
 #include <mt/CPUAffinityInitializerLinux.h>
+#include <sys/Conf.h>
+#include <sys/OS.h>
+
+#include <sstream>
 
 namespace
 {
@@ -43,7 +42,9 @@ std::vector<int> mergeAvailableCPUs()
     // traversal visits them before hyperthreaded CPUs
     std::vector<int> mergedCPUs;
     mergedCPUs.reserve(physicalCPUs.size() + htCPUs.size());
-    mergedCPUs.insert(mergedCPUs.end(), physicalCPUs.begin(), physicalCPUs.end());
+    mergedCPUs.insert(mergedCPUs.end(),
+                      physicalCPUs.begin(),
+                      physicalCPUs.end());
     mergedCPUs.insert(mergedCPUs.end(), htCPUs.begin(), htCPUs.end());
     return mergedCPUs;
 }
@@ -53,9 +54,7 @@ namespace mt
 {
 struct AvailableCPUProvider final : public AbstractNextCPUProviderLinux
 {
-    AvailableCPUProvider() :
-        mCPUs(mergeAvailableCPUs()),
-        mNextCPUIndex(0)
+    AvailableCPUProvider() : mCPUs(mergeAvailableCPUs()), mNextCPUIndex(0)
     {
     }
     ~AvailableCPUProvider() = default;
@@ -69,7 +68,8 @@ struct AvailableCPUProvider final : public AbstractNextCPUProviderLinux
             throw except::Exception(Ctxt(msg));
         }
 
-        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(new sys::ScopedCPUMaskUnix());
+        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(
+                new sys::ScopedCPUMaskUnix());
         CPU_SET_S(mCPUs.at(mNextCPUIndex++), mask->getSize(), mask->getMask());
         return std::unique_ptr<const sys::ScopedCPUMaskUnix>(mask.release());
     }
@@ -81,15 +81,15 @@ private:
 
 struct OffsetCPUProvider final : public AbstractNextCPUProviderLinux
 {
-    OffsetCPUProvider(int initialOffset) :
-        mNextCPU(initialOffset)
+    OffsetCPUProvider(int initialOffset) : mNextCPU(initialOffset)
     {
     }
     ~OffsetCPUProvider() = default;
 
     virtual std::unique_ptr<const sys::ScopedCPUMaskUnix> nextCPU() override
     {
-        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(new sys::ScopedCPUMaskUnix());
+        std::unique_ptr<sys::ScopedCPUMaskUnix> mask(
+                new sys::ScopedCPUMaskUnix());
         CPU_SET_S(mNextCPU++, mask->getSize(), mask->getMask());
         return std::unique_ptr<const sys::ScopedCPUMaskUnix>(mask.release());
     }

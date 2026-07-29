@@ -25,8 +25,7 @@ namespace mem
 {
 void align(sys::ubyte* __restrict* data, size_t alignment)
 {
-    const size_t beyondBoundary = reinterpret_cast<size_t>(*data) %
-                                  alignment;
+    const size_t beyondBoundary = reinterpret_cast<size_t>(*data) % alignment;
     if (beyondBoundary != 0)
     {
         *data += alignment - beyondBoundary;

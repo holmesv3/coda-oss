@@ -24,45 +24,45 @@
 #ifndef CODA_OSS_sys_File_h_INCLUDED_
 #define CODA_OSS_sys_File_h_INCLUDED_
 
-#include <stdio.h>
 #include <fcntl.h>
-#include <sys/types.h>
+#include <stdio.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
-#include <memory>
 #include <fstream>
+#include <memory>
 
-#include "sys/Conf.h"
-#include "sys/SystemException.h"
-#include "sys/Path.h"
-#include "sys/filesystem.h"
 #include "config/Exports.h"
+#include "sys/Conf.h"
+#include "sys/Path.h"
+#include "sys/SystemException.h"
+#include "sys/filesystem.h"
 
 #ifdef _WIN32
-#    define _SYS_SEEK_CUR FILE_CURRENT
-#    define _SYS_SEEK_SET FILE_BEGIN
-#    define _SYS_SEEK_END FILE_END
-#    define _SYS_CREAT    OPEN_ALWAYS
-#    define _SYS_OPEN_EXISTING OPEN_EXISTING
-#    define _SYS_TRUNC 8
-#    define _SYS_RDONLY GENERIC_READ
-#    define _SYS_WRONLY GENERIC_WRITE
-#    define _SYS_RDWR GENERIC_READ|GENERIC_WRITE
-#    define SYS_INVALID_HANDLE INVALID_HANDLE_VALUE
+#define _SYS_SEEK_CUR FILE_CURRENT
+#define _SYS_SEEK_SET FILE_BEGIN
+#define _SYS_SEEK_END FILE_END
+#define _SYS_CREAT OPEN_ALWAYS
+#define _SYS_OPEN_EXISTING OPEN_EXISTING
+#define _SYS_TRUNC 8
+#define _SYS_RDONLY GENERIC_READ
+#define _SYS_WRONLY GENERIC_WRITE
+#define _SYS_RDWR GENERIC_READ | GENERIC_WRITE
+#define SYS_INVALID_HANDLE INVALID_HANDLE_VALUE
 typedef HANDLE _SYS_HANDLE_TYPE;
 #else
-#    define _SYS_DEFAULT_PERM 0644
-#    define _SYS_MAX_READ_ATTEMPTS 100
-#    define _SYS_SEEK_CUR SEEK_CUR
-#    define _SYS_SEEK_SET SEEK_SET
-#    define _SYS_SEEK_END SEEK_END
-#    define _SYS_CREAT O_CREAT
-#    define _SYS_OPEN_EXISTING 0
-#    define _SYS_TRUNC O_TRUNC
-#    define _SYS_RDONLY O_RDONLY
-#    define _SYS_WRONLY O_WRONLY
-#    define _SYS_RDWR O_RDWR
-#    define SYS_INVALID_HANDLE -1
+#define _SYS_DEFAULT_PERM 0644
+#define _SYS_MAX_READ_ATTEMPTS 100
+#define _SYS_SEEK_CUR SEEK_CUR
+#define _SYS_SEEK_SET SEEK_SET
+#define _SYS_SEEK_END SEEK_END
+#define _SYS_CREAT O_CREAT
+#define _SYS_OPEN_EXISTING 0
+#define _SYS_TRUNC O_TRUNC
+#define _SYS_RDONLY O_RDONLY
+#define _SYS_WRONLY O_WRONLY
+#define _SYS_RDWR O_RDWR
+#define SYS_INVALID_HANDLE -1
 typedef int _SYS_HANDLE_TYPE;
 #endif
 
@@ -110,19 +110,26 @@ struct CODA_OSS_API File
     {
         create(path.getPath(), accessFlags, creationFlags);
     }
-    File(std::nothrow_t, const coda_oss::filesystem::path& path,
-         int accessFlags = READ_ONLY, int creationFlags = EXISTING) noexcept // caller MUST check isOpen()
+    File(std::nothrow_t,
+         const coda_oss::filesystem::path& path,
+         int accessFlags = READ_ONLY,
+         int creationFlags = EXISTING) noexcept  // caller MUST check isOpen()
     {
         create(std::nothrow, path, accessFlags, creationFlags);
     }
 
-    File(const Path& parent, std::string name, int accessFlags = READ_ONLY,
+    File(const Path& parent,
+         std::string name,
+         int accessFlags = READ_ONLY,
          int creationFlags = EXISTING)
     {
         create(parent.join(name).getPath(), accessFlags, creationFlags);
     }
-    File(std::nothrow_t, const coda_oss::filesystem::path& parent, const coda_oss::filesystem::path& name,
-         int accessFlags = READ_ONLY, int creationFlags = EXISTING) noexcept // caller MUST check isOpen()
+    File(std::nothrow_t,
+         const coda_oss::filesystem::path& parent,
+         const coda_oss::filesystem::path& name,
+         int accessFlags = READ_ONLY,
+         int creationFlags = EXISTING) noexcept  // caller MUST check isOpen()
     {
         create(std::nothrow, parent / name, accessFlags, creationFlags);
     }
@@ -189,8 +196,10 @@ struct CODA_OSS_API File
      *  \param creationFlags File creation flags
      */
     void create(const std::string& str, int accessFlags, int creationFlags);
-    void create(std::nothrow_t, const coda_oss::filesystem::path& path,
-                           int accessFlags, int creationFlags) // caller MUST check isOpen()
+    void create(std::nothrow_t,
+                const coda_oss::filesystem::path& path,
+                int accessFlags,
+                int creationFlags)  // caller MUST check isOpen()
     {
         mHandle = createFile(path, accessFlags, creationFlags);
         mPath = path.string();
@@ -231,8 +240,7 @@ struct CODA_OSS_API File
      *  \param buffer The buffer to read from
      *  \param size The number of bytes to write out
      */
-    void writeFrom(const void* buffer,
-                   size_t size);
+    void writeFrom(const void* buffer, size_t size);
 
     /*!
      *  Seek to the specified offset, relative to 'whence.'
@@ -279,21 +287,27 @@ protected:
     _SYS_HANDLE_TYPE mHandle = SYS_INVALID_HANDLE;
     std::string mPath;
 
-    static _SYS_HANDLE_TYPE createFile(const coda_oss::filesystem::path&, int accessFlags, int creationFlags) noexcept;
-
+    static _SYS_HANDLE_TYPE createFile(const coda_oss::filesystem::path&,
+                                       int accessFlags,
+                                       int creationFlags) noexcept;
 };
 
-// These routines use sys::expandEnvironmentVariables() if the initial open attempt fails.
-CODA_OSS_API File make_File(const coda_oss::filesystem::path&, int accessFlags = File::READ_ONLY, int creationFlags =  File::EXISTING);
-CODA_OSS_API File make_File(const coda_oss::filesystem::path& parent, const coda_oss::filesystem::path& name,
-        int accessFlags =  File::READ_ONLY, int creationFlags =  File::EXISTING);
-
+// These routines use sys::expandEnvironmentVariables() if the initial open
+// attempt fails.
+CODA_OSS_API File make_File(const coda_oss::filesystem::path&,
+                            int accessFlags = File::READ_ONLY,
+                            int creationFlags = File::EXISTING);
+CODA_OSS_API File make_File(const coda_oss::filesystem::path& parent,
+                            const coda_oss::filesystem::path& name,
+                            int accessFlags = File::READ_ONLY,
+                            int creationFlags = File::EXISTING);
 
 // Call  sys::expandEnvironmentVariables() if the initial fopen() fails.
-CODA_OSS_API FILE* fopen(const coda_oss::filesystem::path&, const std::string& mode);
+CODA_OSS_API FILE* fopen(const coda_oss::filesystem::path&,
+                         const std::string& mode);
 CODA_OSS_API int open(const coda_oss::filesystem::path&, int flags);
 CODA_OSS_API int open(const coda_oss::filesystem::path&, int flags, int mode);
-CODA_OSS_API int close(int fd); // needed to close a FD from open()
+CODA_OSS_API int close(int fd);  // needed to close a FD from open()
 
 #ifdef _WIN32
 #define CODA_OSS_stat _stat
@@ -301,11 +315,19 @@ CODA_OSS_API int close(int fd); // needed to close a FD from open()
 #define CODA_OSS_stat stat
 #endif
 // Call  sys::expandEnvironmentVariables() if the initial stat() attempt fails.
-CODA_OSS_API int stat(const coda_oss::filesystem::path&, struct CODA_OSS_stat &buffer);
+CODA_OSS_API int stat(const coda_oss::filesystem::path&,
+                      struct CODA_OSS_stat& buffer);
 
 // Call  sys::expandEnvironmentVariables() if the initial open attempt fails.
-CODA_OSS_API std::ifstream make_ifstream(const coda_oss::filesystem::path&, std::ios_base::openmode mode = std::ios_base::in); // https://en.cppreference.com/w/cpp/io/basic_ifstream/basic_ifstream
-CODA_OSS_API void open(std::ifstream&, const coda_oss::filesystem::path&, std::ios_base::openmode mode = std::ios_base::in); // https://en.cppreference.com/w/cpp/io/basic_ifstream/open
+CODA_OSS_API std::ifstream make_ifstream(
+        const coda_oss::filesystem::path&,
+        std::ios_base::openmode mode = std::ios_base::
+                in);  // https://en.cppreference.com/w/cpp/io/basic_ifstream/basic_ifstream
+CODA_OSS_API void
+open(std::ifstream&,
+     const coda_oss::filesystem::path&,
+     std::ios_base::openmode mode = std::ios_base::
+             in);  // https://en.cppreference.com/w/cpp/io/basic_ifstream/open
 
 }
 

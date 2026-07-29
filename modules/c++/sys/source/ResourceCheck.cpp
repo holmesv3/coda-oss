@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2019, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,34 +14,34 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <algorithm>
-#include <sys/ResourceCheck.h>
 #include <gsl/gsl.h>
+#include <sys/ResourceCheck.h>
+
+#include <algorithm>
 
 namespace sys
 {
 
-bool canProcessFit(size_t jobMemBytes, 
+bool canProcessFit(size_t jobMemBytes,
                    size_t systemMemBytes,
                    size_t reservedBytes,
                    double margin)
 {
-    return jobMemBytes < getAvailableMem(systemMemBytes,
-                                         reservedBytes,
-                                         margin);
+    return jobMemBytes < getAvailableMem(systemMemBytes, reservedBytes, margin);
 }
 
 size_t getAvailableMem(size_t systemMemBytes,
                        size_t reservedBytes,
                        double margin)
 {
-    const auto relativeAvailable = gsl::narrow_cast<size_t>(gsl::narrow_cast<double>(systemMemBytes) * margin);
+    const auto relativeAvailable = gsl::narrow_cast<size_t>(
+            gsl::narrow_cast<double>(systemMemBytes) * margin);
     if (reservedBytes > systemMemBytes)
     {
         return 0;

@@ -20,18 +20,17 @@
  *
  */
 
-#include <memory>
-
-#include <mem/SharedPtr.h>
 #include <mem/AutoPtr.h>
+#include <mem/SharedPtr.h>
+
+#include <memory>
 
 #include "TestCase.h"
 
 struct Foo final
 {
     Foo() = default;
-    Foo(int val) :
-        mVal(val)
+    Foo(int val) : mVal(val)
     {
     }
 
@@ -126,9 +125,5 @@ TEST_CASE(memAutoPtr)
     }
 }
 
-
-TEST_MAIN(
-   TEST_CHECK(testStdUniquePtr);
-   TEST_CHECK(test_make_unique);
-   TEST_CHECK(memAutoPtr);
-   )
+TEST_MAIN(TEST_CHECK(testStdUniquePtr); TEST_CHECK(test_make_unique);
+          TEST_CHECK(memAutoPtr);)

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,14 +14,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
 #include <import/except.h>
 #include <import/sys.h>
+
 #include <sstream>
 #include <vector>
 using namespace except;
@@ -52,7 +53,6 @@ public:
 class NegativeNumberEx : public Exception
 {
 public:
-
     NegativeNumberEx(int size)
     {
         std::ostringstream m;
@@ -61,18 +61,17 @@ public:
     }
 };
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     try
     {
-        vector<int>v;
+        vector<int> v;
         for (int i = 1; i < argc; i++)
         {
             v.push_back(atoi(argv[i]));
         }
         if (v.size() < 2)
         {
-
             NotAddableError nae(static_cast<int>(v.size()));
             throw nae;
         }
@@ -84,10 +83,8 @@ int main(int argc, char **argv)
 
         if (acc < 0)
         {
-
             NegativeNumberEx nne(acc);
             throw nne;
-
         }
         else if (acc > 10)
         {
@@ -118,5 +115,4 @@ int main(int argc, char **argv)
     }
 
     return 0;
-
 }

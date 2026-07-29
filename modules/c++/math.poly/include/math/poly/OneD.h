@@ -23,11 +23,12 @@
 #ifndef __MATH_POLY_ONED_H__
 #define __MATH_POLY_ONED_H__
 
+#include <math/linear/Vector.h>
+
 #include <iostream>
+#include <iterator>
 #include <sstream>
 #include <vector>
-#include <iterator>
-#include <math/linear/Vector.h>
 
 namespace math
 {
@@ -49,12 +50,13 @@ namespace poly
  *   It supports computing the derivative and
  *   the multiplication/addition/subtraction of 1-D polynomials.
  */
-template<typename _T>
+template <typename _T>
 class OneD
 {
 protected:
     std::vector<_T> mCoef;
-    template<typename Vector_T> bool equalImpl(const Vector_T& p) const;
+    template <typename Vector_T>
+    bool equalImpl(const Vector_T& p) const;
 
 public:
     /*!
@@ -67,8 +69,7 @@ public:
      *  A vector of ascending power coefficients (note that
      *  this is the reverse of Matlab)
      */
-    OneD(const std::vector<_T>& coef) :
-        mCoef(coef)
+    OneD(const std::vector<_T>& coef) : mCoef(coef)
     {
         if (mCoef.empty())
             mCoef.resize(1, static_cast<_T>(0.0));
@@ -78,8 +79,7 @@ public:
      *  Create a vector of given order, with each coefficient
      *  set to zero
      */
-    OneD(size_t order) :
-        mCoef(order + 1, static_cast<_T>(0.0))
+    OneD(size_t order) : mCoef(order + 1, static_cast<_T>(0.0))
     {
     }
 
@@ -181,8 +181,7 @@ public:
      *
      * \return Fx(Gx(x))
      */
-    OneD<_T> transformInput(const OneD<_T>& gx,
-                            double zeroEpsilon = 0.0) const;
+    OneD<_T> transformInput(const OneD<_T>& gx, double zeroEpsilon = 0.0) const;
     /*!
      * Copies all valid data from p into the coefficients.
      * This is used in situations where we want to assign a OneD but do
@@ -195,36 +194,38 @@ public:
      */
     void copyFrom(const OneD<_T>& p);
 
-    _T operator ()(double at) const;
+    _T operator()(double at) const;
     _T integrate(double start, double end) const;
-    OneD<_T>derivative() const;
+    OneD<_T> derivative() const;
     _T velocity(double x) const;
     _T acceleration(double x) const;
     _T& operator[](size_t i);
     _T operator[](size_t i) const;
-    template<typename _TT>
-    friend std::ostream& operator <<(std::ostream& out, const OneD<_TT>& p);
-    OneD<_T>& operator *=(double cv);
-    OneD<_T>operator *(double cv) const;
-    template<typename _TT>
-    friend OneD<_TT>operator *(double cv, const OneD<_TT>& p);
-    OneD<_T>& operator *=(const OneD<_T>& p);
-    OneD<_T>operator *(const OneD<_T>& p) const;
-    OneD<_T>& operator +=(const OneD<_T>& p);
-    OneD<_T>operator +(const OneD<_T>& p) const;
-    OneD<_T>& operator -=(const OneD<_T>& p);
-    OneD<_T>operator -(const OneD<_T>& p) const;
-    OneD<_T>& operator /=(double cv);
-    OneD<_T>operator /(double cv) const;
+    template <typename _TT>
+    friend std::ostream& operator<<(std::ostream& out, const OneD<_TT>& p);
+    OneD<_T>& operator*=(double cv);
+    OneD<_T> operator*(double cv) const;
+    template <typename _TT>
+    friend OneD<_TT> operator*(double cv, const OneD<_TT>& p);
+    OneD<_T>& operator*=(const OneD<_T>& p);
+    OneD<_T> operator*(const OneD<_T>& p) const;
+    OneD<_T>& operator+=(const OneD<_T>& p);
+    OneD<_T> operator+(const OneD<_T>& p) const;
+    OneD<_T>& operator-=(const OneD<_T>& p);
+    OneD<_T> operator-(const OneD<_T>& p) const;
+    OneD<_T>& operator/=(double cv);
+    OneD<_T> operator/(double cv) const;
 
     OneD<_T> power(size_t toThe) const;
 
-    template<typename Vector_T> bool operator==(const Vector_T& p) const
+    template <typename Vector_T>
+    bool operator==(const Vector_T& p) const
     {
         return equalImpl(p);
     }
 
-    template<typename Vector_T> bool operator!=(const Vector_T& p) const
+    template <typename Vector_T>
+    bool operator!=(const Vector_T& p) const
     {
         return !(*this == p);
     }
@@ -250,9 +251,7 @@ public:
     }
 };
 
-
-} // poly
-} // math
+}  // poly
+}  // math
 #include "math/poly/OneD.hpp"
 #endif
-

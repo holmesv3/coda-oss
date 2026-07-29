@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,8 +23,8 @@
 #ifndef __NET_SERVER_SOCKET_FACTORY_H__
 #define __NET_SERVER_SOCKET_FACTORY_H__
 
-#include "net/Socket.h"
 #include "mem/SharedPtr.h"
+#include "net/Socket.h"
 
 /*!
  *  \file
@@ -49,7 +49,6 @@ namespace net
 class ServerSocketFactory
 {
 public:
-
     /*!
      *  Default constructor.  One of the notable
      *  behaviors of this constructor is that on Windows, it
@@ -67,7 +66,8 @@ public:
 
     //! Destructor
     virtual ~ServerSocketFactory()
-    {}
+    {
+    }
 
     /*!
      *  This routine produces a socket of the desired protocol.
@@ -76,7 +76,7 @@ public:
      *  the user will either override this class, or perform the options
      *  on the socket subsequent to this function returning.
      *
-     *  The extended classes each override this method providing 
+     *  The extended classes each override this method providing
      *  customizations useful or required by the selected protocol
      *
      *  \param address Address to establish the socket for
@@ -93,9 +93,9 @@ public:
 
 protected:
     ServerSocketFactory()
-    {}
+    {
+    }
     int mProto;
-
 };
 
 /*!
@@ -112,11 +112,13 @@ class UDPServerSocketFactory : public ServerSocketFactory
 public:
     //!  Constructor
     UDPServerSocketFactory() : ServerSocketFactory(UDP_PROTO)
-    {}
+    {
+    }
 
     //!  Destructor
     virtual ~UDPServerSocketFactory()
-    {}
+    {
+    }
 
     /*!
      *  Create a socket associated with the address given.  Enable
@@ -127,7 +129,8 @@ public:
      *
      *  \return The produced socket
      */
-    virtual std::unique_ptr<Socket> create(const SocketAddress& address) override
+    virtual std::unique_ptr<Socket> create(
+            const SocketAddress& address) override
     {
         std::unique_ptr<Socket> s(new Socket(mProto));
 
@@ -139,9 +142,6 @@ public:
         s->bind(address);
         return s;
     }
-
-
-
 };
 
 /*!
@@ -149,35 +149,39 @@ public:
  *  \brief Factory producing a (passive) TCP socket
  *
  *  This class produces a TCP socket that is bound and
- *  listens with the specified backlog.  
+ *  listens with the specified backlog.
  *
  */
 class TCPServerSocketFactory : ServerSocketFactory
 {
 public:
     //!  Traditional backlog value
-    enum { DEFAULT_BACKLOG = 5 };
+    enum
+    {
+        DEFAULT_BACKLOG = 5
+    };
 
     /*!
      *  Default constructor for a server socket factory.
-     *  The only argument defaults to a very traditional 
+     *  The only argument defaults to a very traditional
      *  (and arbitrary) number.
      *
      *  Modern HTTP servers, for example, would typically set
      *  the backlog much higher than 5, which originally meant
      *  the number of connections (pending + 3-way handshake).
-     * 
+     *
      *  \param backlog The backlog for the passive socket
      *
      */
     TCPServerSocketFactory(int backlog = DEFAULT_BACKLOG) :
-            ServerSocketFactory(TCP_PROTO),
-            mBacklog(backlog)
-    {}
+        ServerSocketFactory(TCP_PROTO), mBacklog(backlog)
+    {
+    }
 
     //!  Destructor
     virtual ~TCPServerSocketFactory()
-    {}
+    {
+    }
 
     /*!
      *  The parent will set us up with a bound socket.  Here
@@ -185,7 +189,8 @@ public:
      *  listen().
      *
      */
-    virtual std::unique_ptr<Socket> create(const SocketAddress& address) override
+    virtual std::unique_ptr<Socket> create(
+            const SocketAddress& address) override
     {
         std::unique_ptr<Socket> s(new Socket(mProto));
 
@@ -205,7 +210,6 @@ public:
 protected:
     int mBacklog;
 };
-
 
 }
 

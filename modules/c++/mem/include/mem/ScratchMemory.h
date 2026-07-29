@@ -23,17 +23,18 @@
 #ifndef __MEM_SCRATCH_MEMORY_H__
 #define __MEM_SCRATCH_MEMORY_H__
 
+#include <config/Exports.h>
+#include <except/Exception.h>
+#include <mem/BufferView.h>
 #include <stddef.h>
+#include <sys/Conf.h>
+
 #include <map>
 #include <set>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
-#include <except/Exception.h>
-#include <mem/BufferView.h>
-#include <sys/Conf.h>
-#include <config/Exports.h>
 
 namespace mem
 {
@@ -146,7 +147,7 @@ public:
      *         data pointer
      */
     void setup(const BufferView<sys::ubyte>& scratchBuffer =
-            BufferView<sys::ubyte>());
+                       BufferView<sys::ubyte>());
 
     /*!
      * \brief Get number of bytes needed to store scratch memory, including the
@@ -163,7 +164,10 @@ public:
 private:
     struct CODA_OSS_API Segment final
     {
-        Segment(size_t numBytes, size_t numBuffers, size_t alignment, size_t offset);
+        Segment(size_t numBytes,
+                size_t numBuffers,
+                size_t alignment,
+                size_t offset);
 
         size_t numBytes;
         size_t numBuffers;
@@ -182,8 +186,8 @@ private:
     std::set<std::string> mConnectedKeys;
 
     BufferView<sys::ubyte> mBuffer;
-    size_t mNumBytesNeeded=0;
-    size_t mOffset=0;
+    size_t mNumBytesNeeded = 0;
+    size_t mOffset = 0;
 };
 }
 

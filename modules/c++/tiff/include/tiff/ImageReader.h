@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of tiff-c++ 
+ * This file is part of tiff-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * tiff-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,11 +23,11 @@
 #ifndef __TIFF_IMAGE_READER_H__
 #define __TIFF_IMAGE_READER_H__
 
-#include <import/io.h>
 #include <config/Exports.h>
+#include <import/io.h>
 
-#include "tiff/IFDEntry.h"
 #include "tiff/IFD.h"
+#include "tiff/IFDEntry.h"
 
 namespace tiff
 {
@@ -51,10 +51,16 @@ public:
      * @param input
      *   the stream to read the TIFF image from
      *****************************************************************/
-    ImageReader(io::FileInputStream *input) :
-        mIFD(), mStripByteCounts(nullptr), mStripOffsets(nullptr), mInput(input),
-                mNextOffset(0), mBytePosition(0), mStripIndex(0),
-                mElementSize(0), mReverseBytes(false)
+    ImageReader(io::FileInputStream* input) :
+        mIFD(),
+        mStripByteCounts(nullptr),
+        mStripOffsets(nullptr),
+        mInput(input),
+        mNextOffset(0),
+        mBytePosition(0),
+        mStripIndex(0),
+        mElementSize(0),
+        mReverseBytes(false)
     {
     }
 
@@ -77,20 +83,20 @@ public:
      * @param output
      *   the stream to print the IFD to
      *****************************************************************/
-    void print(io::OutputStream &output) const;
+    void print(io::OutputStream& output) const;
 
     /**
      *****************************************************************
      * Gets the specified number of elements from the TIFF image and
      * stores them into the specified buffer.  The buffer must be
      * allocated outside because it is not allocated in this function.
-     * 
+     *
      * @param buffer
      *   the buffer to populate with image data
      * @param numElementsToRead
      *   the number of elements (not bytes) to read from the image
      *****************************************************************/
-    void getData(unsigned char *buffer, const sys::Uint32_T numElementsToRead);
+    void getData(unsigned char* buffer, const sys::Uint32_T numElementsToRead);
 
     /**
      *****************************************************************
@@ -112,11 +118,11 @@ public:
      * @param fileName
      *   the file to write the GeoTIFF information to
      *****************************************************************/
-    void writeGeoTIFFInfo(const std::string &fileName);
+    void writeGeoTIFFInfo(const std::string& fileName);
 
     /**
      *****************************************************************
-     * Returns the offset to the next IFD.  Used to determine if 
+     * Returns the offset to the next IFD.  Used to determine if
      * there is another image in the file, and if so where is the
      * file position of the next image's IFD.
      *
@@ -129,10 +135,9 @@ public:
     }
 
 private:
-
     /**
      *****************************************************************
-     * Reads the specified number of elements into the specified 
+     * Reads the specified number of elements into the specified
      * buffer, in TIFF stripped format.  Converts the TIFF image from
      * the TIFF stripped format into raster format.
      * @param buffer
@@ -140,11 +145,11 @@ private:
      * @param numElementsToRead
      *   the number of elements (not bytes) to read from the image
      *****************************************************************/
-    void getStripData(unsigned char *buffer, sys::Uint32_T numElementsToRead);
+    void getStripData(unsigned char* buffer, sys::Uint32_T numElementsToRead);
 
     /**
      *****************************************************************
-     * Reads the specified number of elements into the specified 
+     * Reads the specified number of elements into the specified
      * buffer, in TIFF tiled format.  Converts the TIFF image from
      * the TIFF tiled format into raster format.
      * @param buffer
@@ -152,26 +157,26 @@ private:
      * @param numElementsToRead
      *   the number of elements (not bytes) to read from the image
      *****************************************************************/
-    void getTileData(unsigned char *buffer, sys::Uint32_T numElementsToRead);
+    void getTileData(unsigned char* buffer, sys::Uint32_T numElementsToRead);
 
     //! Contains the IFD for this image.
     tiff::IFD mIFD;
 
     //! A pointer to the "StripByteCounts" IFDEntry to make reading faster.
-    tiff::IFDEntry *mStripByteCounts;
+    tiff::IFDEntry* mStripByteCounts;
 
     //! A pointer to the "StripOffsets" IFDEntry to make reading faster.
-    tiff::IFDEntry *mStripOffsets;
+    tiff::IFDEntry* mStripOffsets;
 
     //! Points to the input file stream.
-    io::FileInputStream *mInput;
+    io::FileInputStream* mInput;
 
     //! The offset to the next IFD.
     sys::Uint32_T mNextOffset;
 
     //! Used to keep track of the current read position in the file.
     sys::Uint32_T mBytePosition;
-    
+
     sys::Uint32_T mStripIndex;
 
     //! The element size of the image.
@@ -181,6 +186,6 @@ private:
     bool mReverseBytes;
 };
 
-} // End namespace.
+}  // End namespace.
 
-#endif // __TIFF_IMAGE_READER_H__
+#endif  // __TIFF_IMAGE_READER_H__

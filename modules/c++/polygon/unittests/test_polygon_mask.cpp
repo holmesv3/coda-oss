@@ -19,15 +19,14 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
+#include <mem/ScopedArray.h>
+#include <polygon/DrawPolygon.h>
+#include <polygon/PolygonMask.h>
+
 #include <limits>
 #include <sstream>
 
 #include "TestCase.h"
-
-#include <mem/ScopedArray.h>
-
-#include <polygon/DrawPolygon.h>
-#include <polygon/PolygonMask.h>
 
 TEST_CASE(testMarkAllTrue)
 {
@@ -71,7 +70,7 @@ TEST_CASE(testMarkAllFalse)
 
 TEST_CASE(testWithPoints)
 {
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(400, 100));
     points.push_back(types::RowCol<double>(100, 310));
     points.push_back(types::RowCol<double>(270, 590));
@@ -101,7 +100,7 @@ TEST_CASE(testWithPoints)
 
 TEST_CASE(testWithMask)
 {
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(400, 100));
     points.push_back(types::RowCol<double>(100, 310));
     points.push_back(types::RowCol<double>(270, 590));
@@ -131,7 +130,7 @@ TEST_CASE(testWithMask)
 
 TEST_CASE(testWithAllFullRanges)
 {
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(-100, -100));
     points.push_back(types::RowCol<double>(-100, 1100));
     points.push_back(types::RowCol<double>(1100, 1100));
@@ -148,7 +147,7 @@ TEST_CASE(testWithAllEmptyRanges)
 {
     // Test for a polygon that is fully outside of the chip,
     // but shares rows with the chip
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(-1000, -1100));
     points.push_back(types::RowCol<double>(-1000, -100));
     points.push_back(types::RowCol<double>(2000, -100));
@@ -166,7 +165,7 @@ TEST_CASE(testWithPartialCutBotomLeft)
     // Test for a polygon that is partially outside of the chip, clipping
     // through only some rows/cols in the bottom-left.
     // The line (1, -1) -> (6, 5) cuts diagnonally across the lower-left
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(1.0, -1.0));
     points.push_back(types::RowCol<double>(6.0, 5.0));
     points.push_back(types::RowCol<double>(6.0, -2.0));
@@ -199,7 +198,7 @@ TEST_CASE(testWithPartialCutTopRight)
     // Test for a polygon that is partially outside of the chip, clipping
     // through only some rows/cols in the bottom-left.
     // The line (-1, 0) -> (4, 7) cuts diagnonally across the top-right
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(-1.0, 0.0));
     points.push_back(types::RowCol<double>(4.0, 7.0));
     points.push_back(types::RowCol<double>(2.0, 9.0));
@@ -239,7 +238,7 @@ TEST_CASE(testWithNarrowPassthrough)
     //          |    ------________+
     //          |              |
     //          +--------------+
-    std::vector<types::RowCol<double> > points;
+    std::vector<types::RowCol<double>> points;
     points.push_back(types::RowCol<double>(0.5, -0.1));
     points.push_back(types::RowCol<double>(1.5, 6.1));
     points.push_back(types::RowCol<double>(3.5, 6.1));
@@ -269,14 +268,11 @@ TEST_CASE(testWithNarrowPassthrough)
     TEST_ASSERT_TRUE(mask.getRange(5).empty());
 }
 
-TEST_MAIN(
-    TEST_CHECK(testMarkAllTrue);
-    TEST_CHECK(testMarkAllFalse);
-    TEST_CHECK(testWithPoints);
-    TEST_CHECK(testWithMask);
-    TEST_CHECK(testWithAllFullRanges);
-    TEST_CHECK(testWithAllEmptyRanges);
-    TEST_CHECK(testWithPartialCutBotomLeft);
-    TEST_CHECK(testWithPartialCutTopRight);
-    TEST_CHECK(testWithNarrowPassthrough);
-)
+TEST_MAIN(TEST_CHECK(testMarkAllTrue); TEST_CHECK(testMarkAllFalse);
+          TEST_CHECK(testWithPoints);
+          TEST_CHECK(testWithMask);
+          TEST_CHECK(testWithAllFullRanges);
+          TEST_CHECK(testWithAllEmptyRanges);
+          TEST_CHECK(testWithPartialCutBotomLeft);
+          TEST_CHECK(testWithPartialCutTopRight);
+          TEST_CHECK(testWithNarrowPassthrough);)

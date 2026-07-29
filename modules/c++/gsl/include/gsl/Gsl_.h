@@ -27,24 +27,23 @@
 #include <utility>
 
 #include "gsl/Gsl_narrow.h"
-
-#include "gsl/use_gsl.h" // Can't compile all of GSL with older versions of GCC/MSVC
+#include "gsl/use_gsl.h"  // Can't compile all of GSL with older versions of GCC/MSVC
 #if !CODA_OSS_use_real_gsl_
 // Add to "gsl" if we're not using the real thing
 namespace gsl
 {
-    template <class T, class U>
-    constexpr T narrow_cast(U&& u) noexcept
-    {
-        return Gsl::narrow_cast<T>(std::forward<U>(u));
-    }
+template <class T, class U>
+constexpr T narrow_cast(U&& u) noexcept
+{
+    return Gsl::narrow_cast<T>(std::forward<U>(u));
+}
 
-   template <class T, class U>
-   constexpr T narrow(U u) noexcept(false)
-    {
-        return Gsl::narrow<T>(u);
-    }
- }
-#endif // CODA_OSS_coda_oss_use_real_gsl_
+template <class T, class U>
+constexpr T narrow(U u) noexcept(false)
+{
+    return Gsl::narrow<T>(u);
+}
+}
+#endif  // CODA_OSS_coda_oss_use_real_gsl_
 
 #endif  // CODA_OSS_gsl_Gsl__h_INCLUDED_

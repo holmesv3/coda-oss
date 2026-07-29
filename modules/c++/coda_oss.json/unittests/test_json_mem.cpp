@@ -19,14 +19,14 @@
  * see <http://www.gnu.org/licenses/>.
  */
 
-#include "TestCase.h"
-
+#include <coda_oss/json/Mem.h>
+#include <coda_oss/json/Types.h>
 #include <mem/ScopedCloneablePtr.h>
 #include <mem/ScopedCopyablePtr.h>
+
 #include <nlohmann/json.hpp>
 
-#include <coda_oss/json/Types.h>
-#include <coda_oss/json/Mem.h>
+#include "TestCase.h"
 
 using json = nlohmann::json;
 
@@ -57,13 +57,11 @@ TEST_CASE(TestNullPtr)
     mem::ScopedCopyablePtr<size_t> startVal;
     json expected = nullptr;
     json serialized = startVal;
-    auto deserialized = serialized.template get<mem::ScopedCopyablePtr<size_t>>();
+    auto deserialized =
+            serialized.template get<mem::ScopedCopyablePtr<size_t>>();
     TEST_ASSERT(serialized == expected);
     TEST_ASSERT(startVal == deserialized);
 }
 
-TEST_MAIN(
-    TEST_CHECK(TestCloneablePtr);
-    TEST_CHECK(TestCopyablePtr);
-    TEST_CHECK(TestNullPtr);
-)
+TEST_MAIN(TEST_CHECK(TestCloneablePtr); TEST_CHECK(TestCopyablePtr);
+          TEST_CHECK(TestNullPtr);)

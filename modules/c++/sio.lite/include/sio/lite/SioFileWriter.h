@@ -22,18 +22,17 @@
 #ifndef CODA_OSS_sio_lite_SioFileWriter_h_INCLUDED_
 #define CODA_OSS_sio_lite_SioFileWriter_h_INCLUDED_
 
+#include <import/io.h>
+#include <import/mem.h>
+#include <import/sys.h>
+#include <sys/filesystem.h>
+#include <types/RowCol.h>
+
 #include <memory>
 #include <vector>
 
-#include <import/sys.h>
-#include <import/io.h>
-#include <import/mem.h>
-#include <types/RowCol.h>
-#include <sys/filesystem.h>
-
-#include "sio/lite/InvalidHeaderException.h"
 #include "sio/lite/FileHeader.h"
-
+#include "sio/lite/InvalidHeaderException.h"
 
 namespace sio
 {
@@ -43,14 +42,15 @@ namespace lite
  *  \class FileWriter
  *  \brief (Deprecated) class to write an SIO file
  *
- *  This (deprecated) class will help to write out an SIO file.  It is almost never necessary
- *  since the FileHeader.to() method can be used to start a header, and then the OutputStream.
- *  may be accessed directly.  Additionally, the writeSIO() routine provides
- *  simpler functionality
+ *  This (deprecated) class will help to write out an SIO file.  It is almost
+ * never necessary since the FileHeader.to() method can be used to start a
+ * header, and then the OutputStream. may be accessed directly.  Additionally,
+ * the writeSIO() routine provides simpler functionality
  */
 struct FileWriter
 {
-    FileWriter(const std::string& outputFile) : mFileName(outputFile), mAdopt(true)
+    FileWriter(const std::string& outputFile) :
+        mFileName(outputFile), mAdopt(true)
     {
         mStream.reset(new io::FileOutputStream(mFileName));
     }
@@ -67,15 +67,16 @@ struct FileWriter
     }
 
     // need copy for Python binding w/SWIG
-    //FileWriter(const FileWriter&) = default;
-    //FileWriter& operator=(const FileWriter&) = default;
-    //FileWriter(FileWriter&&) = default;
-    //FileWriter& operator=(FileWriter&&) = default;
+    // FileWriter(const FileWriter&) = default;
+    // FileWriter& operator=(const FileWriter&) = default;
+    // FileWriter(FileWriter&&) = default;
+    // FileWriter& operator=(FileWriter&&) = default;
 
     virtual ~FileWriter()
     {
-        //if we aren't adopting it, release it
-        if (!mAdopt) mStream.release();
+        // if we aren't adopting it, release it
+        if (!mAdopt)
+            mStream.release();
     }
 
     FileWriter(const FileWriter&) = delete;
@@ -87,26 +88,33 @@ struct FileWriter
      * Writes the SIO given the FileHeader and InputStreams.
      */
     void write(FileHeader* header, std::vector<io::InputStream*> bandStreams);
-    
+
     /*!
      * Writes a version 1 SIO given the basic file header contents and a
      * vector of InputStreams
      */
-    void write(int numLines, int numElements, int elementSize,
-               int elementType, std::vector<io::InputStream*> bandStreams);
+    void write(int numLines,
+               int numElements,
+               int elementSize,
+               int elementType,
+               std::vector<io::InputStream*> bandStreams);
 
     /*!
-     * Writes the SIO given the FileHeader and a buffer of raw data in 
+     * Writes the SIO given the FileHeader and a buffer of raw data in
      * band-sequential format.
      */
     void write(FileHeader* header, const void* data, int numBands = 1);
-    
+
     /*!
      * Writes a version 1 SIO given the basic file header contents and a buffer
      * of raw data in band-sequential format.
      */
-    void write(int numLines, int numElements, int elementSize,
-               int elementType, const void* data, int numBands = 1);
+    void write(int numLines,
+               int numElements,
+               int elementSize,
+               int elementType,
+               const void* data,
+               int numBands = 1);
 
 protected:
     std::string mFileName;
@@ -114,22 +122,27 @@ protected:
     bool mAdopt;
 };
 
-/** Automatic data, this is not explicitly valid, dont use this in an FileHeader */
-enum { AUTO = -1 };
+/** Automatic data, this is not explicitly valid, dont use this in an FileHeader
+ */
+enum
+{
+    AUTO = -1
+};
 
 /*!
- *  Utility routine to write an image of type T into an SIO file format.  Supported
- *  types are complex<float>, float, double, byte unsigned and N-byte unsigned.
+ *  Utility routine to write an image of type T into an SIO file format.
+ * Supported types are complex<float>, float, double, byte unsigned and N-byte
+ * unsigned.
  *
  *  Sizes are deduced from the template type automatically (complex<float> = 8,
  *  double = 8, float = 4, and byte = 1, unless the es option is given, which
  *  should typically only be done for N-byte images (like RGB images).
  *
  *  Types are deduced from the template arguments as well, via the size operator
- *  (not explicitly).  This can be a good thing, but in the case of complex<float>
- *  vs. double for example, the element type is treated as COMPLEX_FLOAT.  This is
- *  clearly not the intent for a double, so an option element type can be given
- *  explicitly.
+ *  (not explicitly).  This can be a good thing, but in the case of
+ * complex<float> vs. double for example, the element type is treated as
+ * COMPLEX_FLOAT.  This is clearly not the intent for a double, so an option
+ * element type can be given explicitly.
  *
  *  If this function fails to validate the input, it may throw an exception.
  *  If it does not, the SIO file is presumed to be correct.
@@ -143,11 +156,14 @@ enum { AUTO = -1 };
  *
  *
  */
-template<typename T> void writeSIO(const T* image, size_t rows, size_t cols,
-                                   const std::string& imageFile,
-                                   int et = AUTO, int es = AUTO)
+template <typename T>
+void writeSIO(const T* image,
+              size_t rows,
+              size_t cols,
+              const std::string& imageFile,
+              int et = AUTO,
+              int es = AUTO)
 {
-
     if (es == AUTO)
     {
         es = sizeof(T);
@@ -187,13 +203,15 @@ template<typename T> void writeSIO(const T* image, size_t rows, size_t cols,
 
     imageStream.close();
 }
-template<typename T>
-void writeSIO(const T* image, const types::RowCol<size_t>& dims, const sys::filesystem::path& imageFile,
-                                   int et = AUTO, int es = AUTO)
+template <typename T>
+void writeSIO(const T* image,
+              const types::RowCol<size_t>& dims,
+              const sys::filesystem::path& imageFile,
+              int et = AUTO,
+              int es = AUTO)
 {
     writeSIO(image, dims.row, dims.col, imageFile.string(), et, es);
 }
-
 
 }
 }

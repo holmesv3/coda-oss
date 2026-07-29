@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * logging-c++ is free software; you can redistribute it and/or modify
@@ -14,12 +14,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
- 
+
 #pragma once
 #ifndef CODA_OSS_logging_Setup_h_INCLUDED_
 #define CODA_OSS_logging_Setup_h_INCLUDED_
@@ -27,14 +27,14 @@
 #include <memory>
 #include <string>
 
-#include "mem/SharedPtr.h"
-#include "logging/Logger.h"
-#include "sys/filesystem.h"
 #include "config/Exports.h"
+#include "logging/Logger.h"
+#include "mem/SharedPtr.h"
+#include "sys/filesystem.h"
 
 namespace logging
 {
-using path = coda_oss::filesystem::path; // still used in SWIG bindings
+using path = coda_oss::filesystem::path;  // still used in SWIG bindings
 
 /*!
  *  \fn setupLogger
@@ -51,12 +51,12 @@ using path = coda_oss::filesystem::path; // still used in SWIG bindings
  *  \param logBytes - number of bytes per rotating log (default: 0 no rotation)
  */
 CODA_OSS_API std::unique_ptr<logging::Logger> setupLogger(
-    const path& program, 
-    const std::string& logLevel = "warning", 
-    const path& logFile = "console",
-    const std::string& logFormat = "[%p] (%d) %m",
-    size_t logCount = 0,
-    size_t logBytes = 0);
+        const path& program,
+        const std::string& logLevel = "warning",
+        const path& logFile = "console",
+        const std::string& logFormat = "[%p] (%d) %m",
+        size_t logCount = 0,
+        size_t logBytes = 0);
 }
 
-#endif // CODA_OSS_logging_Setup_h_INCLUDED_
+#endif  // CODA_OSS_logging_Setup_h_INCLUDED_

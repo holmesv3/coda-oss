@@ -20,12 +20,13 @@
  *
  */
 
+#include <TestCase.h>
+#include <io/StreamSplitter.h>
+#include <io/StringStream.h>
+
 #include <algorithm>
 #include <string>
 #include <vector>
-#include <io/StreamSplitter.h>
-#include <io/StringStream.h>
-#include <TestCase.h>
 
 // return true if the string sequences are the same, false otherwise
 bool compareStringSequence(const std::vector<std::string>& a,
@@ -156,9 +157,9 @@ TEST_CASE(testStreamSplitter)
     delimiters.push_back("\r\n");
 
     std::vector<size_t> bufferSizes;
-    bufferSizes.push_back(65536); // default size
+    bufferSizes.push_back(65536);  // default size
 
-    bufferSizes.push_back(30); // too small to read full stream at once
+    bufferSizes.push_back(30);  // too small to read full stream at once
     bufferSizes.push_back(31);
     bufferSizes.push_back(32);
     bufferSizes.push_back(33);
@@ -168,32 +169,36 @@ TEST_CASE(testStreamSplitter)
     bufferSizes.push_back(37);
     bufferSizes.push_back(38);
 
-    bufferSizes.push_back(7); // too small to fit a single line
+    bufferSizes.push_back(7);  // too small to fit a single line
     bufferSizes.push_back(8);
     bufferSizes.push_back(9);
     bufferSizes.push_back(10);
     bufferSizes.push_back(11);
     bufferSizes.push_back(12);
 
-    // check every combination of lineCount, lineLength, delimiter, and bufferSize
+    // check every combination of lineCount, lineLength, delimiter, and
+    // bufferSize
     for (size_t i_lineCount = 0; i_lineCount < lineCounts.size(); ++i_lineCount)
     {
         const size_t lineCount = lineCounts[i_lineCount];
-        for (size_t i_lineLength = 0; i_lineLength < lineLengths.size(); ++i_lineLength)
+        for (size_t i_lineLength = 0; i_lineLength < lineLengths.size();
+             ++i_lineLength)
         {
             const size_t lineLength = lineLengths[i_lineLength];
-            for (size_t i_delimiter = 0; i_delimiter < delimiters.size(); ++i_delimiter)
+            for (size_t i_delimiter = 0; i_delimiter < delimiters.size();
+                 ++i_delimiter)
             {
                 const std::string delimiter = delimiters[i_delimiter];
-                for (size_t i_bufferSize = 0; i_bufferSize < bufferSizes.size(); ++i_bufferSize)
+                for (size_t i_bufferSize = 0; i_bufferSize < bufferSizes.size();
+                     ++i_bufferSize)
                 {
                     const size_t bufferSize = bufferSizes[i_bufferSize];
-                    TEST_ASSERT(streamSplitterTestRunner(lineCount, lineLength, delimiter, bufferSize));
+                    TEST_ASSERT(streamSplitterTestRunner(
+                            lineCount, lineLength, delimiter, bufferSize));
                 }
             }
         }
     }
-
 }
 
 TEST_CASE(testStreamSplitterEmpty)

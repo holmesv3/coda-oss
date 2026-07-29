@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of str-c++ 
+ * This file is part of str-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * str-c++ is free software; you can redistribute it and/or modify
@@ -14,20 +14,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #pragma once
 #ifndef CODA_OSS_str_Format_h_INCLUDED_
 #define CODA_OSS_str_Format_h_INCLUDED_
 
 #include <stdarg.h>
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #include <string>
 
@@ -44,7 +43,7 @@ inline auto Format(const char* format)
     return Format_(format);
 }
 
-template<typename T1>
+template <typename T1>
 inline auto Format(const char* format, const T1& t1)
 {
     return Format_(format, t1);
@@ -60,12 +59,15 @@ inline auto Format(const char* format, const T1& t1, const T2& t2, const T3& t3)
     return Format_(format, t1, t2, t3);
 }
 template <typename T1, typename T2, typename T3, typename T4>
-inline auto Format(const char* format, const T1& t1, const T2& t2, const T3& t3, const T4& t4)
+inline auto Format(const char* format,
+                   const T1& t1,
+                   const T2& t2,
+                   const T3& t3,
+                   const T4& t4)
 {
     return Format_(format, t1, t2, t3, t4);
 }
 }
-
 
 /*!
  *  \param format  The format
@@ -122,7 +124,9 @@ inline auto Format(const char* format, char ch, const std::string& s)
 {
     return Format(format, ch, s.c_str());
 }
-inline auto Format(const char* format, const std::string& s1, const std::string& s2)
+inline auto Format(const char* format,
+                   const std::string& s1,
+                   const std::string& s2)
 {
     return details::Format(format, s1.c_str(), s2.c_str());
 }
@@ -183,15 +187,24 @@ inline auto Format(const char* format, float f1, float f2, float f3)
 {
     return details::Format(format, f1, f2, f3);
 }
-inline std::string Format(const char* format, const std::string& s1, int i2, int i3)
+inline std::string Format(const char* format,
+                          const std::string& s1,
+                          int i2,
+                          int i3)
 {
     return details::Format(format, s1.c_str(), i2, i3);
 }
-inline auto Format(const char* format, const std::string& s1, const std::string& s2, uint32_t ui)
+inline auto Format(const char* format,
+                   const std::string& s1,
+                   const std::string& s2,
+                   uint32_t ui)
 {
     return details::Format(format, s1.c_str(), s2.c_str(), ui);
 }
-inline auto Format(const char* format, const std::string& s1, const std::string& s2, const std::string& s3)
+inline auto Format(const char* format,
+                   const std::string& s1,
+                   const std::string& s2,
+                   const std::string& s3)
 {
     return details::Format(format, s1.c_str(), s2.c_str(), s3.c_str());
 }
@@ -200,15 +213,27 @@ inline auto Format(const char* format, int i1, int i2, int i3, int i4)
 {
     return details::Format(format, i1, i2, i3, i4);
 }
-inline auto Format(const char* format, uint32_t ui1, uint32_t ui2, uint32_t ui3, uint32_t ui4)
+inline auto Format(const char* format,
+                   uint32_t ui1,
+                   uint32_t ui2,
+                   uint32_t ui3,
+                   uint32_t ui4)
 {
     return details::Format(format, ui1, ui2, ui3, ui4);
 }
-inline auto Format(const char* format, const char* pStr1, const std::string& s2, const char* pStr3, const std::string& s4)
+inline auto Format(const char* format,
+                   const char* pStr1,
+                   const std::string& s2,
+                   const char* pStr3,
+                   const std::string& s4)
 {
     return details::Format(format, pStr1, s2.c_str(), pStr3, s4.c_str());
 }
-inline auto Format(const char* format, const std::string& s1, int i2, const std::string& s3, int i4)
+inline auto Format(const char* format,
+                   const std::string& s1,
+                   int i2,
+                   const std::string& s3,
+                   int i4)
 {
     return details::Format(format, s1.c_str(), i2, s3.c_str(), i4);
 }

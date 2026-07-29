@@ -20,9 +20,9 @@
  *
  */
 
-#include <memory>
-
 #include <mem/ScopedCopyablePtr.h>
+
+#include <memory>
 
 #include "TestCase.h"
 
@@ -30,8 +30,8 @@ struct Foo final
 {
     int val1 = 0;
     int val2 = 0;
-    
-    Foo* clone() const = delete; // be sure there is no clone()
+
+    Foo* clone() const = delete;  // be sure there is no clone()
 };
 
 struct Bar final
@@ -48,9 +48,7 @@ struct Baz final
 
 struct AssignOnDestruct final
 {
-    AssignOnDestruct(int &ref, int finalVal) :
-        mRef(ref),
-        mFinalVal(finalVal)
+    AssignOnDestruct(int& ref, int finalVal) : mRef(ref), mFinalVal(finalVal)
     {
     }
 
@@ -60,7 +58,7 @@ struct AssignOnDestruct final
     }
 
 private:
-    int&      mRef;
+    int& mRef;
     const int mFinalVal;
 };
 
@@ -161,7 +159,7 @@ TEST_CASE(testDestructor)
     int val(0);
     {
         const mem::ScopedCopyablePtr<AssignOnDestruct> ptr(
-            new AssignOnDestruct(val, 334));
+                new AssignOnDestruct(val, 334));
         TEST_ASSERT_EQ(val, 0);
     }
 
@@ -183,7 +181,7 @@ TEST_CASE(testEqualityOperator)
     mem::ScopedCopyablePtr<int> ptr1;
     mem::ScopedCopyablePtr<int> ptr2;
 
-    //Null smart pointers are equal
+    // Null smart pointers are equal
     TEST_ASSERT(ptr1 == ptr2);
 
     ptr1.reset(new int(4));
@@ -199,12 +197,10 @@ TEST_CASE(testEqualityOperator)
     TEST_ASSERT_FALSE(ptr1 != ptr2);
 }
 
-TEST_MAIN(
-    TEST_CHECK(testCopyConstructor);
-    TEST_CHECK(testSharedCopyConstructor);
-    TEST_CHECK(testAssignmentOperator);
-    TEST_CHECK(testSharedAssignmentOperator);    
-    TEST_CHECK(testDestructor);
-    TEST_CHECK(testSyntax);
-    TEST_CHECK(testEqualityOperator);
-    )
+TEST_MAIN(TEST_CHECK(testCopyConstructor);
+          TEST_CHECK(testSharedCopyConstructor);
+          TEST_CHECK(testAssignmentOperator);
+          TEST_CHECK(testSharedAssignmentOperator);
+          TEST_CHECK(testDestructor);
+          TEST_CHECK(testSyntax);
+          TEST_CHECK(testEqualityOperator);)

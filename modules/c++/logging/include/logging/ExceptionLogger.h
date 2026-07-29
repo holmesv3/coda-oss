@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2013 - 2014, MDA Information Systems LLC
  *
  * logging-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -27,10 +27,11 @@
 #ifndef __LOGGING_EXCEPTION_LOGGER_H__
 #define __LOGGING_EXCEPTION_LOGGER_H__
 
+#include <mt/CriticalSection.h>
+#include <sys/Mutex.h>
+
 #include "logging/Logger.h"
 #include "logging/StreamHandler.h"
-#include <sys/Mutex.h>
-#include <mt/CriticalSection.h>
 
 namespace logging
 {
@@ -38,7 +39,7 @@ namespace logging
 /*!
  * \class ExceptionLogger
  *
- * \brief ExceptionLogger owns a Logger and logs exceptions passed to it. 
+ * \brief ExceptionLogger owns a Logger and logs exceptions passed to it.
  */
 class ExceptionLogger
 {
@@ -51,13 +52,14 @@ protected:
 
 public:
     ExceptionLogger(Logger* logger) : mLogger(logger)
-    {}
+    {
+    }
 
     virtual ~ExceptionLogger() = default;
     ExceptionLogger(const ExceptionLogger&) = delete;
     ExceptionLogger& operator=(const ExceptionLogger&) = delete;
     ExceptionLogger(ExceptionLogger&&) = delete;
-    ExceptionLogger& operator=(ExceptionLogger&&) = delete;  
+    ExceptionLogger& operator=(ExceptionLogger&&) = delete;
 
     //! Tells whether it has logged at least one exception
     bool hasLogged() const

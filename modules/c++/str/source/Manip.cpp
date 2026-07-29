@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of str-c++ 
+ * This file is part of str-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * str-c++ is free software; you can redistribute it and/or modify
@@ -14,28 +14,27 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 #include "str/Manip.h"
 
+#include <assert.h>
 #include <limits.h>
 #include <stdio.h>
 #include <wctype.h>
-#include <assert.h>
 
+#include <algorithm>
+#include <array>
+#include <cctype>
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include <stdexcept>
 #include <string>
-#include <cctype>
-#include <array>
 
 #include "gsl/gsl.h"
-
 #include "str/Convert.h"
 #include "str/Encoding.h"
 
@@ -68,13 +67,13 @@ inline char toupperCheck(char c)
 }
 }
 
-
 namespace str
 {
 
-// TODO: https://stackoverflow.com/questions/31959532/best-way-to-remove-white-spaces-from-stdstring
-template<typename TChar>
-inline void trim_(std::basic_string<TChar> & s)
+// TODO:
+// https://stackoverflow.com/questions/31959532/best-way-to-remove-white-spaces-from-stdstring
+template <typename TChar>
+inline void trim_(std::basic_string<TChar>& s)
 {
     size_t i;
     for (i = 0; i < s.length(); i++)
@@ -88,7 +87,6 @@ inline void trim_(std::basic_string<TChar> & s)
     {
         if (!iswspace(static_cast<wint_t>(s[i])))
             break;
-
     }
     if (i + 1 < s.length())
         s.erase(i + 1);
@@ -143,16 +141,17 @@ bool startsWith(const std::string& s, const std::string& match)
 }
 
 size_t replace(std::string& str,
-        const std::string& search,
-        const std::string& replace,
-        size_t start)
+               const std::string& search,
+               const std::string& replace,
+               size_t start)
 {
     size_t index = str.find(search, start);
 
     if (index != std::string::npos)
     {
         // ASAN error: str.replace(index, search.length(), replace);
-        str = str.substr(0, index) + replace + str.substr(index + search.length());
+        str = str.substr(0, index) + replace +
+                str.substr(index + search.length());
         start = index;
     }
     else
@@ -160,7 +159,7 @@ size_t replace(std::string& str,
         start = str.length();
     }
 
-    return start;        
+    return start;
 }
 
 void replaceAll(std::string& string,
@@ -172,8 +171,8 @@ void replaceAll(std::string& string,
     {
         start = str::replace(string, search, replace, start);
         // skip ahead --
-        // avoids inifinite loop if replace contains search 
-        start += replace.length();                             
+        // avoids inifinite loop if replace contains search
+        start += replace.length();
     }
 }
 
@@ -197,7 +196,7 @@ bool isAlpha(const std::string& s)
     return isTest(s, isalpha);
 }
 
-template<typename Pred>
+template <typename Pred>
 static inline bool isTest(const std::string& s, int (*is1)(int), Pred is2)
 {
     for (const auto& ch : s)
@@ -267,9 +266,10 @@ bool containsOnly(const std::string& s, const std::string& validChars)
 }
 
 std::vector<std::string> split(const std::string& s,
-        const std::string& splitter, size_t maxSplit)
+                               const std::string& splitter,
+                               size_t maxSplit)
 {
-    std::vector < std::string > vec;
+    std::vector<std::string> vec;
     const auto str_l = s.length();
     const auto split_l = splitter.length();
     size_t pos = 0;
@@ -298,7 +298,8 @@ static const auto& make_lookup(std::array<uint8_t, UINT8_MAX + 1>& result,
                                char (*to)(char))
 {
     // For each of 256 values, record the corresponding tolower/toupper value;
-    // this makes converting very fast as no checking or arithmetic must be done.
+    // this makes converting very fast as no checking or arithmetic must be
+    // done.
     for (size_t i = 0; i <= 0xff; i++)
     {
         const auto ch = to(static_cast<char>(i));
@@ -307,8 +308,9 @@ static const auto& make_lookup(std::array<uint8_t, UINT8_MAX + 1>& result,
     return result;
 }
 
-template<typename TChar>
-static void do_lookup(std::basic_string<TChar>& s, const std::array<uint8_t, UINT8_MAX + 1>& lookup)
+template <typename TChar>
+static void do_lookup(std::basic_string<TChar>& s,
+                      const std::array<uint8_t, UINT8_MAX + 1>& lookup)
 {
     for (auto& ch : s)
     {
@@ -346,7 +348,7 @@ inline char to_w1252_upper_(char ch)
     constexpr uint8_t z_with_caron = 0x9e /* ž */;
     if ((u8 == s_with_caron) || (u8 == oe) || (u8 == z_with_caron))
     {
-        return ch ^ 0x10;    
+        return ch ^ 0x10;
     }
 
     constexpr uint8_t a_with_grave = 0xe0 /* à */;
@@ -409,7 +411,7 @@ inline char to_w1252_lower_(char ch)
     {
         return ch | 0x20;
     }
-    // U+00D7 × MULTIPLICATION SIGN 
+    // U+00D7 × MULTIPLICATION SIGN
     constexpr uint8_t O_with_slash = 0xd8 /* Ø */;
     constexpr uint8_t capital_thorn = 0xde /* Þ */;
     if ((u8 >= O_with_slash) && (u8 <= capital_thorn))
@@ -457,12 +459,14 @@ void lower(str::W1252string& s)
 
 // These routines are SLOW ... yes, they can be made faster
 // but nobody needs that right now.
-inline auto utf8_convert(str::W1252string& w1252, void (*convert)(str::W1252string&))
+inline auto utf8_convert(str::W1252string& w1252,
+                         void (*convert)(str::W1252string&))
 {
-    convert(w1252); // upper() or lower() for Windows-1252
+    convert(w1252);  // upper() or lower() for Windows-1252
     return to_u8string(w1252);
 }
-inline void utf8_convert(std::string& strUtf8, void (*convert)(str::W1252string&))
+inline void utf8_convert(std::string& strUtf8,
+                         void (*convert)(str::W1252string&))
 {
     auto w1252 = to_w1252string(str::str<coda_oss::u8string>(strUtf8));
     const auto utf8 = utf8_convert(w1252, convert);
@@ -477,7 +481,8 @@ void utf8_lower(std::string& strUtf8)
     utf8_convert(strUtf8, lower);
 }
 
-inline void utf8_convert(coda_oss::u8string& s, void (*convert)(str::W1252string&))
+inline void utf8_convert(coda_oss::u8string& s,
+                         void (*convert)(str::W1252string&))
 {
     auto w1252 = to_w1252string(s);
     s = utf8_convert(w1252, convert);
@@ -493,7 +498,8 @@ void upper(coda_oss::u8string& s)
 
 void escapeForXML(std::string& str)
 {
-    // & needs to be first or else it'll mess up the other characters that we replace
+    // & needs to be first or else it'll mess up the other characters that we
+    // replace
     replaceAll(str, "&", "&amp;");
     replaceAll(str, "<", "&lt;");
     replaceAll(str, ">", "&gt;");
@@ -527,7 +533,7 @@ class ci_char_traits final : public std::char_traits<char>
         return 0;
     }
 
-    public:
+public:
     static int compare(const std::string& s1, const std::string& s2) noexcept
     {
         if (s1.length() < s2.length())

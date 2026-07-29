@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,28 +14,27 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#if defined (USE_EXPAT) || defined(USE_XERCES) || defined(USE_LIBXML)
+#if defined(USE_EXPAT) || defined(USE_XERCES) || defined(USE_LIBXML)
 
+#include <import/except.h>
 #include <import/io.h>
 #include <import/xml/lite.h>
-#include <import/except.h>
-//#include <import/util.h>
+// #include <import/util.h>
 using namespace std;
 using namespace io;
 using namespace xml::lite;
 using namespace except;
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     try
     {
-
         // Check to make sure we have right length
         if (argc != 3)
             die_printf("Usage: %s --map|--file <xml file>\n", argv[0]);
@@ -50,16 +49,13 @@ int main(int argc, char **argv)
         else
             die_printf("Invalid flag: [%s]\n", flags.c_str());
 
-
-
         // Create an XML parse tree
         MinidomParser treeBuilder;
-//#if defined(USE_XERCES)
-//      treeBuilder.getReader().setValidation(true);
-//#endif
-        // Use the provided parse method to parse the input file
+        // #if defined(USE_XERCES)
+        //       treeBuilder.getReader().setValidation(true);
+        // #endif
+        //  Use the provided parse method to parse the input file
         treeBuilder.parse(*xmlFile);
-
 
         std::cout << "Finished!" << std::endl;
         /*
@@ -76,10 +72,9 @@ int main(int argc, char **argv)
         */
         // The Tree should delete itself
         delete xmlFile;
-
     }
     // Catch all throwables and exit in a reasonable manner
-    catch (Throwable & t)
+    catch (Throwable& t)
     {
         cout << "Caught Throwable: " << t.toString() << endl;
 
@@ -90,6 +85,6 @@ int main(int argc, char **argv)
 }
 #else
 int main()
-{}
+{
+}
 #endif
-

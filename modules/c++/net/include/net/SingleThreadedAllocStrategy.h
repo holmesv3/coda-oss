@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,8 +23,9 @@
 #ifndef __NET_SINGLE_THREADED_ALLOC_STRATEGY_H__
 #define __NET_SINGLE_THREADED_ALLOC_STRATEGY_H__
 
-#include "net/AllocStrategy.h"
 #include <memory>
+
+#include "net/AllocStrategy.h"
 
 namespace net
 {
@@ -37,13 +38,11 @@ namespace net
  *  requests.  Re-uses the same handler for each request.
  *
  */
-class SingleThreadedAllocStrategy: public AllocStrategy
+class SingleThreadedAllocStrategy : public AllocStrategy
 {
 public:
-
     //!  Constructor
-    SingleThreadedAllocStrategy() :
-        mHandler(nullptr)
+    SingleThreadedAllocStrategy() : mHandler(nullptr)
     {
     }
 
@@ -72,6 +71,7 @@ public:
     {
         (*mHandler)(conn);
     }
+
 private:
     net::RequestHandler* mHandler;
 };

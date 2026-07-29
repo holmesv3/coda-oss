@@ -20,13 +20,11 @@
  *
  */
 
-
 #ifndef __MT_TIED_WORKER_THREAD_H__
 #define __MT_TIED_WORKER_THREAD_H__
 
-#include "mt/CPUAffinityThreadInitializer.h"
 #include "mem/SharedPtr.h"
-
+#include "mt/CPUAffinityThreadInitializer.h"
 
 namespace mt
 {
@@ -64,4 +62,3 @@ private:
 
 }
 #endif
-

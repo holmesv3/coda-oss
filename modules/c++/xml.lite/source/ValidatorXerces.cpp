@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,34 +14,34 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
+#include <config/compiler_extensions.h>
+
 #include <algorithm>
 #include <iterator>
+#include <regex>
 #include <std/filesystem>
 #include <std/memory>
 #include <std/string>
-#include <regex>
-#include <tuple> // std::ignore
-
-#include <config/compiler_extensions.h>
+#include <tuple>  // std::ignore
 CODA_OSS_disable_warning_push
 #ifndef _MSC_VER
-CODA_OSS_disable_warning(-Wshadow)
+        CODA_OSS_disable_warning(-Wshadow)
 #endif
 #include <str/utf8.h>
-CODA_OSS_disable_warning_pop
+                CODA_OSS_disable_warning_pop
 
-#include <sys/OS.h>
-#include <sys/Path.h>
 #include <io/StringStream.h>
 #include <mem/ScopedArray.h>
+#include <sys/OS.h>
+#include <sys/Path.h>
 
-namespace fs = std::filesystem;
+        namespace fs = std::filesystem;
 
 #include <xml/lite/xml_lite_config.h>
 #ifdef USE_XERCES
@@ -51,30 +51,29 @@ namespace xml
 {
 namespace lite
 {
-std::ostream& operator<< (std::ostream& out, 
-                          const ValidationErrorHandler& errorHandler)
+std::ostream& operator<<(std::ostream& out,
+                         const ValidationErrorHandler& errorHandler)
 {
     out << errorHandler.toString() << std::endl;
     return out;
 }
 
-bool ValidationErrorHandler::handleError(
-        const ValidationError& err)
+bool ValidationErrorHandler::handleError(const ValidationError& err)
 {
     std::string level;
-    switch(err.getSeverity())
+    switch (err.getSeverity())
     {
-    case xercesc::DOMError::DOM_SEVERITY_WARNING : 
-        level = "WARNING"; 
+    case xercesc::DOMError::DOM_SEVERITY_WARNING:
+        level = "WARNING";
         break;
-    case xercesc::DOMError::DOM_SEVERITY_ERROR : 
-        level = "ERROR"; 
+    case xercesc::DOMError::DOM_SEVERITY_ERROR:
+        level = "ERROR";
         break;
-    case xercesc::DOMError::DOM_SEVERITY_FATAL_ERROR : 
-        level = "FATAL"; 
+    case xercesc::DOMError::DOM_SEVERITY_FATAL_ERROR:
+        level = "FATAL";
         break;
-    default :
-        level = "WARNING"; 
+    default:
+        level = "WARNING";
         break;
     }
 
@@ -82,45 +81,43 @@ bool ValidationErrorHandler::handleError(
     XercesLocalString message(err.getMessage());
 
     // create o
-    ValidationInfo info (
-        message.str(), level, mID, 
-        (size_t)err.getLocation()->getLineNumber());
+    ValidationInfo info(message.str(),
+                        level,
+                        mID,
+                        (size_t)err.getLocation()->getLineNumber());
     mErrorLog.push_back(info);
 
     return true;
 }
 
-ValidatorXerces::ValidatorXerces(
-        const std::vector<fs::path>& schemaPaths,
-        logging::Logger* log,
-        bool recursive) :
+ValidatorXerces::ValidatorXerces(const std::vector<fs::path>& schemaPaths,
+                                 logging::Logger* log,
+                                 bool recursive) :
     ValidatorXerces(sys::convertPaths(schemaPaths), log, recursive)
 {
 }
-ValidatorXerces::ValidatorXerces(
-    const std::vector<std::string>& schemaPaths, 
-    logging::Logger* log,
-    bool recursive) :
+ValidatorXerces::ValidatorXerces(const std::vector<std::string>& schemaPaths,
+                                 logging::Logger* log,
+                                 bool recursive) :
     ValidatorInterface(schemaPaths, log, recursive)
 {
     // add each schema into a grammar pool --
     // this allows reuse
-    mSchemaPool.reset(
-        new xercesc::XMLGrammarPoolImpl(
+    mSchemaPool.reset(new xercesc::XMLGrammarPoolImpl(
             xercesc::XMLPlatformUtils::fgMemoryManager));
 
-    const XMLCh ls_id [] = {xercesc::chLatin_L, 
-                            xercesc::chLatin_S, 
-                            xercesc::chNull};
+    const XMLCh ls_id[] = {xercesc::chLatin_L,
+                           xercesc::chLatin_S,
+                           xercesc::chNull};
 
     // create the validator
     mValidator.reset(
-        xercesc::DOMImplementationRegistry::
-            getDOMImplementation (ls_id)->createLSParser(
-                xercesc::DOMImplementationLS::MODE_SYNCHRONOUS,
-                nullptr, 
-                xercesc::XMLPlatformUtils::fgMemoryManager,
-                mSchemaPool.get()));
+            xercesc::DOMImplementationRegistry::getDOMImplementation(ls_id)
+                    ->createLSParser(
+                            xercesc::DOMImplementationLS::MODE_SYNCHRONOUS,
+                            nullptr,
+                            xercesc::XMLPlatformUtils::fgMemoryManager,
+                            mSchemaPool.get()));
 
     // set the configuration settings
     xercesc::DOMConfiguration* config = mValidator->getDomConfig();
@@ -133,10 +130,12 @@ ValidatorXerces::ValidatorXerces(
     // validation settings
     config->setParameter(xercesc::XMLUni::fgDOMValidate, true);
     config->setParameter(xercesc::XMLUni::fgXercesSchema, true);
-    config->setParameter(xercesc::XMLUni::fgXercesSchemaFullChecking, false); // this affects performance
+    config->setParameter(xercesc::XMLUni::fgXercesSchemaFullChecking,
+                         false);  // this affects performance
 
     // definitely use cache grammar -- this is the cached schema
-    config->setParameter(xercesc::XMLUni::fgXercesUseCachedGrammarInParse, true);
+    config->setParameter(xercesc::XMLUni::fgXercesUseCachedGrammarInParse,
+                         true);
 
     // explicitly skip loading schema referenced in the xml docs
     config->setParameter(xercesc::XMLUni::fgXercesLoadSchema, false);
@@ -148,9 +147,8 @@ ValidatorXerces::ValidatorXerces(
     config->setParameter(xercesc::XMLUni::fgXercesUserAdoptsDOMDocument, true);
 
     // add a error handler we still have control over
-    mErrorHandler.reset(
-            new ValidationErrorHandler());
-    config->setParameter(xercesc::XMLUni::fgDOMErrorHandler, 
+    mErrorHandler.reset(new ValidationErrorHandler());
+    config->setParameter(xercesc::XMLUni::fgDOMErrorHandler,
                          mErrorHandler.get());
 
     // load our schemas --
@@ -178,7 +176,9 @@ ValidatorXerces::ValidatorXerces(
     mSchemaPool->lockPool();
 }
 
-std::vector<coda_oss::filesystem::path> ValidatorXerces::loadSchemas(const std::vector<coda_oss::filesystem::path>& schemaPaths, bool recursive)
+std::vector<coda_oss::filesystem::path> ValidatorXerces::loadSchemas(
+        const std::vector<coda_oss::filesystem::path>& schemaPaths,
+        bool recursive)
 {
     // load our schemas --
     // search each directory for schemas
@@ -186,30 +186,35 @@ std::vector<coda_oss::filesystem::path> ValidatorXerces::loadSchemas(const std::
     return os.search(schemaPaths, "", ".xsd", recursive);
 }
 
-// From config.h.in: Define to the 16 bit type used to represent Xerces UTF-16 characters
-// On Windows, this needs to be wchar_t so that various "wide character" Win32 APIs can be called.
+// From config.h.in: Define to the 16 bit type used to represent Xerces UTF-16
+// characters On Windows, this needs to be wchar_t so that various "wide
+// character" Win32 APIs can be called.
 static_assert(sizeof(XMLCh) == 2, "XMLCh should be two bytes for UTF-16.");
 
 #ifdef _WIN32
 // On other platforms, char16_t is used; only wchar_t on Windows.
 using XMLCh_t = wchar_t;
 static_assert(std::is_same<::XMLCh, XMLCh_t>::value, "XMLCh should be wchar_t");
-inline void reset(const std::u8string& xml, std::unique_ptr<std::wstring>& pWString)
+inline void reset(const std::u8string& xml,
+                  std::unique_ptr<std::wstring>& pWString)
 {
     pWString = std::make_unique<std::wstring>(str::details::to_wstring(xml));
 }
 #else
 using XMLCh_t = char16_t;
-static_assert(std::is_same<::XMLCh, XMLCh_t>::value, "XMLCh should be char16_t");
+static_assert(std::is_same<::XMLCh, XMLCh_t>::value,
+              "XMLCh should be char16_t");
 #endif
 
-inline void reset(const std::u8string& xml, std::unique_ptr<std::u16string>& pWString)
+inline void reset(const std::u8string& xml,
+                  std::unique_ptr<std::u16string>& pWString)
 {
     pWString = std::make_unique<std::u16string>(str::to_u16string(xml));
 }
 
 using XMLCh_string = std::basic_string<XMLCh_t>;
-static std::unique_ptr<XMLCh_string> setStringData(xercesc::DOMLSInputImpl& input, const std::u8string& xml)
+static std::unique_ptr<XMLCh_string> setStringData(
+        xercesc::DOMLSInputImpl& input, const std::u8string& xml)
 {
     // expand to the wide character data for use with xerces
     std::unique_ptr<XMLCh_string> retval;
@@ -218,22 +223,21 @@ static std::unique_ptr<XMLCh_string> setStringData(xercesc::DOMLSInputImpl& inpu
     return retval;
 }
 
-bool ValidatorXerces::validate_(const std::u8string& xml, 
-                               const std::string& xmlID,
-                               std::vector<ValidationInfo>& errors) const
+bool ValidatorXerces::validate_(const std::u8string& xml,
+                                const std::string& xmlID,
+                                std::vector<ValidationInfo>& errors) const
 {
-    // clear the log before its use -- 
-    // however we do not clear the users 'errors' because 
+    // clear the log before its use --
+    // however we do not clear the users 'errors' because
     // they might want an accumulation of errors
     mErrorHandler->clearErrorLog();
 
-    // set the id so all errors coming from this session 
+    // set the id so all errors coming from this session
     // get a matching id
     mErrorHandler->setID(xmlID);
 
     // get a vehicle to validate data
-    xercesc::DOMLSInputImpl input(
-        xercesc::XMLPlatformUtils::fgMemoryManager);
+    xercesc::DOMLSInputImpl input(xercesc::XMLPlatformUtils::fgMemoryManager);
 
     // expand to the wide character data for use with xerces
     auto pWString = setStringData(input, xml);
@@ -241,9 +245,9 @@ bool ValidatorXerces::validate_(const std::u8string& xml,
     // validate the document
     mValidator->parse(&input)->release();
 
-    // add the new errors to the vector 
-    errors.insert(errors.end(), 
-                  mErrorHandler->getErrorLog().begin(), 
+    // add the new errors to the vector
+    errors.insert(errors.end(),
+                  mErrorHandler->getErrorLog().begin(),
                   mErrorHandler->getErrorLog().end());
 
     // reset the id
@@ -258,7 +262,8 @@ static coda_oss::u8string encodeXml(const std::string& xml)
     // we want to use it, otherwise we'll corrupt the data.
 
     // UTF-8 is the normal case, so check it first
-    const std::regex reUtf8("<\?.*encoding=.*['\"]?.*utf-8.*['\"]?.*\?>", std::regex::icase);
+    const std::regex reUtf8("<\?.*encoding=.*['\"]?.*utf-8.*['\"]?.*\?>",
+                            std::regex::icase);
     std::cmatch m;
     if (std::regex_search(xml.c_str(), m, reUtf8))
     {
@@ -266,13 +271,15 @@ static coda_oss::u8string encodeXml(const std::string& xml)
     }
 
     // Maybe this is poor XML with Windows-1252 encoding :-(
-    const std::regex reWindows1252("<\?.*encoding=.*['\"]?.*windows-1252.*['\"]?.*\?>", std::regex::icase);
+    const std::regex reWindows1252(
+            "<\?.*encoding=.*['\"]?.*windows-1252.*['\"]?.*\?>",
+            std::regex::icase);
     if (std::regex_search(xml.c_str(), m, reWindows1252))
     {
         return to_u8string(str::str<str::W1252string>(xml));
     }
 
-    // No "... encoding= ..."; let u8FromNative() deal with it   
+    // No "... encoding= ..."; let u8FromNative() deal with it
     return str::u8FromNative(xml);
 }
 
@@ -285,7 +292,9 @@ bool ValidatorXerces::validate(const std::string& xml,
     {
         return validate(u8xml, xmlID, errors);
     }
-    catch (const utf8::invalid_utf8&) { }
+    catch (const utf8::invalid_utf8&)
+    {
+    }
 
     // Can't process as "native" (UTF-8 on Linux, Windows-1252 on Windows).
     // Must be Windows-1252 on Linux.

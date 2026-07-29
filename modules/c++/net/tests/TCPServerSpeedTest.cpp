@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -27,15 +27,15 @@
  *  Start this first, then the client
  */
 
+#include <mem/SharedPtr.h>
+#include <net/ServerSocketFactory.h>
+#include <str/Convert.h>
+#include <sys/LocalDateTime.h>
+#include <sys/Path.h>
+
 #include <iostream>
 #include <stdexcept>
 #include <vector>
-
-#include <str/Convert.h>
-#include <sys/Path.h>
-#include <sys/LocalDateTime.h>
-#include <mem/SharedPtr.h>
-#include <net/ServerSocketFactory.h>
 
 int main(int argc, char** argv)
 {
@@ -61,7 +61,8 @@ int main(int argc, char** argv)
         sys::Uint64_T numBytes;
         client->recv(&numBytes, sizeof(sys::Uint64_T));
 
-        std::vector<sys::ubyte> bufferVec(std::min<sys::Uint64_T>(numBytes, bufferSize));
+        std::vector<sys::ubyte> bufferVec(
+                std::min<sys::Uint64_T>(numBytes, bufferSize));
         sys::ubyte* const buffer = &bufferVec[0];
 
         // Then receive all the bytes
@@ -70,7 +71,8 @@ int main(int argc, char** argv)
         while (numBytesReceived < numBytes)
         {
             const size_t numBytesToReceive =
-                    std::min<sys::Uint64_T>(bufferSize, numBytesReceived - numBytes);
+                    std::min<sys::Uint64_T>(bufferSize,
+                                            numBytesReceived - numBytes);
 
             numBytesReceived += client->recv(buffer, numBytesToReceive);
         }

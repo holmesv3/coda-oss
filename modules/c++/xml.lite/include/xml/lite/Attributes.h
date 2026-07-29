@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,16 +24,15 @@
 #ifndef CODA_OSS_xml_lite_Attributes_h_INCLUDED_
 #define CODA_OSS_xml_lite_Attributes_h_INCLUDED_
 
+#include <config/Exports.h>
+
 #include <string>
 #include <vector>
 
-#include <config/Exports.h>
-
-#include "sys/Conf.h"
 #include "except/Exception.h"
-#include "str/Convert.h"
 #include "gsl/gsl.h"
-
+#include "str/Convert.h"
+#include "sys/Conf.h"
 #include "xml/lite/QName.h"
 /*!
  *  \file Attributes.h
@@ -66,7 +65,7 @@ struct CODA_OSS_API AttributeNode final
      *  \param attributeNode
      *  Copy attribute node to *this
      */
-    AttributeNode(const AttributeNode & attributeNode);
+    AttributeNode(const AttributeNode& attributeNode);
 
     /*!
      *  Assignment operator
@@ -118,7 +117,8 @@ struct CODA_OSS_API AttributeNode final
      *  \param value The attribute value
      */
     void setValue(const std::string& value);
-    AttributeNode(const xml::lite::QName& qname, const std::string& value) : AttributeNode(qname)
+    AttributeNode(const xml::lite::QName& qname, const std::string& value) :
+        AttributeNode(qname)
     {
         setValue(value);
     }
@@ -141,11 +141,9 @@ struct CODA_OSS_API AttributeNode final
     void getQName(xml::lite::QName&) const;
 
 protected:
-
     QName mName;
     //! The value of the attribute
     std::string mValue;
-
 };
 
 /*!
@@ -167,10 +165,10 @@ struct CODA_OSS_API Attributes final
     Attributes() = default;
 
     //! Copy constructor
-    Attributes(const Attributes & attributes);
+    Attributes(const Attributes& attributes);
 
     //! Assignment operator
-    Attributes & operator=(const Attributes & attributes);
+    Attributes& operator=(const Attributes& attributes);
 
     //! Destructor
     ~Attributes() = default;
@@ -193,7 +191,7 @@ struct CODA_OSS_API Attributes final
      * \param qname The fully qualified name of the attribute
      * \return the index or -1 if none found
      */
-    int getIndex(const std::string & qname) const;
+    int getIndex(const std::string& qname) const;
 
     /*!
      * Look up the index of an attribute by Namespace name.
@@ -265,7 +263,7 @@ struct CODA_OSS_API Attributes final
      * \return The value
      * \throw NoSuchKeyException If the qname is not found
      */
-    std::string getValue(const std::string & qname) const;
+    std::string getValue(const std::string& qname) const;
     /*!
      * Look up an attribute's value by XML 1.0 qualified name.
      * \param qname The qualified name
@@ -282,7 +280,8 @@ struct CODA_OSS_API Attributes final
      * \throw NoSuchKeyException If the uri/localName is not found
      */
     std::string getValue(const xml::lite::QName&) const;
-    std::string getValue(const std::string & uri, const std::string & localName) const
+    std::string getValue(const std::string& uri,
+                         const std::string& localName) const
     {
         return getValue(QName(uri, localName));
     }
@@ -295,7 +294,9 @@ struct CODA_OSS_API Attributes final
      * \return If the uri/localName is not found or not
      */
     bool getValue(const xml::lite::QName&, std::string& result) const;
-    bool getValue(const std::string& uri, const std::string& localName, std::string& result) const
+    bool getValue(const std::string& uri,
+                  const std::string& localName,
+                  std::string& result) const
     {
         return getValue(QName(uri, localName), result);
     }
@@ -393,7 +394,8 @@ struct CODA_OSS_API Attributes final
         if (index < mAttributes.size())
         {
             Attributes_T::iterator it = mAttributes.begin();
-            for(size_t i = 0; i < index; ++i, ++it);
+            for (size_t i = 0; i < index; ++i, ++it)
+                ;
             mAttributes.erase(it);
         }
     }
@@ -427,18 +429,23 @@ private:
  * \return If an attribute with the key is found or not
  */
 template <typename K, typename ToType>
-inline auto castValue_(const Attributes& attributes, const K& key, ToType toType)
-  -> decltype(toType(std::string())) 
+inline auto castValue_(const Attributes& attributes,
+                       const K& key,
+                       ToType toType) -> decltype(toType(std::string()))
 {
     const auto value = attributes.getValue(key);
     if (value.empty())
     {
-        throw except::BadCastException(Ctxt("call Attributes::getValue() directly to get an empty string"));
+        throw except::BadCastException(Ctxt(
+                "call Attributes::getValue() directly to get an empty string"));
     }
     return toType(value);
 }
 template <typename T, typename K, typename ToType>
-inline bool castValue_(const Attributes& attributes, const K& key, T& result, ToType toType)
+inline bool castValue_(const Attributes& attributes,
+                       const K& key,
+                       T& result,
+                       ToType toType)
 {
     try
     {
@@ -476,8 +483,9 @@ inline T toType(const std::string& value)
  * \return If the qname is not found or not
  */
 template <typename ToType, typename TKey>
-inline auto castValue(const Attributes& attributes, const TKey& k, ToType toType)
-  -> decltype(toType(std::string()))
+inline auto castValue(const Attributes& attributes,
+                      const TKey& k,
+                      ToType toType) -> decltype(toType(std::string()))
 {
     return castValue_(attributes, k, toType);
 }
@@ -488,7 +496,10 @@ inline T getValue(const Attributes& attributes, const TKey& k)
 }
 
 template <typename T, typename ToType, typename TKey>
-inline bool castValue(const Attributes& attributes, const TKey& k, T& result, ToType toType)
+inline bool castValue(const Attributes& attributes,
+                      const TKey& k,
+                      T& result,
+                      ToType toType)
 {
     return castValue_(attributes, k, result, toType);
 }
@@ -506,24 +517,35 @@ inline bool getValue(const Attributes& attributes, const TKey& k, T& result)
  * \return If the uri/localName is not found or not
  */
 template <typename ToType>
-inline auto castValue(const Attributes& attributes, const Uri & uri, const std::string & localName, ToType toType)
--> decltype(toType(std::string()))
+inline auto castValue(const Attributes& attributes,
+                      const Uri& uri,
+                      const std::string& localName,
+                      ToType toType) -> decltype(toType(std::string()))
 {
     return castValue(attributes, QName(uri, localName), toType);
 }
 template <typename T>
-inline T getValue(const Attributes& attributes, const Uri & uri, const std::string & localName)
+inline T getValue(const Attributes& attributes,
+                  const Uri& uri,
+                  const std::string& localName)
 {
     return getValue<T>(attributes, QName(uri, localName));
 }
 
 template <typename T, typename ToType>
-inline bool castValue(const Attributes& attributes, const Uri & uri, const std::string & localName, T& result, ToType toType)
+inline bool castValue(const Attributes& attributes,
+                      const Uri& uri,
+                      const std::string& localName,
+                      T& result,
+                      ToType toType)
 {
     return getValue(attributes, QName(uri, localName), result, toType);
 }
 template <typename T>
-inline bool getValue(const Attributes& attributes, const Uri & uri, const std::string & localName, T& result)
+inline bool getValue(const Attributes& attributes,
+                     const Uri& uri,
+                     const std::string& localName,
+                     T& result)
 {
     return getValue(attributes, QName(uri, localName), result);
 }
@@ -535,13 +557,15 @@ inline bool getValue(const Attributes& attributes, const Uri & uri, const std::s
  * \return If an attribute with the key is found or not
  */
 template <typename T, typename K, typename ToString>
-inline bool setValue_(Attributes& attributes, const K& key, const T& value,
-    ToString toString)
+inline bool setValue_(Attributes& attributes,
+                      const K& key,
+                      const T& value,
+                      ToString toString)
 {
     int index = attributes.getIndex(key);
     if (index < 0)
     {
-        return false; // not found
+        return false;  // not found
     }
 
     auto& node = attributes.getNode(index);
@@ -564,7 +588,10 @@ inline std::string toString(const T& value)
  * \return If the index is out of range or not
  */
 template <typename T, typename ToString>
-inline bool setValue(Attributes& attributes, int i, const T& value, ToString toString)
+inline bool setValue(Attributes& attributes,
+                     int i,
+                     const T& value,
+                     ToString toString)
 {
     return setValue_(attributes, i, value, toString);
 }
@@ -581,13 +608,17 @@ inline bool setValue(Attributes& attributes, int i, const T& value)
  * \return If the qname is not found or not
  */
 template <typename T, typename ToString>
-inline bool setValue(Attributes& attributes, const std::string& qname, const T& value,
-    ToString toString)
+inline bool setValue(Attributes& attributes,
+                     const std::string& qname,
+                     const T& value,
+                     ToString toString)
 {
     return setValue_(attributes, qname, value, toString);
 }
 template <typename T>
-inline bool setValue(Attributes& attributes, const std::string& qname, const T& value)
+inline bool setValue(Attributes& attributes,
+                     const std::string& qname,
+                     const T& value)
 {
     return setValue_(attributes, qname, value, details::toString<T>);
 }
@@ -600,30 +631,40 @@ inline bool setValue(Attributes& attributes, const std::string& qname, const T& 
  * \return If the uri/localName is not found or not
  */
 template <typename T, typename ToString>
-inline bool setValue(Attributes& attributes, const xml::lite::QName& name, const T& value, ToString toString)
+inline bool setValue(Attributes& attributes,
+                     const xml::lite::QName& name,
+                     const T& value,
+                     ToString toString)
 {
     return setValue_(attributes, name, value, toString);
 }
 template <typename T>
-inline bool setValue(Attributes& attributes, const xml::lite::QName& name, const T& value)
+inline bool setValue(Attributes& attributes,
+                     const xml::lite::QName& name,
+                     const T& value)
 {
     return setValue_(attributes, name, value, details::toString<T>);
 }
 template <typename T, typename ToString>
-inline bool setValue(Attributes& attributes, const Uri & uri, const std::string & localName, const T& value,
-     ToString toString)
+inline bool setValue(Attributes& attributes,
+                     const Uri& uri,
+                     const std::string& localName,
+                     const T& value,
+                     ToString toString)
 {
     return setValue(attributes, QName(uri, localName), value, toString);
 }
 template <typename T>
-inline bool setValue(Attributes& attributes, const Uri & uri, const std::string & localName, const T& value)
+inline bool setValue(Attributes& attributes,
+                     const Uri& uri,
+                     const std::string& localName,
+                     const T& value)
 {
     return setValue(attributes, uri, localName, value, details::toString<T>);
 }
-#endif // SWIG
+#endif  // SWIG
 
 }
 }
 
-#endif // CODA_OSS_xml_lite_Attributes_h_INCLUDED_
-
+#endif  // CODA_OSS_xml_lite_Attributes_h_INCLUDED_

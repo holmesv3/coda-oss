@@ -21,9 +21,10 @@
  */
 
 #include <import/sys.h>
+
 #include <cassert>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <streambuf>
 
 int main(int /*argc*/, char** /*argv*/)

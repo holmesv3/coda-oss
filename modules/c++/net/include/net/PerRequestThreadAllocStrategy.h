@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,20 +23,18 @@
 #ifndef __NET_PER_REQUEST_THREAD_ALLOC_STRATEGY_H__
 #define __NET_PER_REQUEST_THREAD_ALLOC_STRATEGY_H__
 
-#include "sys/Thread.h"
-#include "net/RequestHandler.h"
 #include "net/AllocStrategy.h"
-
+#include "net/RequestHandler.h"
+#include "sys/Thread.h"
 
 namespace net
 {
-
 
 /*!
  *  \class RequestHandlerThread
  *  \brief The thread for handling request in our per-request strategy
  *
- *  This class simply overrides the Thread class, providing a 
+ *  This class simply overrides the Thread class, providing a
  *  one-to-one function object for handling a thread.  The thread
  *  then exits after handling the connection.
  *
@@ -49,20 +47,21 @@ class RequestHandlerThread : public sys::Thread
 {
     RequestHandler* mRequestHandler;
     NetConnection* mConnection;
+
 public:
     /*!
      *  Constructor
      *  \param handler A (freshly created) request handler
      *  \param connection The network socket connection
      */
-    RequestHandlerThread(RequestHandler* handler,
-                         NetConnection* connection) :
-            mRequestHandler(handler), mConnection(connection)
-    {}
+    RequestHandlerThread(RequestHandler* handler, NetConnection* connection) :
+        mRequestHandler(handler), mConnection(connection)
+    {
+    }
 
     //!  Destructor
     ~RequestHandlerThread() = default;
-   
+
     RequestHandlerThread(const RequestHandlerThread&) = delete;
     RequestHandlerThread& operator=(const RequestHandlerThread&) = delete;
     RequestHandlerThread(RequestHandlerThread&&) = delete;
@@ -70,14 +69,13 @@ public:
 
     /*!
      *  Overloaded run method for handling a connection.
-     * 
+     *
      */
     void run() override
     {
         (*mRequestHandler)(mConnection);
         delete mRequestHandler;
     }
-
 };
 
 /*!
@@ -93,10 +91,12 @@ class PerRequestThreadAllocStrategy : public AllocStrategy
 public:
     //!  Constructor
     PerRequestThreadAllocStrategy()
-    {}
+    {
+    }
     //!  Destructor
     ~PerRequestThreadAllocStrategy()
-    {}
+    {
+    }
 
     void initialize() override
     {
@@ -104,7 +104,7 @@ public:
 
     /*!
      *  Handle a request from a connection.
-     * 
+     *
      *  \param conn The network connection
      */
     void handleConnection(NetConnection* conn) override;
@@ -116,7 +116,6 @@ public:
 
 /*  ThreadPoolAllocStrategy() */
 /*  { */
-
 
 /*  } */
 
@@ -134,7 +133,6 @@ public:
 /*     protected: */
 /*  RequestHandlerThreadPool* mThreadPool; */
 /*     }; */
-
 
 }
 

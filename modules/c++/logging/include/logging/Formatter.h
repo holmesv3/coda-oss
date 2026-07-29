@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of logging-c++ 
+ * This file is part of logging-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * logging-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -29,10 +29,10 @@
 #define CODA_OSS_logging_Formatter_h_INCLUDED_
 
 #include <string>
-#include "config/Exports.h"
-#include "logging/LogRecord.h"
-#include "import/io.h"
 
+#include "config/Exports.h"
+#include "import/io.h"
+#include "logging/LogRecord.h"
 
 namespace logging
 {
@@ -44,35 +44,31 @@ namespace logging
 class CODA_OSS_API Formatter
 {
 public:
-
-
-    Formatter() : mFmt(""),
-                  mPrologue(""),
-                  mEpilogue("") 
+    Formatter() : mFmt(""), mPrologue(""), mEpilogue("")
     {
     }
 
-    Formatter(const std::string& fmt, 
+    Formatter(const std::string& fmt,
               const std::string& prologue = "",
               const std::string& epilogue = "") :
-        mFmt(fmt),
-        mPrologue(prologue),
-        mEpilogue(epilogue) 
+        mFmt(fmt), mPrologue(prologue), mEpilogue(epilogue)
     {
     }
-    
-    virtual ~Formatter() {}
+
+    virtual ~Formatter()
+    {
+    }
 
     Formatter& operator=(const Formatter&) = delete;
 
     // returns string
-    virtual void format(const LogRecord* record, io::OutputStream& os) const = 0;
+    virtual void format(const LogRecord* record,
+                        io::OutputStream& os) const = 0;
 
     virtual std::string getPrologue() const;
-    virtual std::string getEpilogue() const; 
+    virtual std::string getEpilogue() const;
 
 protected:
-
     static const char THREAD_ID[];
     static const char LOG_NAME[];
     static const char LOG_LEVEL[];
@@ -82,7 +78,6 @@ protected:
     static const char MESSAGE[];
     static const char FUNCTION[];
 
-    
     const std::string mFmt;
     const std::string mPrologue;
     const std::string mEpilogue;

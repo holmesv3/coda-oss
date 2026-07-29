@@ -19,29 +19,27 @@
  * see <http://www.gnu.org/licenses/>.
  *
  */
-#include <sys/UTCDateTime.h>
-
-#include <sys/Conf.h>
 #include <except/Exception.h>
 #include <str/Convert.h>
 #include <str/Manip.h>
+#include <sys/Conf.h>
+#include <sys/UTCDateTime.h>
 
 namespace
 {
-// These constants and functions were taken from the NRT DateTime.c implementation
+// These constants and functions were taken from the NRT DateTime.c
+// implementation
 
-const long UNIX_EPOCH_YEAR(1970); // EPOCH = Jan 1 1970 00:00:00
+const long UNIX_EPOCH_YEAR(1970);  // EPOCH = Jan 1 1970 00:00:00
 const double SECS_IN_MIN(60.0);
 const double SECS_IN_HOUR(60.0 * SECS_IN_MIN);
 const double SECS_IN_DAY(24.0 * SECS_IN_HOUR);
 
 // At the end of each month, the total number of days so far in the year.
 // Index 0 is for non-leap years, index 1 is for leap years
-const int CUMULATIVE_DAYS_PER_MONTH[2][12] =
-{
-    {31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365},
-    {31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366}
-};
+const int CUMULATIVE_DAYS_PER_MONTH[2][12] = {
+        {31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365},
+        {31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366}};
 
 // The number of days in a year.  Index 0 is for non-leap years, index 1 is
 // for leap years
@@ -62,9 +60,9 @@ constexpr int yearIndex(int year)
 int getNumFullDaysInYearSoFar(int year, int month, int dayOfMonth)
 {
     /* The number of days for all the full months so far */
-    int numFullDays = (month > 1) ?
-        CUMULATIVE_DAYS_PER_MONTH[yearIndex(year)][month - 2] :
-        0;
+    int numFullDays = (month > 1)
+            ? CUMULATIVE_DAYS_PER_MONTH[yearIndex(year)][month - 2]
+            : 0;
 
     /* The number of full days in this month so far */
     numFullDays += dayOfMonth - 1;
@@ -78,12 +76,9 @@ namespace sys
 {
 void UTCDateTime::toMillis()
 {
-    if (mSecond < 0.0 || mSecond >= 60.0 ||
-            mMinute < 0 || mMinute > 59 ||
-            mHour < 0 || mHour > 23 ||
-            mDayOfMonth < 1 || mDayOfMonth > 31 ||
-            mMonth < 1 || mMonth > 12 ||
-            mYear < 1970 || mYear > 2037)
+    if (mSecond < 0.0 || mSecond >= 60.0 || mMinute < 0 || mMinute > 59 ||
+        mHour < 0 || mHour > 23 || mDayOfMonth < 1 || mDayOfMonth > 31 ||
+        mMonth < 1 || mMonth > 12 || mYear < 1970 || mYear > 2037)
     {
         mTimeInMillis = 0.0;
         mDayOfYear = mDayOfWeek = 0;
@@ -103,7 +98,8 @@ void UTCDateTime::toMillis()
      * It is very unfortunate that there's no POSIX standard function similar
      * to mktime() that allows you to pass in the timezone you want.
      */
-    long numDaysThisYear = getNumFullDaysInYearSoFar(mYear, mMonth, mDayOfMonth);
+    long numDaysThisYear =
+            getNumFullDaysInYearSoFar(mYear, mMonth, mDayOfMonth);
     long numDaysSinceEpoch = 0;
 
     /* Count up the # of days for all the years prior to this one
@@ -115,8 +111,9 @@ void UTCDateTime::toMillis()
     }
     numDaysSinceEpoch += numDaysThisYear;
 
-    mTimeInMillis = (mSecond + mMinute * SECS_IN_MIN +
-            mHour * SECS_IN_HOUR + numDaysSinceEpoch * SECS_IN_DAY) * 1000.0;
+    mTimeInMillis = (mSecond + mMinute * SECS_IN_MIN + mHour * SECS_IN_HOUR +
+                     numDaysSinceEpoch * SECS_IN_DAY) *
+            1000.0;
     mDayOfYear = numDaysThisYear + 1;
 
     /* January 1, 1970 was a Thursday (5) */
@@ -162,8 +159,8 @@ UTCDateTime::UTCDateTime(int year, int month, int day)
     fromMillis();
 }
 
-UTCDateTime::UTCDateTime(int year, int month, int day,
-                        int hour, int minute, double second)
+UTCDateTime::UTCDateTime(
+        int year, int month, int day, int hour, int minute, double second)
 {
     setNow();
 
@@ -190,7 +187,8 @@ UTCDateTime::UTCDateTime(const std::string& time, const std::string& format)
     setTime(time, format);
     fromMillis();
 }
-UTCDateTime::UTCDateTime(const std::string& time) : UTCDateTime(time, DEFAULT_DATETIME_FORMAT)
+UTCDateTime::UTCDateTime(const std::string& time) :
+    UTCDateTime(time, DEFAULT_DATETIME_FORMAT)
 {
 }
 

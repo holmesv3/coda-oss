@@ -20,20 +20,19 @@
  *
  */
 
-
 #ifndef __SYS_SEMAPHORE_POSIX_H__
 #define __SYS_SEMAPHORE_POSIX_H__
 
 #include <sys/Conf.h>
 
-#if CODA_OSS_POSIX_SOURCE &&!defined(__APPLE_CC__)
+#if CODA_OSS_POSIX_SOURCE && !defined(__APPLE_CC__)
 
 #include "sys/SemaphoreInterface.h"
 
 #if defined(__APPLE_CC_H__)
-#  include <sys/semaphore.h>
+#include <sys/semaphore.h>
 #else
-#  include <semaphore.h>
+#include <semaphore.h>
 #endif
 
 namespace sys
@@ -56,6 +55,7 @@ public:
     {
         return typeid(mNative).name();
     }
+
 private:
     sem_t mNative;
 };

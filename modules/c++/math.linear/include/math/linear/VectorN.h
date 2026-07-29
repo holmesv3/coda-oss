@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of math.linear-c++ 
+ * This file is part of math.linear-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * math.linear-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,25 +23,25 @@
 #define CODA_OSS_math_linear_VectorN_h_INCLUDED_
 #pragma once
 
-#include <cmath>
-
 #include <math/linear/MatrixMxN.h>
+
+#include <cmath>
 
 namespace math
 {
 namespace linear
 {
- 
 
-template<size_t _ND, typename _T=double> class VectorN
+template <size_t _ND, typename _T = double>
+class VectorN
 {
     MatrixMxN<_ND, 1, _T> mRaw{};
-    
+
 public:
     typedef VectorN<_ND, _T> Like_T;
 
     VectorN() = default;
-   
+
     /*!
      *  Create a vector of fixed size (_ND), each component
      *  initialized to a single value
@@ -112,7 +112,7 @@ public:
     /*!
      *  Construct a VectorN from a raw pointer
      *  where the raw pointer is expected to
-     *  point to an array with at least _ND 
+     *  point to an array with at least _ND
      *  elements
      *
      *  \param raw A raw pointer
@@ -154,28 +154,36 @@ public:
         return *this;
     }
 
-    ~VectorN() = default;    
- 
-    MatrixMxN<_ND, 1, _T>& matrix() { return mRaw; }
-    const MatrixMxN<_ND, 1, _T>& matrix() const { return mRaw; }
+    ~VectorN() = default;
+
+    MatrixMxN<_ND, 1, _T>& matrix()
+    {
+        return mRaw;
+    }
+    const MatrixMxN<_ND, 1, _T>& matrix() const
+    {
+        return mRaw;
+    }
 
     inline _T operator[](size_t i) const noexcept
     {
 #if defined(MATH_LINEAR_BOUNDS)
-        assert( i < size() );
+        assert(i < size());
 #endif
         return mRaw[i][0];
     }
     inline _T& operator[](size_t i) noexcept
     {
 #if defined(MATH_LINEAR_BOUNDS)
-        assert( i < size() );
+        assert(i < size());
 #endif
         return mRaw[i][0];
-
     }
 
-    constexpr size_t size() const noexcept { return _ND; }
+    constexpr size_t size() const noexcept
+    {
+        return _ND;
+    }
 
     _T dot(const VectorN<_ND>& vec) const
     {
@@ -187,7 +195,7 @@ public:
         return acc;
     }
 
-    //!  Compute normalized dot product 
+    //!  Compute normalized dot product
     _T normDot(const VectorN<_ND>& vec) const
     {
         // We should be able to normalize the vectors first, then take the
@@ -237,14 +245,12 @@ public:
         mRaw.scale(scalar);
     }
 
-    Like_T& 
-    operator+=(const Like_T& v)
+    Like_T& operator+=(const Like_T& v)
     {
         mRaw += v.matrix();
         return *this;
     }
-    Like_T&
-    operator-=(const Like_T& v)
+    Like_T& operator-=(const Like_T& v)
     {
         mRaw -= v.matrix();
         return *this;
@@ -264,53 +270,45 @@ public:
         return v2;
     }
 
-    Like_T 
-    operator+(const Like_T& v) const
+    Like_T operator+(const Like_T& v) const
     {
         return add(v);
     }
-    Like_T
-    operator-(const Like_T& v) const
+    Like_T operator-(const Like_T& v) const
     {
         return subtract(v);
     }
 
-    Like_T
-    operator-() const
+    Like_T operator-() const
     {
         Like_T v(*this);
         v.mRaw = -v.mRaw;
         return v;
     }
 
-    Like_T& operator *=(const Like_T& v)
+    Like_T& operator*=(const Like_T& v)
     {
         for (size_t i = 0; i < size(); i++)
         {
             mRaw(i, 0) *= v[i];
         }
         return *this;
-        
     }
 
-    Like_T& operator *=(_T sv)
+    Like_T& operator*=(_T sv)
     {
         scale(sv);
         return *this;
-        
     }
 
-    Like_T operator *(_T sv) const
+    Like_T operator*(_T sv) const
     {
-        
         Like_T v2(*this);
         v2 *= sv;
         return v2;
-        
     }
 
-
-    Like_T& operator /=(const Like_T& v)
+    Like_T& operator/=(const Like_T& v)
     {
         for (size_t i = 0; i < size(); i++)
         {
@@ -333,54 +331,53 @@ public:
         return v2;
     }
 
-    template<typename Vector_T> bool operator_eq(const Vector_T& v) const
+    template <typename Vector_T>
+    bool operator_eq(const Vector_T& v) const
     {
         const auto sz = v.size();
         for (size_t i = 0; i < sz; ++i)
-            if (!equals<_T>((*this)[i], v[i])) 
+            if (!equals<_T>((*this)[i], v[i]))
                 return false;
 
-      
         return true;
     }
-
 };
 
-template<typename _T> VectorN<3, _T> cross(const VectorN<3, _T>& u,
-                                           const VectorN<3, _T>& v)
+template <typename _T>
+VectorN<3, _T> cross(const VectorN<3, _T>& u, const VectorN<3, _T>& v)
 {
     VectorN<3, _T> xp;
-    xp[0] = (u[1]*v[2] - u[2]*v[1]);
-    xp[1] = (u[2]*v[0] - u[0]*v[2]);
-    xp[2] = (u[0]*v[1] - u[1]*v[0]);
+    xp[0] = (u[1] * v[2] - u[2] * v[1]);
+    xp[1] = (u[2] * v[0] - u[0] * v[2]);
+    xp[2] = (u[0] * v[1] - u[1] * v[0]);
     return xp;
 }
 
-template<size_t _ND, typename _T> VectorN<_ND, _T> 
-    constantVector(_T cv = 0)
+template <size_t _ND, typename _T>
+VectorN<_ND, _T> constantVector(_T cv = 0)
 {
     VectorN<_ND, _T> v(constantMatrix<_ND, 1, _T>(cv));
     return v;
 }
 
-template<size_t _MD, size_t _ND, typename _T> 
-    math::linear::VectorN<_MD, _T>
-    operator*(const math::linear::MatrixMxN<_MD, _ND, _T>& m, 
-              const math::linear::VectorN<_ND, _T>& v)
+template <size_t _MD, size_t _ND, typename _T>
+math::linear::VectorN<_MD, _T> operator*(
+        const math::linear::MatrixMxN<_MD, _ND, _T>& m,
+        const math::linear::VectorN<_ND, _T>& v)
 {
     return math::linear::VectorN<_MD, _T>(m * v.matrix());
 }
 
-template<size_t _ND, typename _T> math::linear::VectorN<_ND, _T>
-    operator*(_T scalar, const math::linear::VectorN<_ND, _T>& v)
+template <size_t _ND, typename _T>
+math::linear::VectorN<_ND, _T> operator*(
+        _T scalar, const math::linear::VectorN<_ND, _T>& v)
 {
     return v * scalar;
 }
 
-
-template<size_t _ND, typename _T> 
-    std::ostream& operator<<(std::ostream& os,
-                             const math::linear::VectorN<_ND, _T>& v)
+template <size_t _ND, typename _T>
+std::ostream& operator<<(std::ostream& os,
+                         const math::linear::VectorN<_ND, _T>& v)
 {
     for (size_t i = 0; i < _ND; ++i)
     {
@@ -400,7 +397,7 @@ inline bool operator!=(const VectorN<ND, T>& lhs, const Vector_T& rhs)
     return !(lhs == rhs);
 }
 
-} // linear
-} // math
+}  // linear
+}  // math
 
 #endif  // CODA_OSS_math_linear_VectorN_h_INCLUDED_

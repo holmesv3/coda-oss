@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of dbi-c++ 
+ * This file is part of dbi-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * dbi-c++ is free software; you can redistribute it and/or modify
@@ -14,20 +14,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
-
 
 #ifndef __DBI_PGSQLCONNECTION_H__
 #define __DBI_PGSQLCONNECTION_H__
 
 #if defined(USE_PGSQL)
 
-#include "dbi/DatabaseConnection.h"
 #include <libpq-fe.h>
+
+#include "dbi/DatabaseConnection.h"
 
 /*!
  * \file PgSQLConnection.h
@@ -44,11 +44,12 @@ class PgSQLResultSet : public ResultSet
 {
 public:
     /*!
-    *  Default Constructor
-    */
+     *  Default Constructor
+     */
     PgSQLResultSet(PGresult* results) : ResultSet()
     {
-        mResults = results; mRowIndex = 0;
+        mResults = results;
+        mRowIndex = 0;
     }
 
     /*!
@@ -56,7 +57,8 @@ public:
      */
     ~PgSQLResultSet()
     {
-        if (mResults) PQclear(mResults);
+        if (mResults)
+            PQclear(mResults);
     }
 
     /*!
@@ -87,12 +89,11 @@ private:
  * \brief PostgreSQL database interface
  *
  * This class provides the basis for PostgreSQL connections
- * 
+ *
  */
 class PgSQLConnection : public DatabaseConnection
 {
 public:
-
     /*!
      *  Default Constructor
      */
@@ -106,13 +107,14 @@ public:
      *
      */
     ~PgSQLConnection()
-    {}
+    {
+    }
 
     /*!
      *  Connect to the specified database
      *  \param database  The database name
-            *  \param user  The username
-            *  \param pass  The user password
+     *  \param user  The username
+     *  \param pass  The user password
      *  \param host  The computer host name where the database is located
      *  \param port  The receiving port on the host
      *  \return True if successful, False otherwise
@@ -128,14 +130,15 @@ public:
      */
     void disconnect()
     {
-        if (mDBHandle) PQfinish(mDBHandle);
+        if (mDBHandle)
+            PQfinish(mDBHandle);
     }
 
     /*!
      *  Send a command to the database as a string
      *  \param q  The command as a string
      *  \return The result set of command
-            *  \throw SQLException on error
+     *  \throw SQLException on error
      */
     pResultSet query(const std::string& q);
 

@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -24,14 +24,14 @@
 #ifndef CODA_OSS_xml_lite_MinidomParser_h_INCLUDED_
 #define CODA_OSS_xml_lite_MinidomParser_h_INCLUDED_
 
-#include <memory>
-
 #include <config/Exports.h>
 
-#include "xml/lite/XMLReader.h"
+#include <memory>
+
 #include "xml/lite/Document.h"
 #include "xml/lite/Element.h"
 #include "xml/lite/MinidomHandler.h"
+#include "xml/lite/XMLReader.h"
 
 /*!
  * \file MinidomParser.h
@@ -70,7 +70,6 @@ struct CODA_OSS_API MinidomParser  // SOAPParser inherits :-(
     MinidomParser(const MinidomParser&) = delete;
     MinidomParser& operator=(const MinidomParser&) = delete;
 
-
     /*!
      *  Present our parsing interface.  Similar to DOM, the input
      *  is an InputStream (DOM's is called input source), but it
@@ -79,8 +78,10 @@ struct CODA_OSS_API MinidomParser  // SOAPParser inherits :-(
      *  \param size  This is the size of the stream to feed the parser
      */
     virtual void parse(io::InputStream& is, int size = io::InputStream::IS_END);
-    void parse(io::InputStream& is, const void*pInitialEncoding, const void* pFallbackEncoding,
-        int size = io::InputStream::IS_END);
+    void parse(io::InputStream& is,
+               const void* pInitialEncoding,
+               const void* pFallbackEncoding,
+               int size = io::InputStream::IS_END);
 
     /*!
      *  This clears the MinidomHandler, killing its underlying Document
@@ -94,9 +95,10 @@ struct CODA_OSS_API MinidomParser  // SOAPParser inherits :-(
      *  so you dont get to keep it.
      *  \return Pointer to document.
      */
-    Document *getDocument() const;
-    Document *getDocument(bool steal = false);
-    std::unique_ptr<Document>& getDocument(std::unique_ptr<Document>&); // steal = true
+    Document* getDocument() const;
+    Document* getDocument(bool steal = false);
+    std::unique_ptr<Document>& getDocument(
+            std::unique_ptr<Document>&);  // steal = true
 
     /*!
      *  Reader accessor
@@ -132,7 +134,7 @@ struct CODA_OSS_API MinidomParser  // SOAPParser inherits :-(
      *
      *  \param newDocument The new document.
      */
-    void setDocument(Document * newDocument, bool own = true);
+    void setDocument(Document* newDocument, bool own = true);
     void setDocument(std::unique_ptr<Document>&&);  // own = true
 
     /*!

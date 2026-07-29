@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,26 +14,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
 
-#include <vector>
-#include <ostream>
-
 #include <except/Exception.h>
 #include <sys/Thread.h>
+
+#include <ostream>
+#include <vector>
 using namespace sys;
 using namespace std;
 
 class TestThread : public Thread
 {
 public:
-    TestThread(int *val)
+    TestThread(int* val)
     {
-
         mVal = val;
         std::cout << "Constructing thread with value " << *mVal << std::endl;
     }
@@ -47,12 +46,12 @@ public:
     {
         cout << "mVal: " << *mVal << endl;
     }
-    int *mVal;
+    int* mVal;
 };
 
 int main()
 {
-    std::vector< TestThread *> tAry;
+    std::vector<TestThread*> tAry;
     tAry.resize(5);
 
     try
@@ -74,11 +73,10 @@ int main()
         }
         while (tAry.size())
         {
-            TestThread *t = tAry.back();
+            TestThread* t = tAry.back();
             tAry.pop_back();
             delete t;
         }
-
     }
     catch (const except::Exception& e)
     {

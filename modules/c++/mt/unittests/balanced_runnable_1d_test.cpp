@@ -27,8 +27,7 @@
 class IncOp
 {
 public:
-    IncOp(std::vector<size_t>& globalWorkDone) :
-        mGlobalWorkDone(globalWorkDone)
+    IncOp(std::vector<size_t>& globalWorkDone) : mGlobalWorkDone(globalWorkDone)
     {
     }
 
@@ -64,6 +63,4 @@ TEST_CASE(BalancedRunnable1DTestWorkDone)
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(BalancedRunnable1DTestWorkDone);
-)
+TEST_MAIN(TEST_CHECK(BalancedRunnable1DTestWorkDone);)

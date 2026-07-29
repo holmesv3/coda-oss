@@ -24,16 +24,21 @@
 #define __CLI_ARGUMENT_H__
 
 #include <import/str.h>
-#include "config/Exports.h"
 
 #include "cli/Value.h"
+#include "config/Exports.h"
 
 namespace cli
 {
 
 enum Action
 {
-    STORE, STORE_TRUE, STORE_FALSE, STORE_CONST, SUB_OPTIONS, VERSION
+    STORE,
+    STORE_TRUE,
+    STORE_FALSE,
+    STORE_CONST,
+    SUB_OPTIONS,
+    VERSION
 };
 
 // forward declaration
@@ -47,7 +52,6 @@ class ArgumentParser;
 class CODA_OSS_API Argument
 {
 public:
-
     ~Argument();
 
     Argument* addFlag(const std::string& flag);
@@ -78,20 +82,62 @@ public:
         return this;
     }
 
-    inline const std::string& getName() const { return mName; }
-    inline const std::vector<std::string>& getShortFlags() const { return mShortFlags; }
-    inline const std::vector<std::string>& getLongFlags() const { return mLongFlags; }
-    inline Action getAction() const { return mAction; }
-    inline int getMinArgs() const { return mMinArgs; }
-    inline int getMaxArgs() const { return mMaxArgs; }
-    inline const Value* getDefault() const { return mDefaultValue; }
-    inline const std::vector<std::string>& getChoices() const { return mChoices; }
-    inline bool isRequired() const { return mRequired; }
-    inline const std::string& getHelp() const { return mHelp; }
-    inline const std::string& getMetavar() const { return mMetavar; }
-    inline const std::string& getDestination() const { return mDestination; }
-    inline const Value* getConst() const { return mConstValue; }
-    inline bool showsHelp() const { return mShowsHelp; }
+    inline const std::string& getName() const
+    {
+        return mName;
+    }
+    inline const std::vector<std::string>& getShortFlags() const
+    {
+        return mShortFlags;
+    }
+    inline const std::vector<std::string>& getLongFlags() const
+    {
+        return mLongFlags;
+    }
+    inline Action getAction() const
+    {
+        return mAction;
+    }
+    inline int getMinArgs() const
+    {
+        return mMinArgs;
+    }
+    inline int getMaxArgs() const
+    {
+        return mMaxArgs;
+    }
+    inline const Value* getDefault() const
+    {
+        return mDefaultValue;
+    }
+    inline const std::vector<std::string>& getChoices() const
+    {
+        return mChoices;
+    }
+    inline bool isRequired() const
+    {
+        return mRequired;
+    }
+    inline const std::string& getHelp() const
+    {
+        return mHelp;
+    }
+    inline const std::string& getMetavar() const
+    {
+        return mMetavar;
+    }
+    inline const std::string& getDestination() const
+    {
+        return mDestination;
+    }
+    inline const Value* getConst() const
+    {
+        return mConstValue;
+    }
+    inline bool showsHelp() const
+    {
+        return mShowsHelp;
+    }
 
     std::string getVariable() const;
     bool isPositional() const;

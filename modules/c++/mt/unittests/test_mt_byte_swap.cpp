@@ -20,18 +20,16 @@
  *
  */
 
-#include "TestCase.h"
-
+#include <mt/Algorithm.h>
+#include <mt/ThreadedByteSwap.h>
 #include <stdint.h>
-
-#include <array>
-#include <std/cstddef> // std::byte
-#include <std/span>
-
 #include <sys/ByteSwap.h>
 
-#include <mt/ThreadedByteSwap.h>
-#include <mt/Algorithm.h>
+#include <array>
+#include <std/cstddef>  // std::byte
+#include <std/span>
+
+#include "TestCase.h"
 
 #undef min
 #undef max
@@ -65,11 +63,18 @@ TEST_CASE(testThreadedByteSwap)
 
     // Byte swap the old-fashioned way
     auto values1(origValues);
-    mt::threadedByteSwap(values1.data(), sizeof(values1[0]), NUM_PIXELS, numThreads);
+    mt::threadedByteSwap(values1.data(),
+                         sizeof(values1[0]),
+                         NUM_PIXELS,
+                         numThreads);
 
     // Byte swap into output buffer
     std::vector<uint64_t> swappedValues2(origValues.size());
-    mt::threadedByteSwap(origValues.data(), sizeof(origValues[0]), NUM_PIXELS, numThreads, swappedValues2.data());
+    mt::threadedByteSwap(origValues.data(),
+                         sizeof(origValues[0]),
+                         NUM_PIXELS,
+                         numThreads,
+                         swappedValues2.data());
 
     for (size_t ii = 0; ii < NUM_PIXELS; ++ii)  // Everything should match
     {
@@ -89,15 +94,19 @@ TEST_CASE(test_transform_ByteSwap)
     const auto& expected = expected_;
 
     // Byte swap into output buffer
-    const auto byteSwap = [&](const auto& buffer_) {
+    const auto byteSwap = [&](const auto& buffer_)
+    {
         auto buffer = buffer_;
         sys::byteSwap(&buffer, elemSize, 1 /*numElements*/);
         return buffer;
     };
 
     std::vector<uint64_t> actual(origValues.size());
-    std::transform(origValues.begin(), origValues.end(), actual.begin(), byteSwap);
-    for (size_t ii = 0; ii < NUM_PIXELS; ++ii)     // Everything should match
+    std::transform(origValues.begin(),
+                   origValues.end(),
+                   actual.begin(),
+                   byteSwap);
+    for (size_t ii = 0; ii < NUM_PIXELS; ++ii)  // Everything should match
     {
         TEST_ASSERT_EQ(expected[ii], actual[ii]);
     }
@@ -115,26 +124,27 @@ TEST_CASE(test_Transform_par_ByteSwap)
     const auto& expected = expected_;
 
     // Byte swap into output buffer
-    const auto byteSwap = [&](const auto& buffer_) {
+    const auto byteSwap = [&](const auto& buffer_)
+    {
         auto buffer = buffer_;
         sys::byteSwap(&buffer, elemSize, 1 /*numElements*/);
         return buffer;
     };
 
     // be sure we do something more than just call std::transform()
-    const mt::Transform_par_settings settings{ NUM_PIXELS / 4 /*cutoff*/ };
+    const mt::Transform_par_settings settings{NUM_PIXELS / 4 /*cutoff*/};
 
     std::vector<uint64_t> actual(origValues.size());
-    mt::Transform_par(origValues.begin(), origValues.end(), actual.begin(), byteSwap, settings);
+    mt::Transform_par(origValues.begin(),
+                      origValues.end(),
+                      actual.begin(),
+                      byteSwap,
+                      settings);
     for (size_t ii = 0; ii < NUM_PIXELS; ++ii)  // Everything should match
     {
         TEST_ASSERT_EQ(expected[ii], actual[ii]);
     }
 }
 
-TEST_MAIN(
-    TEST_CHECK(testThreadedByteSwap);
-    TEST_CHECK(test_transform_ByteSwap);
-    TEST_CHECK(test_Transform_par_ByteSwap);
-    )
-     
+TEST_MAIN(TEST_CHECK(testThreadedByteSwap); TEST_CHECK(test_transform_ByteSwap);
+          TEST_CHECK(test_Transform_par_ByteSwap);)

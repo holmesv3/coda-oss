@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of io-c++ 
+ * This file is part of io-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * io-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -28,10 +28,10 @@ void io::MMapInputStream::open(const std::string& fname, char* flags)
     //    std::cout << mLength << std::endl;
     mFile = fopen(fname.c_str(), "r");
     if (!mFile)
-        throw sys::SystemException(str::Format("Failure while opening file: %s", fname));
+        throw sys::SystemException(
+                str::Format("Failure while opening file: %s", fname));
 
     _map();
-
 }
 
 void io::MMapInputStream::close()
@@ -56,11 +56,11 @@ void io::MMapInputStream::_unmap()
 
 sys::Handle_T io::MMapInputStream::getHandle()
 {
-    if (!mFile) throw except::NullPointerReference(Ctxt("Uninitialized memory mapped file stream!"));
+    if (!mFile)
+        throw except::NullPointerReference(
+                Ctxt("Uninitialized memory mapped file stream!"));
     return ::fileno(mFile);
 }
-
-
 
 long io::MMapInputStream::seek(long off)
 {
@@ -68,7 +68,6 @@ long io::MMapInputStream::seek(long off)
     mMark = off;
     return mMark - where;
 }
-
 
 sys::SSize_T io::MMapInputStream::readImpl(void* buffer, size_t len)
 {
@@ -83,4 +82,3 @@ sys::SSize_T io::MMapInputStream::readImpl(void* buffer, size_t len)
     //    std::cout << "Used: " << size << std::endl;
     return size;
 }
-

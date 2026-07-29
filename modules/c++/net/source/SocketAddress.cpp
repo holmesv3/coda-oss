@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of net-c++ 
+ * This file is part of net-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * net-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -51,7 +51,6 @@ SocketAddress::SocketAddress(int port)
 void SocketAddress::clear()
 {
     ::memset(&mAddress, 0, sizeof(SockAddrIn_T));
-
 }
 
 void SocketAddress::setPort(int port)
@@ -70,8 +69,9 @@ void SocketAddress::setHost(const std::string& host)
 #ifdef _WIN32
         struct sockaddr saddr;
         int slen = sizeof(saddr);
-        struct sockaddr_in *paddr = (struct sockaddr_in *)&saddr;
-        std::ignore = WSAStringToAddress((LPSTR)host.c_str(), AF_INET, nullptr, &saddr, &slen);
+        struct sockaddr_in* paddr = (struct sockaddr_in*)&saddr;
+        std::ignore = WSAStringToAddress(
+                (LPSTR)host.c_str(), AF_INET, nullptr, &saddr, &slen);
         mAddress.sin_addr = paddr->sin_addr;
 #else
         ::inet_pton(AF_INET, host.c_str(), &mAddress.sin_addr);

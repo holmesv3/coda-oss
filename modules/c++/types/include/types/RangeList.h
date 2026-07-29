@@ -22,10 +22,10 @@
 #ifndef __TYPES_RANGE_LIST_H__
 #define __TYPES_RANGE_LIST_H__
 
-#include <vector>
-#include <limits>
-
 #include <types/Range.h>
+
+#include <limits>
+#include <vector>
 
 #include "config/Exports.h"
 
@@ -275,7 +275,6 @@ public:
     {
         return !(*this == rhs);
     }
-
 
 private:
     using List = std::vector<types::Range>;

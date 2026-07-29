@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of xml.lite-c++ 
+ * This file is part of xml.lite-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * xml.lite-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -26,41 +26,37 @@
 #include <import/io.h>
 #include <import/xml/lite.h>
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     if (argc != 5)
-        die_printf("Usage: %s <file> <prefix> <new-uri> <outfile>\n",
-                   argv[0]);
+        die_printf("Usage: %s <file> <prefix> <new-uri> <outfile>\n", argv[0]);
 
     try
     {
-
-        std::string file    = argv[1];
-        std::string prefix  = argv[2];
-        std::string uri     = argv[3];
+        std::string file = argv[1];
+        std::string prefix = argv[2];
+        std::string uri = argv[3];
         std::string outfile = argv[4];
 
         std::cout << "Replacing all matching prefixes " << prefix
-            << " with uri " << uri << std::endl;
-        io::FileInputStream fis( file );
+                  << " with uri " << uri << std::endl;
+        io::FileInputStream fis(file);
 
         xml::lite::MinidomParser parser;
         parser.parse(fis);
         xml::lite::Element* topLevel = parser.getDocument()->getRootElement();
-        topLevel->setNamespaceURI( prefix, uri );
-        io::FileOutputStream fos( outfile );
-        topLevel->prettyPrint( fos );
+        topLevel->setNamespaceURI(prefix, uri);
+        io::FileOutputStream fos(outfile);
+        topLevel->prettyPrint(fos);
     }
     catch (except::Throwable& anything)
     {
         std::cout << "Caught throwable: " << anything.getType() << " "
-        << anything.toString() << std::endl;
-
+                  << anything.toString() << std::endl;
     }
-
 }
 #else
 int main()
-{}
+{
+}
 #endif
-

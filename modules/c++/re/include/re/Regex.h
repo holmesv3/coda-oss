@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of re-c++ 
+ * This file is part of re-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2016, MDA Information Systems LLC
  *
  * re-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -38,7 +38,6 @@
 // This must be defined prior to pcre2.h
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
-
 #include <sys/Conf.h>
 #endif
 
@@ -116,8 +115,7 @@ public:
      *  \return  True on success, False otherwise
      *  \throw  RegexException on fatal error
      */
-    bool match(const std::string& str,
-               RegexMatch& matchObject);
+    bool match(const std::string& str, RegexMatch& matchObject);
 
     bool matches(const std::string& str) const;
 
@@ -128,8 +126,7 @@ public:
      *  \return  Matched substring
      *  \throw  RegexException on fatal error
      */
-    std::string search(const std::string& matchString,
-                       size_t startIndex = 0);
+    std::string search(const std::string& matchString, size_t startIndex = 0);
 
     /*!
      *  Search the matchString and get the sub-expressions, by ref
@@ -142,16 +139,14 @@ public:
      *      Each index will contain a match (unlike the matches() method which
      *      uses indices 1+ to provide submatches)
      */
-    void searchAll(const std::string& matchString,
-                   RegexMatch& v);
+    void searchAll(const std::string& matchString, RegexMatch& v);
 
     /*!
      *  Split the string by occurrences of the pattern
      *  \param str  The string to split
      *  \param v    The resulting container of matches split from str
      */
-    void split(const std::string& str,
-               std::vector<std::string>& v);
+    void split(const std::string& str, std::vector<std::string>& v);
 
     /*!
      *  Replace occurrences of the pattern in the string
@@ -159,16 +154,14 @@ public:
      *  \param repl  The replacement
      *  \return  The resulting string
      */
-    std::string sub(const std::string& str,
-                    const std::string& repl);
+    std::string sub(const std::string& str, const std::string& repl);
 
     /*!
      *  Backslash all non-alphanumeric characters
      *  \param str  The string to escape
      *  \return  The escaped string
      */
-    static
-    std::string escape(const std::string& str);
+    static std::string escape(const std::string& str);
 
 private:
     std::string mPattern;
@@ -200,7 +193,7 @@ private:
     bool searchWithContext(std::string::const_iterator inputIterBegin,
                            std::string::const_iterator inputIterEnd,
                            std::smatch& match,
-                           bool matchBeginning=true) const;
+                           bool matchBeginning = true) const;
 
     //! The regex object
     std::regex mRegex;

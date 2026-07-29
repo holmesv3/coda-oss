@@ -1,7 +1,7 @@
 /* =========================================================================
- * This file is part of sys-c++ 
+ * This file is part of sys-c++
  * =========================================================================
- * 
+ *
  * (C) Copyright 2004 - 2014, MDA Information Systems LLC
  *
  * sys-c++ is free software; you can redistribute it and/or modify
@@ -14,8 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public 
- * License along with this program; If not, 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; If not,
  * see <http://www.gnu.org/licenses/>.
  *
  */
@@ -23,13 +23,13 @@
 #ifndef __IO_PIPE_STREAM_H__
 #define __IO_PIPE_STREAM_H__
 
-#include <memory>
-
 #include <import/except.h>
+#include <mem/ScopedArray.h>
 #include <str/Convert.h>
 #include <sys/Err.h>
 #include <sys/Exec.h>
-#include <mem/ScopedArray.h>
+
+#include <memory>
 
 #include "io/InputStream.h"
 
@@ -44,14 +44,14 @@ namespace io
 struct PipeStream : InputStream
 {
     /*!
-    *  Constructor --
-    *  Streams data from a pipe when available
-    *
-    *  \param pipe             - pipe for reading
-    *  \param streamBufferSize - size of internal buffer for streaming
-    */
+     *  Constructor --
+     *  Streams data from a pipe when available
+     *
+     *  \param pipe             - pipe for reading
+     *  \param streamBufferSize - size of internal buffer for streaming
+     */
     PipeStream(const std::string& cmd,
-               size_t streamBufferSize = DEFAULT_CHUNK_SIZE) : 
+               size_t streamBufferSize = DEFAULT_CHUNK_SIZE) :
         InputStream(),
         mExecPipe(cmd),
         mCharString(std::make_unique<char[]>(streamBufferSize)),
@@ -65,21 +65,21 @@ struct PipeStream : InputStream
 
     //! closes the stream connected to the child process manually
     int close()
-    { 
-        return mExecPipe.closePipe(); 
+    {
+        return mExecPipe.closePipe();
     }
 
-    /*! 
+    /*!
      *  \func readln
      *  \brief returns one line ending in a newline or the requested size --
      *         requested size cannot be greater than the maxLength
      *         (default 0 means read until max or newline)
      */
-    virtual sys::SSize_T readln(sys::byte *cStr,
-                                const sys::Size_T strLenPlusNullByte = 0) override;
+    virtual sys::SSize_T readln(
+            sys::byte* cStr, const sys::Size_T strLenPlusNullByte = 0) override;
 
     /*!
-     * The streaming occurs as follows: If the numBytes is IS_END, 
+     * The streaming occurs as follows: If the numBytes is IS_END,
      * we want to pipe all bytes to the output handler
      * Otherwise, we'll take what we've got
      * We want to return the number of bytes total.
@@ -100,7 +100,6 @@ protected:
      *  \brief returns the requested size in bytes from the stream
      */
     virtual sys::SSize_T readImpl(void* buffer, size_t len) override;
-
 
     sys::ExecPipe mExecPipe;
     std::unique_ptr<char[]> mCharString;
