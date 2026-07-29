@@ -30,8 +30,8 @@
 #define _STDSTREAM_DECLARE_MUTEX_SEMICOLON_ static sys::Mutex mCritSection;
 #define _STDERR_DEFINE_MUTEX_SEMICOLON_ sys::Mutex io::StandardErrStream::mCritSection;
 #define _STDOUT_DEFINE_MUTEX_SEMICOLON_ sys::Mutex io::StandardOutStream::mCritSection;
-#define _STDSTREAM_BEGIN_CS_SEMICOLON_  mCritSection.lock();
-#define _STDSTREAM_END_CS_SEMICOLON_    mCritSection.unlock();
+#define _STDSTREAM_BEGIN_CS_SEMICOLON_ mCritSection.lock();
+#define _STDSTREAM_END_CS_SEMICOLON_ mCritSection.unlock();
 
 /* no REENTRANT
 #else

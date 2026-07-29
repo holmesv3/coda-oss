@@ -38,7 +38,7 @@
 
 #ifdef _WIN32
 #include "sys/Conf.h"
-#define DLL_PUBLIC_FUNCTION extern "C" __declspec (dllexport)
+#define DLL_PUBLIC_FUNCTION extern "C" __declspec(dllexport)
 typedef HINSTANCE DYNAMIC_LIBRARY;
 typedef FARPROC DLL_FUNCTION_PTR;
 #else

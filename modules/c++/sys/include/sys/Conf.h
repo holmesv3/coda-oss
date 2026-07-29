@@ -157,8 +157,8 @@ typedef pid_t Pid_T;
 
 #define SYS_FUNC NativeLayer_func__
 
-#define Ctxt(MESSAGE) except::Context(__FILE__, __LINE__, SYS_FUNC, \
-        sys::TimeStamp().local(), MESSAGE)
+#define Ctxt(MESSAGE) \
+    except::Context(__FILE__, __LINE__, SYS_FUNC, sys::TimeStamp().local(), MESSAGE)
 
 namespace sys
 {

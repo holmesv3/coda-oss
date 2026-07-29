@@ -72,7 +72,7 @@
 #ifndef NDEBUG
 // #error "NDEBUG should be #define'd with __OPTIMIZE__"
 #endif
-#define CODA_OSS_DEBUG 0 // i.e., release
+#define CODA_OSS_DEBUG 0  // i.e., release
 #endif
 #endif  // __GNUC__
 
@@ -213,19 +213,34 @@ void diePrintf(const char* format, ...) noexcept;
 #if CODA_OSS_debugging
 
 #ifndef __DEBUG_SHORTEN_EVAL
-#define EVAL(X) std::cout << '(' << __FILE__ << ',' <<__LINE__ << ") <EVAL> "#X"=" << X << std::endl
+#define EVAL(X) \
+    std::cout << '(' << __FILE__ << ',' << __LINE__ << ") <EVAL> " #X "=" << X << std::endl
 #else
-#define EVAL(X) std::cout << "<EVAL> "#X"=" << X << std::endl
+#define EVAL(X) std::cout << "<EVAL> " #X "=" << X << std::endl
 #endif
-#define DUMP(T, X) printf("<DUMP> (%s:%d): "#X"="#T"\n", __FILE__, __LINE__, X)
+#define DUMP(T, X) printf("<DUMP> (%s:%d): " #X "=" #T "\n", __FILE__, __LINE__, X)
 #define HERE() printf("<HERE> (%s:%d)\n", __FILE__, __LINE__)
-#define TRACE(X) printf("<TRACE> (%s:%d): "#X"\n", __FILE__, __LINE__); X
-#define ASSERT_OR(ASSERTION, ELSE) { if (ASSERTION) { 1; } else { dbg_printf("(%s, %d): Assertion failed: "#ASSERTION"\n", __FILE__, __LINE__); ELSE; exit(EXIT_FAILURE); } }
+#define TRACE(X)                                             \
+    printf("<TRACE> (%s:%d): " #X "\n", __FILE__, __LINE__); \
+    X
+#define ASSERT_OR(ASSERTION, ELSE)                                                          \
+    {                                                                                       \
+        if (ASSERTION)                                                                      \
+        {                                                                                   \
+            1;                                                                              \
+        }                                                                                   \
+        else                                                                                \
+        {                                                                                   \
+            dbg_printf("(%s, %d): Assertion failed: " #ASSERTION "\n", __FILE__, __LINE__); \
+            ELSE;                                                                           \
+            exit(EXIT_FAILURE);                                                             \
+        }                                                                                   \
+    }
 
 #else
-#define EVAL(X)    1
+#define EVAL(X) 1
 #define DUMP(T, X) 1
-#define HERE()     1
+#define HERE() 1
 #define TRACE(X) X
 #define ASSERT_OR(A, E) 1
 #endif

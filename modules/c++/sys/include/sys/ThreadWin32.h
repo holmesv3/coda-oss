@@ -44,20 +44,21 @@ typedef unsigned(__stdcall* THREAD_START_FN)(void*);
 
 #if defined(USE_CREATETHREAD)
 #define __CREATETHREAD(psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID) \
-        CreateThread(psa, cbStack, \
-        (LPTHREAD_START_ROUTINE)(pfnStartAddr), \
-        (void*)pvParam, fdwCreate, \
-        pdwThreadID)
+    CreateThread(psa,                                                               \
+                 cbStack,                                                           \
+                 (LPTHREAD_START_ROUTINE)(pfnStartAddr),                            \
+                 (void*)pvParam,                                                    \
+                 fdwCreate,                                                         \
+                 pdwThreadID)
 
 #else
-#define __CREATETHREAD(psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID)    \
-   ((HANDLE) _beginthreadex(                                \
-                            (void *) (psa),                 \
-                            (unsigned) (cbStack),           \
-                            (THREAD_START_FN) (pfnStartAddr), \
-                            (void *) (pvParam),             \
-                            (unsigned) (fdwCreate),         \
-                            (unsigned *) (pdwThreadID)))
+#define __CREATETHREAD(psa, cbStack, pfnStartAddr, pvParam, fdwCreate, pdwThreadID) \
+    ((HANDLE)_beginthreadex((void*)(psa),                                           \
+                            (unsigned)(cbStack),                                    \
+                            (THREAD_START_FN)(pfnStartAddr),                        \
+                            (void*)(pvParam),                                       \
+                            (unsigned)(fdwCreate),                                  \
+                            (unsigned*)(pdwThreadID)))
 #endif
 namespace sys
 {

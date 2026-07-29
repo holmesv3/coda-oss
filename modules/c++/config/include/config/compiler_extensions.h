@@ -81,7 +81,9 @@
 #else
 // This looks awful, but almost all of these intrinsics simply reinterpret bits and generate no
 // actual instructions.
-#define _MM256_EXTRACTF(ymm_, i_) _mm256_cvtss_f32(_mm256_castsi256_ps(_mm256_set1_epi32(_mm256_extract_epi32(_mm256_castps_si256(ymm_),i_))))
+#define _MM256_EXTRACTF(ymm_, i_)         \
+    _mm256_cvtss_f32(_mm256_castsi256_ps( \
+            _mm256_set1_epi32(_mm256_extract_epi32(_mm256_castps_si256(ymm_), i_))))
 #endif
 #endif  // _MM256_EXTRACTF
 
@@ -91,11 +93,11 @@
 // Adapted from
 // https://www.fluentcpp.com/2019/08/30/how-to-disable-a-warning-in-cpp/
 #if defined(_MSC_VER)
-#define CODA_OSS_disable_warning_push           __pragma(warning( push ))
-#define CODA_OSS_disable_warning_pop            __pragma(warning( pop ))
-#define CODA_OSS_disable_warning(warningNumber) __pragma(warning( disable : warningNumber ))
+#define CODA_OSS_disable_warning_push __pragma(warning(push))
+#define CODA_OSS_disable_warning_pop __pragma(warning(pop))
+#define CODA_OSS_disable_warning(warningNumber) __pragma(warning(disable : warningNumber))
 
-#define CODA_OSS_disable_warning_system_header_push  __pragma(warning(push, 0))
+#define CODA_OSS_disable_warning_system_header_push __pragma(warning(push, 0))
 
 // 4100 => 'unreferenced formal parameter'
 #define CODA_OSS_UNREFERENCED_FORMAL_PARAMETER CODA_OSS_disable_warning(4100)
@@ -107,14 +109,13 @@
 #define CODA_OSS_DISABLE_UNREACHABLE_CODE CODA_OSS_disable_warning(4702)
 #elif defined(__GNUC__) || defined(__clang__)
 #define CODA_OSS_do_pragma(X) _Pragma(#X)
-#define CODA_OSS_disable_warning_push           CODA_OSS_do_pragma(GCC diagnostic push)
-#define CODA_OSS_disable_warning_pop            CODA_OSS_do_pragma(GCC diagnostic pop)
-#define CODA_OSS_disable_warning(warningName)   CODA_OSS_do_pragma(GCC diagnostic ignored #warningName)
+#define CODA_OSS_disable_warning_push CODA_OSS_do_pragma(GCC diagnostic push)
+#define CODA_OSS_disable_warning_pop CODA_OSS_do_pragma(GCC diagnostic pop)
+#define CODA_OSS_disable_warning(warningName) \
+    CODA_OSS_do_pragma(GCC diagnostic ignored #warningName)
 
 #define CODA_OSS_disable_warning_system_header_push \
-            CODA_OSS_disable_warning_push \
-            CODA_OSS_disable_warning(-Wall) \
-            CODA_OSS_disable_warning(-Wextra)
+    CODA_OSS_disable_warning_push CODA_OSS_disable_warning(-Wall) CODA_OSS_disable_warning(-Wextra)
 
 // no such thing
 #define CODA_OSS_UNREFERENCED_FORMAL_PARAMETER
@@ -134,11 +135,11 @@
 // Fix unused symbol warnings that crash Release build on -Werror
 // (won't work without C-style cast)
 // https://stackoverflow.com/a/777359/5401366
-#define CODA_OSS_mark_symbol_unused(x) do { \
-        CODA_OSS_disable_warning_push \
-        CODA_OSS_FUNCTION_CALL_MISSING_ARG_LIST \
-        ((void)x); \
-        CODA_OSS_disable_warning_pop \
+#define CODA_OSS_mark_symbol_unused(x)                                                  \
+    do                                                                                  \
+    {                                                                                   \
+        CODA_OSS_disable_warning_push CODA_OSS_FUNCTION_CALL_MISSING_ARG_LIST((void)x); \
+        CODA_OSS_disable_warning_pop                                                    \
     } while (0);
 #endif
 

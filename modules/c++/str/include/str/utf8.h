@@ -185,9 +185,12 @@ utf_error increase_safely(octet_iterator& it, octet_iterator end)
     return UTF8_OK;
 }
 
-#define UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(IT, END) {  \
+#define UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(IT, END) \
+    {                                                  \
         utf_error ret = increase_safely(IT, END);      \
-        if (ret != UTF8_OK)   return ret; }
+        if (ret != UTF8_OK)                            \
+            return ret;                                \
+    }
 
 /// get_sequence_x functions decode utf-8 sequences of the length x
 template <typename octet_iterator>
