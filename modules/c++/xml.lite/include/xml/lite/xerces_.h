@@ -70,15 +70,11 @@ CODA_OSS_disable_warning_system_header_push
 #pragma warning(disable \
                 : 26475)  // Do not use function style casts (es.49). Prefer '...' over '...'..
 #else
-        CODA_OSS_disable_warning(-Wshadow) CODA_OSS_disable_warning(-Wsuggest - override)
-                CODA_OSS_disable_warning(-Wzero - as - null - pointer - constant)
-                        CODA_OSS_disable_warning(-Wmisleading - indentation)
-                                CODA_OSS_disable_warning(-Wsign - compare)
-                                        CODA_OSS_disable_warning(-Wformat - overflow =)
-                                                CODA_OSS_disable_warning(-Wunused - value)
-                                                        CODA_OSS_disable_warning(-Walloc - size -
-                                                                                         larger -
-                                                                                         than =)
+        CODA_OSS_disable_warning(-Wshadow) CODA_OSS_disable_warning(-Wsuggest-override)
+                        CODA_OSS_disable_warning(-Wzero-as-null-pointer-constant) CODA_OSS_disable_warning(-Wmisleading-indentation)
+                                        CODA_OSS_disable_warning(-Wsign-compare) CODA_OSS_disable_warning(-Wformat-overflow=)
+                                                        CODA_OSS_disable_warning(-Wunused-value)
+                                                                        CODA_OSS_disable_warning(-Walloc-size-larger-than=)
 #endif
 
 #include <xercesc/dom/DOM.hpp>

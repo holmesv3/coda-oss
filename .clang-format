@@ -30,3 +30,5 @@ SpacesInAngles: 'false'
 Standard: c++14
 UseTab: Never
 SkipMacroDefinitionBody: true
+WhitespaceSensitiveMacros:
+    - CODA_OSS_disable_warning

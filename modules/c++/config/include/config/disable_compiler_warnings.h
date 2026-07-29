@@ -50,7 +50,7 @@
 #elif defined(__GNUC__) || defined(__clang__)
 
 // Don't care about compatibility between different -std=c++nn values.
-CODA_OSS_disable_warning(-Wnoexcept - type)
+CODA_OSS_disable_warning(-Wnoexcept-type)
 
 #endif  // _MSC_VER
 

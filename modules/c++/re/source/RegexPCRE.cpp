@@ -31,10 +31,10 @@
 
 #ifndef _MSC_VER
 #include "config/compiler_extensions.h"
-CODA_OSS_disable_warning(-Wold - style - cast)
+CODA_OSS_disable_warning(-Wold-style-cast)
 #endif
 
-        namespace
+namespace
 {
     std::string getErrorMessage(int errorCode)
     {

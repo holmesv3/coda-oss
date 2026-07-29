@@ -64,8 +64,7 @@ CODA_OSS_disable_warning_system_header_push
         : 26457)  // (void) should not be used to ignore return values, use '...' instead (es.48).
 #pragma warning(disable : 26813)  // Use '...' to check if a flag is set.
 #else
-        CODA_OSS_disable_warning(-Wshadow) CODA_OSS_disable_warning(-Wsuggest - override)
-                CODA_OSS_disable_warning(-Wzero - as - null - pointer - constant)
+        CODA_OSS_disable_warning(-Wshadow) CODA_OSS_disable_warning(-Wsuggest-override) CODA_OSS_disable_warning(-Wzero-as-null-pointer-constant)
 #endif
 
 #include <Python.h>

@@ -23,21 +23,22 @@
 #include "config/compiler_extensions.h"
 
 #ifndef _MSC_VER
-CODA_OSS_disable_warning(-Wold - style - cast) CODA_OSS_disable_warning(-Wshadow)
-        CODA_OSS_disable_warning(-Wsuggest - override)
-                CODA_OSS_disable_warning(-Wzero - as - null - pointer - constant)
+CODA_OSS_disable_warning(-Wold-style-cast)
+CODA_OSS_disable_warning(-Wshadow)
+CODA_OSS_disable_warning(-Wsuggest-override)
+CODA_OSS_disable_warning(-Wzero-as-null-pointer-constant)
 #endif
 #include <except/Exception.h>
 #include <numpyutils/numpyutils.h>
 #include <sys/Conf.h>
 
-        /*
-         * import_array is actually a macro and will return differently depending on
-         * the python version.  See
-         * https://mail.scipy.org/pipermail/numpy-discussion/2010-December/054350.html
-         * for the source and some discussion
-         */
-        static_assert(PY_MAJOR_VERSION >= 3, "Python 3.x required");
+/*
+ * import_array is actually a macro and will return differently depending on
+ * the python version.  See
+ * https://mail.scipy.org/pipermail/numpy-discussion/2010-December/054350.html
+ * for the source and some discussion
+ */
+static_assert(PY_MAJOR_VERSION >= 3, "Python 3.x required");
 void* init_numpy()
 {
     import_array();

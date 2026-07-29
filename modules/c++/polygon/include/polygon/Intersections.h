@@ -23,6 +23,7 @@
 #define __POLYGON_INTERSECTIONS_H__
 
 #include <gsl/gsl.h>
+#include <sys/Conf.h>
 #include <types/RowCol.h>
 
 #include <algorithm>
