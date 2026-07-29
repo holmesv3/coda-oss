@@ -37,8 +37,7 @@ struct Foo final
     Foo& operator=(const Foo&) = delete;
     std::unique_ptr<Foo> clone() const
     {
-        // compiler has a hard time resolving overload ... probably because
-        // =deletes
+        // compiler has a hard time resolving overload ... probably because =deletes
         // return std::make_unique<Foo>(val1, val2);
         return std::unique_ptr<Foo>(new Foo(val1, val2));
     }

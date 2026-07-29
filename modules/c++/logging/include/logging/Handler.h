@@ -53,8 +53,7 @@ namespace logging
 struct CODA_OSS_API Handler : public Filterer
 {
     /*!
-     * Construct a Handler at the specified LogLevel (LogLevel::LOG_NOTSET is
-     * default)
+     * Construct a Handler at the specified LogLevel (LogLevel::LOG_NOTSET is default)
      */
     Handler(LogLevel level = LogLevel::LOG_NOTSET);
     virtual ~Handler() = default;

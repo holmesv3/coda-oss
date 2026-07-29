@@ -139,26 +139,26 @@ enum
 };
 
 /*!
- *  This function is designed to mimic (roughly) the API for
- * sio::lite::writeSIO(). It attempts to automatically guess the correct TIFF
- * type for an input image, and write as a TIFF file.
+ *  This function is designed to mimic (roughly) the API for sio::lite::writeSIO().
+ *  It attempts to automatically guess the correct TIFF type for an input image,
+ *  and write as a TIFF file.
  *
  *  Unlike the writeSIO function, this function does not support complex pixels,
- *  and will end up writing them as IEEE_FLOAT, which is probably not the
- * desired behavior, so care is required.  The supported types are double,
- * float, RGB 3-byte unsigned, and single unsigned byte (mono).
+ *  and will end up writing them as IEEE_FLOAT, which is probably not the desired
+ *  behavior, so care is required.  The supported types are double, float, RGB
+ *  3-byte unsigned, and single unsigned byte (mono).
  *
- *  Most TIFF viewers will not support float files, and therefore, it may be
- * more desirable to remap float data to bytes prior to calling this routine.
+ *  Most TIFF viewers will not support float files, and therefore, it may be more
+ *  desirable to remap float data to bytes prior to calling this routine.
  *
  *  \param image The data to write to TIFF
  *  \param rows The number of rows in image
  *  \param cols The number of cols in image
  *  \param imageFile The name of the file
- *  \param et The element type, which can be any tiff::Const::SampleFormatType,
- * or defaults to automatically guessing based on the input data size
- *  \param es The element size, which can be any size, but defaults to
- * automatically guessing based on the input data size
+ *  \param et The element type, which can be any tiff::Const::SampleFormatType, or
+ *         defaults to automatically guessing based on the input data size
+ *  \param es The element size, which can be any size, but defaults to automatically
+ *         guessing based on the input data size
  *
  */
 template <typename T>
@@ -225,8 +225,8 @@ void writeTIFF(const T* image,
                   (unsigned short)::tiff::Const::CompressionType::NO_COMPRESSION);
 
     ifd->addEntry(::tiff::KnownTags::PHOTOMETRIC_INTERPRETATION, photoInterp);
-    // Added this for RGBA, because otherwise the ImageWriter::validate()
-    // changes all of these fields back assuming 3 bytes per pixel
+    // Added this for RGBA, because otherwise the ImageWriter::validate() changes all of
+    // these fields back assuming 3 bytes per pixel
     ifd->addEntry(::tiff::KnownTags::SAMPLES_PER_PIXEL, numBands);
     ifd->addEntry(::tiff::KnownTags::BITS_PER_SAMPLE);
     ifd->addEntry(::tiff::KnownTags::SAMPLE_FORMAT);

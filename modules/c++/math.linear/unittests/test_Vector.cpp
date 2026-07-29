@@ -88,8 +88,7 @@ TEST_CASE(testAssignmentOperator)
     TEST_ASSERT_EQ(v.size(), static_cast<size_t>(2));
     TEST_ASSERT_EQ(v[0], 42);
     TEST_ASSERT_EQ(v[1], 99);
-    // TODO: What if I change the length of v5?  Does v7 remain unchanged
-    // (length & content)?
+    // TODO: What if I change the length of v5?  Does v7 remain unchanged (length & content)?
 }
 
 TEST_CASE(testScalarAssignment)
@@ -483,19 +482,18 @@ TEST_MAIN(TEST_CHECK(testDefaultConstructor); TEST_CHECK(testScalarConstructor);
           // TODO: Matrix2D<_T>& matrix()
           // TODO: const Matrix2D<_T>& matrix() const
           // TODO: const std::vector<_T>& vec() const
-          // TODO: template<typename Vector<double>_T> bool operator==(const
-          // Vector<double>_T& v) const
-          // TODO: template<typename Vector<double>_T> bool operator!=(const
-          // Vector<double>_T& v) const
-          // TODO: template<typename _T> Vector<double><_T> cross(const
-          // Vector<double><_T>& u, const Vector<double><_T>& v)
-          // TODO: template<typename _T> Vector<double><_T>
-          // constantVector<double>(size_t sz, _T cv = 0)
-          // TODO: template<typename _T> math::linear::Vector<double><_T>
-          // operator*(const math::linear::Matrix2D<_T>& m, const
+          // TODO: template<typename Vector<double>_T> bool operator==(const Vector<double>_T& v)
+          // const
+          // TODO: template<typename Vector<double>_T> bool operator!=(const Vector<double>_T& v)
+          // const
+          // TODO: template<typename _T> Vector<double><_T> cross(const Vector<double><_T>& u, const
+          // Vector<double><_T>& v)
+          // TODO: template<typename _T> Vector<double><_T> constantVector<double>(size_t sz, _T cv
+          // = 0)
+          // TODO: template<typename _T> math::linear::Vector<double><_T> operator*(const
+          // math::linear::Matrix2D<_T>& m, const math::linear::Vector<double><_T>& v)
+          // TODO: template<typename _T> math::linear::Vector<double><_T> operator*(_T scalar, const
           // math::linear::Vector<double><_T>& v)
-          // TODO: template<typename _T> math::linear::Vector<double><_T>
-          // operator*(_T scalar, const math::linear::Vector<double><_T>& v)
-          // TODO: template<typename _T> std::ostream& operator<<(std::ostream&
-          // os, const math::linear::Vector<double><_T>& v)
+          // TODO: template<typename _T> std::ostream& operator<<(std::ostream& os, const
+          // math::linear::Vector<double><_T>& v)
 )

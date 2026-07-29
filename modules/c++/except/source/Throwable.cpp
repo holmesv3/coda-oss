@@ -64,10 +64,9 @@ except::Throwable::Throwable(const Context* pContext,
         mMessage = *pMessage;
     }
 
-    // This will record a back-trace from where the Throwable object was
-    // instantiated. That's not necessarily where the "throw" will occur, but
-    // it's often the case; Throwable instances ususally aren't passed around.
-    // That is, hardly anybody does:
+    // This will record a back-trace from where the Throwable object was instantiated.
+    // That's not necessarily where the "throw" will occur, but it's often the case; Throwable
+    // instances ususally aren't passed around.  That is, hardly anybody does:
     //    Exception e; // Throwable instance
     //    might_throw(e);
     // rather, the idiom is usually

@@ -225,8 +225,7 @@ static void test_mem_ComplexViewConstIterator(const std::string& testName, TView
 {
     test_mem_ComplexViewConstIterator(testName, view.begin(), view.end());
 
-    using cxvalue_t = typename decltype(view.begin())::value_type;  // i.e.,
-                                                                    // std::complex<float>
+    using cxvalue_t = typename decltype(view.begin())::value_type;  // i.e., std::complex<float>
     cxvalue_t cx{1.0f, 2.0f};
     for (auto&& v : view)
     {

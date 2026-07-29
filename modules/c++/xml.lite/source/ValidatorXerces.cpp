@@ -172,9 +172,8 @@ std::vector<coda_oss::filesystem::path> ValidatorXerces::loadSchemas(
     return os.search(schemaPaths, "", ".xsd", recursive);
 }
 
-// From config.h.in: Define to the 16 bit type used to represent Xerces UTF-16
-// characters On Windows, this needs to be wchar_t so that various "wide
-// character" Win32 APIs can be called.
+// From config.h.in: Define to the 16 bit type used to represent Xerces UTF-16 characters
+// On Windows, this needs to be wchar_t so that various "wide character" Win32 APIs can be called.
 static_assert(sizeof(XMLCh) == 2, "XMLCh should be two bytes for UTF-16.");
 
 #ifdef _WIN32

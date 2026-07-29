@@ -55,9 +55,8 @@ template <typename T>
 int getPrecision(const types::ComplexInteger<T>&);
 #endif
 
-// Note that std::to_string() doesn't necessarily generate the same output as
-// writing to std::cout; see
-// https://en.cppreference.com/w/cpp/string/basic_string/to_string
+// Note that std::to_string() doesn't necessarily generate the same output as writing
+// to std::cout; see https://en.cppreference.com/w/cpp/string/basic_string/to_string
 template <typename T>
 std::string toString_(const T& value)
 {
@@ -132,8 +131,7 @@ inline std::string toString(const std::string& value)
 {
     return value;
 }
-// Prevent the template above from getting used; instead, use routines from
-// **Encoding.h**.
+// Prevent the template above from getting used; instead, use routines from **Encoding.h**.
 std::string toString(const std::wstring&) = delete;
 std::string toString(const std::u16string&) = delete;
 std::string toString(const std::u32string&) = delete;

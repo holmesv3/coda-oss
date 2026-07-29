@@ -42,7 +42,7 @@
 #define NATIVE_SERVERSOCKET_INIT() net::UnixServerInit()
 #define NATIVE_SOCKET_DESTROY() dbg_printf("Destroying socket\n")
 #define NATIVE_SOCKET_FAILED(I) (I != 0)
-#define NATIVE_SOCKET_ERROR(ERROR) E##ERROR
+#define NATIVE_SOCKET_ERROR(ERROR) E ## ERROR
 #define NATIVE_SOCKET_GETLASTERROR() errno
 #if !defined(EWOULDBLOCK)
 #define EWOULDBLOCK EAGAIN

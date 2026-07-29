@@ -381,9 +381,8 @@ double sys::DateTime::toMillis(tm t) const
 static double getNowInMillis()
 {
     // https://linux.die.net/man/2/gettimeofday
-    // "SVr4, 4.3BSD. POSIX.1-2001 describes gettimeofday() ... POSIX.1-2008
-    // marks gettimeofday() as obsolete, recommending the use of
-    // clock_gettime(2) instead."
+    // "SVr4, 4.3BSD. POSIX.1-2001 describes gettimeofday() ... POSIX.1-2008 marks
+    // gettimeofday() as obsolete, recommending the use of clock_gettime(2) instead."
 #if CODA_OSS_POSIX2008_SOURCE
     struct timespec now;
     clock_gettime(CLOCK_REALTIME, &now);
@@ -696,9 +695,8 @@ void sys::DateTime::gmtime(time_t numSecondsSinceEpoch, tm& t)
 int64_t sys::DateTime::getEpochSeconds() noexcept
 {
     // https://en.cppreference.com/w/cpp/chrono/c/time_t
-    // Although not defined, this is almost always an integral value holding the
-    // number of seconds (not counting leap seconds) since 00:00, Jan 1 1970
-    // UTC, corresponding to POSIX time.
+    // Although not defined, this is almost always an integral value holding the number of seconds
+    // (not counting leap seconds) since 00:00, Jan 1 1970 UTC, corresponding to POSIX time.
     // https://en.cppreference.com/w/cpp/chrono/c/time
     static_assert(sizeof(time_t) >= sizeof(int64_t), "should have at least a 64-bit time_t");
     const auto result = std::time(nullptr);

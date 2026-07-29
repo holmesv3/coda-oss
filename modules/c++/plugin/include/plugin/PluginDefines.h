@@ -70,18 +70,16 @@
  *  The return type of the functions must be a void* since the functions are
  *  extern C'd - the caller must cast to a pointer to a shared pointer.
  */
-#define PLUGIN_EXPOSE_IDENT(IDENT, BASE)                       \
-    PLUGIN_HOOK const void* GetPluginIdentity()                \
-    {                                                          \
-        static const std::shared_ptr<BASE> ident(new IDENT()); \
-        return &ident;                                         \
+#define PLUGIN_EXPOSE_IDENT(IDENT, BASE) \
+    PLUGIN_HOOK const void* GetPluginIdentity() { \
+        static const std::shared_ptr<BASE > ident(new IDENT()); \
+        return &ident;  \
     }
 
-#define PLUGIN_EXPOSE_IDENT_PRE(IDENT, PRE, BASE)              \
-    PLUGIN_HOOK const void* PRE##GetPluginIdentity()           \
-    {                                                          \
-        static const std::shared_ptr<BASE> ident(new IDENT()); \
-        return &ident;                                         \
+#define PLUGIN_EXPOSE_IDENT_PRE(IDENT, PRE, BASE) \
+    PLUGIN_HOOK const void* PRE##GetPluginIdentity() { \
+        static const std::shared_ptr<BASE > ident(new IDENT()); \
+        return &ident;  \
     }
 
 namespace plugin

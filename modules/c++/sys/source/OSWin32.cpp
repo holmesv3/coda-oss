@@ -151,8 +151,8 @@ bool sys::OSWin32::isFile(const std::string& path) const
     //  2) Not Directory
     //  3) Not Archive - we aren't doing that...
     const DWORD what = GetFileAttributes(path.c_str());
-    if (what == INVALID_FILE_ATTRIBUTES)  // "if the function fails, the return
-                                          // value is INVALID_FILE_ATTRIBUTES."
+    if (what == INVALID_FILE_ATTRIBUTES)  // "if the function fails, the return value is
+                                          // INVALID_FILE_ATTRIBUTES."
     {
         // const auto dwError = GetLastError();
         return false;
@@ -233,10 +233,9 @@ static std::string getEnv(const std::string& s)
     std::vector<char> buffer(size + 1);
     const DWORD retVal = GetEnvironmentVariable(s.c_str(), &buffer[0], size);
     // Win32 API weirdness -- see
-    // https://msdn.microsoft.com/en-us/libary/windows/desktop/ms683188%28v=vs.85%29.aspx
-    // When less then the size of the buffer is allocated, it returns the
-    // required size, including the null character Otherwise, it returns the
-    // size of the variable, not including the null character
+    // https://msdn.microsoft.com/en-us/libary/windows/desktop/ms683188%28v=vs.85%29.aspx When less
+    // then the size of the buffer is allocated, it returns the required size, including the null
+    // character Otherwise, it returns the size of the variable, not including the null character
     if (retVal + 1 != size)
     {
         throw sys::SystemException(
@@ -254,8 +253,8 @@ static std::string getEnv(const std::string& s)
 static const char* getenv_(const std::string& s)
 {
 #pragma warning(push)
-#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. Consider
-                                 // using _dupenv_s instead. To disable deprecation, use
+#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. Consider using
+                                 // _dupenv_s instead. To disable deprecation, use
                                  // _CRT_SECURE_NO_WARNINGS. See online help for details.
     return getenv(s.c_str());
 #pragma warning(pop)
@@ -288,8 +287,7 @@ static void setEnv(const std::string& var, const std::string& val)
 
     const auto s = var + "=" + val;
     const auto result = _putenv(s.c_str());
-    if (result != 0)  // "The functions return 0 if successful, or -1 if there's
-                      // an error."
+    if (result != 0)  // "The functions return 0 if successful, or -1 if there's an error."
     {
         throw sys::SystemException(Ctxt("Unable to set windows environment variable " + var));
     }
@@ -312,8 +310,7 @@ void sys::OSWin32::unsetEnv(const std::string& var)
 
     const auto s = var + "=";
     const auto result = _putenv(s.c_str());
-    if (result != 0)  // "The functions return 0 if successful, or -1 if there's
-                      // an error."
+    if (result != 0)  // "The functions return 0 if successful, or -1 if there's an error."
     {
         throw sys::SystemException(Ctxt("Unable to unset windows environment variable " + var));
     }
@@ -386,10 +383,8 @@ void sys::OSWin32::createSymlink(const std::string& origPathname,
     // will run on a Windows XP machine, you want to configure with the
     // following flags (except again you may need to substitute the constants
     // with the actual values)
-    // --with-cflags="/DNTDDI_VERSION=NTDDI_WINXPSP3
-    // /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
-    // --with-cxxflags="/DNTDDI_VERSION=NTDDI_WINXPSP3
-    // /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
+    // --with-cflags="/DNTDDI_VERSION=NTDDI_WINXPSP3 /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
+    // --with-cxxflags="/DNTDDI_VERSION=NTDDI_WINXPSP3 /D_WIN32_WINNT=_WIN32_WINNT_WINXP"
 #ifdef NTDDI_VERSION
 #if NTDDI_VERSION >= 0x06000000
     if (!CreateSymbolicLink(const_cast<char*>(symlinkPathname.c_str()),

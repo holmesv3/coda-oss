@@ -30,8 +30,7 @@ namespace io
 {
 
 /**
- * An OutputStream that keeps track of the number of bytes written to the
- * stream.
+ * An OutputStream that keeps track of the number of bytes written to the stream.
  */
 struct CODA_OSS_API CountingOutputStream : public ProxyOutputStream
 {

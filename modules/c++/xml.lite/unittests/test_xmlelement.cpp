@@ -30,10 +30,9 @@
 #include "xml/lite/MinidomParser.h"
 
 // It seems that a macro is better than a utility routine, see
-// https://github.com/tahonermann/char8_t-remediation C++20 changed the type of
-// u8 to char8_t* https://en.cppreference.com/w/cpp/language/string_literal Not
-// putting this everywhere because (1) well, it's a macro, and (2) it's mostly
-// only test code that uses string literals.
+// https://github.com/tahonermann/char8_t-remediation C++20 changed the type of u8 to char8_t*
+// https://en.cppreference.com/w/cpp/language/string_literal Not putting this everywhere because (1)
+// well, it's a macro, and (2) it's mostly only test code that uses string literals.
 #if CODA_OSS_cpp20
 #define U8(s) u8##s
 #else

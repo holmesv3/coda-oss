@@ -43,10 +43,9 @@ static inline std::string make_what(const char* curfile,
     return make_what(curfile, lineNum, msg.str());
 }
 // A macro for conveniently throwing errors.
-// Need "throw" to be visible, not hidden inside of a function, so that
-// code-analysis tools can see it.
-#define CODA_OSS_sys_filesystem_THROW_ERR(MSG) \
-    throw std::runtime_error(make_what(__FILE__, __LINE__, MSG))  // TODO: std::filesystem_error
+// Need "throw" to be visible, not hidden inside of a function, so that code-analysis tools can see
+// it.
+#define CODA_OSS_sys_filesystem_THROW_ERR(MSG) throw std::runtime_error(make_what(__FILE__, __LINE__, MSG)) // TODO: std::filesystem_error
 
 fs::path::string_type fs::path::to_native(const std::string& s_)
 {
@@ -71,11 +70,9 @@ fs::path& fs::path::operator/=(const path& p)
 {
     // https://en.cppreference.com/w/cpp/filesystem/path/append
 
-    if (p.is_absolute())  // || (p.has_root_name() && p.root_name() !=
-                          // root_name())
+    if (p.is_absolute())  // || (p.has_root_name() && p.root_name() != root_name())
     {
-        p_ = p.native();  // "If p.is_absolute() ... replaces the current path
-                          // with p ..."
+        p_ = p.native();  // "If p.is_absolute() ... replaces the current path with p ..."
     }
     else
     {
@@ -146,15 +143,14 @@ fs::path fs::path::extension() const
     auto fn = filename().string();
     const auto dot = fn.find(".");
 
-    // "If ... filename() does not contain the . character, then empty path is
-    // returned."
+    // "If ... filename() does not contain the . character, then empty path is returned."
     if (dot == std::string::npos)
     {
         return fs::path();
     }
 
-    // "If the first character in the filename is a period, that period is
-    // ignored (a filename like '.profile' is not treated as an extension)"
+    // "If the first character in the filename is a period, that period is ignored
+    // (a filename like '.profile' is not treated as an extension)"
     if (dot == 0)
     {
         fn = fn.substr(1);
@@ -193,16 +189,15 @@ fs::path fs::temp_directory_path()
 {
     // https://en.cppreference.com/w/cpp/filesystem/temp_directory_path
     //
-    // On POSIX systems, the path may be the one specified in the environment
-    // variables TMPDIR, TMP, TEMP, TEMPDIR, and, if none of them are specified,
-    // the path "/tmp" is returned.
+    // On POSIX systems, the path may be the one specified in the environment variables TMPDIR, TMP,
+    // TEMP, TEMPDIR, and, if none of them are specified, the path "/tmp" is returned.
     //
     // On Windows systems, the path is typically the one returned by GetTempPath
 #if defined(_WIN32)
 
     // https://msdn.microsoft.com/en-us/library/b0084kay.aspx
-    // "_WIN32 Defined as 1 when the compilation target is 32 - bit ARM, 64 -
-    // bit ARM, x86, or x64.Otherwise, undefined."
+    // "_WIN32 Defined as 1 when the compilation target is 32 - bit ARM, 64 - bit ARM, x86, or
+    // x64.Otherwise, undefined."
 
     // https://docs.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-gettemppatha
     std::array<CHAR, MAX_PATH + 2> buf;  // "The maximum possible return value is MAX_PATH+1 (261)."
@@ -251,8 +246,7 @@ bool fs::create_directory(const path& p_)
             CODA_OSS_sys_filesystem_THROW_ERR(ss.str());
         }
 
-        // If we got here, the path exists and is a directory, which is what we
-        // want
+        // If we got here, the path exists and is a directory, which is what we want
     }
     return created;
 }

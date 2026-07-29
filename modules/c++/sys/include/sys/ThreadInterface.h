@@ -49,12 +49,12 @@ namespace sys
  *   }
  *  \endcode
  */
-#define STANDARD_START_CALL(MY_NAME, PTR_TO_ME)               \
-    sys::MY_NAME* me = static_cast<sys::MY_NAME*>(PTR_TO_ME); \
-    assert(me != nullptr);                                    \
-    me->setIsRunning(true);                                   \
-    me->target()->run();                                      \
-    me->setIsRunning(false)
+#define STANDARD_START_CALL(MY_NAME, PTR_TO_ME) \
+   sys::MY_NAME *me = static_cast<sys::MY_NAME*>(PTR_TO_ME); \
+   assert(me != nullptr); \
+   me->setIsRunning(true); \
+   me->target()->run(); \
+   me->setIsRunning(false)
 
 /*!
  * \class ThreadInterface
@@ -131,9 +131,8 @@ struct CODA_OSS_API ThreadInterface : public Runnable
     //!  Destructor
     virtual ~ThreadInterface()
     {
-        // If the thread is still running, crash the program to prevent all
-        // kinds of nasty issues that could pop up (execution in freed memory,
-        // etc).
+        // If the thread is still running, crash the program to prevent all kinds
+        // of nasty issues that could pop up (execution in freed memory, etc).
         if (isRunning())
         {
             std::cerr << Ctxt(str::Format("Thread object [%s] destructed before "

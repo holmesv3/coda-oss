@@ -41,8 +41,8 @@ namespace str
 
 CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 26460)  // The reference argument 's' for function
-                                  // 'str::data<char>' can be marked as const (con.3).
+#pragma warning(disable : 26460)  // The reference argument 's' for function 'str::data<char>' can
+                                  // be marked as const (con.3).
 #endif
         // non-const overload for .data() in C++17
         template <typename CharT>
@@ -53,8 +53,7 @@ CODA_OSS_disable_warning_push
 #else
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 26492)  // Don't use const_cast to cast away const or
-                                  // volatile (type.3).
+#pragma warning(disable : 26492)  // Don't use const_cast to cast away const or volatile (type.3).
 #endif
             return const_cast<typename std::basic_string<CharT>::pointer>(s.data());
     CODA_OSS_disable_warning_pop
@@ -184,8 +183,7 @@ CODA_OSS_API std::vector<std::string> split(const std::string& s,
 // CODA_OSS_API void lower(std::string& s);
 // CODA_OSS_API void upper(std::string& s);
 //
-//  Using std::transform() with ::toupper() is considerably slower than a
-//  lookup-table
+//  Using std::transform() with ::toupper() is considerably slower than a lookup-table
 CODA_OSS_API void ascii_lower(std::string& s);
 inline void lower(std::string& s)
 {
@@ -212,9 +210,9 @@ inline std::string upper(const std::string& s)
 
 // At this point, you might want to `lower()` and `upper()` for UTF-8 and/or
 // Windows-1252. That can be done, but ... our needs are mostly English (99.9%)
-// with a very occassional smattering of (Canadian-) French.  We've gotten by
-// this long without being able to upper/lower 'ä' and 'Ä' and there's no
-// current requirement to do so.
+// with a very occassional smattering of (Canadian-) French.  We've gotten by this
+// long without being able to upper/lower 'ä' and 'Ä' and there's no current
+// requirement to do so.
 //
 // Furthermore, while Windows-1252 is easy as it's a single-byte encoding and
 // covers many european languages, the standard is UTF-8.  Changing case
@@ -249,8 +247,7 @@ CODA_OSS_API str::Windows1252_T to_w1252_lower(str::Windows1252_T);
 
 /***********************************************************************************/
 
-// Using std::transform() with ::toupper() is considerably slower than a
-// lookup-table
+// Using std::transform() with ::toupper() is considerably slower than a lookup-table
 CODA_OSS_API void ascii_lower(std::string& s);
 CODA_OSS_API void ascii_upper(std::string& s);
 

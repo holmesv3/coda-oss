@@ -51,8 +51,8 @@ void tiff::ImageWriter::putData(const unsigned char* buffer, sys::Uint32_T numEl
 void tiff::ImageWriter::writeIFD()
 {
     // Retain the current file offset.
-    const auto offset = gsl::narrow<int32_t>(mOutput->tell());  // Per TIFF spec, "offset"
-                                                                // MUST be a 32-bit value!
+    const auto offset = gsl::narrow<int32_t>(
+            mOutput->tell());  // Per TIFF spec, "offset" MUST be a 32-bit value!
 
     // Seek to the position to write the current offset to.
     mOutput->seek(mIFDOffset, io::Seekable::START);
@@ -122,8 +122,8 @@ void tiff::ImageWriter::validate()
     // PhotometricInterpretation
     tiff::IFDEntry* photoInterp = mIFD["PhotometricInterpretation"];
     if (!photoInterp)
-        throw except::Exception(Ctxt("No default for PhotometricInterpretation; it must be "
-                                     "defined"));
+        throw except::Exception(
+                Ctxt("No default for PhotometricInterpretation; it must be defined"));
 
     switch (*(tiff::GenericType<unsigned short>*)(*photoInterp)[0])
     {
@@ -178,8 +178,8 @@ void tiff::ImageWriter::validate()
                 {
                     unsigned short value = *(tiff::GenericType<unsigned short>*)(*bitsPerSample)[i];
                     if (value != 8 && i < 3)
-                        throw except::Exception(Ctxt("BitsPerSample values must be 8 for RGB "
-                                                     "files"));
+                        throw except::Exception(
+                                Ctxt("BitsPerSample values must be 8 for RGB files"));
                 }
             }
 

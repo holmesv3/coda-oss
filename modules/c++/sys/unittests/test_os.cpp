@@ -121,8 +121,7 @@ TEST_CASE(testEnvVariables)
     os.unsetEnv(testvar);
     TEST_ASSERT_FALSE(os.isEnvSet(testvar));
 
-    // Check getEnv throws an sys::SystemException exception when trying unset
-    // var
+    // Check getEnv throws an sys::SystemException exception when trying unset var
 
     TEST_SPECIFIC_EXCEPTION(os.getEnv(testvar), sys::SystemException);
 
@@ -212,8 +211,8 @@ static void testFsExtension_(const std::string& testName)
     const fs_path dotdot("..");
     TEST_ASSERT_EQ("", dotdot.extension());
 
-    // "If the first character in the filename is a period, that period is
-    // ignored (a filename like '.profile' is not treated as an extension)"
+    // "If the first character in the filename is a period, that period is ignored
+    // (a filename like '.profile' is not treated as an extension)"
     fs_path dotprofile("/path/to/.profile");
     TEST_ASSERT_EQ("", dotprofile.extension());
     dotprofile = ".profile";
@@ -230,8 +229,7 @@ static void testFsExtension_(const std::string& testName)
     filedottext = "file.txt";
     TEST_ASSERT_EQ(".txt", filedottext.extension());
 
-    // "If ... filename() does not contain the . character, then empty path is
-    // returned."
+    // "If ... filename() does not contain the . character, then empty path is returned."
     filedottext = "/path/to/file";
     TEST_ASSERT_EQ("", filedottext.extension());
     filedottext = "file";
@@ -284,9 +282,8 @@ static std::string h(bool& supported, std::vector<std::string>& frames)
 }
 TEST_CASE(testBacktrace)
 {
-    // These don't **have** to be the same; but it would be unusual for build
-    // scripts pass different flags to these pieces ... and likely cause all
-    // kinds of weird problems.
+    // These don't **have** to be the same; but it would be unusual for build scripts pass
+    // different flags to these pieces ... and likely cause all kinds of weird problems.
     TEST_ASSERT_EQ(sys::debug_build(), sys::debug);
 
     bool supported;
@@ -310,8 +307,7 @@ TEST_CASE(testBacktrace)
 // constexpr auto frames_size_DEBUG_other = frames_size_DEBUG + 1; // 15
 #elif defined(__GNUC__)
         constexpr auto frames_size_RELEASE = 6;
-        // constexpr auto frames_size_RELEASE_other = frames_size_RELEASE + 1;
-        // // 7
+        // constexpr auto frames_size_RELEASE_other = frames_size_RELEASE + 1; // 7
         constexpr auto frames_size_DEBUG = frames_size_RELEASE + 4;  // 10
 // constexpr auto frames_size_DEBUG_other = frames_size_DEBUG;
 #else

@@ -40,9 +40,8 @@ namespace types
  *  \class Complex
  *  \brief Our own implementation of std::complex<T> for SIX and friends.
  *
- * `std::complex<TInteger>` is no longer valid C++; provide a (partial)
- * work-around. See https://en.cppreference.com/w/cpp/numeric/complex for
- * details.
+ * `std::complex<TInteger>` is no longer valid C++; provide a (partial) work-around.
+ * See https://en.cppreference.com/w/cpp/numeric/complex for details.
  *
  * SIX (and others) mostly use `std::complex<TInt>` as a convenient
  * package for two values; very little "complex math" is done using integers.
@@ -63,8 +62,7 @@ struct Complex final
     Complex& operator=(Complex&&) = default;
     ~Complex() = default;
 
-    // If someone already has a std::complex<value_type>, is there any harm in
-    // creating ours?
+    // If someone already has a std::complex<value_type>, is there any harm in creating ours?
     Complex(const std::complex<value_type>& other) : Complex(other.real(), other.imag())
     {
     }
@@ -79,11 +77,12 @@ struct Complex final
         defined(_SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING)
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
-                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                                 // this warning.
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the template std::complex
+                 // for any type other than float, double, or long double is unspecified. You can
+                 // define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this
+                 // warning.
 #endif
     // Better interop with existing code? Creates ambiguities?
     operator const std::complex<T>&() const
@@ -97,8 +96,7 @@ struct Complex final
         return *static_cast<std::complex<T>*>(pThis);
     }
     CODA_OSS_disable_warning_pop
-#endif  // CODA_OSS_types_Complex_implicit_cast ||
-        // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING
+#endif  // CODA_OSS_types_Complex_implicit_cast || _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING
 
             value_type real() const
     {
@@ -126,16 +124,16 @@ namespace details
 {
 CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
-                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                                 // this warning.
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the template std::complex
+                 // for any type other than float, double, or long double is unspecified. You can
+                 // define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this
+                 // warning.
 #endif
         // Getting different results with GCC vs MSVC :-(  So just use
-        // std::complex<short> Assume by the time we're actually using C++23
-        // with a compiler that enforces this restriction, "something" will be
-        // different.
+        // std::complex<short> Assume by the time we're actually using C++23 with a
+        // compiler that enforces this restriction, "something" will be different.
         template <typename T>
         inline const std::complex<T>& cast(const Complex<T>& z)
 {
@@ -175,8 +173,7 @@ inline bool operator!=(const Complex<T>& lhs, const Complex<T>& rhs)
     return !(lhs == rhs);
 }
 
-// Keep functions like abs() to a minimum; complex math probably shouldn't be
-// done with integers.
+// Keep functions like abs() to a minimum; complex math probably shouldn't be done with integers.
 template <typename T>
 inline auto abs(const Complex<T>& z)  // https://en.cppreference.com/w/cpp/numeric/complex/abs
 {
@@ -201,14 +198,13 @@ template <typename T>
 using ComplexReal = typename details::ComplexReal<T>::type;
 
 // This might be more trouble than it's worth: there really isn't that much code
-// that is generic for both integer and real complex types; recall that the
-// primary use of `std::complex<short>` is a "convenient package" for two
-// values.
+// that is generic for both integer and real complex types; recall that the primary
+// use of `std::complex<short>` is a "convenient package" for two values.
 //
 // Have the compiler pick between std::complex and Complex
 // template<typename T>
-// using complex = std::conditional_t<std::is_floating_point<T>::value,
-// ComplexReal<T>, ComplexInteger<T>>;
+// using complex = std::conditional_t<std::is_floating_point<T>::value, ComplexReal<T>,
+// ComplexInteger<T>>;
 static_assert(sizeof(std::complex<short>) == sizeof(Complex<short>),
               "sizeof(sizeof(std::complex<short>) != sizeof(Complex<short>)");
 static_assert(std::is_same<std::complex<float>, ComplexReal<float>>::value,
@@ -217,8 +213,7 @@ static_assert(std::is_same<std::complex<float>, ComplexReal<float>>::value,
 // Convenient aliases
 using zfloat = ComplexReal<float>;  // i.e., std::complex<float>
 using zdouble = ComplexReal<double>;  // i.e., std::complex<double>
-// using zlong_double = ComplexReal<long double>; // i.e., std::complex<long
-// double>
+// using zlong_double = ComplexReal<long double>; // i.e., std::complex<long double>
 //  No `zint8_t`, etc.; don't want to encourage the use of `types::Complex`.
 }
 

@@ -185,12 +185,9 @@ utf_error increase_safely(octet_iterator& it, octet_iterator end)
     return UTF8_OK;
 }
 
-#define UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(IT, END) \
-    {                                                  \
+#define UTF8_CPP_INCREASE_AND_RETURN_ON_ERROR(IT, END) {  \
         utf_error ret = increase_safely(IT, END);      \
-        if (ret != UTF8_OK)                            \
-            return ret;                                \
-    }
+        if (ret != UTF8_OK)   return ret; }
 
 /// get_sequence_x functions decode utf-8 sequences of the length x
 template <typename octet_iterator>
@@ -643,16 +640,14 @@ u32bit_iterator utf8to32(octet_iterator start, octet_iterator end, u32bit_iterat
     return result;
 }
 
-// warning C4996: '...': warning STL4015: The std::iterator class template (used
-// as a base class to provide typedefs) is deprecated in C++17. (The <iterator>
-// header is NOT deprecated.) The C++ Standard has never required user-defined
-// iterators to derive from std::iterator. To fix this warning, stop deriving
-// from std::iterator and start providing publicly accessible typedefs named
-// iterator_category, value_type, difference_type, pointer, and reference. Note
-// that value_type is required to be non-const, even for constant iterators. You
-// can define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING or
-// _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received
-// this warning.
+// warning C4996: '...': warning STL4015: The std::iterator class template (used as a base class to
+// provide typedefs) is deprecated in C++17. (The <iterator> header is NOT deprecated.) The C++
+// Standard has never required user-defined iterators to derive from std::iterator. To fix this
+// warning, stop deriving from std::iterator and start providing publicly accessible typedefs named
+// iterator_category, value_type, difference_type, pointer, and reference. Note that value_type is
+// required to be non-const, even for constant iterators. You can define
+// _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING or
+// _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS to acknowledge that you have received this warning.
 //
 // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0174r2.html#2.1
 

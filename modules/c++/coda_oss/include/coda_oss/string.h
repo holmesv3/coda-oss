@@ -28,8 +28,8 @@
 
 #include "coda_oss/CPlusPlus.h"
 
-// This logic needs to be here rather than <std/string> so that
-// `coda_oss::u8string` will be the same as `std::u8string`.
+// This logic needs to be here rather than <std/string> so that `coda_oss::u8string` will
+// be the same as `std::u8string`.
 #ifndef CODA_OSS_HAVE_std_u8string_
 #define CODA_OSS_HAVE_std_u8string_ 0  // assume no std::u8string
 #endif
@@ -47,8 +47,8 @@ namespace coda_oss
 // char8_t for UTF-8 characters
 CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 5052)  // Keyword '...' was introduced in C++20 and requires
-                                 // use of the '...' command-line option
+#pragma warning(disable : 5052)  // Keyword '...' was introduced in C++20 and requires use of the
+                                 // '...' command-line option
 #endif
 
 #if !defined(__cpp_char8_t)  // https://en.cppreference.com/w/cpp/feature_test

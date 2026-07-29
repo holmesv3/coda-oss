@@ -286,8 +286,7 @@ sys::Uint64_T combine(sys::Uint32_T numerator, sys::Uint32_T denominator);
  * @param denominator
  *   the returned denominator
  *****************************************************************/
-// void split(sys::Uint32_T value, sys::Uint32_T &numerator, sys::Uint32_T
-// &denominator);
+// void split(sys::Uint32_T value, sys::Uint32_T &numerator, sys::Uint32_T &denominator);
 
 /**
  *****************************************************************

@@ -183,8 +183,7 @@ std::string AbstractOS::getCurrentExecutable(const std::string& argvPathname) co
     return "";
 }
 
-// A variable like PATH is often several directories, return each one that
-// exists.
+// A variable like PATH is often several directories, return each one that exists.
 static bool splitEnv_(const AbstractOS& os,
                       const std::string& envVar,
                       std::vector<std::string>& result,
@@ -293,8 +292,7 @@ static std::string getSpecialEnv_USER(const AbstractOS& os, const std::string& e
 
 static std::string getSpecialEnv_HOME(const AbstractOS& os, const std::string& envVar)
 {
-    // $HOME on *nix, %USERPROFILE% on Windows; make it so either one always
-    // works
+    // $HOME on *nix, %USERPROFILE% on Windows; make it so either one always works
     assert((envVar == "HOME") || (envVar == "USERPROFILE"));
 
     CODA_OSS_mark_symbol_unused(envVar);
@@ -380,8 +378,7 @@ static std::string getSpecialEnv_SECONDS_()
 static std::string getSpecialEnv_SECONDS(const AbstractOS&, const std::string& envVar)
 {
     // https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
-    // "This variable expands to the number of seconds since the shell was
-    // started. ..."
+    // "This variable expands to the number of seconds since the shell was started. ..."
     assert(envVar == "SECONDS");
     CODA_OSS_mark_symbol_unused(envVar);
     return getSpecialEnv_SECONDS_();
@@ -389,14 +386,12 @@ static std::string getSpecialEnv_SECONDS(const AbstractOS&, const std::string& e
 
 CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 26426)  // Global initializer calls a non-constexpr
-                                  // function '...' (i.22).
+#pragma warning(disable : 26426)  // Global initializer calls a non-constexpr function '...' (i.22).
 #endif
         static std::string strUnusedSeconds = getSpecialEnv_SECONDS_();  // "start" the "shell"
 CODA_OSS_disable_warning_pop
 
-        // See
-        // https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
+        // See https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
         // and https://wiki.bash-hackers.org/syntax/shellvars
         typedef std::string (*get_env_fp)(const AbstractOS&, const std::string&);
 // For some special variables, a separate function may be needed;

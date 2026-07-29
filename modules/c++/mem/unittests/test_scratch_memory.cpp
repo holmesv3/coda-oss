@@ -33,8 +33,7 @@
 
 TEST_CASE(testReleaseSingleEndBuffer)
 {
-    // A single release of the last element. Tests with different scratch
-    // templates.
+    // A single release of the last element. Tests with different scratch templates.
     mem::ScratchMemory scratch;
 
     scratch.put<sys::ubyte>("buf0", 11, 1, 13);

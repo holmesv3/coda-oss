@@ -91,9 +91,8 @@ inline uint64_t byteswap(uint64_t val) noexcept
 template <typename T>
 inline T byteswap(T n) noexcept
 {
-    // "std::byteswap participates in overload resolution only if T satisfies
-    // integral, i.e., T is an integer type. The program is ill-formed if T has
-    // padding bits."
+    // "std::byteswap participates in overload resolution only if T satisfies integral, i.e., T is
+    // an integer type. The program is ill-formed if T has padding bits."
     static_assert(std::is_integral<T>::value, "T must be integral");
 
     using unsigned_t =

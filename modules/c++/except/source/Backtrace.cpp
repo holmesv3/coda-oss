@@ -101,8 +101,7 @@ static std::string getBacktrace_(bool& supported, std::vector<std::string>& symb
 #pragma comment(lib, "dbghelp")
 
 // https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-syminitialize
-// "A process that calls SymInitialize should not call it again unless it calls
-// SymCleanup first."
+// "A process that calls SymInitialize should not call it again unless it calls SymCleanup first."
 class SymInitialize_RAII final
 {
     HANDLE process_;

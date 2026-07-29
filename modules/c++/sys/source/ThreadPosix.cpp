@@ -31,9 +31,9 @@ void sys::ThreadPosix::start()
 {
     if (getLevel() != DEFAULT_LEVEL)
     {
-        throw sys::SystemException("Cannot determine upfront wheteher pthread threads are "
-                                   "implemented using kernel or user level threads.  Set the "
-                                   "level to DEFAULT_LEVEL");
+        throw sys::SystemException(
+                "Cannot determine upfront wheteher pthread threads are implemented using kernel or "
+                "user level threads.  Set the level to DEFAULT_LEVEL");
     }
 
     if (getPriority() != NORMAL_PRIORITY)

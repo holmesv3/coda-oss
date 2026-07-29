@@ -25,18 +25,16 @@
 #ifndef CODA_OSS_sys_Conf_h_INCLUDED_
 #define CODA_OSS_sys_Conf_h_INCLUDED_
 
-// In case there is still a WIN32 (should be "_WIN32" with a leading '_')
-// someplace.
+// In case there is still a WIN32 (should be "_WIN32" with a leading '_') someplace.
 #if defined(_WIN32) && !defined(WIN32)
 #define WIN32 _WIN32
 #endif
 
 // POSIX is more-or-less "Unix"
 // https://linux.die.net/man/7/feature_test_macros
-// "If no feature test macros are explicitly defined, then the following feature
-// test macros are defined by default: ... _POSIX_SOURCE, and
-// _POSIX_C_SOURCE=200809L. [...] _POSIX_SOURCE Defining this obsolete macro ...
-// is equivalent to defining _POSIX_C_SOURCE ..."
+// "If no feature test macros are explicitly defined, then the following feature test macros
+// are defined by default: ... _POSIX_SOURCE, and _POSIX_C_SOURCE=200809L. [...]
+// _POSIX_SOURCE Defining this obsolete macro ... is equivalent to defining _POSIX_C_SOURCE ..."
 #ifndef _WIN32
 #include <features.h>
 #endif
@@ -159,8 +157,8 @@ typedef pid_t Pid_T;
 
 #define SYS_FUNC NativeLayer_func__
 
-#define Ctxt(MESSAGE) \
-    except::Context(__FILE__, __LINE__, SYS_FUNC, sys::TimeStamp().local(), MESSAGE)
+#define Ctxt(MESSAGE) except::Context(__FILE__, __LINE__, SYS_FUNC, \
+        sys::TimeStamp().local(), MESSAGE)
 
 namespace sys
 {
@@ -208,8 +206,7 @@ inline void* alignedAlloc(size_t size, size_t alignment = SSE_INSTRUCTION_ALIGNM
     }
 #elif defined(CODA_OSS_POSIX_SOURCE)
     // https://linux.die.net/man/3/posix_memalign
-    // "The functions memalign(), ... have been available in all Linux libc
-    // libraries."
+    // "The functions memalign(), ... have been available in all Linux libc libraries."
     p = memalign(alignment, size);
 #else
     //! this is a basic unaligned allocation
@@ -240,8 +237,8 @@ inline void alignedFree(void* p) noexcept
 }
 
 // https://en.wikipedia.org/wiki/Year_2038_problem
-// "Most operating systems designed to run on 64-bit hardware already use signed
-// 64-bit `time_t` integers. ..."
+// "Most operating systems designed to run on 64-bit hardware already use signed 64-bit `time_t`
+// integers. ..."
 #include <stdint.h>
 #include <time.h>
 static_assert(sizeof(time_t) >= sizeof(int64_t), "Should have at least a 64-bit time_t.");

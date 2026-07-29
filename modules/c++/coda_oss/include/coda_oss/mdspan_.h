@@ -28,21 +28,19 @@
 
 #include "coda_oss/span.h"
 
-// This is a simple, partial, and incomplete implementation of `std::mdspan` (in
-// C++23). https://en.cppreference.com/w/cpp/container/mdspan
+// This is a simple, partial, and incomplete implementation of `std::mdspan` (in C++23).
+// https://en.cppreference.com/w/cpp/container/mdspan
 //
-// Why? Our (current) needs are much more limited than all the use-cases for
-// `std::mdspan`: dynamic (not static) extents, rank of 2 (rows x cols),
-// contiguous memory, ... By the time we really need more features, maybe we'll
-// be using C++23?
+// Why? Our (current) needs are much more limited than all the use-cases for `std::mdspan`:
+// dynamic (not static) extents, rank of 2 (rows x cols), contiguous memory, ...
+// By the time we really need more features, maybe we'll be using C++23?
 namespace coda_oss
 {
 namespace details
 {
 // https://en.cppreference.com/w/cpp/container/mdspan/extents
 template <typename IndexType, size_t Rank>
-struct dextents final  // this is actually supposed to be an alias template with
-                       // all dynamic extents
+struct dextents final  // this is actually supposed to be an alias template with all dynamic extents
 {
     static_assert(Rank == 2, "Rank must have a value of 2");
     using index_type = IndexType;
@@ -51,8 +49,7 @@ struct dextents final  // this is actually supposed to be an alias template with
 
     constexpr dextents() = default;
 
-    // These are supposed to be templates, but we don't need that complication
-    // right now.
+    // These are supposed to be templates, but we don't need that complication right now.
     constexpr dextents(index_type i0, index_type i1) noexcept : exts_{i0, i1}
     {
     }

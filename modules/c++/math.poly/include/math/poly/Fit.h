@@ -311,8 +311,8 @@ inline math::poly::TwoD<double> fit(size_t numRows,
 }
 
 /*!
- *  Perform three 1D fits using the same set of observed X values, and return a
- * 1D polynomial with a Vector of 3 coefficients for each term.
+ *  Perform three 1D fits using the same set of observed X values, and return a 1D polynomial with
+ *  a Vector of 3 coefficients for each term.
  *
  *  \param xObs Observed x values
  *  \param yObs0 First set of observed y values
@@ -320,8 +320,7 @@ inline math::poly::TwoD<double> fit(size_t numRows,
  *  \param yObs2 Third set of observed y values
  *  \param order The desired order of the polynomial fit
  *  \throw Exception if all input Vectors are not equally sized
- *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1,
- * Bn2, Bn3)x^n
+ *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1, Bn2, Bn3)x^n
  */
 
 inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
@@ -334,8 +333,8 @@ inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
     const auto numObs = xObs.size();
     if (yObs0.size() != numObs || yObs1.size() != numObs || yObs2.size() != numObs)
     {
-        throw except::Exception(Ctxt("Must have the same number of observed y "
-                                     "values as observed x values"));
+        throw except::Exception(
+                Ctxt("Must have the same number of observed y values as observed x values"));
     }
 
     const math::poly::OneD<double> fit0 = fit(xObs, yObs0, order);
@@ -369,15 +368,14 @@ inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
 }
 
 /*!
- *  Perform three 1D fits using the same set of observed X values, and return a
- * 1D polynomial with a Vector of 3 coefficients for each term.
+ *  Perform three 1D fits using the same set of observed X values, and return a 1D polynomial with
+ *  a Vector of 3 coefficients for each term.
  *
  *  \param xObsVector Observed x values
  *  \param yObsMatrix Matrix with each row as a set of observed y values
  *  \param order The desired order of the polynomial fit
  *  \throw Exception if the matrix doesn't have 3 sets of values, i.e. 3 rows
- *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1,
- * Bn2, Bn3)x^n
+ *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1, Bn2, Bn3)x^n
  */
 
 inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
@@ -405,16 +403,15 @@ inline math::poly::OneD<math::linear::VectorN<3, double>> fit(
 }
 
 /*!
- *  Perform three 1D fits using the same set of observed X values, and return a
- * 1D polynomial with a Vector of 3 coefficients for each term.
+ *  Perform three 1D fits using the same set of observed X values, and return a 1D polynomial with
+ *  a Vector of 3 coefficients for each term.
  *
  *  \param xObs Observed x values
  *  \param yObs0 First set of observed y values
  *  \param yObs1 Second set of observed y values
  *  \param yObs2 Third set of observed y values
  *  \param order The desired order of the polynomial fit
- *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1,
- * Bn2, Bn3)x^n
+ *  \return A polynomial (B01, B02, B03)x^0 + (B11, B12, B13)x^1 + ... + (Bn1, Bn2, Bn3)x^n
  */
 
 inline math::poly::OneD<math::linear::VectorN<3, double>> fit(const std::vector<double>& xObs,

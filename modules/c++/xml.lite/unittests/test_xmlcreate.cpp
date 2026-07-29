@@ -81,8 +81,8 @@ TEST_CASE(testXmlCreateNested)
     body += "br";  // addChild()
 
     actual = print(documents);
-    const auto expected1 =  // can't use a "raw" string because a string
-                            // comparision is done, not a "XML comparision"
+    const auto expected1 =  // can't use a "raw" string because a string comparision is done, not a
+                            // "XML comparision"
             "<documents count=\"1\">"
             "<html>"
             "<title>Title</title>"

@@ -27,8 +27,7 @@
 
 namespace
 {
-// These constants and functions were taken from the NRT DateTime.c
-// implementation
+// These constants and functions were taken from the NRT DateTime.c implementation
 
 const long UNIX_EPOCH_YEAR(1970);  // EPOCH = Jan 1 1970 00:00:00
 const double SECS_IN_MIN(60.0);

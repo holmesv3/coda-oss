@@ -35,13 +35,12 @@
 #include "coda_oss/namespace_.h"
 #include "coda_oss/span_.h"
 
-// Need a fairly decent C++ compiler to use the real GSL.  This brings in more
-// than we really need for span (e.g., gsl::narrow()), but it keeps things
-// simple.
+// Need a fairly decent C++ compiler to use the real GSL.  This brings in more than
+// we really need for span (e.g., gsl::narrow()), but it keeps things simple.
 #include "gsl/gsl.h"  // not gsl/span; need #pragma here to turn off warnings
 
-// This logic needs to be here rather than <std/span> so that `coda_oss::span`
-// will be the same as `std::span`.
+// This logic needs to be here rather than <std/span> so that `coda_oss::span` will
+// be the same as `std::span`.
 #ifndef CODA_OSS_HAVE_std_span_
 #define CODA_OSS_HAVE_std_span_ 0  // assume no <span>
 #endif
@@ -70,8 +69,8 @@ using details::span;  // no std::span or gsl::span, use our own
 template <typename T>
 inline auto as_bytes(span<const T> s) noexcept
 {
-    // https://en.cppreference.com/w/cpp/types/is_trivially_copyable "...
-    // serialized to/from binary files ..."
+    // https://en.cppreference.com/w/cpp/types/is_trivially_copyable "... serialized to/from binary
+    // files ..."
     static_assert(std::is_trivially_copyable<T>::value, "must be 'trivially' copyable.");
 
     const void* const p_ = s.data();
@@ -87,8 +86,8 @@ inline auto as_bytes(span<T> s) noexcept
 template <typename T>
 inline span<byte> as_writable_bytes(span<T> s) noexcept
 {
-    // https://en.cppreference.com/w/cpp/types/is_trivially_copyable "...
-    // serialized to/from binary files ..."
+    // https://en.cppreference.com/w/cpp/types/is_trivially_copyable "... serialized to/from binary
+    // files ..."
     static_assert(std::is_trivially_copyable<T>::value, "must be 'trivially' copyable.");
 
     static_assert(!std::is_const<T>::value, "T cannot be 'const'");

@@ -37,8 +37,8 @@ static std::string find_directory(const std::vector<std::string>& paths)
     {
         if (coda_oss::filesystem::is_directory(p))
         {
-            // Sometimes the value of PATH has "bad" strings in it ... at least
-            // it will confuse the unit-tests as we don't expect "C:\D1\\D2
+            // Sometimes the value of PATH has "bad" strings in it ... at least it will
+            // confuse the unit-tests as we don't expect "C:\D1\\D2
             if (!str::contains(p, bad_delim))
             {
                 return p;
@@ -319,11 +319,10 @@ TEST_CASE(testModifyVar2)
       #!/bin/csh -f
 
       # http://www.kitebird.com/csh-tcsh-book/tcsh.pdf
-      # The word or words in a history reference can be edited, or "modified",
-      by following it with one or more modifiers, # each preceded by a ':': # h
-      Remove a trailing pathname component, leaving the head. #    t Remove all
-      leading pathname components, leaving the tail. #    r Remove a filename
-      extension '.xxx', leaving the root name. #    e Remove all but the
+      # The word or words in a history reference can be edited, or "modified", by following it with
+      one or more modifiers, # each preceded by a ':': #    h Remove a trailing pathname component,
+      leaving the head. #    t Remove all leading pathname components, leaving the tail. #    r
+      Remove a filename extension '.xxx', leaving the root name. #    e Remove all but the
       extension.
 
       set path=/dir1/dir2/file.txt

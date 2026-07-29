@@ -27,10 +27,7 @@
 #ifndef CODA_OSS_use_real_gsl_
 #if defined(_MSC_VER)
 // need VS2017 or later to compile the real GSL code
-#define CODA_OSS_use_real_gsl_ \
-    (_MSC_VER >=               \
-     1910)  // VS2017:
-            // https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-160
+#define CODA_OSS_use_real_gsl_ (_MSC_VER >= 1910) // VS2017: https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-160
 #elif defined(__GNUC__)
 // GCC 4.9.1 and 4.9.4 won't compile GSL
 #define CODA_OSS_use_real_gsl_ (__GNUC__ >= 5)

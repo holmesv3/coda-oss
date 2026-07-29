@@ -31,11 +31,12 @@ TEST_CASE(TestCxShort_abs)
 
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
-                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                                 // this warning.
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the template std::complex
+                 // for any type other than float, double, or long double is unspecified. You can
+                 // define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this
+                 // warning.
 #endif
             const std::complex<short>
                     cx_short(real, imag);
@@ -43,11 +44,12 @@ TEST_CASE(TestCxShort_abs)
 
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
-                                 // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
-                                 // this warning.
+#pragma warning( \
+        disable  \
+        : 4996)  // '...': warning STL4037: The effect of instantiating the template std::complex
+                 // for any type other than float, double, or long double is unspecified. You can
+                 // define _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress this
+                 // warning.
 #endif
             const types::Complex<int16_t>
                     types_zint16(cx_short);

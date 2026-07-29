@@ -82,8 +82,7 @@ public:
 protected:
     int mCnt;
 };
-typedef Singleton<Counter> AutoIncrementer;  // this does NOT get deleted at
-                                             // exit
+typedef Singleton<Counter> AutoIncrementer;  // this does NOT get deleted at exit
 
 int main(int, char**)
 {

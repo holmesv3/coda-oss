@@ -65,12 +65,10 @@ std::unique_ptr<logging::Logger> logging::setupLogger(const path& program_,
         logHandler.reset(new logging::StreamHandler());
     else
     {
-        // Existing code was checking whether a 'size_t' was <0; that of course
-        // can't ever happen because 'size_t' is an unsigned type.  But, in the
-        // spirit of the existing code, assume that somebody thought such a
-        // check was meaningful
-        // ... using the value of a 32-bit integer (we now only build on 64-bit
-        // platforms).
+        // Existing code was checking whether a 'size_t' was <0; that of course can't
+        // ever happen because 'size_t' is an unsigned type.  But, in the spirit of
+        // the existing code, assume that somebody thought such a check was meaningful
+        // ... using the value of a 32-bit integer (we now only build on 64-bit platforms).
 
         // create a rotating logger
         logCount = logCount > std::numeric_limits<uint32_t>::max()

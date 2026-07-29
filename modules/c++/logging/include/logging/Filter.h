@@ -38,8 +38,7 @@ namespace logging
 /*!
  * \class Filter
  *
- * \brief Filter instances are used to perform arbitrary filtering of
- * LogRecords.
+ * \brief Filter instances are used to perform arbitrary filtering of LogRecords.
  */
 struct Filter
 {

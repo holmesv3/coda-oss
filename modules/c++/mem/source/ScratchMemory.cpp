@@ -63,8 +63,8 @@ void ScratchMemory::release(const std::string& key)
         //  previously released as well.
         //
         //  If the one that has not been released is released, then we need to
-        //  be careful in shifting around the following segments such that
-        //  there's no overlap.
+        //  be careful in shifting around the following segments such that there's
+        //  no overlap.
         if (mReleasedKeys.find(nextKey) != mReleasedKeys.end())
         {
             if (mConnectedKeys.find(key) != mConnectedKeys.end())

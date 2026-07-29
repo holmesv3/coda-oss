@@ -79,8 +79,7 @@ public:
     }
 
     /*!
-     * Find the lowest start address, which dictates the first block, and set
-     * mStartPtr.
+     * Find the lowest start address, which dictates the first block, and set mStartPtr.
      *
      * \param operations A vector of all operations
      */
@@ -127,8 +126,8 @@ public:
     }
 
     /*!
-     * When building a new visualizer, all operations that have already been
-     * done in previous iterations must be recreated.
+     * When building a new visualizer, all operations that have already been done
+     * in previous iterations must be recreated.
      *
      * \param[out] currentOperations Operations for this iteration
      * \param[out] scratch Scratch memory object
@@ -197,14 +196,12 @@ public:
     }
 
     /*!
-     * Runs a version of the unittest in which concurrent keys are released in a
-     * very specific order
+     * Runs a version of the unittest in which concurrent keys are released in a very specific order
      *
      * \param[in,out] currentOperations Operations for this iteration
      * \param[in,out] bufferName The name/key of the new segment
      * \param[in,out] notReleasedKeys The keys that have not been released
-     * \param[in,out] testIter Used to keep track of which step of the unittest
-     * to do
+     * \param[in,out] testIter Used to keep track of which step of the unittest to do
      * \param[out] usedBufferSpace How much memory has already been used up
      * \param[out] scratch Scratch memory object
      */
@@ -252,14 +249,12 @@ public:
     }
 
     /*!
-     * Runs a version of the unittest in which connected keys are released in a
-     * very specific order
+     * Runs a version of the unittest in which connected keys are released in a very specific order
      *
      * \param[in,out] currentOperations Operations for this iteration
      * \param[in,out] bufferName The name/key of the new segment
      * \param[in,out] notReleasedKeys The keys that have not been released
-     * \param[in,out] testIter Used to keep track of which step of the unittest
-     * to do
+     * \param[in,out] testIter Used to keep track of which step of the unittest to do
      * \param[out] usedBufferSpace How much memory has already been used up
      * \param[out] scratch Scratch memory object
      */
@@ -339,8 +334,7 @@ int main(int argc, char** argv)
     htmlFile << "<!DOCTYPE HTML>\n";
     htmlFile << "<html>\n";
     htmlFile << "<head>\n";
-    htmlFile << "<link rel=\"stylesheet\" type=\"text/css\" "
-                "href=\"style.css\">\n";
+    htmlFile << "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
     htmlFile << "</head>\n";
     htmlFile << "<body>\n";
 
@@ -371,8 +365,7 @@ int main(int argc, char** argv)
         }
         else
         {
-            std::cout << "--test must be \"random\", \"concurrent\", or "
-                         "\"connected\"\n";
+            std::cout << "--test must be \"random\", \"concurrent\", or \"connected\"\n";
             return 1;
         }
 

@@ -158,13 +158,11 @@ struct CODA_OSS_API FileFinder final
                                            bool recursive = false);
 };
 
-// Recurssively search the entire directory structure, starting at
-// "startingDirectory", for the given file. If the file isn't found below
-// "startingDirectory", the process is repated using the parent directory until
-// either the file is found or we stop at a ".git" directory.
+// Recurssively search the entire directory structure, starting at "startingDirectory", for the
+// given file. If the file isn't found below "startingDirectory", the process is repated using the
+// parent directory until either the file is found or we stop at a ".git" directory.
 //
-// This (obviously) might take a while, so consider whether the result should be
-// cached.
+// This (obviously) might take a while, so consider whether the result should be cached.
 CODA_OSS_API coda_oss::filesystem::path findFirstFile(
         const coda_oss::filesystem::path& startingDirectory,
         const coda_oss::filesystem::path& filename);
@@ -191,8 +189,8 @@ bool isCMakeInstall(const coda_oss::filesystem::path& p);
 coda_oss::filesystem::path find_dotGITDirectory(const coda_oss::filesystem::path& p);
 
 // Starting at "root", find the file: root / modulePath / file
-// If that's not found, insert other "known locations" between "root" and
-// "modulePath" e.g., root / "externals" / [name] / path / file
+// If that's not found, insert other "known locations" between "root" and "modulePath"
+// e.g., root / "externals" / [name] / path / file
 //
 // Once modulePath is found, the result is cached to avoid searching again.
 coda_oss::filesystem::path findModuleFile(const coda_oss::filesystem::path& root,

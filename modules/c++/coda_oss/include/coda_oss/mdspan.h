@@ -27,8 +27,8 @@
 // This should always work ... it's in a `details` namespace
 #include "coda_oss/mdspan_.h"
 
-// This logic needs to be here rather than <std/mdspan> so that
-// `coda_oss::mdspan` will be the same as `std::mdspan`.
+// This logic needs to be here rather than <std/mdspan> so that `coda_oss::mdspan` will
+// be the same as `std::mdspan`.
 #ifndef CODA_OSS_HAVE_std_mdspan_
 #define CODA_OSS_HAVE_std_mdspan_ 0  // assume no <mdspan>
 #endif
@@ -42,12 +42,10 @@
 #define CODA_OSS_HAVE_std_mdspan_ 1  // provided by the implementation, probably C++23
 #endif
 
-#if CODA_OSS_cpp20  // Can't even #include this file with older C++14/17
-                    // compilers! :-(
-// Put this in a __has_include so that it's optional.  Our simple implemtnation
-// works for our needs, and this brings along a lot of code that our older
-// compilers don't like. By the time we need more functionality, maybe we'll be
-// using C++23?
+#if CODA_OSS_cpp20  // Can't even #include this file with older C++14/17 compilers! :-(
+// Put this in a __has_include so that it's optional.  Our simple implemtnation works
+// for our needs, and this brings along a lot of code that our older compilers don't
+// like. By the time we need more functionality, maybe we'll be using C++23?
 //
 // Until then, having this available allows checking our implementation against
 // something much more real. https://github.com/kokkos/mdspan

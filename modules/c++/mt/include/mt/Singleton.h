@@ -133,8 +133,7 @@ protected:
 
 private:
     static T* mInstance;  // static instance
-    static std::mutex mMutex;  // static mutex for locking access to the
-                               // instance
+    static std::mutex mMutex;  // static mutex for locking access to the instance
     inline explicit Singleton(Singleton const&)
     {
     }

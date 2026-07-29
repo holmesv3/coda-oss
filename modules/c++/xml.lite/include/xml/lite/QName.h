@@ -213,9 +213,9 @@ inline bool operator!=(const QName& lhs, const QName& rhs)
 
 namespace literals  // c.f. std::literals
 {
-// This might be overkill, in part because we don't deal with a lot of literal
-// QNames or URLs. But it's interesting example code, and hidden in a "literals"
-// namespace; be cautious about extensive use outside of test code.
+// This might be overkill, in part because we don't deal with a lot of literal QNames or URLs.
+// But it's interesting example code, and hidden in a "literals" namespace; be cautious
+// about extensive use outside of test code.
 
 // https://en.cppreference.com/w/cpp/language/user_literal
 inline xml::lite::Uri operator"" _u(const char* str, std::size_t len)

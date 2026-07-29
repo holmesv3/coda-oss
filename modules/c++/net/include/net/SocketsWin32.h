@@ -30,10 +30,9 @@
 #ifndef _WINSOCK2API_  // <winsock2.h> already #include'd
 
 #undef BIGENDIAN  // #define'd in <winsock2.h>
-#define _WINSOCK_DEPRECATED_NO_WARNINGS  // '...': Use getaddrinfo() or
-                                         // GetAddrInfoW() instead or define
-                                         // _WINSOCK_DEPRECATED_NO_WARNINGS to
-                                         // disable deprecated API warnings
+#define _WINSOCK_DEPRECATED_NO_WARNINGS  // '...': Use getaddrinfo() or GetAddrInfoW() instead or
+                                         // define _WINSOCK_DEPRECATED_NO_WARNINGS to disable
+                                         // deprecated API warnings
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -55,7 +54,7 @@
 #define NATIVE_SERVERSOCKET_INIT() net::Win32SocketInit()
 #define NATIVE_CLIENTSOCKET_INIT() net::Win32SocketInit()
 #define NATIVE_SOCKET_DESTROY() net::Win32SocketDestroy()
-#define NATIVE_SOCKET_ERROR(ERROR) WSAE##ERROR
+#define NATIVE_SOCKET_ERROR(ERROR) WSAE ## ERROR
 #define NATIVE_SOCKET_GETLASTERROR() WSAGetLastError()
 #define NATIVE_SOCKET_FAILED(I) (I == INVALID_SOCKET)
 

@@ -31,9 +31,9 @@
  *  This handler inherits a ContentHandler, and loads all components
  *  into a more simple and logical tree structure.  Whereas, in DOM,
  *  EVERYTHING is a node, here, the hierarchical approach is used.
- *  An element is a tagset (i.e., &lt;blah att1="hello"&gt;hi I'm
- * dan&lt;/blah&gt;, and embedded tags are children.  To walk the tree, get the
- * top- level element and walk it.
+ *  An element is a tagset (i.e., &lt;blah att1="hello"&gt;hi I'm dan&lt;/blah&gt;,
+ *  and embedded tags are children.  To walk the tree, get the top-
+ *  level element and walk it.
  *
  *  There is memory allocation in this file, however, the paradigm is
  *  that since it occurs internally, it should be deleted internally

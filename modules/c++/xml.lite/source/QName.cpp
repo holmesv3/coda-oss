@@ -105,8 +105,8 @@ static const std::string& validate_uri(const std::string& uri, bool validate)
         return uri;
     }
 
-    // Do some very simple sanity-checking on a URI; this could be (much?) more
-    // sophisticated. https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+    // Do some very simple sanity-checking on a URI; this could be (much?) more sophisticated.
+    // https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
     if (uri.length() <= 6)  // "ab:CDEF"
     {
         // There's nothing that says we can't have short URIs, but does it

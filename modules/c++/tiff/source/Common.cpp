@@ -59,9 +59,8 @@ sys::Uint64_T tiff::combine(sys::Uint32_T numerator, sys::Uint32_T denominator)
 }
 void tiff::split(sys::Uint64_T value, sys::Uint32_T& numerator, sys::Uint32_T& denominator)
 {
-    // Using casts generate a warning: dereferencing type-punned pointer will
-    // break strict-aliasing rules[-Wstrict-aliasing] Do the reverse of
-    // combine() and use memcpy().
+    // Using casts generate a warning: dereferencing type-punned pointer will break strict-aliasing
+    // rules[-Wstrict-aliasing] Do the reverse of combine() and use memcpy().
     // numerator = ((sys::Uint32_T*)&value)[0];
     // denominator = ((sys::Uint32_T*)&value)[1];
     auto ptr =

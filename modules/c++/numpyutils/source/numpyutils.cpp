@@ -32,8 +32,8 @@ CODA_OSS_disable_warning(-Wold - style - cast) CODA_OSS_disable_warning(-Wshadow
 #include <sys/Conf.h>
 
         /*
-         * import_array is actually a macro and will return differently
-         * depending on the python version.  See
+         * import_array is actually a macro and will return differently depending on
+         * the python version.  See
          * https://mail.scipy.org/pipermail/numpy-discussion/2010-December/054350.html
          * for the source and some discussion
          */
@@ -64,8 +64,7 @@ void* init_numpy()
  * numpyutils.cpp  * with PY_ARRAY_UNIQUE_SYMBOL defined and add that #define
  * NO_IMPORT_ARRAY everywhere else.
  *
- * See:
- * http://docs.scipy.org/doc/numpy/reference/c-api.array.html#importing-the-api
+ * See: http://docs.scipy.org/doc/numpy/reference/c-api.array.html#importing-the-api
  *
  * This could manifest as something like
  *

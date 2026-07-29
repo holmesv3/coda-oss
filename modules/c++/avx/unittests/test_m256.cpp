@@ -54,8 +54,7 @@ TEST_CASE(extractf)
 
 TEST_CASE(test_getSIMDInstructionSet)
 {
-    // This is the reverse of getSIMDInstructionSet(): it uses the macros to
-    // generate a value.
+    // This is the reverse of getSIMDInstructionSet(): it uses the macros to generate a value.
     constexpr auto simdInstructionSet = sys::getSIMDInstructionSet();
 #if CODA_OSS_ENABLE_SIMD
 #if __AVX512F__
@@ -76,8 +75,8 @@ TEST_CASE(test_getSIMDInstructionSet)
 #pragma warning(disable : 4127)  // conditional expression is constant
 #endif
 
-            switch (sys::getSIMDInstructionSet())  // run-time value (well, not
-                                                   // really, but it could be)
+            switch (sys::getSIMDInstructionSet())  // run-time value (well, not really, but it could
+                                                   // be)
     {
     case sys::SIMDInstructionSet::SSE2:
     {

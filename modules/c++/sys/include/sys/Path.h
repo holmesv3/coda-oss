@@ -181,8 +181,8 @@ public:
     }
 
     /*!
-     * Returns the base name of the path supplied. This is the second half of
-     * the pair returned by splitPath()
+     * Returns the base name of the path supplied. This is the second half of the
+     * pair returned by splitPath()
      */
     static std::string basename(const std::string& path, bool rmvExt = false);
 
@@ -300,8 +300,7 @@ protected:
 std::ostream& operator<<(std::ostream& os, const sys::Path& path);
 std::istream& operator>>(std::istream& os, sys::Path& path);
 
-// Convert between collections of paths as strings and
-// coda_oss::filesystem::path
+// Convert between collections of paths as strings and coda_oss::filesystem::path
 CODA_OSS_API std::vector<std::string> convertPaths(
         coda_oss::span<const coda_oss::filesystem::path>);
 CODA_OSS_API std::vector<coda_oss::filesystem::path> convertPaths(

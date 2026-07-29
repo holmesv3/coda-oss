@@ -174,38 +174,32 @@ public:
     const T* operator->() const
     {
         assert(has_value());
-        return &value_;  // "This operator does not check whether the optional
-                         // contains a value!"
+        return &value_;  // "This operator does not check whether the optional contains a value!"
     }
     T* operator->() noexcept
     {
         assert(has_value());
-        return &value_;  // "This operator does not check whether the optional
-                         // contains a value!"
+        return &value_;  // "This operator does not check whether the optional contains a value!"
     }
     const T& operator*() const& noexcept
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional
-                        // contains a value!"
+        return value_;  // "This operator does not check whether the optional contains a value!"
     }
     T& operator*() &
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional
-                        // contains a value!"
+        return value_;  // "This operator does not check whether the optional contains a value!"
     }
     const T&& operator*() const&&
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional
-                        // contains a value!"
+        return value_;  // "This operator does not check whether the optional contains a value!"
     }
     T&& operator*() &&
     {
         assert(has_value());
-        return value_;  // "This operator does not check whether the optional
-                        // contains a value!"
+        return value_;  // "This operator does not check whether the optional contains a value!"
     }
 
     // https://en.cppreference.com/w/cpp/utility/optional/value_or
@@ -236,10 +230,8 @@ inline optional<T> make_optional(TArgs&&... args)
 // Compares two optional objects, lhs and rhs. The contained values are compared
 // (using the corresponding operator of T) only if both lhs and rhs contain
 // values. Otherwise,
-// * lhs is considered equal to rhs if, and only if, both lhs and rhs do not
-// contain a value.
-// * lhs is considered less than rhs if, and only if, rhs contains a value and
-// lhs does not.
+// * lhs is considered equal to rhs if, and only if, both lhs and rhs do not contain a value.
+// * lhs is considered less than rhs if, and only if, rhs contains a value and lhs does not.
 template <typename T, typename U>
 inline bool operator==(const optional<T>& lhs, const optional<U>& rhs)
 {
@@ -248,8 +240,7 @@ inline bool operator==(const optional<T>& lhs, const optional<U>& rhs)
     {
         return false;
     }
-    // "Otherwise, if bool(lhs) == false (and so bool(rhs) == false as well),
-    // returns true."
+    // "Otherwise, if bool(lhs) == false (and so bool(rhs) == false as well), returns true."
     if (!lhs.has_value())
     {
         assert(!rhs.has_value());

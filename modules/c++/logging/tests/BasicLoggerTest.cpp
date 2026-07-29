@@ -34,8 +34,8 @@ int main(int, char**)
 
     // log everything to the console
     StreamHandler handler(LogLevel::LOG_DEBUG);
-    std::string format = "Thread = %t, Name = %c, Level = %p, File = %F, "
-                         "Method = %M, Line = %L, TimeStamp = %d, Message = %m";
+    std::string format = "Thread = %t, Name = %c, Level = %p, File = %F, Method = %M, Line = %L, "
+                         "TimeStamp = %d, Message = %m";
     handler.setFormatter(new StandardFormatter(format));
     logger.addHandler(&handler, true);
 

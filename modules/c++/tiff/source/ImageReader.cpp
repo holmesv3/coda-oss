@@ -111,8 +111,7 @@ void tiff::ImageReader::getStripData(unsigned char* buffer, sys::Uint32_T numEle
         sys::Uint32_T thisRead = numBytesToRead;
 
         // If the total number of bytes to read exceeds the bytes remaining
-        // in the current strip, just read what can be read from the current
-        // strip.
+        // in the current strip, just read what can be read from the current strip.
         if (numBytesToRead > remainingBytesInStrip)
         {
             thisRead = remainingBytesInStrip;

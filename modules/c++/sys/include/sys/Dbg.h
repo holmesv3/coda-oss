@@ -29,9 +29,9 @@
 //
 // The macros below may #define NDEBUG, do them before #including <assert.h>
 //
-// A "debug" build has debugging symbols, detailed call stacks, minimal
-// optimization, STL validation, etc. A "release" build is likely to "run fast"
-// and be "shipped;" it might lack much of what is in a "debug" build.
+// A "debug" build has debugging symbols, detailed call stacks, minimal optimization, STL
+// validation, etc. A "release" build is likely to "run fast" and be "shipped;" it might lack much
+// of what is in a "debug" build.
 #ifndef CODA_OSS_DEBUG
 #if defined(_MSC_VER)
 // https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-160
@@ -45,9 +45,8 @@
 #endif
 #endif  // _MSC_VER
 
-// GCC has a "neither" mode with no flags: no `-O` (optimization) and no `-g`
-// (debugging). That doesn't seem very useful, so try to figure out something
-// that makes sense.
+// GCC has a "neither" mode with no flags: no `-O` (optimization) and no `-g` (debugging).
+// That doesn't seem very useful, so try to figure out something that makes sense.
 #if defined(__GNUC__)
 // https://gcc.gnu.org/onlinedocs/cpp/Common-Predefined-Macros.html#Common-Predefined-Macros
 // https://gcc.gnu.org/onlinedocs/libstdc++/manual/debug_mode_using.html#debug_mode.using.mode
@@ -73,7 +72,7 @@
 #ifndef NDEBUG
 // #error "NDEBUG should be #define'd with __OPTIMIZE__"
 #endif
-#define CODA_OSS_DEBUG 0  // i.e., release
+#define CODA_OSS_DEBUG 0 // i.e., release
 #endif
 #endif  // __GNUC__
 
@@ -119,8 +118,8 @@ constexpr auto debug = CODA_OSS_DEBUG ? true : false;
 constexpr auto release = !debug;
 
 // build-time for Dbg.cpp; may (although shouldn't) be different than above.
-// C++ says little about debug/release/optimize/etc. (there's NDEBUG inherited
-// from C); but mixing is likely to cause all kinds of problems.
+// C++ says little about debug/release/optimize/etc. (there's NDEBUG inherited from C);
+// but mixing is likely to cause all kinds of problems.
 CODA_OSS_API bool debug_build();
 inline bool release_build()
 {
@@ -214,34 +213,19 @@ void diePrintf(const char* format, ...) noexcept;
 #if CODA_OSS_debugging
 
 #ifndef __DEBUG_SHORTEN_EVAL
-#define EVAL(X) \
-    std::cout << '(' << __FILE__ << ',' << __LINE__ << ") <EVAL> " #X "=" << X << std::endl
+#define EVAL(X) std::cout << '(' << __FILE__ << ',' <<__LINE__ << ") <EVAL> "#X"=" << X << std::endl
 #else
-#define EVAL(X) std::cout << "<EVAL> " #X "=" << X << std::endl
+#define EVAL(X) std::cout << "<EVAL> "#X"=" << X << std::endl
 #endif
-#define DUMP(T, X) printf("<DUMP> (%s:%d): " #X "=" #T "\n", __FILE__, __LINE__, X)
+#define DUMP(T, X) printf("<DUMP> (%s:%d): "#X"="#T"\n", __FILE__, __LINE__, X)
 #define HERE() printf("<HERE> (%s:%d)\n", __FILE__, __LINE__)
-#define TRACE(X)                                             \
-    printf("<TRACE> (%s:%d): " #X "\n", __FILE__, __LINE__); \
-    X
-#define ASSERT_OR(ASSERTION, ELSE)                                                          \
-    {                                                                                       \
-        if (ASSERTION)                                                                      \
-        {                                                                                   \
-            1;                                                                              \
-        }                                                                                   \
-        else                                                                                \
-        {                                                                                   \
-            dbg_printf("(%s, %d): Assertion failed: " #ASSERTION "\n", __FILE__, __LINE__); \
-            ELSE;                                                                           \
-            exit(EXIT_FAILURE);                                                             \
-        }                                                                                   \
-    }
+#define TRACE(X) printf("<TRACE> (%s:%d): "#X"\n", __FILE__, __LINE__); X
+#define ASSERT_OR(ASSERTION, ELSE) { if (ASSERTION) { 1; } else { dbg_printf("(%s, %d): Assertion failed: "#ASSERTION"\n", __FILE__, __LINE__); ELSE; exit(EXIT_FAILURE); } }
 
 #else
-#define EVAL(X) 1
+#define EVAL(X)    1
 #define DUMP(T, X) 1
-#define HERE() 1
+#define HERE()     1
 #define TRACE(X) X
 #define ASSERT_OR(A, E) 1
 #endif

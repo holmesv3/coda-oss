@@ -29,8 +29,7 @@ using namespace except;
 
 int main(int argc, char** argv)
 {
-    // TODO in the future, take in other inputs, such as rows, cols, size, type,
-    // etc.
+    // TODO in the future, take in other inputs, such as rows, cols, size, type, etc.
     if (argc != 2)
         die_printf("Usage: %s <sio-output>\n", argv[0]);
 

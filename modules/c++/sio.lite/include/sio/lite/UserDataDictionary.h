@@ -126,8 +126,7 @@ public:
     }
 };
 
-//! UserDataDictionary is an OrderedDictionary mapping string keys to string
-//! values
+//! UserDataDictionary is an OrderedDictionary mapping string keys to string values
 typedef OrderedDictionary<std::string, std::vector<sys::byte>> UserDataDictionary;
 
 }

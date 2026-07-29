@@ -29,3 +29,4 @@ PointerAlignment: Left
 SpacesInAngles: 'false'
 Standard: c++14
 UseTab: Never
+SkipMacroDefinitionBody: true

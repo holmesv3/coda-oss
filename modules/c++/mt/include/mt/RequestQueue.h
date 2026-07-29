@@ -113,8 +113,8 @@ public:
         mAvailableSpace.signal();
     }
 
-    //! Retrieves a copy of the n'th item from the front of the queue (0 = first
-    //! item) without removing it
+    //! Retrieves a copy of the n'th item from the front of the queue (0 = first item) without
+    //! removing it
     T peek(size_t n = 0)
     {
         T request;

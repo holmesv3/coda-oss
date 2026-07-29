@@ -40,16 +40,16 @@
 #include "str/Manip.h"
 CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 26818)  // Switch statement does not cover all cases.
-                                  // Consider adding a '...' label (es.79).
+#pragma warning(disable : 26818)  // Switch statement does not cover all cases. Consider adding a
+                                  // '...' label (es.79).
 #else
         CODA_OSS_disable_warning(-Wshadow)
 #endif
 #include "str/utf8.h"
         CODA_OSS_disable_warning_pop
 
-        // Need to look up characters from \x80 (EURO SIGN) to \x9F (LATIN
-        // CAPITAL LETTER Y WITH DIAERESIS) in a map:
+        // Need to look up characters from \x80 (EURO SIGN) to \x9F (LATIN CAPITAL LETTER Y WITH
+        // DIAERESIS) in a map:
         // http://www.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1252.TXT
         static inline coda_oss::u8string utf8_(char32_t i)
 {
@@ -68,8 +68,8 @@ static const auto& Windows1252_x80_x9F_to_u8string_()
             {U'\x80', utf8_(U'\x20AC')}  // EURO SIGN
             ,
             {U'\x81', utf8_(U'\x0081')}
-            // UNDEFINED; _bstr_t just preserves these values, do the same  // ,
-            // {U'\x81', replacement_character } // UNDEFINED
+            // UNDEFINED; _bstr_t just preserves these values, do the same  // , {U'\x81',
+            // replacement_character } // UNDEFINED
             ,
             {U'\x82', utf8_(U'\x201A')}  // SINGLE LOW-9 QUOTATION MARK
             ,
@@ -94,18 +94,18 @@ static const auto& Windows1252_x80_x9F_to_u8string_()
             {U'\x8C', utf8_(U'\x0152')}  // LATIN CAPITAL LIGATURE OE
             ,
             {U'\x8D', utf8_(U'\x008D')}
-            // UNDEFINED; _bstr_t just preserves these values, do the same  // ,
-            // {U'\x8D', replacement_character } // UNDEFINED
+            // UNDEFINED; _bstr_t just preserves these values, do the same  // , {U'\x8D',
+            // replacement_character } // UNDEFINED
             ,
             {U'\x8E', utf8_(U'\x017D')}  // LATIN CAPITAL LETTER Z WITH CARON
             ,
             {U'\x8F', utf8_(U'\x008F')}
-            // UNDEFINED; _bstr_t just preserves these values, do the same  // ,
-            // {U'\x8F', replacement_character } // UNDEFINED
+            // UNDEFINED; _bstr_t just preserves these values, do the same  // , {U'\x8F',
+            // replacement_character } // UNDEFINED
             ,
             {U'\x90', utf8_(U'\x0090')}
-            // UNDEFINED; _bstr_t just preserves these values, do the same  // ,
-            // {U'\x90', replacement_character } // UNDEFINED
+            // UNDEFINED; _bstr_t just preserves these values, do the same  // , {U'\x90',
+            // replacement_character } // UNDEFINED
             ,
             {U'\x91', utf8_(U'\x2018')}  // LEFT SINGLE QUOTATION MARK
             ,
@@ -132,8 +132,8 @@ static const auto& Windows1252_x80_x9F_to_u8string_()
             {U'\x9C', utf8_(U'\x0153')}  // LATIN SMALL LIGATURE OE
             ,
             {U'\x9D', utf8_(U'\x009D')}
-            // UNDEFINED; _bstr_t just preserves these values, do the same  // ,
-            // {U'\x9D', replacement_character } // UNDEFINED
+            // UNDEFINED; _bstr_t just preserves these values, do the same  // , {U'\x9D',
+            // replacement_character } // UNDEFINED
             ,
             {U'\x9E', utf8_(U'\x017E')}  // LATIN SMALL LETTER Z WITH CARON
             ,
@@ -289,8 +289,7 @@ static void get_next_utf8_byte(coda_oss::u8string::const_pointer p,
     }
     i++;  // move to next byte
 
-    // Bytes 2, 3 and 4 are always >= 0x80 (10xxxxxx), see
-    // https://en.wikipedia.org/wiki/UTF-8
+    // Bytes 2, 3 and 4 are always >= 0x80 (10xxxxxx), see https://en.wikipedia.org/wiki/UTF-8
     const auto b = gsl::narrow<uint8_t>(p[i]);
     if (b < gsl::narrow<uint8_t>(0x80))  // 10xxxxxx
     {
@@ -351,8 +350,8 @@ class Utf_to_Windows1252 final
         for (size_t i = 0; i <= 0xff; i++)  // **not** `uint8_t` to avoid wrap-around
         {
             const auto u16 = lookup[i];
-            assert(u16.length() == 1);  // all values in Basic Multi-lingual
-                                        // Plane (BMP); no emojis, etc.
+            assert(u16.length() ==
+                   1);  // all values in Basic Multi-lingual Plane (BMP); no emojis, etc.
             const auto ch = static_cast<TChar>(i);
             retval[u16[0]] = ch;
         }
@@ -447,11 +446,10 @@ inline auto to_uXXstring(const std::basic_string<CharT>& s)
 {
     const auto p = str::c_str<TBasicStringT>(s);
 #if _WIN32
-    return str::to_u16string(p,
-                             s.length());  // std::wstring is UTF-16 on Windows
+    return str::to_u16string(p, s.length());  // std::wstring is UTF-16 on Windows
 #else
-    return str::to_u32string(p, s.length());  // assume std::wstring is UTF-32
-                                              // everywhere except Windows
+    return str::to_u32string(
+            p, s.length());  // assume std::wstring is UTF-32 everywhere except Windows
 #endif
 }
 
@@ -516,8 +514,7 @@ std::string str::details::to_string(const std::wstring& s)
 #if _WIN32
     utf16to1252(p, sz, retval);  // UTF16 -> Windows-1252 on Windows.
 #else
-    utf8::utf32to8(p, p + sz,
-                   std::back_inserter(retval));  // UTF32 -> UTF-8 everywhere else.
+    utf8::utf32to8(p, p + sz, std::back_inserter(retval));  // UTF32 -> UTF-8 everywhere else.
 #endif
     return retval;
 }

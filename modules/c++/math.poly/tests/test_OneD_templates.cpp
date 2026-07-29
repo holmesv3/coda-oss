@@ -20,10 +20,8 @@
  *
  */
 
-// #include
-// "/data2/u/muller/coda-oss/modules/c++/math.poly/include/math/poly/OneD.h"
-// #include
-// "/data2/u/muller/coda-oss/modules/c++/math.linear/include/math/linear/VectorN.h"
+// #include "/data2/u/muller/coda-oss/modules/c++/math.poly/include/math/poly/OneD.h"
+// #include "/data2/u/muller/coda-oss/modules/c++/math.linear/include/math/linear/VectorN.h"
 #include <TestCase.h>
 #include <math/poly/OneD.h>
 

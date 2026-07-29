@@ -27,8 +27,8 @@
 // always compile; it's in a details namespace
 #include "coda_oss/optional_.h"
 
-// This logic needs to be here rather than <std/optional> so that
-// `coda_oss::optional` will be the same as `std::optional`.
+// This logic needs to be here rather than <std/optional> so that `coda_oss::optional` will
+// be the same as `std::optional`.
 #ifndef CODA_OSS_HAVE_std_optional_
 #define CODA_OSS_HAVE_std_optional_ 0  // assume no <optional>
 #endif

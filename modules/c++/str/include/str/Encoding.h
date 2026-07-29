@@ -64,8 +64,7 @@ inline auto c_str(const std::basic_string<TChar>& s)
 template <typename TBasicStringT, typename TChar>
 inline auto str(const std::basic_string<TChar>& s)
 {
-    return TBasicStringT(c_str<TBasicStringT>(s),
-                         s.length());  // avoid extra strlen() call
+    return TBasicStringT(c_str<TBasicStringT>(s), s.length());  // avoid extra strlen() call
 }
 template <typename TBasicStringT, typename TChar>
 inline TBasicStringT make_string(TChar* p)
@@ -75,9 +74,9 @@ inline TBasicStringT make_string(TChar* p)
 }
 
 /************************************************************************/
-// When the encoding is important, we want to "traffic" in coda_oss::u8string
-// (UTF-8), not str::W1252string (Windows-1252) or std::string (unknown).  Make
-// it easy to get those from other encodings.
+// When the encoding is important, we want to "traffic" in coda_oss::u8string (UTF-8), not
+// str::W1252string (Windows-1252) or std::string (unknown).  Make it easy to get those from other
+// encodings.
 CODA_OSS_API coda_oss::u8string to_u8string(str::W1252string::const_pointer, size_t);
 CODA_OSS_API coda_oss::u8string to_u8string(std::u16string::const_pointer, size_t);
 CODA_OSS_API coda_oss::u8string to_u8string(std::u32string::const_pointer, size_t);
@@ -149,8 +148,7 @@ inline auto to_u32string(const str::W1252string& s)
 }
 
 /************************************************************************/
-// Windows-1252 (almost the same as ISO8859-1) is the default single-byte
-// encoding on Windows.
+// Windows-1252 (almost the same as ISO8859-1) is the default single-byte encoding on Windows.
 CODA_OSS_API str::W1252string to_w1252string(coda_oss::u8string::const_pointer p, size_t sz);
 inline auto to_w1252string(const coda_oss::u8string& s)
 {
@@ -159,8 +157,7 @@ inline auto to_w1252string(const coda_oss::u8string& s)
 
 /************************************************************************/
 
-inline auto u8FromNative(const std::string& s)  // platform determines
-                                                // Windows-1252 or UTF-8 input
+inline auto u8FromNative(const std::string& s)  // platform determines Windows-1252 or UTF-8 input
 {
 #if _WIN32
     const auto p = str::c_str<str::W1252string>(s);  // std::string is Windows-1252 on Windows
@@ -199,18 +196,18 @@ inline std::string to_string(const std::string& s)
     return s;
 }
 CODA_OSS_API std::string to_string(const coda_oss::u8string&);
-CODA_OSS_API std::string to_string(const std::wstring&);  // input is UTF-16 or UTF-32 depending on
-                                                          // the platform
-CODA_OSS_API std::wstring to_wstring(const std::string&);  // platform determines Windows-1252 or
-                                                           // UTF-8 input and output encoding
-CODA_OSS_API std::wstring to_wstring(const coda_oss::u8string&);  // platform determines UTF-16 or
-                                                                  // UTF-32 output encoding
+CODA_OSS_API std::string to_string(
+        const std::wstring&);  // input is UTF-16 or UTF-32 depending on the platform
+CODA_OSS_API std::wstring to_wstring(
+        const std::string&);  // platform determines Windows-1252 or UTF-8 input and output encoding
+CODA_OSS_API std::wstring to_wstring(
+        const coda_oss::u8string&);  // platform determines UTF-16 or UTF-32 output encoding
 }
 namespace testing
 {
 CODA_OSS_API std::string to_string(const str::W1252string&);
-CODA_OSS_API std::wstring to_wstring(const str::W1252string&);  // platform determines UTF-16 or
-                                                                // UTF-32 output encoding
+CODA_OSS_API std::wstring to_wstring(
+        const str::W1252string&);  // platform determines UTF-16 or UTF-32 output encoding
 }
 
 inline std::string to_native(

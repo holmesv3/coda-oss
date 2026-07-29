@@ -63,8 +63,7 @@ struct ComplexViewConstIterator final
 
     template <typename TView>
     explicit ComplexViewConstIterator(TView view) :
-        size_(view.size())  // Saving the size avoids the need for another
-                            // constructor.
+        size_(view.size())  // Saving the size avoids the need for another constructor.
     {
         index_f_ = [view](size_type i) { return view[i]; };
     }
@@ -142,13 +141,13 @@ private:
 
 /*!
  *  \class ComplexView
- *  \brief These classes class provide read-only views onto a collection of
- * complex numbers. For the simple case, it's roughtly std::span<const
- * std::complex<T>>. However, sometimes the data is in two parallel arrays:
+ *  \brief These classes class provide read-only views onto a collection of complex
+ * numbers. For the simple case, it's roughtly std::span<const std::complex<T>>. However,
+ * sometimes the data is in two parallel arrays:
  *    const float* reals;
  *    const float* imags;
- * This classes have (almost) the same access routines regardless of how the
- * underlying data is actually stored.
+ * This classes have (almost) the same access routines regardless of how the underlying data is
+ * actually stored.
  *
  * Thing are intentinally kept very simple (for now), because it's not yet clear
  * what functionality will be needed.
@@ -212,8 +211,7 @@ struct ComplexInterleavedView final
 
     const_iterator begin() const
     {
-        // not data_.begin(), we want our "generic" ComplexViewConstIterator
-        // iterator
+        // not data_.begin(), we want our "generic" ComplexViewConstIterator iterator
         return ComplexViewConstIterator<axis_t_>(data_);
     }
     const_iterator end() const
@@ -264,12 +262,11 @@ inline auto make_ComplexInterleavedView(const TVectorLike& v)
     return make_ComplexInterleavedView(span_t(v.data(), v.size()));
 }
 
-// This is not the "normal" storage in C++ (that would be "interleaved" via
-// std::complex, above).  However, it's one more likely to need additional
-// "support."
+// This is not the "normal" storage in C++ (that would be "interleaved" via std::complex, above).
+// However, it's one more likely to need additional "support."
 template <typename T>
-struct ComplexParallelView final  // Two parallel arrays, absolutely nothing to
-                                  // to with multi-treading.
+struct ComplexParallelView final  // Two parallel arrays, absolutely nothing to to with
+                                  // multi-treading.
 {
     using size_type = size_t;
     using value_type = T;

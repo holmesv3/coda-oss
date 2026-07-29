@@ -38,8 +38,7 @@
  *  \brief The OutputStream representation of a file
  *
  *  The file contains the representation of an input stream
- *  from a file.  It mimics the Java io package API.  These classes are
- * deprecated,
+ *  from a file.  It mimics the Java io package API.  These classes are deprecated,
  */
 
 namespace io

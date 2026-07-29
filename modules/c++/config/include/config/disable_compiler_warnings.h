@@ -34,16 +34,17 @@
 #pragma warning(disable : 4514)  // '...': unreferenced inline function has been removed
 
 // ???
-#pragma warning(disable : 4668)  // '...' is not defined as a preprocessor
-                                 // macro, replacing with '...' for '...'
+#pragma warning( \
+        disable  \
+        : 4668)  // '...' is not defined as a preprocessor macro, replacing with '...' for '...'
 
 // ???
-#pragma warning(disable : 5045)  // Compiler will insert Spectre mitigation for
-                                 // memory load if /Qspectre switch specified
+#pragma warning(disable : 5045)  // Compiler will insert Spectre mitigation for memory load if
+                                 // /Qspectre switch specified
 
-// Different versions of Visual Studio have different warnings; and almost all
-// of our use of them is `disable`.  It not very useful to know we're
-// (attempting) to disable a warning that doesn't exist.
+// Different versions of Visual Studio have different warnings; and almost all of our
+// use of them is `disable`.  It not very useful to know we're (attempting) to
+// disable a warning that doesn't exist.
 #pragma warning(disable : 4619)  // #pragma warning: there is no warning number '...'
 
 #elif defined(__GNUC__) || defined(__clang__)

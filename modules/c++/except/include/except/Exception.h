@@ -43,9 +43,8 @@
 #ifndef CODA_OSS_except_Exception_suppress_26447_BEGIN_
 #if defined(_MSC_VER) && _PREFAST_  // Visual Studio /analyze
 #define CODA_OSS_except_Exception_suppress_26447_BEGIN_ \
-    __pragma(warning(push))                             \
-            __pragma(warning(disable : 26447))  // The function is declared '...' but calls function
-                                                // '...' which may throw exceptions (f .6)
+            __pragma(warning(push)) \
+            __pragma(warning(disable: 26447)) // The function is declared '...' but calls  function '...' which may throw exceptions (f .6)
 #define CODA_OSS_except_Exception_suppress_26447_END_ __pragma(warning(pop))
 #else
 #define CODA_OSS_except_Exception_suppress_26447_BEGIN_
@@ -53,41 +52,24 @@
 #endif
 #endif
 
-#define DECLARE_EXTENDED_EXCEPTION_(_Name, Exception_, _Base)                                   \
-    struct _Name##Exception_ : public _Base                                                     \
-    {                                                                                           \
-        _Name##Exception_() = default;                                                          \
-        virtual ~_Name##Exception_() = default;                                                 \
-        _Name##Exception_(const _Name##Exception_&) = default;                                  \
-        _Name##Exception_& operator=(const _Name##Exception_&) = default;                       \
-        _Name##Exception_(_Name##Exception_&&) = default;                                       \
-        _Name##Exception_& operator=(_Name##Exception_&&) = default;                            \
-        _Name##Exception_(const except::Context& c) : _Base(c)                                  \
-        {                                                                                       \
-        }                                                                                       \
-        _Name##Exception_(const std::string& msg) : _Base(msg)                                  \
-        {                                                                                       \
-        }                                                                                       \
-        _Name##Exception_(const except::Throwable& t, const except::Context& c) : _Base(t, c)   \
-        {                                                                                       \
-        }                                                                                       \
-        _Name##Exception_(const except::ThrowableEx& t, const except::Context& c) : _Base(t, c) \
-        {                                                                                       \
-        }                                                                                       \
-        CODA_OSS_except_Exception_suppress_26447_BEGIN_ std::string getType()                   \
-                const noexcept override                                                         \
-        {                                                                                       \
-            return #_Name #Exception_;                                                          \
-        }                                                                                       \
-        CODA_OSS_except_Exception_suppress_26447_END_                                           \
-    }
-#define DECLARE_EXTENDED_EXCEPTION(_Name, _Base) \
-    DECLARE_EXTENDED_EXCEPTION_(_Name, Exception, _Base)
-#define DECLARE_EXTENDED_EXCEPTIONEX(_Name, _Base) \
-    DECLARE_EXTENDED_EXCEPTION_(_Name, ExceptionEx, _Base)
+#define DECLARE_EXTENDED_EXCEPTION_(_Name, Exception_, _Base) \
+  struct _Name##Exception_ : public _Base \
+  { \
+      _Name##Exception_() = default; virtual ~_Name##Exception_() = default; \
+      _Name##Exception_(const _Name##Exception_&) = default;  _Name##Exception_& operator=(const _Name##Exception_&) = default; \
+      _Name##Exception_(_Name##Exception_&&) = default;  _Name##Exception_& operator=(_Name##Exception_&&) = default; \
+      _Name##Exception_(const except::Context& c) : _Base(c){} \
+      _Name##Exception_(const std::string& msg) : _Base(msg){} \
+      _Name##Exception_(const except::Throwable& t, const except::Context& c) : _Base(t, c){} \
+      _Name##Exception_(const except::ThrowableEx& t, const except::Context& c) : _Base(t, c){} \
+      CODA_OSS_except_Exception_suppress_26447_BEGIN_ \
+      std::string getType() const noexcept override { return #_Name #Exception_; } \
+      CODA_OSS_except_Exception_suppress_26447_END_ }
+#define DECLARE_EXTENDED_EXCEPTION(_Name, _Base) DECLARE_EXTENDED_EXCEPTION_(_Name, Exception, _Base)
+#define DECLARE_EXTENDED_EXCEPTIONEX(_Name, _Base) DECLARE_EXTENDED_EXCEPTION_(_Name, ExceptionEx, _Base)
 
 // Need to keep this around for existing code
-#define DECLARE_EXCEPTION(_Name)                          \
+#define DECLARE_EXCEPTION(_Name) \
     DECLARE_EXTENDED_EXCEPTION(_Name, except::Exception); \
     DECLARE_EXTENDED_EXCEPTIONEX(_Name, except::ExceptionEx)
 
@@ -139,12 +121,10 @@ struct Exception : public Throwable
     }
 };
 
-// Use this in new code: name is FooException (not FooExceptionEx), base is
-// except::ExceptionEx (not except::Exception).
-#define CODA_OSS_DECLARE_EXTENDED_EXCEPTION(name_, base_) \
-    DECLARE_EXTENDED_EXCEPTION_(name_, Exception, base_)
-#define CODA_OSS_DECLARE_EXCEPTION(name_) \
-    CODA_OSS_DECLARE_EXTENDED_EXCEPTION(name_, except::ExceptionEx)
+// Use this in new code: name is FooException (not FooExceptionEx), base is except::ExceptionEx (not
+// except::Exception).
+#define CODA_OSS_DECLARE_EXTENDED_EXCEPTION(name_, base_) DECLARE_EXTENDED_EXCEPTION_(name_, Exception, base_)
+#define CODA_OSS_DECLARE_EXCEPTION(name_) CODA_OSS_DECLARE_EXTENDED_EXCEPTION(name_, except::ExceptionEx)
 
 struct ExceptionEx : public ThrowableEx
 {

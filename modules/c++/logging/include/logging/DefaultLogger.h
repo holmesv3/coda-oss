@@ -37,8 +37,7 @@ namespace logging
  * \class DefaultLogger
  *
  * \brief DefaultLogger extends the Logger class by providing a default Handler
- * which logs all messages to a StandardStream. This can of course be
- * overridden.
+ * which logs all messages to a StandardStream. This can of course be overridden.
  */
 class DefaultLogger : public Logger
 {

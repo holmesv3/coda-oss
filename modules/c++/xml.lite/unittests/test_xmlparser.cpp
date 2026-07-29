@@ -140,11 +140,10 @@ TEST_CASE(testXmlPreserveCharacterData)
     TEST_ASSERT_EQ(stream.stream().str(), strUtf8Xml());
 
     xml::lite::MinidomParser xmlParser;
-    // This is needed in Windows, because the default locale is *.1252
-    // (more-or-less ISO8859-1) Unfortunately, there doesn't seem to be a way of
-    // testing this ... calling parse() w/o preserveCharacterData() throws
-    // ASSERTs, even after calling _set_error_mode(_OUT_TO_STDERR) so there's no
-    // way to use TEST_EXCEPTION
+    // This is needed in Windows, because the default locale is *.1252 (more-or-less ISO8859-1)
+    // Unfortunately, there doesn't seem to be a way of testing this ...
+    // calling parse() w/o preserveCharacterData() throws ASSERTs, even after calling
+    // _set_error_mode(_OUT_TO_STDERR) so there's no way to use TEST_EXCEPTION
     xmlParser.preserveCharacterData(true);
     xmlParser.parse(stream);
     TEST_ASSERT_TRUE(true);
@@ -485,11 +484,9 @@ TEST_CASE(testReadEmbeddedXml)
 
     // UTF-8 characters in 50x50.nitf
     const std::string classificationText_iso8859_1(
-            "NON CLASSIFI\xc9 / UNCLASSIFIED");  // ISO8859-1 "NON CLASSIFIÉ /
-                                                 // UNCLASSIFIED"
+            "NON CLASSIFI\xc9 / UNCLASSIFIED");  // ISO8859-1 "NON CLASSIFIÉ / UNCLASSIFIED"
     const std::string classificationText_utf_8(
-            "NON CLASSIFI\xc3\x89 / UNCLASSIFIED");  // UTF-8 "NON CLASSIFIÉ /
-                                                     // UNCLASSIFIED"
+            "NON CLASSIFI\xc3\x89 / UNCLASSIFIED");  // UTF-8 "NON CLASSIFIÉ / UNCLASSIFIED"
     const auto classificationText_platform = sys::Platform == sys::PlatformType::Linux
             ? classificationText_utf_8
             : classificationText_iso8859_1;

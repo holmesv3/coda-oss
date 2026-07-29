@@ -28,8 +28,8 @@
 
 TEST_CASE(testEndianness)
 {
-    /*const*/ auto native = coda_oss::endian::native;  // "const" causes "conditional expression
-                                                       // is constant."
+    /*const*/ auto native =
+            coda_oss::endian::native;  // "const" causes "conditional expression is constant."
 
     if (native == coda_oss::endian::big)
     {
@@ -46,8 +46,8 @@ TEST_CASE(testEndianness)
 template <typename TEndian>
 static void testEndianness_std_(const std::string& testName)
 {
-    /*const*/ auto native = TEndian::native;  // "const" causes "conditional
-                                              // expression is constant."
+    /*const*/ auto native =
+            TEndian::native;  // "const" causes "conditional expression is constant."
     auto endianness = coda_oss::endian::native;  // "conditional expression is constant"
     if (native == TEndian::big)
     {

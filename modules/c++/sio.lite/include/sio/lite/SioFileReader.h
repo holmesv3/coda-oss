@@ -120,8 +120,7 @@ public:
 
         \endcode
      *
-     *  For simplicity, the final position is reported in the return value
-     relative
+     *  For simplicity, the final position is reported in the return value relative
      *  to header start (always).  This is done by calling tell().
      */
     sys::Off_T seek(sys::Off_T offset, Whence whence) override;

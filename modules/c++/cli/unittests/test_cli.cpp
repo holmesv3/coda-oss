@@ -145,8 +145,8 @@ TEST_CASE(testSubOptions)
     TEST_ASSERT_EQ(results->getSubResults("extra")->get<std::string>("arg"), "something");
     TEST_ASSERT_EQ(results->getSubResults("extra")->get<int>("arg2"), 1);
 
-    results.reset(parser.parse(str::split("--config /path/to/file --config:flag1 "
-                                          "-c:flag2=true --config:flag3 false")));
+    results.reset(parser.parse(str::split(
+            "--config /path/to/file --config:flag1 -c:flag2=true --config:flag3 false")));
     TEST_ASSERT_EQ(results->get<std::string>("config"), "/path/to/file");
     TEST_ASSERT(results->hasSubResults("config"));
     TEST_ASSERT(results->getSubResults("config")->get<bool>("flag1"));
@@ -255,8 +255,8 @@ TEST_CASE(testUnknownArgumentsOptions)
     TEST_ASSERT_FALSE(results->get<bool>("type"));
     TEST_ASSERT_EQ(results->get<std::string>("config"), "config.txt");
     TEST_ASSERT_EQ(outStream3.str(),
-                   std::string("Unknown arg: --badarg1\nUnknown arg: "
-                               "--filename\nUnknown arg: -z\n"));
+                   std::string(
+                           "Unknown arg: --badarg1\nUnknown arg: --filename\nUnknown arg: -z\n"));
     TEST_ASSERT_TRUE(results->get<bool>("verbose"));
     TEST_ASSERT_FALSE(results->get<bool>("type"));
     TEST_ASSERT_EQ(results->get<std::string>("config"), "config.txt");

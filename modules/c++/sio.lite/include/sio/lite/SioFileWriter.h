@@ -42,10 +42,10 @@ namespace lite
  *  \class FileWriter
  *  \brief (Deprecated) class to write an SIO file
  *
- *  This (deprecated) class will help to write out an SIO file.  It is almost
- * never necessary since the FileHeader.to() method can be used to start a
- * header, and then the OutputStream. may be accessed directly.  Additionally,
- * the writeSIO() routine provides simpler functionality
+ *  This (deprecated) class will help to write out an SIO file.  It is almost never necessary
+ *  since the FileHeader.to() method can be used to start a header, and then the OutputStream.
+ *  may be accessed directly.  Additionally, the writeSIO() routine provides
+ *  simpler functionality
  */
 struct FileWriter
 {
@@ -121,27 +121,25 @@ protected:
     bool mAdopt;
 };
 
-/** Automatic data, this is not explicitly valid, dont use this in an FileHeader
- */
+/** Automatic data, this is not explicitly valid, dont use this in an FileHeader */
 enum
 {
     AUTO = -1
 };
 
 /*!
- *  Utility routine to write an image of type T into an SIO file format.
- * Supported types are complex<float>, float, double, byte unsigned and N-byte
- * unsigned.
+ *  Utility routine to write an image of type T into an SIO file format.  Supported
+ *  types are complex<float>, float, double, byte unsigned and N-byte unsigned.
  *
  *  Sizes are deduced from the template type automatically (complex<float> = 8,
  *  double = 8, float = 4, and byte = 1, unless the es option is given, which
  *  should typically only be done for N-byte images (like RGB images).
  *
  *  Types are deduced from the template arguments as well, via the size operator
- *  (not explicitly).  This can be a good thing, but in the case of
- * complex<float> vs. double for example, the element type is treated as
- * COMPLEX_FLOAT.  This is clearly not the intent for a double, so an option
- * element type can be given explicitly.
+ *  (not explicitly).  This can be a good thing, but in the case of complex<float>
+ *  vs. double for example, the element type is treated as COMPLEX_FLOAT.  This is
+ *  clearly not the intent for a double, so an option element type can be given
+ *  explicitly.
  *
  *  If this function fails to validate the input, it may throw an exception.
  *  If it does not, the SIO file is presumed to be correct.

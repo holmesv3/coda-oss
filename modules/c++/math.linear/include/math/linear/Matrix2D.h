@@ -48,13 +48,13 @@ class Vector;
  *  \brief Flexible sized Matrix template
  *
  *  This class provides a flexible size class of arbitrary, sizable
- *  dimensions M and N.  Invocations are not required to know the size of these
- * matrices at compile time.  This class is more flexible then its MatrixMxN
- * counterpart, however the MatrixMxN should be favored wherever possible (in
- * other words, whenever the matrix dimensions are known a priori).
+ *  dimensions M and N.  Invocations are not required to know the size of these matrices
+ *  at compile time.  This class is more flexible then its MatrixMxN counterpart, however
+ *  the MatrixMxN should be favored wherever possible (in other words, whenever the
+ *  matrix dimensions are known a priori).
  *
- *  This class is assumed to be a mathematical matrix of small to moderate size.
- * Memory allocation is managed by the ScopedArray used underneath.
+ *  This class is assumed to be a mathematical matrix of small to moderate size.  Memory
+ *  allocation is managed by the ScopedArray used underneath.
  *
  *
  */
@@ -293,8 +293,8 @@ public:
      *  http://www.parashift.com/c++-faq-lite/operator-overloading.html#faq-13.10
      *  http://www.parashift.com/c++-faq-lite/operator-overloading.html#faq-13.11
      *
-     *  But it is even more dangerous, since the user can cause damage by
-     * unwittingly treating row i as a mutable pointer.
+     *  But it is even more dangerous, since the user can cause damage by unwittingly
+     *  treating row i as a mutable pointer.
      */
     inline _T* operator[](size_t i)
     {

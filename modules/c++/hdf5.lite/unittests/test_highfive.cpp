@@ -177,8 +177,7 @@ TEST_CASE(test_highfive_info)
     // https://www.mathworks.com/help/matlab/ref/h5info.html
     /*
     info = struct with fields:
-          Filename:
-    '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
+          Filename: '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
               Name: '/'
             Groups: [4x1 struct]
           Datasets: []
@@ -212,8 +211,7 @@ TEST_CASE(test_highfive_groupinfo)
     const auto g4 = file.getGroup("g4");
     /*
     info = struct with fields:
-      Filename:
-    '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
+      Filename: '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
           Name: '/g4'
         Groups: []
       Datasets: [4x1 struct]
@@ -246,8 +244,7 @@ TEST_CASE(test_highfive_datasetinfo)
     const auto time = file.getDataSet("/g4/time");
     /*
     info = struct with fields:
-      Filename:
-    '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
+      Filename: '/mathworks/devel/bat/Bdoc22b/build/matlab/toolbox/matlab/demos/example.h5'
           Name: 'time'
       Datatype: [1x1 struct]
      Dataspace: [1x1 struct]
@@ -534,9 +531,8 @@ TEST_CASE(test_highfive_getAttribute)
     {
         const auto attribute =
                 getAttribute(testName, time, "NAME", HighFive::DataTypeClass::String, "String40");
-        // throw DataSetException("Can't output std::string as fixed-length. Use
-        // raw arrays or FixedLenStringArray"); std::string value;
-        // attribute.read(value);
+        // throw DataSetException("Can't output std::string as fixed-length. Use raw arrays or
+        // FixedLenStringArray"); std::string value; attribute.read(value);
         // HighFive::FixedLenStringArray<16> arr;
         // attribute.read(arr);
         const auto value = hdf5::lite::read<std::string>(attribute);

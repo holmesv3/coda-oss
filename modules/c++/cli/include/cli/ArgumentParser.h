@@ -129,8 +129,7 @@ public:
 
     /**
      * Copies argc into a std::vector<std::string> that can be passed directly
-     * to parse().  setProgram(argv[0]) is called if setProgram() hasn't already
-     * been called.
+     * to parse().  setProgram(argv[0]) is called if setProgram() hasn't already been called.
      */
     static std::vector<std::string> make_args(int argc, const char** argv, std::string& program);
     std::vector<std::string> make_args(int argc, const char** argv);

@@ -96,8 +96,8 @@ bool almostZero(const T& value)
  *  dimensions M and N.  Any invocation of this class is therefore required
  *  to know the absolute size of the matrix at compile time.  This class should
  *  always be used instead of Matrix2D when possible, as it should perform much
- *  better than its flexible-sized alternative. Use Matrix2D only when the
- * matrix dimensions cannot be known at compile time
+ *  better than its flexible-sized alternative. Use Matrix2D only when the matrix
+ *  dimensions cannot be known at compile time
  *
  *  Attempts are made where possible to take advantage of the fixed size,
  *  providing full specialization where possible.  Additionally, it is
@@ -114,8 +114,8 @@ bool almostZero(const T& value)
  *  but it does try to handle practical problems gracefully.  Efforts are made
  *  to make this class compatible with STL and raw C pointers where possible.
  *
- *  The doxygen attempts to demonstrate the functionality of the class, though
- * the source code and unit tests should be consulted for example usage as well.
+ *  The doxygen attempts to demonstrate the functionality of the class, though the
+ *  source code and unit tests should be consulted for example usage as well.
  *
  */
 template <size_t _MD, size_t _ND, typename _T = double>
@@ -366,9 +366,8 @@ public:
      *  http://www.parashift.com/c++-faq-lite/operator-overloading.html#faq-13.10
      *  http://www.parashift.com/c++-faq-lite/operator-overloading.html#faq-13.11
      *
-     *  But it is even more dangerous, since the user can cause damage by
-     * unwittingly treating row i as a mutable pointer.  This method is only
-     * preserved for compatibility
+     *  But it is even more dangerous, since the user can cause damage by unwittingly
+     *  treating row i as a mutable pointer.  This method is only preserved for compatibility
      */
     inline _T* operator[](size_t i) noexcept
     {
@@ -1505,10 +1504,10 @@ inline math::linear::MatrixMxN<3, 3, float> math::linear::inverse<3, float>(
 }
 
 /*!
- *  This method "cleans" a Matrix of unknown type.  Concrete instantiations
- * could include MatrixMxN or Matrix2D, or any other type that has a rows() and
- * cols(), a proper assignment operator from the same type, and an overloaded
- * (i, j) operator.
+ *  This method "cleans" a Matrix of unknown type.  Concrete instantiations could
+ *  include MatrixMxN or Matrix2D, or any other type that has a rows() and cols(),
+ *  a proper assignment operator from the same type, and an overloaded (i, j)
+ *  operator.
  *
  *  Any value that is within the given epsilon of an integer is rounded to that
  *  integer value.  The parameter is unmodified

@@ -41,8 +41,8 @@ namespace mt
 // "Roll our own" `std::transform(execution::par)` using std::async()
 // https://en.cppreference.com/w/cpp/algorithm/transform
 
-// Our own `Transform_par_()` is built on `std::async()`; for that we need to
-// control a couple of settings.
+// Our own `Transform_par_()` is built on `std::async()`; for that we need to control
+// a couple of settings.
 struct Transform_par_settings final
 {
     Transform_par_settings() = default;
@@ -69,8 +69,7 @@ struct Transform_par_settings final
 
     // https://en.cppreference.com/w/cpp/thread/launch
     std::launch policy_ = std::launch::async;  // "the task is executed on a different thread,
-                                               // potentially by creating and launching it
-                                               // first"
+                                               // potentially by creating and launching it first"
 };
 
 template <typename InputIt, typename OutputIt, typename UnaryOperation>
@@ -108,10 +107,8 @@ inline OutputIt Transform_par(InputIt first1,
 {
 #if CODA_OSS_mt_Algorithm_has_execution
 #if __GNUC__
-    // std::execution::par is dramatically slower w/GCC than using our own ...
-    // ???
-    return Transform_par_(first1, last1, d_first, unary_op,
-                          settings);  // TODO: std::execution::par
+    // std::execution::par is dramatically slower w/GCC than using our own ... ???
+    return Transform_par_(first1, last1, d_first, unary_op, settings);  // TODO: std::execution::par
 #else
     CODA_OSS_mark_symbol_unused(settings);
     return std::transform(std::execution::par, first1, last1, d_first, unary_op);

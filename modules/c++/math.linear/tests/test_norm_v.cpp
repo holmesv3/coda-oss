@@ -32,14 +32,11 @@ TEST_CASE(VaryingDimension)
     //               Varying the dimensions
     math::linear::Vector<double> v1(1, 2.2);  // normSq should be (2.2)^2. norm should be 2.2
     math::linear::Vector<double> v2(
-            2,
-            2.2);  // normSq should be 2 * (2.2)^2, norm should be sqrt of that
+            2, 2.2);  // normSq should be 2 * (2.2)^2, norm should be sqrt of that
     math::linear::Vector<double> v3(
-            3,
-            2.2);  // normSq should be 3 * (2.2)^2, norm should be sqrt of that
+            3, 2.2);  // normSq should be 3 * (2.2)^2, norm should be sqrt of that
     math::linear::Vector<double> v4(
-            50,
-            2.2);  // normSq should be 50 * (2.2)^2, norm should be sqrt of that
+            50, 2.2);  // normSq should be 50 * (2.2)^2, norm should be sqrt of that
 
     // normSq:
     double expectedNormSq1 = std::pow(2.2, 2.0);

@@ -42,12 +42,12 @@
 #define _SYS_SEEK_CUR FILE_CURRENT
 #define _SYS_SEEK_SET FILE_BEGIN
 #define _SYS_SEEK_END FILE_END
-#define _SYS_CREAT OPEN_ALWAYS
+#define _SYS_CREAT    OPEN_ALWAYS
 #define _SYS_OPEN_EXISTING OPEN_EXISTING
 #define _SYS_TRUNC 8
 #define _SYS_RDONLY GENERIC_READ
 #define _SYS_WRONLY GENERIC_WRITE
-#define _SYS_RDWR GENERIC_READ | GENERIC_WRITE
+#define _SYS_RDWR GENERIC_READ|GENERIC_WRITE
 #define SYS_INVALID_HANDLE INVALID_HANDLE_VALUE
 typedef HANDLE _SYS_HANDLE_TYPE;
 #else
@@ -288,8 +288,7 @@ protected:
                                        int creationFlags) noexcept;
 };
 
-// These routines use sys::expandEnvironmentVariables() if the initial open
-// attempt fails.
+// These routines use sys::expandEnvironmentVariables() if the initial open attempt fails.
 CODA_OSS_API File make_File(const coda_oss::filesystem::path&,
                             int accessFlags = File::READ_ONLY,
                             int creationFlags = File::EXISTING);

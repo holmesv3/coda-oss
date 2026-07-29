@@ -32,8 +32,8 @@ io::RotatingFileOutputStream::RotatingFileOutputStream(const std::string& filena
     mMaxBytes(maxBytes),
     mBackupCount(backupCount)
 {
-    mFilename = filename;  // doing this in initializer list causes ASAN
-                           // diagnostic on Windows ... VS bug?
+    mFilename = filename;  // doing this in initializer list causes ASAN diagnostic on Windows ...
+                           // VS bug?
 
     mByteCount = ((io::FileOutputStream*)mProxy.get())->tell();
     if (shouldRollover(0))

@@ -25,9 +25,8 @@
 
 #include <iostream>
 #include <vector>
-const char* xmldata = "<root "
-                      "okay=\"1\"><A>This</A><A>is</A><A>an</A><A><B>ugly</B></"
-                      "A><B>otter</B></root>";
+const char* xmldata =
+        "<root okay=\"1\"><A>This</A><A>is</A><A>an</A><A><B>ugly</B></A><B>otter</B></root>";
 void printCD(std::string tag, std::vector<xml::lite::Element*>& e)
 {
     std::cout << tag << ": ";

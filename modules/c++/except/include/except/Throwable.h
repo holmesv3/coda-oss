@@ -44,9 +44,8 @@
  * break existing code as "catch (const std::exception&)" will catch
  * except::Throwable when it didn't before.
  *
- * A lot of existing code has "catch (std::exception)" BEFORE "catch
- * (except::Throwable)" making it difficult to change without the risk of
- * breaking something. :-(
+ * A lot of existing code has "catch (std::exception)" BEFORE "catch (except::Throwable)"
+ * making it difficult to change without the risk of breaking something. :-(
  */
 #ifdef CODA_OSS_THROWABLE_ISA_STD_EXCEPTION  // -DCODA_OSS_THROWABLE_ISA_STD_EXCEPTION
 #ifdef CODA_OSS_except_Throwable_ISA_std_exception
@@ -187,8 +186,8 @@ public:
         return mBacktrace;
     }
 
-    // It seems that overloading constructors creates ambiguities ... so allow
-    // for a "fluent" way of doing this.: throw Exception(...).backtrace()
+    // It seems that overloading constructors creates ambiguities ... so allow for a "fluent" way
+    // of doing this.: throw Exception(...).backtrace()
     Throwable& backtrace()
     {
         doGetBacktrace();
@@ -197,8 +196,8 @@ public:
 
     virtual std::string toString(bool includeBacktrace) const
     {
-        // Adding the backtrace to existing toString() output could substantally
-        // alter existing strings.
+        // Adding the backtrace to existing toString() output could substantally alter existing
+        // strings.
         std::string backtrace;
         if (includeBacktrace)
         {
@@ -214,8 +213,7 @@ public:
             final  // derived classes override toString()
 #endif
     {
-        // adding this to toString() output could (significantly) alter existing
-        // display
+        // adding this to toString() output could (significantly) alter existing display
         mWhat = toString(true /*includeBacktrace*/);  // call any derived toString()
         return mWhat.c_str();
     }

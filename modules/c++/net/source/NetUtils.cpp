@@ -32,8 +32,8 @@
 std::vector<std::string> net::urlSplit(std::string url)
 {
     re::Regex regex;
-    regex.compile("([A-Za-z]+)://([^/?#:]+)(?::(\\d+))?(/[^?#:]+)?(?:[?]([^&#/"
-                  "]+(?:[&;][^&;#/]+)*)?)?(?:[#](.*))?");
+    regex.compile("([A-Za-z]+)://([^/?#:]+)(?::(\\d+))?(/[^?#:]+)?(?:[?]([^&#/]+(?:[&;][^&;#/"
+                  "]+)*)?)?(?:[#](.*))?");
 
     re::RegexMatch match;
     if (regex.match(url, match))

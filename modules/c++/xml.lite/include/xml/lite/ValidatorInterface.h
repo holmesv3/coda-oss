@@ -87,9 +87,8 @@ struct ValidationInfo final
     std::string toString() const
     {
         std::ostringstream oss;
-        oss << "[" << this->getLevel() << "]"
-            << " from File: " << this->getFile() << " on Line: " << this->getLine()
-            << " with Message: " << this->getMessage();
+        oss << "[" << this->getLevel() << "]" << " from File: " << this->getFile()
+            << " on Line: " << this->getLine() << " with Message: " << this->getMessage();
         return oss.str();
     }
 

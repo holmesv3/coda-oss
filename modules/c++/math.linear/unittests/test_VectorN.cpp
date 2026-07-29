@@ -20,18 +20,15 @@
  *      Matrix2D<_T>& matrix()
  *      const Matrix2D<_T>& matrix() const
  *      const std::vector<_T>& vec() const
- *      template<typename VectorN<,double>_T> bool operator==(const
- * VectorN<,double>_T& v) const template<typename VectorN<,double>_T> bool
- * operator!=(const VectorN<,double>_T& v) const template<typename _T>
- * VectorN<,double><_T> cross(const VectorN<,double><_T>& u, const
+ *      template<typename VectorN<,double>_T> bool operator==(const VectorN<,double>_T& v) const
+ *      template<typename VectorN<,double>_T> bool operator!=(const VectorN<,double>_T& v) const
+ *      template<typename _T> VectorN<,double><_T> cross(const VectorN<,double><_T>& u, const
  * VectorN<,double><_T>& v) template<typename _T> VectorN<,double><_T>
  * constantVectorN<,double>(size_t sz, _T cv = 0) template<typename _T>
- * math::linear::VectorN<,double><_T> operator*(const
- * math::linear::Matrix2D<_T>& m, const math::linear::VectorN<,double><_T>& v)
- *      template<typename _T> math::linear::VectorN<,double><_T> operator*(_T
- * scalar, const math::linear::VectorN<,double><_T>& v) template<typename _T>
- * std::ostream& operator<<(std::ostream& os, const
- * math::linear::VectorN<,double><_T>& v)
+ * math::linear::VectorN<,double><_T> operator*(const math::linear::Matrix2D<_T>& m, const
+ * math::linear::VectorN<,double><_T>& v) template<typename _T> math::linear::VectorN<,double><_T>
+ * operator*(_T scalar, const math::linear::VectorN<,double><_T>& v) template<typename _T>
+ * std::ostream& operator<<(std::ostream& os, const math::linear::VectorN<,double><_T>& v)
  */
 
 #include <cstdlib>

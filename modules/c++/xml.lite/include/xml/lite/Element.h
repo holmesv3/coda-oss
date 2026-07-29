@@ -171,8 +171,7 @@ public:
                                 std::vector<Element*>& elements,
                                 bool recurse = false) const;
     /*!
-     *  \param std::nothrow -- will still throw if MULTIPLE elements are found,
-     * returns NULL if none
+     *  \param std::nothrow -- will still throw if MULTIPLE elements are found, returns NULL if none
      */
     Element* getElementByTagNameNS(std::nothrow_t,
                                    const std::string& qname,
@@ -213,8 +212,7 @@ public:
     }
 
     /*!
-     *  \param std::nothrow -- will still throw if MULTIPLE elements are found,
-     * returns NULL if none
+     *  \param std::nothrow -- will still throw if MULTIPLE elements are found, returns NULL if none
      */
     Element* getElementByTagName(std::nothrow_t,
                                  const std::string& localName,
@@ -314,8 +312,8 @@ public:
     // Outputs (presumablly to the console) using the **NATIVE** encoding.
     // For most XML processing, **THIS IS WRONG** as output should
     // always be UTF-8.  However, for displaying XML on the console in Windows,
-    // the native (Windows-1252) encoding will work better as "special"
-    // characters will be displayed.
+    // the native (Windows-1252) encoding will work better as "special" characters
+    // will be displayed.
     void consoleOutput_(
             io::OutputStream& stream) const;  // be sure OutputStream is the console, not a file
     void prettyConsoleOutput_(
@@ -535,8 +533,7 @@ CODA_OSS_API Element& add(const xml::lite::QName&, const std::string& value, Ele
  *  \return whether or not there was a value of type T
  */
 template <typename ToType>
-inline auto castValue(const Element& element,
-                      ToType toType)  // getValue() conflicts with below
+inline auto castValue(const Element& element, ToType toType)  // getValue() conflicts with below
         -> decltype(toType(std::string()))
 {
     const auto characterData = element.getCharacterData();
@@ -572,8 +569,7 @@ inline bool getValue(const Element& element, T& value)
 }
 
 /*!
- *  Sets the character data for this element by calling str::toString() on the
- * value.
+ *  Sets the character data for this element by calling str::toString() on the value.
  *  \param value The data to add to this element
  */
 template <typename T, typename ToString>
@@ -637,19 +633,17 @@ inline Element* addNewOptionalElement(const xml::lite::QName& name,
 CODA_OSS_API Element& setChild(Element&,
                                std::unique_ptr<Element>&&);  // destroyChildren() + addChild()
 
-CODA_OSS_API void operator+=(Element&,
-                             std::unique_ptr<Element>&&);  // addChild()
+CODA_OSS_API void operator+=(Element&, std::unique_ptr<Element>&&);  // addChild()
 
 CODA_OSS_API Element& addChild(Element&, const std::string& qname);
 CODA_OSS_API void operator+=(Element&, const std::string& qname);  // addChild()
-CODA_OSS_API Element& addChild(Element&, const xml::lite::QName&);  // there is also a QName in the
-                                                                    // xerces namespace
+CODA_OSS_API Element& addChild(
+        Element&, const xml::lite::QName&);  // there is also a QName in the xerces namespace
 CODA_OSS_API void operator+=(Element&, const xml::lite::QName&);  // addChild()
 CODA_OSS_API Element& addChild(Element&,
                                const std::string& qname,
                                const coda_oss::u8string& characterData);
-Element& addChild(Element&, const std::string&,
-                  const std::string&) = delete;  // NO, order matters!
+Element& addChild(Element&, const std::string&, const std::string&) = delete;  // NO, order matters!
 CODA_OSS_API Element& addChild(Element&,
                                const xml::lite::QName&,
                                const coda_oss::u8string& characterData);

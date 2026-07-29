@@ -68,8 +68,7 @@ void tiff::IFDEntry::serialize(io::OutputStream& output)
         for (sys::Uint32_T i = 0; i < mCount; ++i)
         {
             // The value must take up four bytes.  If the number of bytes is
-            // less than four, duplicate the value until you hit 4 bytes in
-            // length.
+            // less than four, duplicate the value until you hit 4 bytes in length.
             const auto iterations = (4 / mCount) / mValues[i]->size();
 
             for (size_t j = 0; j < iterations; ++j)

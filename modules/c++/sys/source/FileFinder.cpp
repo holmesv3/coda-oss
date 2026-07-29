@@ -297,8 +297,7 @@ fs::path sys::test::findRootDirectory(const fs::path& p,
         return findRootDirectory(parent_path(p), rootName, isRoot);
     }
 
-    // TODO: since we're in the "FileFinder" module, maybe try a bit harder to
-    // find "rootName"?
+    // TODO: since we're in the "FileFinder" module, maybe try a bit harder to find "rootName"?
     throw std::invalid_argument("Can't find '" + rootName + "' root directory");
 }
 
@@ -329,8 +328,7 @@ static fs::path findCMakeRoot(const fs::path& path, const fs::path& dir)
         const auto CMakeFiles = p / "CMakeFiles";
         if (is_regular_file(CMakeCache_txt) && is_directory(CMakeFiles))
         {
-            // looks promising ... _deps and modules directories are there, call
-            // it good.
+            // looks promising ... _deps and modules directories are there, call it good.
             const auto deps = p / "_deps";
             const auto modules = p / "modules";
             return is_directory(deps) && is_directory(modules);
@@ -343,8 +341,8 @@ static fs::path findCMakeRoot(const fs::path& path, const fs::path& dir)
 
 fs::path findCMake_Root(const fs::path& path, const std::string& build, const std::string& install)
 {
-    // Calling these directories "build" and "install" for clarity, even though
-    // they may be "install" and "build" (or maybe even something else).
+    // Calling these directories "build" and "install" for clarity, even though they may be
+    // "install" and "build" (or maybe even something else).
 
     // .../out/build/x64-Debug
     try

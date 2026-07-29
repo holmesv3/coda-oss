@@ -112,10 +112,10 @@ static void test_string_to_u8string_windows_1252_(const std::string& testName,
     const auto input(str::str<str::W1252string>(input_));
     const auto actual = str::to_u8string(input);
 
-    // No "expected" to test against as the UTF-8 values for these Windows-1252
-    // characters are mapped one-by-one.  However, we can test that UTF-8 to
-    // Windows-1252 works as that walks through a UTF-8 string which can have
-    // 1-, 2-, 3- and 4-bytes for a single code-point.
+    // No "expected" to test against as the UTF-8 values for these Windows-1252 characters
+    // are mapped one-by-one.  However, we can test that UTF-8 to Windows-1252
+    // works as that walks through a UTF-8 string which can have 1-, 2-, 3- and 4-bytes
+    // for a single code-point.
     const auto w1252 = str::to_w1252string(actual.data(), actual.size());
     TEST_ASSERT(input == w1252);
 }
@@ -152,13 +152,11 @@ TEST_CASE(test_string_to_u8string_windows_1252)
             const std::string input{'|', ch, '|'};
             const auto actual = str::to_u8string<str::W1252string>(input);
             TEST_ASSERT_TRUE(!actual.empty());
-            // const std::u8string expected8{cast8('|'), cast8('\xEF'),
-            // cast8('\xBF'), cast8('\xBD'), cast8('|')};  // UTF-8,
-            // "|<REPLACEMENT CHARACTER>|"
+            // const std::u8string expected8{cast8('|'), cast8('\xEF'), cast8('\xBF'),
+            // cast8('\xBD'), cast8('|')};  // UTF-8,  "|<REPLACEMENT CHARACTER>|"
             const std::u8string expected8{cast8('|'), cast8(194), cast8(ch), cast8('|')};
             TEST_ASSERT_EQ(actual, expected8);
-            // const std::u32string expected{U"|\ufffd|"};  // UTF-32,
-            // "|<REPLACEMENT CHARACTER>|"
+            // const std::u32string expected{U"|\ufffd|"};  // UTF-32,  "|<REPLACEMENT CHARACTER>|"
             const auto expected = str::to_u32string(expected8);
             test_assert_eq(testName, actual, expected);
         }
@@ -254,8 +252,7 @@ TEST_CASE(test_change_case)
     // const std::wstring abc_w = L"abc";
     // test_change_case_(testName, abc_w, ABC_w);
 
-    // Yes, this can really come up, "non classifié" is French (Canadian) for
-    // "unclassified".
+    // Yes, this can really come up, "non classifié" is French (Canadian) for "unclassified".
     const std::string DEF_1252_{'D', '\xc9', 'F'};  // "DÉF" Windows-1252
     const auto DEF_1252 = str::str<str::W1252string>(DEF_1252_);
     const auto DEF8 = str::to_u8string(DEF_1252);
@@ -418,16 +415,13 @@ static void test_Windows1252_ascii(const std::string& testName,
                                    const char* pStr,
                                    std::u16string::const_pointer pUtf16)
 {
-    // For both UTF-8 and Windows-1252, ASCII is the same (they only differ for
-    // 0x80-0xff).
+    // For both UTF-8 and Windows-1252, ASCII is the same (they only differ for 0x80-0xff).
     const auto u8 = str::str<std::string>(str::to_u8string<coda_oss::u8string>(pStr));
-    TEST_ASSERT_EQ(pStr,
-                   u8);  // native() is the same on all platforms/encodings for ASCII
+    TEST_ASSERT_EQ(pStr, u8);  // native() is the same on all platforms/encodings for ASCII
     {
         const auto w1252 = str::make_string<str::W1252string>(pStr);
         const auto str1252 = str::testing::to_string(w1252);
-        TEST_ASSERT_EQ(pStr, str1252);  // native() is the same on all
-                                        // platforms/encodings for ASCII
+        TEST_ASSERT_EQ(pStr, str1252);  // native() is the same on all platforms/encodings for ASCII
     }
 
     const auto u16 = str::to_u16string(str::u8FromNative(pStr));
@@ -438,8 +432,7 @@ static void test_Windows1252_ascii(const std::string& testName,
     test_wide_(testName, pStr, pUtf16, wstring, native, w1252);
 
     native = toString(pUtf16);
-    TEST_ASSERT_EQ(native,
-                   pStr);  // native() is the same on all platforms/encodings for ASCII
+    TEST_ASSERT_EQ(native, pStr);  // native() is the same on all platforms/encodings for ASCII
     wstring = toWString(pUtf16);
     test_wide_(testName, pStr, pUtf16, wstring, native, w1252);
 }
@@ -451,14 +444,12 @@ TEST_CASE(test_ASCII)
     test_Windows1252_ascii(testName, escapes, u16_escapes);
 
     // https://en.cppreference.com/w/cpp/language/escape
-    constexpr auto controls = "|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x09|"
-                              "\x0a|\x0b|\x0c|\x0d|\x0e|\x0f"
-                              "|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|"
-                              "\x19|\x1a|\x1b|\x1c|\x1d|\x1e|\x1f";
-    constexpr auto u16_controls = u"|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|"
-                                  u"\x09|\x0a|\x0b|\x0c|\x0d|\x0e|\x0f"
-                                  u"|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|"
-                                  u"\x18|\x19|\x1a|\x1b|\x1c|\x1d|\x1e|\x1f";
+    constexpr auto controls =
+            "|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x09|\x0a|\x0b|\x0c|\x0d|\x0e|\x0f"
+            "|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1a|\x1b|\x1c|\x1d|\x1e|\x1f";
+    constexpr auto u16_controls =
+            u"|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x09|\x0a|\x0b|\x0c|\x0d|\x0e|\x0f"
+            u"|\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1a|\x1b|\x1c|\x1d|\x1e|\x1f";
     test_Windows1252_ascii(testName, controls, u16_controls);
 
     // https://en.cppreference.com/w/cpp/language/ascii
@@ -504,18 +495,15 @@ TEST_CASE(test_Windows1252_WIN32)
     test_Windows1252_(testName, w1252_a1_ff, u16_w1252_a1_ff);
 
     constexpr auto w1252 = "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ";  // these values must be mapped
-    // constexpr auto w1252 =
-    // "\x80\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8e" // these values
+    // constexpr auto w1252 = "\x80\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8e" // these values
     // must be mapped
     //     "\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9e\x9f";
-    constexpr auto u16_utf8 = u"\u20ac\u201a\u0192\u201e\u2026\u2020\u2021"
-                              u"\u02c6\u2030\u0160\u2039\u0152\u017d"
-                              "\u2018\u2019\u201c\u201d\u2022\u2013\u2014\u02dc"
-                              "\u2122\u0161\u203a\u0153\u017e\u0178";
+    constexpr auto u16_utf8 =
+            u"\u20ac\u201a\u0192\u201e\u2026\u2020\u2021\u02c6\u2030\u0160\u2039\u0152\u017d"
+            "\u2018\u2019\u201c\u201d\u2022\u2013\u2014\u02dc\u2122\u0161\u203a\u0153\u017e\u0178";
     test_Windows1252_(testName, w1252, u16_utf8);
 
-    // This only works with "relaxed" (i.e., not "strict") conversion; which is
-    // what _bstr_t does
+    // This only works with "relaxed" (i.e., not "strict") conversion; which is what _bstr_t does
     constexpr auto w1252_unassigned = "\x81\x8d\x8f\x90\x9d";
     constexpr auto u16_w1252_unassigned = u"\x81\x8d\x8f\x90\x9d";
     test_Windows1252_(testName, w1252_unassigned, u16_w1252_unassigned);

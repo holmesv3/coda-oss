@@ -66,8 +66,7 @@ public:
         const bool isBigEndian = sys::isBigEndianSystem();
         // The code below previously used strncpy(), but compilers are now
         // quite aggressive about checking for potential problems.  We're only
-        // dealing with two characters, so it's easy enough to do something
-        // else.
+        // dealing with two characters, so it's easy enough to do something else.
         if (byteOrder[0] == ' ' && byteOrder[1] == ' ')
         {
             // set it based on the system

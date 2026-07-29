@@ -83,24 +83,24 @@ int main(int, char**)
         std::cout << Path::normalizePath("../data/../../..//./nitf///data/../vendor1.ntf")
                   << std::endl;
 
-        std::cout << Path::normalizePath("data/junk/tzellman/../../../../../../"
-                                         "//./nitf///data/../vendor1.ntf")
+        std::cout << Path::normalizePath(
+                             "data/junk/tzellman/../../../../../..///./nitf///data/../vendor1.ntf")
                   << std::endl;
 
         std::cout << "1) " << Path("/data/junk/", "test.txt").getPath() << std::endl;
         std::cout << "2) " << Path::joinPaths("/data/junk/", "///test.txt") << std::endl;
         std::cout << "3) " << Path("/data/junk/").join("/test.txt").getPath() << std::endl;
         std::cout << "4) " << Path::joinPaths("/data/junk", "test.txt") << std::endl;
-        std::cout << Path("data/junk/tzellman/../../../../../..///./nitf///"
-                          "data/../vendor1.ntf")
+        std::cout << Path("data/junk/tzellman/../../../../../..///./nitf///data/../vendor1.ntf")
                              .getAbsolutePath()
                   << std::endl;
-        std::cout << Path::normalizePath("data/junk/tzellman/../../../../../../"
-                                         "//./nitf///data/../vendor1.ntf")
+        std::cout << Path::normalizePath(
+                             "data/junk/tzellman/../../../../../..///./nitf///data/../vendor1.ntf")
                   << std::endl;
-        std::cout << Path::absolutePath("c:/data/junk/tzellman/../../../../../"
-                                        "..///./nitf///data/../vendor1.ntf")
-                  << std::endl;
+        std::cout
+                << Path::absolutePath(
+                           "c:/data/junk/tzellman/../../../../../..///./nitf///data/../vendor1.ntf")
+                << std::endl;
         std::cout << Path::normalizePath("c:/../../../junk.txt") << std::endl;
 
         std::cout << Path::absolutePath("/home/tzellman/dev/") << std::endl;

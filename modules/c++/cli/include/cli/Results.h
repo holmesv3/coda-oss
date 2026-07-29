@@ -126,8 +126,7 @@ public:
         cli::Value* pExistingValue = hasValue(key) ? getValue(key) : nullptr;
         if ((pExistingValue == nullptr) || (pExistingValue != value))
         {
-            // Either 1) we didn't already have a value or 2) the existing value
-            // is different
+            // Either 1) we didn't already have a value or 2) the existing value is different
             put(key, std::unique_ptr<cli::Value>(value));
         }
     }

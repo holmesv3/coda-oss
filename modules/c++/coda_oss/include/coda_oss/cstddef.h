@@ -27,9 +27,8 @@
 #include <cstddef>
 #include <type_traits>
 
-// Need a fairly decent C++ compiler to use the real GSL.  This brings in more
-// than we really need for span (e.g., gsl::narrow()), but it keeps things
-// simple.
+// Need a fairly decent C++ compiler to use the real GSL.  This brings in more than
+// we really need for span (e.g., gsl::narrow()), but it keeps things simple.
 #include "gsl/gsl.h"  // not gsl/byte; need #pragma here to turn off warnings
 
 namespace coda_oss

@@ -562,8 +562,7 @@ std::unique_ptr<cli::Results> cli::ArgumentParser::parse(const std::string& prog
                 }
 
                 if (!added)
-                    parseError(str::Format("option requires value or has "
-                                           "exceeded its max: [%s]",
+                    parseError(str::Format("option requires value or has exceeded its max: [%s]",
                                            argVar));
 
                 put(*currentResults, argVar, v, std::move(v_));

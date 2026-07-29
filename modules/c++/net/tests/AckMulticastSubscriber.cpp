@@ -143,8 +143,8 @@ int main(int argc, char** argv)
     try
     {
         if (argc != 6)
-            die_printf("Usage: %s <multicast-group> <mulicast-recv-port> "
-                       "<reply-to> <at-port> <retransmit-port>\n",
+            die_printf("Usage: %s <multicast-group> <mulicast-recv-port> <reply-to> <at-port> "
+                       "<retransmit-port>\n",
                        argv[0]);
         std::string mcastGroup = argv[1];
         int mcastRecvPort = atoi(argv[2]);

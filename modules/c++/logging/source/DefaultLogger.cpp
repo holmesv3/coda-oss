@@ -30,8 +30,7 @@ logging::LogLevel logging::DefaultLogger::defaultLogLevel = logging::LogLevel::L
 
 logging::DefaultLogger::DefaultLogger(std::string name) : logging::Logger(name)
 {
-    // TODO might be able to share just one amongst all DefaultLoggers -- just a
-    // thought
+    // TODO might be able to share just one amongst all DefaultLoggers -- just a thought
     mDefaultHandler = new logging::StreamHandler(defaultLogLevel);
     this->addHandler(mDefaultHandler);
 }

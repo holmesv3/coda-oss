@@ -64,10 +64,9 @@ TEST_CASE(testMatches)
 TEST_CASE(testMatchOptional)
 {
     re::RegexMatch matches;
-    re::Regex rx("([A-Za-z]+)://([^/?#:]+)(?::(\\d+))?(/[^?#:]+)?(?:[?]([^&#/"
-                 "]+(?:[&;][^&;#/]+)*)?)?(?:[#](.*))?");
-    std::string url = "http://localhost:80/something/"
-                      "page.com?param1=foo&param2=bar#fragment";
+    re::Regex rx("([A-Za-z]+)://([^/?#:]+)(?::(\\d+))?(/[^?#:]+)?(?:[?]([^&#/]+(?:[&;][^&;#/"
+                 "]+)*)?)?(?:[#](.*))?");
+    std::string url = "http://localhost:80/something/page.com?param1=foo&param2=bar#fragment";
 
     rx.match(url, matches);
     TEST_ASSERT_EQ(matches.size(), static_cast<size_t>(7));
@@ -210,8 +209,7 @@ TEST_CASE(testMultilineBehavior)
 
     re::RegexMatch matches;
     re::Regex rx;
-    std::string inputString = "3.3 4\n2\nx\r\ns\r\n;sjf sfkgsdkie\n "
-                              "shfihfoisu\nha hosd\nhvfoef\n";
+    std::string inputString = "3.3 4\n2\nx\r\ns\r\n;sjf sfkgsdkie\n shfihfoisu\nha hosd\nhvfoef\n";
 
     // This should match just the beginning
     rx.compile("^.");
@@ -347,10 +345,9 @@ TEST_CASE(testHttpResponse)
 {
     const char* request = "GET http://pluto.beseen.com:1113 HTTP/1.0\r\nProxy-Connection: "
                           "Keep-Alive\r\nUser-Agent: Mozilla/4.75 [en] (X11; U; SunOS 5.6 "
-                          "sun4u)\r\nAccept: image/gif, image/x-xbitmap, image/jpeg, "
-                          "image/pjpeg, image/png, */*\r\nAccept-Encoding: "
-                          "gzip\r\nAccept-Language: en\r\nAccept-Charset: "
-                          "iso-8859-1,*,utf-8\r\nContent-Type: "
+                          "sun4u)\r\nAccept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, "
+                          "image/png, */*\r\nAccept-Encoding: gzip\r\nAccept-Language: "
+                          "en\r\nAccept-Charset: iso-8859-1,*,utf-8\r\nContent-Type: "
                           "application/x-www-form-urlencoded\r\nContent-Length: 96\r\n\r\n";
 
     class HttpParser

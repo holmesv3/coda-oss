@@ -45,10 +45,9 @@
 namespace sys
 {
 /*!
- * Swap bytes for a single value into output buffer.  API is `span<byte>` rather
- * than `void*` since for a single value we know the size.  These "low level"
- * routines may be less efficient than the templates since it's not possible to
- * specialize on a specific size.
+ * Swap bytes for a single value into output buffer.  API is `span<byte>` rather than `void*` since
+ * for a single value we know the size.  These "low level" routines may be less efficient than
+ * the templates since it's not possible to specialize on a specific size.
  *
  *  \param buffer to transform
  *  \param[out] outputBuffer buffer to write swapped elements to
@@ -119,13 +118,8 @@ inline auto swapBytes(coda_oss::span<const coda_oss::byte> inBytes,
 }
 
 // avoid copy-paste errors
-#define CODA_OSS_define_swapBytes_specialization_(T)                               \
-    template <>                                                                    \
-    inline auto swapBytes<sizeof(T)>(coda_oss::span<const coda_oss::byte> inBytes, \
-                                     coda_oss::span<coda_oss::byte> outBytes)      \
-    {                                                                              \
-        return swapUIntBytes<T>(inBytes, outBytes);                                \
-    }
+#define CODA_OSS_define_swapBytes_specialization_(T) template <> inline auto swapBytes<sizeof(T)> \
+        (coda_oss::span<const coda_oss::byte> inBytes, coda_oss::span<coda_oss::byte> outBytes) { return swapUIntBytes<T>(inBytes, outBytes); }
 CODA_OSS_define_swapBytes_specialization_(
         uint8_t)  // no `;`, it's not needed and generates a -Wpedantic warning
         CODA_OSS_define_swapBytes_specialization_(uint16_t)
@@ -173,8 +167,8 @@ inline auto byteSwapValue(T in)
 template <typename T>
 inline auto byteSwapValue(coda_oss::span<const coda_oss::byte> in)
 {
-    // Don't want to cast the swapped bytes in `in` to T* as they might not be
-    // valid; e.g., a byte-swapped `float` could be garbage.
+    // Don't want to cast the swapped bytes in `in` to T* as they might not be valid;
+    // e.g., a byte-swapped `float` could be garbage.
     T retval;
     byteSwapValue<T>(in, details::as_writable_bytes(retval));
     return retval;

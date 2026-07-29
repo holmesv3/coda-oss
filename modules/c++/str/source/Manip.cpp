@@ -70,8 +70,7 @@ inline char toupperCheck(char c)
 namespace str
 {
 
-// TODO:
-// https://stackoverflow.com/questions/31959532/best-way-to-remove-white-spaces-from-stdstring
+// TODO: https://stackoverflow.com/questions/31959532/best-way-to-remove-white-spaces-from-stdstring
 template <typename TChar>
 inline void trim_(std::basic_string<TChar>& s)
 {
@@ -292,8 +291,7 @@ std::vector<std::string> split(const std::string& s, const std::string& splitter
 static const auto& make_lookup(std::array<uint8_t, UINT8_MAX + 1>& result, char (*to)(char))
 {
     // For each of 256 values, record the corresponding tolower/toupper value;
-    // this makes converting very fast as no checking or arithmetic must be
-    // done.
+    // this makes converting very fast as no checking or arithmetic must be done.
     for (size_t i = 0; i <= 0xff; i++)
     {
         const auto ch = to(static_cast<char>(i));
@@ -488,8 +486,7 @@ void upper(coda_oss::u8string& s)
 
 void escapeForXML(std::string& str)
 {
-    // & needs to be first or else it'll mess up the other characters that we
-    // replace
+    // & needs to be first or else it'll mess up the other characters that we replace
     replaceAll(str, "&", "&amp;");
     replaceAll(str, "<", "&lt;");
     replaceAll(str, ">", "&gt;");

@@ -96,8 +96,7 @@ std::string Path::normalizePath(const std::string& path)
 
     // use the OS-specific delimiters
     std::ostringstream out;
-    // only apply the beginning up directories if we didn't start at the root
-    // (/)
+    // only apply the beginning up directories if we didn't start at the root (/)
     if (!str::startsWith(path, osDelimStr) && !str::startsWith(path, "/") &&
         driveParts.first.empty())
     {
@@ -180,8 +179,7 @@ bool Path::isAbsolutePath(const std::string& path)
     // according to std::filesystem::path::is_absolute().
     if (drive.length() > 2)  // "C:"
     {
-        return false;  // drive letters are single characters, e.g.,
-                       // "C:\Windows"
+        return false;  // drive letters are single characters, e.g., "C:\Windows"
     }
 
     return !drive.empty();
@@ -346,8 +344,7 @@ static void clean_slashes(std::string& path, bool isAbsolute)
     {
         path = path.substr(1);
     }
-#ifndef _WIN32  // std::filesystem has (some?) support for UNC paths, but not
-                // this code
+#ifndef _WIN32  // std::filesystem has (some?) support for UNC paths, but not this code
     if (isAbsolute)
     {
         path = Path::delimiter() + path;
@@ -410,8 +407,7 @@ static ExtractedEnvironmentVariable extractEnvironmentVariable_dollar(
     retval.component = retval.variable = component;  // assume this really isn't an env. var
 
     retval.begin = component.substr(0, pos);
-    str::replace(component, retval.begin + "$",
-                 "");  // don't want to find "(" before "$"
+    str::replace(component, retval.begin + "$", "");  // don't want to find "(" before "$"
     auto paren = component.find('(');
     char paren_match = ')';
     if (paren == std::string::npos)
@@ -429,8 +425,8 @@ static ExtractedEnvironmentVariable extractEnvironmentVariable_dollar(
             retval.variable = component.substr(paren + 1, paren_match_pos - 1);
             retval.end = component.substr(paren_match_pos + 1);
 
-            // We're going to support a very specific format for modifiers,
-            // just: ${FOO@c} If it's anythng else, assume it's something else
+            // We're going to support a very specific format for modifiers, just: ${FOO@c}
+            // If it's anythng else, assume it's something else
             if (paren_match == '}')  // only "${...", not "$(..."
             {
                 const auto at_pos = retval.variable.find('@');
@@ -474,8 +470,7 @@ static ExtractedEnvironmentVariable extractEnvironmentVariable_percent(
     retval.variable = component;  // assume this really isn't an env. var
 
     retval.begin = component.substr(0, pos);  // foo%BAR%
-    str::replace(component, retval.begin + "%",
-                 "");  // %FOO%bar% -> foo_bar% for FOO=foo_
+    str::replace(component, retval.begin + "%", "");  // %FOO%bar% -> foo_bar% for FOO=foo_
     auto percent_pos = component.find('%');
     if (percent_pos == std::string::npos)  // "foo%BAR"
     {
@@ -492,17 +487,16 @@ static ExtractedEnvironmentVariable extractEnvironmentVariable_percent(
 static ExtractedEnvironmentVariable extractEnvironmentVariable(const std::string& component)
 {
     // http://www.kitebird.com/csh-tcsh-book/tcsh.pdf
-    /* The word or words in a history reference can be edited, or "modified", by
-       following it with one or more modifiers, each preceded by a ':': h Remove
-       a trailing pathname component, leaving the head. t Remove all leading
-       pathname components, leaving the tail. r Remove a filename extension
-       '.xxx', leaving the root name. e Remove all but the extension.
+    /* The word or words in a history reference can be edited, or "modified", by following it with
+       one or more modifiers, each preceded by a ':': h Remove a trailing pathname component,
+       leaving the head. t Remove all leading pathname components, leaving the tail. r Remove a
+       filename extension '.xxx', leaving the root name. e Remove all but the extension.
     */
     // http://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
     /*
-    ${parameter@operator} The expansion is either a transformation of the value
-    of parameter or information about parameter itself, depending on the value
-    of operator. Each operator is a single letter:
+    ${parameter@operator} The expansion is either a transformation of the value of parameter or
+    information about parameter itself, depending on the value of operator. Each operator is a
+    single letter:
     */
 
     ExtractedEnvironmentVariable retval;
@@ -528,8 +522,8 @@ static ExtractedEnvironmentVariable extractEnvironmentVariable(const std::string
 static std::string apply_edits(const std::string& path, const std::string& op)
 {
     // http://www.kitebird.com/csh-tcsh-book/tcsh.pdf
-    /* The word or words in a history reference can be edited, or "modified", by
-       following it with one or more modifiers, each preceded by a ':':
+    /* The word or words in a history reference can be edited, or "modified", by following it with
+       one or more modifiers, each preceded by a ':':
     */
     if (op.length() == 1)
     {
@@ -561,9 +555,8 @@ static std::string apply_edits(const std::string& path, const std::string& op)
             return ext;
         }
 
-        // We're already "off the reservation" by combining BASH and CSH
-        // syntax/functionality, so ... provide access to other
-        // std::file_system::path routines too.
+        // We're already "off the reservation" by combining BASH and CSH syntax/functionality,
+        // so ... provide access to other std::file_system::path routines too.
         // https://en.cppreference.com/w/cpp/filesystem/path
 
         // root_name()
@@ -582,8 +575,8 @@ static std::string apply_edits(const std::string& path, const std::string& op)
 
         // parent_path(), 'h' above
 
-        // Force use of CSH names rather than providing and alisas: 'f'
-        // filename() filename(), 't' above
+        // Force use of CSH names rather than providing and alisas: 'f' filename()
+        // filename(), 't' above
         case 'f':
             break;  // return fspath.filename().string();
 
@@ -667,19 +660,17 @@ C3& joined_cartesian_product(const C1& c1, const C2& c2, C3& result)
     {
         for (const auto& v2 : c2)
         {
-            // Rather than returning a list of (v1_n, v2_n) pairs, we'll "join"
-            // the pair into a list [v1_n, v2_n].  That list will in turn be the
-            // input for a subsequent cartesian product where we can just add to
-            // the end.
+            // Rather than returning a list of (v1_n, v2_n) pairs, we'll "join" the
+            // pair into a list [v1_n, v2_n].  That list will in turn be the input for
+            // a subsequent cartesian product where we can just add to the end.
             //
-            // Input: [a, b], [1, 2]; "normal" output: [(a, 1), (a, 2), (b, 1),
-            // (b, 2)] Input: [(a, 1), (b, 2)], [X, Y]; "normal" output: [((a,
-            // 1), X), ((a, 1), Y), ((b, 2), X), ((b, 2), Y)] By turning the
-            // pairs into a list, we simply products-of-products (and
-            // products-of-products-of-products)
-            //    Input: [a, b], [1, 2]; output: [[a, 1], [a, 2], [b, 1], [b,
-            //    2]] Input: [[a, 1], [b, 2]], [X, Y]; output: [[a, 1, X], [a,
-            //    1, Y], [b, 2,, X], [b, 2, Y]]
+            // Input: [a, b], [1, 2]; "normal" output: [(a, 1), (a, 2), (b, 1), (b, 2)]
+            // Input: [(a, 1), (b, 2)], [X, Y]; "normal" output: [((a, 1), X), ((a, 1), Y), ((b, 2),
+            // X), ((b, 2), Y)] By turning the pairs into a list, we simply products-of-products
+            // (and products-of-products-of-products)
+            //    Input: [a, b], [1, 2]; output: [[a, 1], [a, 2], [b, 1], [b, 2]]
+            //    Input: [[a, 1], [b, 2]], [X, Y]; output: [[a, 1, X], [a, 1, Y], [b, 2,, X], [b, 2,
+            //    Y]]
             result.push_back(join(v1, v2));
         }
     }
@@ -726,8 +717,7 @@ std::vector<path_components> expand(const std::vector<expanded_component>& expan
     }
     if (expanded_components.size() == 1)
     {
-        // cartesian product of <anything> with <empty> is empty; we want
-        // <anything> instead
+        // cartesian product of <anything> with <empty> is empty; we want <anything> instead
         for (const auto& s : expanded_components[0].value)
         {
             retval.push_back(join(s, ""));
@@ -778,8 +768,8 @@ static std::vector<std::string> expandedEnvironmentVariables_(const std::string&
     auto path = path_;
     if (path.find(tilde_slash) == 0)
     {
-        // Don't have to worry about goofy things like ~ expanding to
-        // /home/${FOO} expandTilde() ensures the directory exists.
+        // Don't have to worry about goofy things like ~ expanding to /home/${FOO}
+        // expandTilde() ensures the directory exists.
         str::replace(path, tilde_slash, expandTilde() + "/");
     }
 
@@ -859,8 +849,7 @@ static std::string expandEnvironmentVariables_(const std::string& path,
             assert(pType == nullptr);
             if (!checkIfExists)
             {
-                return expanded_path;  // not checking for existence, just grab
-                                       // the first one
+                return expanded_path;  // not checking for existence, just grab the first one
             }
             if (fs::exists(expanded_path))
             {

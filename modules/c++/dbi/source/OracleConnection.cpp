@@ -255,8 +255,7 @@ dbi::Row dbi::OracleResultSet::fetchRow()
             if (result == OCI_SUCCESS)
             {
                 // char temp[1];
-                int indp = -1;  // This means that NULL values will not cause an
-                                // error
+                int indp = -1;  // This means that NULL values will not cause an error
                 fields[i].value = new char[fields[i].fieldSize];
                 memset(fields[i].value, '\0', fields[i].fieldSize);
                 OCIDefine* defineHandle = nullptr;

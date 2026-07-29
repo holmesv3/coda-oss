@@ -173,8 +173,7 @@ TEST_CASE(testStreamSplitter)
     bufferSizes.push_back(11);
     bufferSizes.push_back(12);
 
-    // check every combination of lineCount, lineLength, delimiter, and
-    // bufferSize
+    // check every combination of lineCount, lineLength, delimiter, and bufferSize
     for (size_t i_lineCount = 0; i_lineCount < lineCounts.size(); ++i_lineCount)
     {
         const size_t lineCount = lineCounts[i_lineCount];

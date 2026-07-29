@@ -43,12 +43,12 @@ using W1252string = std::basic_string<Windows1252_T>;  // https://en.cppreferenc
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// We'll get strange errors, possibibly at link-time, if wchar_t is not a
-// wchar_t type. MSVC has an option to control this:
+// We'll get strange errors, possibibly at link-time, if wchar_t is not a wchar_t type.
+// MSVC has an option to control this:
 // https://docs.microsoft.com/en-us/cpp/build/reference/zc-wchar-t-wchar-t-is-native-type
 // https://en.cppreference.com/w/cpp/language/types
-// "It has the same size, signedness, and alignment as one of the integer types,
-// but is a distinct type."
+// "It has the same size, signedness, and alignment as one of the integer types, but is a distinct
+// type."
 static_assert(!std::is_same<wchar_t, uint16_t>::value,
               "wchar_t should not be the same as uint16_t");
 static_assert(!std::is_same<wchar_t, int16_t>::value, "wchar_t should not be the same as int16_t");

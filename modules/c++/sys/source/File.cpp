@@ -68,14 +68,13 @@ sys::File sys::make_File(const coda_oss::filesystem::path& parent,
     const auto expanded_name =
             sys::Path::expandEnvironmentVariables(name.string(), false /*checkIfExists*/);
 
-    // let the File constructor deal with combining the expanded paths as well
-    // as checking for existence.
+    // let the File constructor deal with combining the expanded paths as well as checking for
+    // existence.
     return sys::File(expanded_parent, expanded_name, accessFlags, creationFlags);
 }
 
 #ifdef _WIN32
-// '...': This function or variable may be unsafe. Consider using _sopen_s
-// instead.
+// '...': This function or variable may be unsafe. Consider using _sopen_s instead.
 static FILE* fopen_(const std::string& fname, const std::string& mode)
 {
     FILE* retval = nullptr;
@@ -123,8 +122,8 @@ static inline int open_(const std::string& pathname, int flags)
     const auto p = pathname.c_str();
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': This function or variable may be
-                                 // unsafe. Consider using _sopen_s instead.
+#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. Consider using
+                                 // _sopen_s instead.
 #endif
             return CODA_OSS_open(p, flags);
     CODA_OSS_disable_warning_pop
@@ -152,8 +151,8 @@ static inline int open_(const std::string& pathname, int flags, int mode)
     const auto p = pathname.c_str();
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': This function or variable may be
-                                 // unsafe. Consider using _sopen_s instead.
+#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. Consider using
+                                 // _sopen_s instead.
 #endif
             return CODA_OSS_open(p, flags, mode);
     CODA_OSS_disable_warning_pop
@@ -198,8 +197,8 @@ static inline int stat_(const std::string& pathname, struct CODA_OSS_stat& buffe
     const auto p = pathname.c_str();
     CODA_OSS_disable_warning_push
 #ifdef _MSC_VER
-#pragma warning(disable : 4996)  // '...': This function or variable may be
-                                 // unsafe. Consider using _sopen_s instead.
+#pragma warning(disable : 4996)  // '...': This function or variable may be unsafe. Consider using
+                                 // _sopen_s instead.
 #endif
             return CODA_OSS_stat_(p, &buffer);
     CODA_OSS_disable_warning_pop

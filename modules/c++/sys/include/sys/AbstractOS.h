@@ -52,8 +52,8 @@ namespace sys
  *
  *  We require at least SSE2 which is from 2000 ... 23 years ago.
  *  Also see https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
- *  "... For the x86-64 compiler, these extensions [ -msse2 ] are enabled by
- * default." We're 64-bit only.
+ *  "... For the x86-64 compiler, these extensions [ -msse2 ] are enabled by default."
+ *   We're 64-bit only.
  *
  * Well ... it turns out third parties want to compile this code in different
  * enviroments which we don't know about; SIMD support makes that
@@ -258,8 +258,7 @@ struct CODA_OSS_API AbstractOS
     virtual std::string getEnv(const std::string&) const = 0;
 
     // Get a "speical" enviroment variable such as $0 or $PWD.
-    // See
-    // https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
+    // See https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
     // and https://wiki.bash-hackers.org/syntax/shellvars
     std::string getSpecialEnv(const std::string&) const;
 
@@ -277,8 +276,7 @@ struct CODA_OSS_API AbstractOS
                      std::string& value,
                      bool includeSpecial = false) const;
 
-    // A variable like PATH is often several directories, return each one that
-    // exists.
+    // A variable like PATH is often several directories, return each one that exists.
     bool splitEnv(const std::string& envVar, std::vector<std::string>&) const;
     bool splitEnv(const std::string& envVar,
                   std::vector<std::string>&,

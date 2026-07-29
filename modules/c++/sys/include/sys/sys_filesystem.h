@@ -40,8 +40,7 @@
 namespace sys  // should be in coda_oss/, but implementation needs sys::Path
 {
 // http://en.cppreference.com/w/cpp/filesystem
-namespace filesystem  // not "Filesystem", make it easy to use code in other
-                      // namespaces
+namespace filesystem  // not "Filesystem", make it easy to use code in other namespaces
 {
 struct path;  // forward
 namespace details
@@ -51,8 +50,7 @@ CODA_OSS_API std::ostream& Ostream(std::ostream& os, const path& p);
 }
 
 // https://en.cppreference.com/w/cpp/filesystem/file_type
-enum class file_type  // match C++17 spelling for easier transition from our
-                      // C++11 work-around
+enum class file_type  // match C++17 spelling for easier transition from our C++11 work-around
 {
     none = 0,
     not_found = 1,
@@ -62,11 +60,9 @@ enum class file_type  // match C++17 spelling for easier transition from our
 };
 
 // http://en.cppreference.com/w/cpp/filesystem/path
-struct CODA_OSS_API path final  // N.B. this is an INCOMPLETE and NON-STANDARD
-                                // implementation!
+struct CODA_OSS_API path final  // N.B. this is an INCOMPLETE and NON-STANDARD implementation!
 {
-// character type used by the native encoding of the filesystem: char on POSIX,
-// wchar_t on Windows
+// character type used by the native encoding of the filesystem: char on POSIX, wchar_t on Windows
 #ifdef _WIN32
     using value_type = wchar_t;
 #else

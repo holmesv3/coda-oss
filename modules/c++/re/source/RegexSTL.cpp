@@ -123,8 +123,7 @@ Regex& Regex::compile(const std::string& pattern)
     if (!mPattern.empty() && mPattern.front() != '^' && mPattern.back() == '$')
     {
         std::string msg("Trailing '$' will not be handled correctly!");
-        msg += " Try adding a '^' at the beginning and matching the entire "
-               "string.";
+        msg += " Try adding a '^' at the beginning and matching the entire string.";
         throw RegexException(Ctxt(msg));
     }
 
@@ -255,9 +254,9 @@ bool Regex::searchWithContext(std::string::const_iterator inputIterBegin,
 
     // Now we look for our 4 cases:
     // 1) "^...$" -> use std::regex_match() to force match at beginning and end
-    // 2) "^..."  -> use std::regex_constants::continuous_match to force match
-    // at start 3) "...$"  -> throw exception 4) "..."   -> use plain
-    // std::regex_search()
+    // 2) "^..."  -> use std::regex_constants::continuous_match to force match at start
+    // 3) "...$"  -> throw exception
+    // 4) "..."   -> use plain std::regex_search()
     if (!mPattern.empty() && mPattern.front() == '^')
     {
         if (mPattern.length() >= 2 && mPattern.back() == '$')

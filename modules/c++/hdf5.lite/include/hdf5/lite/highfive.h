@@ -105,8 +105,7 @@ inline SpanRC<T> loadDataSet(const H5Easy::File& file,
     return readDataSet(dataSet, result);
 }
 
-// Wrapper around HighFive::Attribute::read() to fix problems bug with reading
-// strings
+// Wrapper around HighFive::Attribute::read() to fix problems bug with reading strings
 template <typename T>
 inline void read(const HighFive::Attribute& attribute, T& array)
 {

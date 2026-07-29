@@ -53,8 +53,7 @@ int main(int argc, char** argv)
 
         unsigned long numEntries = zipFile.getNumEntries();
         if (numEntries > 1)
-            std::cout << "Warning: zip has more than one entry... "
-                         "decompressing the first only"
+            std::cout << "Warning: zip has more than one entry... decompressing the first only"
                       << std::endl;
 
         assert(numEntries);

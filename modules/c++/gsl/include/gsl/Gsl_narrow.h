@@ -80,9 +80,8 @@ CODA_OSS_disable_warning_pop
 
         CODA_OSS_disable_warning_push
 #if defined(_MSC_VER) && (_MSC_VER >= 1928)  // don't want to trigger "unknown warning" warning :-)
-#pragma warning(disable : 26472)  // Don't use a static_cast for arithmetic
-                                  // conversions. Use brace initialization,
-                                  // gsl::narrow_cast or gsl::narrow (type.1).
+#pragma warning(disable : 26472)  // Don't use a static_cast for arithmetic  conversions. Use brace
+                                  // initialization, gsl::narrow_cast or gsl::narrow (type.1).
 #endif
         template <class T, class U>
         constexpr T narrow1_(T t, U u) noexcept(false)
@@ -107,8 +106,7 @@ CODA_OSS_disable_warning_pop
     return narrow1_(t, u) ? narrow2_(t, u) : t;
 }
 }  // namespace details
-// narrow() : a checked version of narrow_cast() that throws if the cast changed
-// the value
+// narrow() : a checked version of narrow_cast() that throws if the cast changed the value
 template <class T, class U>
 constexpr T narrow(U u) noexcept(false)
 {

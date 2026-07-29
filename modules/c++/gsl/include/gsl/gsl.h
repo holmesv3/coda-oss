@@ -36,14 +36,12 @@
 CODA_OSS_disable_warning_push
 #if _MSC_VER
 #pragma warning(disable : 4619)  // #pragma warning : there is no warning number '..'
-#pragma warning(disable : 4626)  // '...' : assignment operator was implicitly
-                                 // defined as deleted
-#pragma warning(disable : 5027)  // '...' : move assignment operator was
-                                 // implicitly defined as deleted
-#pragma warning(disable : 26487)  // Don 't return a pointer '...' that may be
-                                  // invalid (lifetime.4).
-#pragma warning(disable : 4814)  // '...': in C++14 '...' will not imply '...';
-                                 // consider explicitly specifying '...'
+#pragma warning(disable : 4626)  // '...' : assignment operator was implicitly defined as deleted
+#pragma warning(disable \
+                : 5027)  // '...' : move assignment operator was implicitly defined as deleted
+#pragma warning(disable : 26487)  // Don 't return a pointer '...' that may be invalid (lifetime.4).
+#pragma warning(disable : 4814)  // '...': in C++14 '...' will not imply '...'; consider explicitly
+                                 // specifying '...'
 #pragma warning(disable : 26823)  // Dereferencing a possibly null pointer '...' (lifetime.1).
 #endif
 

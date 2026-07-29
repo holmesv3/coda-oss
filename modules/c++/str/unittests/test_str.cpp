@@ -48,10 +48,9 @@ TEST_CASE(testData)
 #endif
 
             // https://en.cppreference.com/w/cpp/string/basic_string/data
-            // "Modifying the past-the-end null terminator stored at
-            // data()+size() to any value other than CharT() has undefined
-            // behavior."
-            std::ignore = strcpy(str::data(s), "abc");
+            // "Modifying the past-the-end null terminator stored at data()+size() to any value
+            // other than CharT() has undefined behavior."
+                    std::ignore = strcpy(str::data(s), "abc");
 
     CODA_OSS_disable_warning_pop TEST_ASSERT_EQ(s, "abc");
 }
@@ -326,9 +325,9 @@ TEST_CASE(test_toStringComplexShort)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the template
+                                 // std::complex for any type other than float, double, or long
+                                 // double is unspecified. You can define
                                  // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
                                  // this warning
 #endif
@@ -352,9 +351,9 @@ TEST_CASE(test_toTypeComplexShort)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the template
+                                 // std::complex for any type other than float, double, or long
+                                 // double is unspecified. You can define
                                  // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
                                  // this warning
 #endif
@@ -364,9 +363,9 @@ TEST_CASE(test_toTypeComplexShort)
 
     CODA_OSS_disable_warning_push
 #if _MSC_VER
-#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the
-                                 // template std::complex for any type other than float, double,
-                                 // or long double is unspecified. You can define
+#pragma warning(disable : 4996)  // '...': warning STL4037: The effect of instantiating the template
+                                 // std::complex for any type other than float, double, or long
+                                 // double is unspecified. You can define
                                  // _SILENCE_NONFLOATING_COMPLEX_DEPRECATION_WARNING to suppress
                                  // this warning
 #endif

@@ -114,9 +114,9 @@ int main(int, char**)
     std::cout << std::endl;
     /*try
     {
-    std::cout << "Test 2-D Polynomial DerivativeY.DerivativeY implementation..."
-    << std::endl; std::cout << "lTwoDTstPoly: " <<
-    lTwoDTst.derivativeY().derivativeY() << std::endl; std::cout << std::endl;
+    std::cout << "Test 2-D Polynomial DerivativeY.DerivativeY implementation..." << std::endl;
+    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeY().derivativeY() << std::endl;
+    std::cout << std::endl;
     }
     catch (except::Exception& ex)
     {
@@ -135,8 +135,8 @@ int main(int, char**)
     std::cout << "Test 2-D Polynomial DerivativeXY.DerivativeXY implemenation..." << std::endl;
     /*try
     {
-    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeXY().derivativeXY() <<
-    std::endl; std::cout << std::endl;
+    std::cout << "lTwoDTstPoly: " << lTwoDTst.derivativeXY().derivativeXY() << std::endl;
+    std::cout << std::endl;
     }
     catch (except::Exception& ex)
     {
