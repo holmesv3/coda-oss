@@ -1,0 +1,5 @@
+# Ignore driver (external) code
+modules/c++/drivers/*
+
+# Ignore any generated files from SWIG
+modules/python/
