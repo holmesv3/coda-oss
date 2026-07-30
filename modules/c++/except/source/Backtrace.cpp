@@ -110,16 +110,14 @@ public:
     bool result;
     SymInitialize_RAII(HANDLE process) : process_(process)
     {
-        result = SymInitialize(process_, nullptr, TRUE) == TRUE
-                ? true
-                : false;  // https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-syminitialize
+        // https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-syminitialize
+        result = SymInitialize(process_, nullptr, TRUE) == TRUE ? true : false;
     }
 
     ~SymInitialize_RAII()
     {
-        result = SymCleanup(process_) == TRUE
-                ? true
-                : false;  // https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symcleanup
+        // https://docs.microsoft.com/en-us/windows/win32/api/dbghelp/nf-dbghelp-symcleanup
+        result = SymCleanup(process_) == TRUE ? true : false; 
         assert(result);
     }
 };
