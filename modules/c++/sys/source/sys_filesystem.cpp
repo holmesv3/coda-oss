@@ -45,7 +45,8 @@ static inline std::string make_what(const char* curfile,
 // A macro for conveniently throwing errors.
 // Need "throw" to be visible, not hidden inside of a function, so that code-analysis tools can see
 // it.
-#define CODA_OSS_sys_filesystem_THROW_ERR(MSG) throw std::runtime_error(make_what(__FILE__, __LINE__, MSG)) // TODO: std::filesystem_error
+#define CODA_OSS_sys_filesystem_THROW_ERR(MSG) \
+    throw std::runtime_error(make_what(__FILE__, __LINE__, MSG))  // TODO: std::filesystem_error
 
 fs::path::string_type fs::path::to_native(const std::string& s_)
 {

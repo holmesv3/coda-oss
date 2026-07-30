@@ -22,8 +22,12 @@
 
 #include "zip/ZipFile.h"
 
-#define Z_READ_SHORT_INC(BUF, OFF) readShort(&BUF[OFF]); OFF += 2
-#define Z_READ_INT_INC(BUF, OFF) readInt(&BUF[OFF]); OFF += 4
+#define Z_READ_SHORT_INC(BUF, OFF) \
+    readShort(&BUF[OFF]);          \
+    OFF += 2
+#define Z_READ_INT_INC(BUF, OFF) \
+    readInt(&BUF[OFF]);          \
+    OFF += 4
 
 namespace zip
 {

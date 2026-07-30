@@ -50,7 +50,7 @@ TEST_CASE(testData)
             // https://en.cppreference.com/w/cpp/string/basic_string/data
             // "Modifying the past-the-end null terminator stored at data()+size() to any value
             // other than CharT() has undefined behavior."
-                    std::ignore = strcpy(str::data(s), "abc");
+            std::ignore = strcpy(str::data(s), "abc");
 
     CODA_OSS_disable_warning_pop TEST_ASSERT_EQ(s, "abc");
 }

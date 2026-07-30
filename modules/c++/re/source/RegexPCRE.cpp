@@ -34,7 +34,7 @@
 CODA_OSS_disable_warning(-Wold-style-cast)
 #endif
 
-namespace
+                                 namespace
 {
     std::string getErrorMessage(int errorCode)
     {

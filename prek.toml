@@ -1,6 +1,12 @@
 [[repos]]
 repo = "https://github.com/pre-commit/mirrors-clang-format"
-rev = "v22.1.8"
+rev = "v21.1.8"
 hooks = [
-    { id = "clang-format", name = "clang-format", language = "system", entry = "clang-format -i", types = ["c", "c++"] }
+    {
+        id = "clang-format",
+        name = "clang-format",
+        language = "system",
+        types = ["c", "c++"],
+        verbose = true,
+    }
 ]

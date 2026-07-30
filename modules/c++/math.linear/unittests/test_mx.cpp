@@ -29,8 +29,8 @@ typedef math::linear::MatrixMxN<3, 3> Matrix3x3;
 typedef math::linear::MatrixMxN<4, 4> Matrix4x4;
 typedef math::linear::MatrixMxN<5, 5> Matrix5x5;
 
-#define foreach_ij(M, N) \
-   for (unsigned int i = 0; i < M; ++i) \
+#define foreach_ij(M, N)                 \
+    for (unsigned int i = 0; i < M; ++i) \
         for (unsigned int j = 0; j < N; ++j)
 
 TEST_CASE(testIdentityMxN)

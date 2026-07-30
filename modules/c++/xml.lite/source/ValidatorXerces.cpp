@@ -34,14 +34,14 @@ CODA_OSS_disable_warning_push
         CODA_OSS_disable_warning(-Wshadow)
 #endif
 #include <str/utf8.h>
-CODA_OSS_disable_warning_pop
+                                         CODA_OSS_disable_warning_pop
 
 #include <io/StringStream.h>
 #include <mem/ScopedArray.h>
 #include <sys/OS.h>
 #include <sys/Path.h>
 
-namespace fs = std::filesystem;
+                                 namespace fs = std::filesystem;
 
 #include <xml/lite/xml_lite_config.h>
 #ifdef USE_XERCES
