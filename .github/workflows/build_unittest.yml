@@ -11,6 +11,13 @@ on:
 
 
 jobs:
+
+  format-check:
+    runs-on: [ubuntu-24.04]
+    steps:
+    - uses: actions/checkout@v7 # https://github.com/marketplace/actions/checkout
+    - uses: j178/prek-action@v2 # https://github.com/j178/prek-action
+
   build-cmake-windows:
     strategy:
       matrix:
@@ -73,7 +80,6 @@ jobs:
     - name: Skip Duplicate Actions
       uses: fkirc/skip-duplicate-actions@v5.3.1
     - uses: actions/checkout@v4 # https://github.com/marketplace/actions/checkout
-    - uses: j178/prek-action@v2 # https://github.com/j178/prek-action
     - name: Set up Python
       uses: actions/setup-python@v5 # https://github.com/marketplace/actions/setup-python
       with:
