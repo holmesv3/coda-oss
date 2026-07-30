@@ -6,7 +6,8 @@ hooks = [
         id = "clang-format",
         name = "clang-format",
         language = "system",
+        entry = "clang-format -i -style=file",
         types = ["c", "c++"],
         verbose = true,
-    }
+    },
 ]
