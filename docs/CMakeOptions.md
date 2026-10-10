@@ -34,6 +34,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=[install path]
 # build and install, in parallel
 cmake --build . --target install -- -j
 
+# Install without (re)building targets to a different location
+cmake --install . --prefix /some/other/location
+
 # run unit tests (optional)
 ctest
 ```
@@ -70,7 +73,8 @@ To select the compiler and architecture, pass the -G and -A options to cmake in 
 These options may be passed in the cmake configure step as `-DOPTION_NAME="option value"`
 | Option Name    | Default Value | Description |
 |----------------|---------------|-------------|
-|CMAKE_BUILD_TYPE|RelWithDebInfo|build type (Release, Debug, RelWithDebInfo); not used for MSVC builds (should be specified at build time instead)|
+| CMAKE_BUILD_TYPE | RelWithDebInfo | build type (Release, Debug, RelWithDebInfo); not used for MSVC builds (should be specified at build time instead) |
+| CMAKE_CXX_STANDARD | 14 | C++ standard to use for build | 
 |BUILD_SHARED_LIBS|OFF|build shared libraries if on, static if off (note: not working on Windows)|
 |STATIC_CRT|OFF|for Windows MSVC builds only, link with /MT (or /MTd for Debug builds) if on, or with /MD (or /MDd for Debug builds) if off|
 |CODA_BUILD_TESTS| ON      |build tests if on|
